@@ -1,4 +1,12 @@
-(function() {
+<!--Include HTML-->
+$(document).ready(function () {
+    $("div[data-includeHTML]").each(function () {
+        $(this).load($(this).attr("data-includeHTML"));
+    });
+});
+
+<!--Get data from JSON-->
+(function () {
     var settings = {
         "url": "http://localhost:8080/api/v1/user",
         "method": "POST",
@@ -6,49 +14,25 @@
         "format": "json",
     };
 
-    $.getJSON(settings).done(function (response) {
-        console.log(response[0].username);
+    $.getJSON(settings).done(function (data) {
+        $.each(data, function (i, item) {
+            $("#json-item").append(item.name + ": Username: " + item.username + "   |   Password: " + item.password);
+        });
     });
 })();
 
+<!--Send data to JSON-->
+$('form').submit(function (e) {
+    e.preventDefault();
+    var serialized = $(this).serializeArray();
+    var s = '';
+    var data = {};
+    for(s in serialized){
+        data[serialized[s]['name']] = serialized[s]['value']
+    }
+    data = JSON.stringify(data);
+    $(".result").append(data);
+    return data;
+});
 
 
-// $(document).ready(function () {
-//     $("#login").click(function () {
-//         var email = $("#email").val();
-//         var password = $("#password").val();
-// // Checking for blank fields.
-//         if (email == '' || password == '') {
-//             $('input[type="text"],input[type="password"]').css("border", "2px solid red");
-//             $('input[type="text"],input[type="password"]').css("box-shadow", "0 0 3px red");
-//             alert("Please fill all fields...!!!!!!");
-//         } else {
-//             $.post("login.php", {email1: email, password1: password},
-//                 function (data) {
-//                     if (data == 'Invalid Email.......') {
-//                         $('input[type="text"]').css({"border": "2px solid red", "box-shadow": "0 0 3px red"});
-//                         $('input[type="password"]').css({
-//                             "border": "2px solid #00F5FF",
-//                             "box-shadow": "0 0 5px #00F5FF"
-//                         });
-//                         alert(data);
-//                     } else if (data == 'Email or Password is wrong...!!!!') {
-//                         $('input[type="text"],input[type="password"]').css({
-//                             "border": "2px solid red",
-//                             "box-shadow": "0 0 3px red"
-//                         });
-//                         alert(data);
-//                     } else if (data == 'Successfully Logged in...') {
-//                         $("form")[0].reset();
-//                         $('input[type="text"],input[type="password"]').css({
-//                             "border": "2px solid #00F5FF",
-//                             "box-shadow": "0 0 5px #00F5FF"
-//                         });
-//                         alert(data);
-//                     } else {
-//                         alert(data);
-//                     }
-//                 });
-//         }
-//     });
-// });
