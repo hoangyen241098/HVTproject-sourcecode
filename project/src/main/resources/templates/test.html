@@ -1,0 +1,16 @@
+<button id='load-du-lieu'>click example</button>
+<p id='noidung'>yen</p>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<script>
+    $(document).ready(function() {
+        $('#load-du-lieu').click(function(e) {
+            e.preventDefault();
+            $.post('http://localhost:8080/api/v1/user',{}, function(result) {
+                $('#noidung').html(result[0].name);
+            });
+
+        });
+    });
+</script>
