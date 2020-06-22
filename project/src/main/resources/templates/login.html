@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>.::Đăng nhập::.</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+<header>
+    <div data-includeHTML="common/header.html"></div>
+</header>
+<main>
+    <div class="container">
+        <h1>THIS IS PAGE LOGIN</h1>
+<!--        <div class="main">-->
+<!--            <form class="form" method="post" action="#">-->
+<!--                <h2>Create Login Form Using jQuery</h2>-->
+<!--                <label>Email :</label>-->
+<!--                <input type="text" name="demail" id="email">-->
+<!--                <label>Password :</label>-->
+<!--                <input type="password" name="password" id="password">-->
+<!--                <input type="button" name="login" id="login" value="Login">-->
+<!--            </form>-->
+<!--        </div>-->
+    </div>
+</main>
+<footer>
+    <div data-includeHTML="common/footer.html"></div>
+</footer>
+</body>
+<script>
+    $(document).ready(function () {
+        $("div[data-includeHTML]").each(function () {
+            $(this).load($(this).attr("data-includeHTML"));
+        });
+    });
+</script>
+<script src="../static/js/login.js"></script>
+</html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 List user
@@ -12,6 +12,22 @@ List user
         <span th:text="*{user.username}"></span> : <span th:text="*{user.password}"></span>
     </li>
 </ul>
-</body>
 
+<div id="images"></div>
+</body>
+<!--<script src="../static/js/login.js"></script>-->
+<script>
+    (function() {
+        var settings = {
+            "url": "http://localhost:8080/api/v1/user",
+            "method": "POST",
+            "timeout": 0,
+            "format": "json",
+        };
+
+        $.getJSON(settings).done(function (response) {
+            console.log(response[0].username);
+        });
+    })();
+</script>
 </html>
