@@ -20,7 +20,7 @@ public class WebController {
     @GetMapping("/") // Nếu người dùng request tới địa chỉ "/"
     public String index(Model model) {
         model.addAttribute("userList",userRepository.findAll());
-        return "index"; // Trả về file index.html
+        return "test"; // Trả về file index.html
     }
 
 }

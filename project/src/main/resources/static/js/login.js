@@ -1,15 +1,15 @@
-(function() {
-    var settings = {
-        "url": "http://localhost:8080/api/v1/user",
-        "method": "POST",
-        "timeout": 0,
-        "format": "json",
-    };
-
-    $.getJSON(settings).done(function (response) {
-        console.log(response[0].username);
-    });
-})();
+// (function() {
+//     var settings = {
+//         "url": "http://localhost:8080/api/v1/user",
+//         "method": "POST",
+//         "timeout": 0,
+//         "format": "json",
+//     };
+//
+//     $.getJSON(settings).done(function (response) {
+//         console.log(response[0].username);
+//     });
+// })();
 
 
 

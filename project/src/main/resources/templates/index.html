@@ -2,9 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!--    <script src="../static/js/login.js"></script>-->
+
 </head>
 <body>
-List user
+List user12
 <ul>
     <!--/*@thymesVar id="userList" type="nh"*/-->
     <li th:each="user : ${userList}">
@@ -15,19 +17,22 @@ List user
 
 <div id="images"></div>
 </body>
-<!--<script src="../static/js/login.js"></script>-->
-<script>
-    (function() {
-        var settings = {
-            "url": "http://localhost:8080/api/v1/user",
-            "method": "POST",
-            "timeout": 0,
-            "format": "json",
-        };
+<script type="text/javascript" src="/js/login.js"></script>
+<!--<script type="text/javascript" th:src="@{/static/login.js}"></script>-->
 
-        $.getJSON(settings).done(function (response) {
-            console.log(response[0].username);
-        });
-    })();
-</script>
+<!--<script type="text/javascript" src="../static/js/login.js"></script>-->
+<!--<script>-->
+<!--    (function() {-->
+<!--        var settings = {-->
+<!--            "url": "http://localhost:8080/api/v1/user",-->
+<!--            "method": "POST",-->
+<!--            "timeout": 0,-->
+<!--            "format": "json",-->
+<!--        };-->
+
+<!--        $.getJSON(settings).done(function (response) {-->
+<!--            console.log(response[0].username);-->
+<!--        });-->
+<!--    })();-->
+<!--</script>-->
 </html>
