@@ -1,6 +1,6 @@
 package com.example.webDemo3.service;
 
-import com.example.webDemo3.entity.testentity.User;
+import com.example.webDemo3.entity.User;
 
 import java.util.List;
 

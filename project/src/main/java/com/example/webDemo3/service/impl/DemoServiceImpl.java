@@ -1,13 +1,12 @@
 package com.example.webDemo3.service.impl;
 
-import com.example.webDemo3.entity.testentity.User;
-import com.example.webDemo3.repository.testrepository.UserRepository;
+import com.example.webDemo3.entity.User;
+import com.example.webDemo3.repository.UserRepository;
 import com.example.webDemo3.service.DemoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DemoServiceImpl implements DemoService {

@@ -1,7 +1,6 @@
 package com.example.webDemo3.controller.testcontroller;
 
-import com.example.webDemo3.entity.testentity.User;
-import com.example.webDemo3.repository.testrepository.UserRepository;
+import com.example.webDemo3.entity.User;
 import com.example.webDemo3.service.DemoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
