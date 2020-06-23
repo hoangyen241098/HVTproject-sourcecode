@@ -16,9 +16,18 @@ public class User implements Serializable {
     @Column(name = "USER_NAME")
     private String username;
 
-    @Column(name = "PASSWORD")
+    @Column(name = "PASS_WORD")
     private String password;
 
-    @Column(name = "FULL_NAME")
+    @Column(name = "CLASS")
+    private String classUser;
+
+    @Column(name = "NAME")
     private String name;
+
+    @Column(name = "PHONE")
+    private String phone;
+
+    @Column(name = "EMAIL")
+    private String email;
 }
