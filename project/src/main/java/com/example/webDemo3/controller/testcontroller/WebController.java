@@ -23,4 +23,9 @@ public class WebController {
         model.addAttribute("userList",userRepository.findAll());
         return "index"; // Trả về file index.html
     }
+
+    @GetMapping("/test")
+    public String test(Model model) {
+        return "test";
+    }
 }

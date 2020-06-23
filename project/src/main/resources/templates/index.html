@@ -10,7 +10,11 @@ List user
     <li th:each="user : ${userList}">
         <!--/*@thymesVar id="username" type="java.lang.String"*/-->
         <span th:text="*{user.username}"></span> : <span th:text="*{user.password}"></span>
-        <span th:text="*{user.name}"></span>
+        <p th:text="*{user.roleId}"></p>
+        <p th:text="*{user.classId}"></p>
+        <p th:text="*{user.name}"></p>
+        <p th:text="*{user.phone}"></p>
+        <p th:text="*{user.email}"></p>
     </li>
 </ul>
 </body>
