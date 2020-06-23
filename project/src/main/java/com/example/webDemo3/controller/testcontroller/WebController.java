@@ -51,6 +51,7 @@ public class WebController {
         return "index"; // Trả về file index.html
     }
 
+
     /**
      *
      * @param model
@@ -84,6 +85,10 @@ public class WebController {
     public void index4(@RequestBody String[] ids) {//@RequestBody Nhan gia tri va mapping voi User
         //model.addAttribute("userList",userRepository.findAll());
         service.delete(ids);
+    }
+    @GetMapping("/test")
+    public String test(Model model) {
+        return "test";
     }
 
 }
