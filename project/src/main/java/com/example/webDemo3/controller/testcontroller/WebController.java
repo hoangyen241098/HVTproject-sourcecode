@@ -23,4 +23,9 @@ public class WebController {
         return "login"; // Trả về file index.html
     }
 
+    @GetMapping("/test")
+    public String test(Model model) {
+        return "test";
+    }
+
 }
