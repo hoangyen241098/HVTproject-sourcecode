@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<form th:action="@{/login}" method="post">
+    <div>
+        <table>
+            <tr>
+                <th>Họ tên:</th>
+                <th><input type="text" name="name"/></th>
+            <tr>
+            <tr>
+                <th>Mật khẩu:</th>
+                <th><input type="password" name="password"/></th>
+            <tr>
+            <tr>
+                <th><input type="submit">Click Me!</input></th>
+            <tr>
+        </table>
+    </div>
+</form>
+</body>
+<script>
+function addNew(data) {
+$.ajax({
+//url: '${APIurl}',
+url: 'http://localhost:8080/api/v1/user',
+type: 'POST',
+contentType: 'application/json',//loai du lieu Client gui  toi server
+data: JSON.stringify(data),// data thange login can them moi
+dataType: 'json', // loai du lieu server gui toi client
+success: function (result) {
+console.log(result);
+},
+error: function (error) {
+console.log(error);
+}
+});
+}
+</script>
+</html>
