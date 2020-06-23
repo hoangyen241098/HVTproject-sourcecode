@@ -1,6 +1,8 @@
 package com.example.webDemo3.service.impl;
 
-import com.example.webDemo3.dto.LoginDto;
+import com.example.webDemo3.dto.LoginResponseDto;
+import com.example.webDemo3.dto.MessageDTO;
+import com.example.webDemo3.dto.request.LoginRequestDto;
 import com.example.webDemo3.entity.User;
 import com.example.webDemo3.repository.UserRepository;
 import com.example.webDemo3.service.LoginService;
@@ -21,17 +23,65 @@ public class LoginServiceImpl implements LoginService {
      * @return logindto(1,success) if success and (0,fail) is fail
      */
     @Override
-    public LoginDto checkLoginUser(User u) {
-        User user = userRepository.findUserByUsername(u.getUsername());
-        LoginDto login = new LoginDto();
-        if(user!=null && u.getPassword().equals(user.getPassword())){
-            login.setMessageCode(1);
-            login.setMessage("Success");
+    public LoginResponseDto checkLoginUser(LoginRequestDto u) {
+        LoginResponseDto loginDto = new LoginResponseDto();
+        MessageDTO message = new MessageDTO();
+        User user = null;
+
+        /**
+         * Find username in database
+         */
+        try {
+            user = userRepository.findUserByUsername(u.getUsername());
+        }
+        catch (Exception e){
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            return loginDto;
+        }
+
+        /**
+         * check username and password
+         */
+        if(user==null){
+            message.setMessageCode(1);
+            message.setMessage("Tên đăng nhập không tồn tại");
+        }
+        else if(!u.getPassword().equals(user.getPassword())){
+            message.setMessageCode(1);
+            message.setMessage("Mật khẩu không đúng.");
         }
         else{
-            login.setMessageCode(0);
-            login.setMessage("Fail");
+            message.setMessageCode(0);
+            message.setMessage("Thành công");
+            loginDto.setRoleid(user.getRoleId());
         }
-        return login;
+
+        loginDto.setMessage(message);
+        return loginDto;
+    }
+
+    /**
+     * kimpt142
+     * 23/6/2020
+     * Change password of personal account
+     * @param newUser include username and new password
+     * @return user when update password done
+     */
+    @Override
+    public MessageDTO changePasswordByUsername(User newUser) {
+        MessageDTO message = new MessageDTO();
+        try {
+            User oldUser = userRepository.findUserByUsername(newUser.getUsername());
+            oldUser.setPassword(newUser.getPassword());
+            oldUser = userRepository.save(oldUser);
+            message.setMessageCode(1);
+            message.setMessage("Success");
+        }
+        catch (Exception e) {
+            message.setMessageCode(0);
+            message.setMessage(e.toString());
+        }
+        return message;
     }
 }

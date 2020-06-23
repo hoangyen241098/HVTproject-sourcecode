@@ -1,6 +1,8 @@
 package com.example.webDemo3.controller;
 
-import com.example.webDemo3.dto.LoginDto;
+import com.example.webDemo3.dto.LoginResponseDto;
+import com.example.webDemo3.dto.MessageDTO;
+import com.example.webDemo3.dto.request.LoginRequestDto;
 import com.example.webDemo3.entity.User;
 import com.example.webDemo3.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,7 @@ public class LoginApiController {
      * @return LoginDto with (1,success) if success
      */
     @PostMapping("/login")
-    public LoginDto login(@RequestBody User model)
+    public LoginResponseDto login(@RequestBody LoginRequestDto model)
     {
         return loginService.checkLoginUser(model);
     }
