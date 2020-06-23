@@ -1,59 +1,42 @@
-<!--Include HTML-->
+<!--Send data to JSON-->
 $(document).ready(function () {
-    $("div[data-includeHTML]").each(function () {
-        $(this).load($(this).attr("data-includeHTML"));
+
+    $("#signin").click(function (e) {
+        var user = {
+            username: $('#username').val(),
+            password: $('#password').val(),
+        }
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: "http://localhost:8080/api/v1/test",
+            data: JSON.stringify(user),
+            success: function (data) {
+                alert(data.username);
+                $('.noidung').append(data.username + ":" + data.password);
+            },
+            failure: function(errMsg) {
+                alert(errMsg);
+            },
+            dataType: "json",
+            contentType: "application/json"
+        });
+
     });
 });
 
 <!--Get data from JSON-->
-// (function () {
-//     var settings = {
-//         "url": "http://localhost:8080/api/v1/user",
-//         "method": "POST",
-//         "timeout": 0,
-//         "format": "json",
-//     };
-//
-//     $.getJSON(settings).done(function (data) {
-//         $.each(data, function (i, item) {
-//             $("#json-item").append(item.name + ": Username: " + item.username + "   |   Password: " + item.password);
-//         });
-//     });
-// })();
+(function () {
+    var settings = {
+        "url": "http://localhost:8080/api/v1/user",
+        "method": "POST",
+        "timeout": 0,
+        "format": "json",
+    };
 
-<!--Send data to JSON-->
-// $('form').submit(function (e) {
-//     e.preventDefault();
-//     var serialized = $(this).serializeArray();
-//     var s = '';
-//     var data = {};
-//     for(s in serialized){
-//         data[serialized[s]['name']] = serialized[s]['value']
-//     }
-//     data = JSON.stringify(data);
-//     $(".result").append(data);
-//     return data;
-// });
-
-<!--Send data to AJAX-->
-// var data={
-//     username: $('#username').val(),
-//     email: $('#email').val(),
-//     password: $('#password').val(),
-//     //add other properties similarly
-// }
-// $.ajax({
-//     type: "POST",
-//     url: "http://localhost:8080/api/v1/get",
-//     data: $("#registerSubmit").serialize(),
-//
-//     success: function(html)
-//     {
-//         $('#userError').html(html);
-//         $("#userError").html(userChar);
-//         $("#userError").html(userTaken);
-//         $(".result").append(html);
-//         $(".result").append(data);
-//     }
-// });
-
+    $.getJSON(settings).done(function (data) {
+        $.each(data, function (i, item) {
+            $("#json-item").append(item.name + ": Username: " + item.username + "   |   Password: " + item.password);
+        });
+    });
+})();

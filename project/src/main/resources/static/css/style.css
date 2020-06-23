@@ -193,10 +193,10 @@ a:hover {
     margin-bottom: 25px;
     overflow: hidden;
 }
-.form-group label {
+.form-group-input label {
     position: absolute;
     left: 0;
-    top: 50%;
+    top: 30%;
     transform: translateY(-50%);
     color: #222;
 }
@@ -231,5 +231,9 @@ a:hover {
 }
 .form-submit:hover {
     background: #4292dc;
+}
+.error-text{
+    color: red;
+    font-weight: 500;
 }
 /*END Login*/

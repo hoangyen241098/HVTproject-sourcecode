@@ -36,7 +36,7 @@
         </div>
         <div class="container">
             <div class="navbar-brand">
-                <a href="#">
+                <a th:href="@{/}">
                     <img class="logo-img" th:src="@{/img/logo.png}" title=".::Trường THPT Chuyên Hoàng Văn Thụ::."/>
                 </a>
             </div>
@@ -67,7 +67,7 @@
                         <a class="nav-link" href="#">LIÊN HỆ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-outline btn-login" href="#">ĐĂNG NHẬP</a>
+                        <a class="btn btn-outline btn-login" th:href="@{login}">ĐĂNG NHẬP</a>
                     </li>
 
                 </ul>
