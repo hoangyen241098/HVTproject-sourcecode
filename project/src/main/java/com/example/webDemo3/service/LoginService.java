@@ -7,5 +7,4 @@ import com.example.webDemo3.entity.User;
 
 public interface LoginService {
     LoginResponseDto checkLoginUser(LoginRequestDto u);
-    MessageDTO changePasswordByUsername(User u);
 }

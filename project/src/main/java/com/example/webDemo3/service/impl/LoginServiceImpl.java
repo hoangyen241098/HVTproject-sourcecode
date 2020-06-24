@@ -60,28 +60,4 @@ public class LoginServiceImpl implements LoginService {
         loginDto.setMessage(message);
         return loginDto;
     }
-
-    /**
-     * kimpt142
-     * 23/6/2020
-     * Change password of personal account
-     * @param newUser include username and new password
-     * @return user when update password done
-     */
-    @Override
-    public MessageDTO changePasswordByUsername(User newUser) {
-        MessageDTO message = new MessageDTO();
-        try {
-            User oldUser = userRepository.findUserByUsername(newUser.getUsername());
-            oldUser.setPassword(newUser.getPassword());
-            oldUser = userRepository.save(oldUser);
-            message.setMessageCode(1);
-            message.setMessage("Success");
-        }
-        catch (Exception e) {
-            message.setMessageCode(0);
-            message.setMessage(e.toString());
-        }
-        return message;
-    }
 }

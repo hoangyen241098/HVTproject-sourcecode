@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
+
 @RestController
 @RequestMapping("/api/user")
 public class LoginApiController {
@@ -21,13 +23,37 @@ public class LoginApiController {
     /**
      * kimpt142
      * 23/6/2020
-     * catch request from client to check login
+     * catch request from client to check login and if success, add username into session
      * @param model is User entity include username and password
      * @return LoginDto with (1,success) if success
      */
     @PostMapping("/login")
-    public LoginResponseDto login(@RequestBody LoginRequestDto model)
+    public LoginResponseDto login(@RequestBody LoginRequestDto model,  HttpSession session)
     {
-        return loginService.checkLoginUser(model);
+        LoginResponseDto responseDto = loginService.checkLoginUser(model);
+        if(responseDto.getMessage().getMessageCode() == 0) {
+            session.setAttribute("username", model.getUsername());
+        }
+        return responseDto;
+    }
+
+    /**
+     * kimpt142
+     * 23/6/2020
+     * catch request logout and remove session
+     * @param session save username
+     * @return message
+     */
+    @PostMapping("/logout")
+    public MessageDTO logout(HttpSession session)
+    {
+        MessageDTO message = new MessageDTO();
+        if(session.getAttribute("username") != null){
+            session.removeAttribute("username");
+            message.setMessageCode(0);
+            message.setMessage("Thành công");
+            return message;
+        }
+        return message;
     }
 }
