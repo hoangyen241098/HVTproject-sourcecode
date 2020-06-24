@@ -1,5 +1,6 @@
 package com.example.webDemo3.service.impl;
 
+import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.LoginResponseDto;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.request.LoginRequestDto;
@@ -44,8 +45,9 @@ public class LoginServiceImpl implements LoginService {
          * check username and password
          */
         if(user==null){
-            message.setMessageCode(1);
-            message.setMessage("Tên đăng nhập không tồn tại.");
+            message = Constant.USER_NOT_EXIT;
+//            message.setMessageCode(1);
+//            message.setMessage("Tên đăng nhập không tồn tại");
         }
         else if(!u.getPassword().equals(user.getPassword())){
             message.setMessageCode(1);
