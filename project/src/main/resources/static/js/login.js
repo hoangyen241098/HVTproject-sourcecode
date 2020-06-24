@@ -13,12 +13,11 @@ $(document).ready(function () {
             url: "http://localhost:8080/api/user/login",
             data: JSON.stringify(user),
             success: function (data) {
+                var messageCode = data.message.messageCode;
                 var message = data.message.message;
-                // alert(message);
-                if (message == "Thành công") {
-                    $('#loginSuccess').css('display','block');
-                }
-                else{
+                if (messageCode == 0) {
+                    $('#loginSuccess').css('display', 'block');
+                } else {
                     $('.errorTxt').text(message);
                 }
             },
