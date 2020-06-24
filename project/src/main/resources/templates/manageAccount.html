@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>.::Quản lý tài khoản::.</title>
+    <link th:href="@{/img/logo.png}" rel="shortcut icon" type="image/x-icon"/>
+
+    <!-- jQuery library -->
+    <script th:src="@{/js/jquery-3.5.1.min.js}"></script>
+
+    <!--Bootstrap 4-->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <!--Font-Awesome-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"
+          type="text/css"/>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto|Varela+Round'>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<div class="container">
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="col-sm-6">
+                <h2>Danh sách tài khoản</b></h2>
+            </div>
+            <div class="col-sm-6 text-right">
+                <a th:href="@{/createAccount}" class="btn btn-success" data-toggle="modal">
+                    <span>Tạo tài khoản</span>
+                </a>
+            </div>
+        </div>
+        <div class="table table-striped table-hover">
+            <div class="table-thead">
+                    <span class="custom-checkbox">
+                        <input type="checkbox" id="selectAll">
+                        <label for="selectAll"></label>
+                    </span>
+                <div class="col-sm-6 d-flex justify-content-between align-items-center">
+                    <a th:href="@{/resetPassword}" class="btn btn-success"
+                       data-toggle="modal"><span>Đặt lại MK</span></a>
+                    <a th:href="@{#deleteAccountModal}" class="btn btn-success"
+                       data-toggle="modal"><span>Xóa</span></a>
+                    <div>Tìm kiếm</div>
+                </div>
+            </div>
+            <div class="panel panel-primary" th:each="user : ${userList}">
+                <div class="table-tbody">
+                    <div class="user-checkbox d-flex align-items-center">
+                        <span class="custom-checkbox">
+                            <input type="checkbox" th:id="'checkbox' + ${user.username}" name="options[]" value="1">
+                            <label th:for="'checkbox' + ${user.username}"></label>
+                        </span>
+                        <div class="user-info-show d-flex justify-content-between align-items-center">
+                            <div class="user-avatar">
+                                <img src="https://img.icons8.com/bubbles/80/000000/gender-neutral-user.png"/>
+                            </div>
+                            <div class="user-text">
+                                <h5 th:text="*{user.username}"></h5>
+                                <span th:text="*{user.name}"></span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="panel-heading">
+                        <span class="clickable btn btn-success filter" data-toggle="tooltip"
+                              title="Xem thông tin tài khoản"
+                              data-container="body">Xem</span>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="user-full-info">
+                        <div class="info-left">
+                            <div class="info-line">
+                                <div class="user-info-hide"><span th:text="*{user.name}"></span></div>
+                                <div class="info-title">Họ và tên</div>
+                            </div>
+                            <div class="info-line">
+                                <div class="user-info-hide"><span th:text="*{user.roleId}"></span></div>
+                                <div class="info-title">Chức vụ</div>
+                            </div>
+                            <div class="info-line">
+                                <div class="user-info-hide"><span th:text="*{user.classId}"></span></div>
+                                <div class="info-title">Lớp</div>
+                            </div>
+                        </div>
+                        <div class="info-right">
+                            <div class="info-line">
+                                <div class="user-info-hide"><span th:text="*{user.username}"></span></div>
+                                <div class="info-title">Tên đăng nhập</div>
+                            </div>
+                            <div class="info-line">
+                                <div class="user-info-hide"><span th:text="*{user.phone}"></span></div>
+                                <div class="info-title">SĐT</div>
+                            </div>
+                            <div class="info-line">
+                                <div class="user-info-hide"><span th:text="*{user.email}"></span></div>
+                                <div class="info-title">Email</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+<script type="text/javascript" th:src="@{/js/manageTable.js}"></script>
+</body>
+</html>

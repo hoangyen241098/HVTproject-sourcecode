@@ -39,4 +39,10 @@ public class WebController {
         return "changePassword";
     }
 
+    @GetMapping("/manageAccount")
+    public String manageAccount(Model model) {
+        model.addAttribute("userList", userRepository.findAll());
+        return "manageAccount";
+    }
+
 }
