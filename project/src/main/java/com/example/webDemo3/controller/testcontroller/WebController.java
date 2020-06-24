@@ -85,5 +85,9 @@ public class WebController {
         //model.addAttribute("userList",userRepository.findAll());
         service.delete(ids);
     }
+    @GetMapping("/test")
+    public String test(Model model) {
+        return "test";
+    }
 
 }
