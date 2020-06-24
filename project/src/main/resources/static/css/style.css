@@ -17,9 +17,11 @@ a:hover {
 .logo-img {
     max-height: 70px;
 }
+
 .fa-phone {
     transform: rotate(90deg);
 }
+
 .navbar-toggler {
     border: 1px solid #FFF;
     margin-right: 30px;
@@ -167,7 +169,7 @@ a:hover {
 /*END Footer*/
 
 /*Login*/
-.signin-form{
+.signin-form {
     width: 390px;
     display: flex;
     flex-wrap: wrap;
@@ -179,20 +181,25 @@ a:hover {
     overflow: hidden;
     padding: 60px 50px;
 }
-.login-form-title{
+
+.login-form-title {
     text-align: center;
 }
+
 .form-title-description {
     font-size: 13px;
 }
-.login-form{
+
+.login-form {
     width: 100%;
 }
+
 .form-group {
     position: relative;
     margin-bottom: 25px;
     overflow: hidden;
 }
+
 .input-text {
     position: absolute;
     left: 0;
@@ -200,9 +207,11 @@ a:hover {
     transform: translateY(-50%);
     color: #222;
 }
+
 .form-group label i {
     font-size: 18px;
 }
+
 .form-group input[type=text], .form-group input[type=password] {
     width: 100%;
     display: block;
@@ -212,12 +221,15 @@ a:hover {
     background: transparent;
     outline: none
 }
+
 .form-group input[type=text]:focus, .form-group input[type=password]:focus {
     border-bottom: 1px solid #222;
 }
-.form-button{
+
+.form-button {
     text-align: center;
 }
+
 .form-submit {
     display: inline-block;
     background: #6dabe4;
@@ -229,11 +241,14 @@ a:hover {
     margin-top: 25px;
     cursor: pointer;
 }
+
 .form-submit:hover {
     background: #4292dc;
 }
-.error, .errorTxt{
+
+.error-text, .error, .errorTxt {
     color: red;
     font-weight: 500;
 }
+
 /*END Login*/
