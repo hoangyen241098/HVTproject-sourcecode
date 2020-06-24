@@ -45,7 +45,7 @@ public class LoginServiceImpl implements LoginService {
          */
         if(user==null){
             message.setMessageCode(1);
-            message.setMessage("Tên đăng nhập không tồn tại");
+            message.setMessage("Tên đăng nhập không tồn tại.");
         }
         else if(!u.getPassword().equals(user.getPassword())){
             message.setMessageCode(1);

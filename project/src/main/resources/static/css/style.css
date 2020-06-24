@@ -1,0 +1,254 @@
+body {
+    margin: auto;
+}
+
+a,
+a:hover {
+    text-decoration: none;
+}
+
+
+/*Header*/
+
+.myHeader {
+    background-color: #4267b2;
+}
+
+.logo-img {
+    max-height: 70px;
+}
+
+.fa-phone {
+    transform: rotate(90deg);
+}
+
+.navbar-toggler {
+    border: 1px solid #FFF;
+    margin-right: 30px;
+}
+
+.navbar-toggler i {
+    font-size: 30px;
+}
+
+.nav-link {
+    color: #FFF;
+    text-decoration: none;
+    font-weight: bold;
+    position: relative;
+    z-index: 0;
+    cursor: pointer;
+    text-align: center;
+}
+
+.nav-link:hover {
+    color: #FFF;
+}
+
+.nav-link:before {
+    top: 0px;
+    transform: translateY(10px);
+}
+
+.nav-link:after {
+    bottom: 0px;
+    transform: translateY(-10px);
+}
+
+.nav-link:before,
+.nav-link:after {
+    position: absolute;
+    left: 0px;
+    width: 100%;
+    height: 2px;
+    background: #FFF;
+    content: "";
+    opacity: 0;
+    transition: all 0.3s;
+}
+
+.nav-link:not(.active):hover:before,
+.nav-link:not(.active):hover:after {
+    opacity: 1;
+    transform: translateY(0px);
+}
+
+.active {
+    background: #ffffff4f;
+    height: 100%;
+}
+
+.navbar-collapse {
+    padding: 10px 20px;
+}
+
+.contact-number a {
+    color: #FFF;
+    margin: 0 10px;
+    font-weight: 700;
+}
+
+.contact-number {
+    padding-bottom: 10px;
+    padding-right: 20px;
+}
+
+.header-hotline {
+    border-bottom: 1px solid #FFF;
+}
+
+.btn-login {
+    color: #FFF;
+    font-weight: 700;
+    border: 2px solid #FFF;
+}
+
+.btn-login:hover {
+    background: #ffffff4f;
+    color: #FFFFFF;
+}
+
+@media (min-width: 992px) {
+    .nav-link {
+        text-align: center;
+    }
+}
+
+
+/*END Header*/
+
+
+/*Footer*/
+
+.footer-area {
+    border-top: 1px solid #4267b2;
+}
+
+.footer-info {
+    align-items: center;
+    padding: 10px;
+}
+
+.footer-info i {
+    font-size: 30px;
+    margin-right: 20px;
+}
+
+.info-text h6,
+.info-text p {
+    margin: 0;
+}
+
+.info-text a,
+.info-text a:hover {
+    color: black;
+}
+
+.info-icon {
+    width: 50px;
+}
+
+.widget-about {
+    text-align: center;
+}
+
+.widget-about img {
+    max-height: 90px;
+}
+
+.copyright-text p {
+    margin: 0;
+}
+
+.copyright-text p a,
+.copyright-text p a:hover {
+    color: black;
+}
+
+
+/*END Footer*/
+
+/*Login*/
+.signin-form {
+    width: 390px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    background: #f2f2f2;
+    margin: 30px auto;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 60px 50px;
+}
+
+.login-form-title {
+    text-align: center;
+}
+
+.form-title-description {
+    font-size: 13px;
+}
+
+.login-form {
+    width: 100%;
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 25px;
+    overflow: hidden;
+}
+
+.input-text {
+    position: absolute;
+    left: 0;
+    top: 18px;
+    transform: translateY(-50%);
+    color: #222;
+}
+
+.form-group label i {
+    font-size: 18px;
+}
+
+.form-group input[type=text], .form-group input[type=password] {
+    width: 100%;
+    display: block;
+    border: none;
+    border-bottom: 1px solid #999;
+    padding: 6px 30px;
+    background: transparent;
+    outline: none
+}
+
+.form-group input[type=text]:focus, .form-group input[type=password]:focus {
+    border-bottom: 1px solid #222;
+}
+
+.form-button {
+    text-align: center;
+}
+
+.form-submit {
+    display: inline-block;
+    background: #6dabe4;
+    color: #fff;
+    border-bottom: none;
+    width: auto;
+    padding: 15px 39px;
+    border-radius: 5px;
+    margin-top: 25px;
+    cursor: pointer;
+}
+
+.form-submit:hover {
+    background: #4292dc;
+}
+
+.error-text, .error, .errorTxt {
+    color: red;
+    font-weight: 500;
+}
+
+/*END Login*/
