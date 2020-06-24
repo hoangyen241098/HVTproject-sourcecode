@@ -1,13 +1,20 @@
 package com.example.webDemo3.service;
 
-import com.example.webDemo3.entity.testentity.User;
+import com.example.webDemo3.entity.User;
+
 
 import java.util.List;
 
 public interface DemoService {
-    User save(User user);
-    List<User> getAllList();
-    User update(User user);
-    void delete(String[] userName);
-    boolean checkLogin(String userName, String password);
+
+    List<User> findAll();
+
+    User addNew(User user);
+
+    User updateUser(User u);
+
+    void deleteUserByUsername(String username);
+
+    Boolean checkLoginUser(User u);
+
 }

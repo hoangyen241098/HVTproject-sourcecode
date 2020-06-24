@@ -1,12 +1,9 @@
 package com.example.webDemo3.controller.testcontroller;
 
-import com.example.webDemo3.entity.testentity.User;
-import com.example.webDemo3.repository.testrepository.UserRepository;
+import com.example.webDemo3.entity.User;
+import com.example.webDemo3.service.DemoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,18 +12,31 @@ import java.util.List;
 public class RestApiController {
 
     @Autowired
-    private UserRepository userRepository;
+    private DemoService demoService;
 
     @PostMapping("/user")
     public List<User> getUserList() {
-        return userRepository.findAll();
+        return demoService.findAll();
     }
 
-    @PostMapping("/test")
-    public User findByid(@RequestBody User user) {
-        User t = userRepository.findUserByUsername(user.getUsername());
-        return t;
+    @PostMapping("/login")
+    public Boolean login(@RequestBody User model)
+    {
+        return demoService.checkLoginUser(model);
     }
 
+    @PostMapping("/new")
+    public User addNew(@RequestBody User model) {
+        return demoService.addNew(model);
+    }
 
+    @PostMapping("/update")
+    public User updateUser(@RequestBody User model) {
+        return demoService.updateUser(model);
+    }
+
+    @DeleteMapping("/delete")
+    public void deleteUser(@RequestBody String username) {
+        demoService.deleteUserByUsername(username);
+    }
 }
