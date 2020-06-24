@@ -25,7 +25,7 @@ CONSTRAINT UC_CLASS UNIQUE (GRADE,GIFTED_CLASS)
 )
 GO
 create table TEACHERS(
-TEARCHER_ID int IDENTITY(1,1) primary key,
+TEACHER_ID int IDENTITY(1,1) primary key,
 [FULL_NAME] nvarchar(50) NOT NULL,
 PHONE nvarchar(20),
 EMAIL nvarchar(50),
