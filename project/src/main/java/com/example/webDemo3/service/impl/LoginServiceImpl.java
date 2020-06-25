@@ -52,7 +52,7 @@ public class LoginServiceImpl implements LoginService {
         }
         else{
             message = Constant.SUCCESS;
-            loginDto.setRoleid(user.getRoleId());
+            loginDto.setRoleid(user.getRole().getRoleId());
         }
 
         loginDto.setMessage(message);
