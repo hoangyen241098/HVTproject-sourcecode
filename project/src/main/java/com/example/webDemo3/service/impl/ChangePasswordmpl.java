@@ -8,6 +8,7 @@ import com.example.webDemo3.service.ChangePasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class ChangePasswordmpl implements ChangePasswordService {
 
@@ -26,9 +27,8 @@ public class ChangePasswordmpl implements ChangePasswordService {
         MessageDTO message = new MessageDTO();
         User newUser = null;
 
-        /**
-         * find user in database
-         */
+
+        // find user in database
         try {
             newUser = userRepository.findUserByUsername(user.getUsername());
         }
@@ -38,9 +38,7 @@ public class ChangePasswordmpl implements ChangePasswordService {
             return message;
         }
 
-        /**
-         * check oldpassword and update newpassword
-         */
+        //check oldpassword and update newpassword
         if(!newUser.getPassword().equals(user.getOldpassword())){
             message.setMessageCode(1);
             message.setMessage("Mật khẩu không đúng.");
@@ -53,4 +51,6 @@ public class ChangePasswordmpl implements ChangePasswordService {
         }
         return message;
     }
+
+
 }

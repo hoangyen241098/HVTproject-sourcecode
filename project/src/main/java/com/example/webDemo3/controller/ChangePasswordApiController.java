@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
+
 @RestController
 @RequestMapping("/api/user")
 public class ChangePasswordApiController {
@@ -25,8 +27,17 @@ public class ChangePasswordApiController {
      * @return MessageDTO
      */
     @PostMapping("/changepassword")
-    public MessageDTO login(@RequestBody ChangePasswordRequestDto model)
+    public MessageDTO login(@RequestBody ChangePasswordRequestDto model,  HttpSession session)
     {
-        return changePasswordService.checkChangePasswordUser(model);
+        if(session.getAttribute("username") == null){
+                MessageDTO messageDTO = new MessageDTO();
+                messageDTO.setMessageCode(1);
+                messageDTO.setMessage("Bạn không đăng nhập!");
+                return messageDTO;
+            }else{
+                String userName = (String) session.getAttribute("username");
+                model.setUsername(userName);
+                return changePasswordService.checkChangePasswordUser(model);
+            }
     }
 }
