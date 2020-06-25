@@ -5,15 +5,18 @@ $(document).ready(function () {
         "timeout": 0,
         "format": "json",
     };
-
     $.getJSON(settings).done(function (data) {
-        // var list = JSON.parse(data);
-        // console.log(list.length);
         $.each(data, function (i, item) {
             $.each(item, function (i, list) {
-                $('#search-role').append(`<li><span>` + list.roleName + `</span></li>`);
-                console.log(list.roleName);
+                $('#search-role').append(`<li value="` + list.roleId + `">` + list.roleName + `</li>`);
             });
         });
     });
+});
+
+$("#search").click(function (e) {
+    console.log("username = " + $('#searchByUsername input').val());
+    console.log("sortById = " + $('#sortBy input').attr("value"));
+    console.log("roleId = " + $('#role-name input').attr("value"));
+    console.log("sortId = " + $('#sort input').attr("value"));
 });

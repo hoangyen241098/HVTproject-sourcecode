@@ -101,10 +101,9 @@ $(".searchable input").blur(function () {
 
 $(document).on('click', '.searchable ul li', function () {
     $(this).closest(".searchable").find("input").val($(this).text()).blur();
-    onSelect($(this).text())
-});
-
-$(".searchable ul li").hover(function () {
-    $(this).closest(".searchable").find("ul li.selected").removeClass("selected");
-    $(this).addClass("selected");
+    var roleID = $(this).attr("value");
+    $(this).closest(".searchable").find("input").attr("value", roleID);
+    // $(this).closest(".searchable").find("ul li.selected").removeClass("selected");
+    // $(this).addClass("selected");
+    onSelect($(this).text());
 });
