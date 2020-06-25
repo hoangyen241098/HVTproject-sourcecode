@@ -1,26 +1,8 @@
-<!-- Show information of each user -->
-$(function () {
-    // attach table filter plugin to inputs
-    $('.table-striped').on('click', '.panel-heading span.filter', function (e) {
-        var $this = $(this),
-            $panel = $this.parents('.panel');
-        $panel.find('.panel-body').slideToggle();
-
-        if ($panel.find('.clickable').text() == "Đóng") {
-            $panel.find('.clickable').text('Mở');
-        } else {
-            $panel.find('.clickable').text('Đóng');
-        }
-    });
-    $('[data-toggle="tooltip"]').tooltip();
-})
-
-
-// Checkbox: Select all
+/*Checkbox: Select all*/
 $(document).ready(function () {
-    var checkbox = $('.table-tbody input[type="checkbox"]');
+    var checkbox = $('table tbody input[type="checkbox"]');
     $(checkbox).on('change', function (e) {
-        row = $(this).closest('.table-tbody');
+        row = $(this).closest('tr');
         if ($(this).is(':checked')) {
             row.addClass('selected');
         } else {
@@ -35,11 +17,14 @@ $(document).ready(function () {
             checkbox.each(function () {
                 this.checked = true;
             });
+            $('tbody tr').addClass('selected');
         } else {
             checkbox.each(function () {
                 this.checked = false;
             });
+            $('tbody tr').removeClass('selected');
         }
+
     });
     checkbox.click(function () {
         if (!this.checked) {
