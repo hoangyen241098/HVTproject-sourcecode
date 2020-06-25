@@ -251,6 +251,10 @@ a:hover {
     font-weight: 500;
 }
 
+.modal-footer{
+    border-top: none;
+}
+
 /*END Login*/
 
 
@@ -262,8 +266,6 @@ a:hover {
 }
 
 .table-title {
-    display: flex;
-    justify-content: space-between;
     align-items: center;
     padding: 10px 0;
 }
@@ -275,16 +277,44 @@ a:hover {
     padding: 10px 0;
 }
 
+.search {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+}
+.search-line {
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-line input {
+    padding: 5px;
+    padding-right: 25px;
+    color: #495057;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+}
+
+.btn-search {
+    background-color: #356e91;
+    color: #fff;
+    border-color: #356e91;
+    padding: .375rem 1rem;
+    margin: 0 10px;
+}
+
 .table-title-2 div a {
     margin: 0 10px;
 }
 
 .table thead th {
-    vertical-align: baseline!important;
+    vertical-align: baseline !important;
 }
 
 tr.selected {
-    background-color: #007bff40!important;
+    background-color: #007bff40 !important;
 }
 
 
@@ -346,6 +376,48 @@ tr.selected {
     cursor: auto;
     box-shadow: none;
     background: #ddd;
+}
+
+/*Combobox-search*/
+div.searchable {
+    position: relative;
+}
+
+.searchable input {
+    padding: 5px;
+    padding-right: 25px;
+    color: #495057;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E") no-repeat right .75rem center/8px 10px;
+}
+.searchable ul {
+    display: none;
+    width: 100%;
+    position: absolute;
+    list-style-type: none;
+    background-color: #fff;
+    border-radius: 0 0 5px 5px;
+    border: 1px solid #add8e6;
+    border-top: none;
+    margin: 0;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    padding: 0;
+    z-index: 100;
+}
+
+.searchable ul li {
+    padding: 7px 9px;
+    border-bottom: 1px solid #e1e1e1;
+    cursor: pointer;
+    color: #6e6e6e;
+}
+
+.searchable ul li.selected {
+    background-color: #e8e8e8;
+    color: #333;
 }
 
 /*END Manage Account*/

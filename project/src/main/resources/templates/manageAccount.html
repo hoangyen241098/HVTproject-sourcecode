@@ -24,13 +24,53 @@
 <div class="container">
     <div class="table-wrapper">
         <div class="table-title">
-            <div class="row d-flex justify-content-between align-items-center">
-                <h2>Danh sách tài khoản</h2>
-            </div>
-            <div class="col-sm-6 text-right">
-                <a th:href="@{createAccount}" class="btn btn-success" data-toggle="modal">
-                    <span>Tạo tài khoản</span>
-                </a>
+            <h2>Danh sách tài khoản</h2>
+            <div class="search">
+                <div class="col-xl-4">
+                    <div class="search-line">
+                        <span>Tên đăng nhập</span>
+                        <input type="text" placeholder="Tên đăng nhập">
+                    </div>
+                    <div class="search-line">
+                        <span>Sắp xếp theo</span>
+                        <div class="searchable">
+                            <input type="text" placeholder="Sắp xếp theo" onkeyup="filterFunction(this,event)">
+                            <ul>
+                                <li>Tên đăng nhập</li>
+                                <li>Họ và tên</li>
+                                <li>Lớp</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2"></div>
+                <div class="col-xl-4">
+                    <div class="search-line">
+                        <span>Chức vụ</span>
+                        <div class="searchable">
+                            <input type="text" placeholder="Chức vụ" id="search-role"
+                                   onkeyup="filterFunction(this,event)">
+                            <ul>
+                                <li></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="search-line">
+                        <span>Thứ tự</span>
+                        <div class="searchable">
+                            <input type="text" placeholder="Thứ tự" onkeyup="filterFunction(this,event)">
+                            <ul>
+                                <li>Tăng dần</li>
+                                <li>Giảm dần</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-right col-xl-2 ">
+                    <a href="/" class="btn btn-search">
+                        <span>Tìm kiếm</span>
+                    </a>
+                </div>
             </div>
         </div>
         <div class="table-title-2">
@@ -41,7 +81,9 @@
                 <a href="#deleteAccountModal" class="btn btn-success" data-toggle="modal">
                     <span>Xóa</span>
                 </a>
-                <input type="text" placeholder="Tìm kiếm...">
+                <a th:href="@{createAccount}" class="btn btn-success" data-toggle="modal">
+                    <span>Tạo tài khoản</span>
+                </a>
             </div>
         </div>
         <table class="table table-hover">
@@ -80,9 +122,6 @@
                     <a th:href="@{editAccount/id}" class="edit" data-toggle="modal">
                         <i class="material-icons" data-toggle="tooltip" title="Sửa">&#xE254;</i>
                     </a>
-                    <a href="#deleteAccountModal" class="delete" data-toggle="modal">
-                        <i class="material-icons" data-toggle="tooltip" title="Xóa">&#xE872;</i>
-                    </a>
                 </td>
             </tr>
             </tbody>
@@ -104,14 +143,30 @@
                 </div>
                 <div class="modal-footer">
                     <input type="submit" class="btn btn-danger" value="CÓ">
-                    <input type="button" class="btn btn-default" data-dismiss="modal" value="KHÔNG">
+                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="KHÔNG">
                 </div>
             </form>
         </div>
     </div>
 </div>
 
+<!--    Modal Delete Success-->
+<div class="modal" tabindex="-1" role="dialog" id="deleteSuccess">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/1ABC9C/ok--v1.png"/>
+                <h5>Tài khoản đã bị xóa</h5>
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
+            </div>
+        </div>
+    </div>
+</div>
+
 <div th:replace="fragments/footer :: footer"></div>
 <script type="text/javascript" th:src="@{/js/manageTable.js}"></script>
+<script type="text/javascript" th:src="@{/js/manageAccount.js}"></script>
 </body>
 </html>
