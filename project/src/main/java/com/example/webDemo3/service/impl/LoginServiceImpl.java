@@ -46,16 +46,12 @@ public class LoginServiceImpl implements LoginService {
          */
         if(user==null){
             message = Constant.USER_NOT_EXIT;
-//            message.setMessageCode(1);
-//            message.setMessage("Tên đăng nhập không tồn tại");
         }
         else if(!u.getPassword().equals(user.getPassword())){
-            message.setMessageCode(1);
-            message.setMessage("Mật khẩu không đúng.");
+            message = Constant.WRONG_PASSWORD;
         }
         else{
-            message.setMessageCode(0);
-            message.setMessage("Thành công");
+            message = Constant.SUCCESS;
             loginDto.setRoleid(user.getRoleId());
         }
 
