@@ -1,12 +1,12 @@
 package com.example.webDemo3.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * kimpt142 - 25/6
@@ -22,4 +22,9 @@ public class Role implements Serializable {
 
     @Column(name = "ROLE_NAME")
     private String roleName;
+
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private List<User> listUser;
 }

@@ -1,6 +1,8 @@
 package com.example.webDemo3.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,12 +21,6 @@ public class User implements Serializable {
     @Column(name = "PASS_WORD")
     private String password;
 
-    @Column(name = "ROLE_ID")
-    private Integer roleId;
-
-    @Column(name = "CLASS_ID_OFUSER")
-    private Integer classId;
-
     @Column(name = "FULL_NAME")
     private String name;
 
@@ -33,4 +29,17 @@ public class User implements Serializable {
 
     @Column(name = "EMAIL")
     private String email;
+
+    @ManyToOne
+    @JoinColumn(name = "ROLE_ID")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Role role;
+
+    @ManyToOne
+    @JoinColumn(name = "CLASS_ID_OFUSER")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Class classSchool;
+
 }
