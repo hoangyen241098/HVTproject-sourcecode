@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>.::Quản lý tài khoản::.</title>
+    <link th:href="@{/img/logo.png}" rel="shortcut icon" type="image/x-icon"/>
+
+    <!-- jQuery library -->
+    <script th:src="@{/js/jquery-3.5.1.min.js}"></script>
+
+    <!--Bootstrap 4-->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <!--Font-Awesome-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"
+          type="text/css"/>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto|Varela+Round'>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<div class="container">
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row d-flex justify-content-between align-items-center">
+                <h2>Danh sách tài khoản</h2>
+            </div>
+            <div class="col-sm-6 text-right">
+                <a th:href="@{createAccount}" class="btn btn-success" data-toggle="modal">
+                    <span>Tạo tài khoản</span>
+                </a>
+            </div>
+        </div>
+        <div class="table-title-2">
+            <div class="col-sm-6 d-flex justify-content-end align-items-center">
+                <a th:href="@{resetPassword}" class="btn btn-success" data-toggle="modal">
+                    <span>Đặt lại MK</span>
+                </a>
+                <a href="#deleteAccountModal" class="btn btn-success" data-toggle="modal">
+                    <span>Xóa</span>
+                </a>
+                <input type="text" placeholder="Tìm kiếm...">
+            </div>
+        </div>
+        <table class="table table-hover">
+            <thead>
+            <tr class="align-items-center">
+                <th>
+                    <span class="custom-checkbox">
+                        <input type="checkbox" id="selectAll">
+                        <label for="selectAll"></label>
+                    </span>
+                </th>
+                <th>Tên đăng nhập</th>
+                <th>Họ và tên</th>
+                <th>Chức vụ</th>
+                <th>Lớp</th>
+                <th>SĐT</th>
+                <th>Email</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody th:each="user : ${userList}">
+            <tr>
+                <td>
+                    <span class="custom-checkbox">
+                        <input type="checkbox" th:id="'checkbox' + ${user.username}" name="options[]" value="1">
+                        <label th:for="'checkbox' + ${user.username}"></label>
+                    </span>
+                </td>
+                <td><span th:text="*{user.username}"></span></td>
+                <td><span th:text="*{user.name}"></span></td>
+                <td><span th:text="*{user.roleId}"></span></td>
+                <td><span th:text="*{user.classId}"></span></td>
+                <td><span th:text="*{user.phone}"></span></td>
+                <td><span th:text="*{user.email}"></span></td>
+                <td>
+                    <a th:href="@{editAccount/id}" class="edit" data-toggle="modal">
+                        <i class="material-icons" data-toggle="tooltip" title="Sửa">&#xE254;</i>
+                    </a>
+                    <a href="#deleteAccountModal" class="delete" data-toggle="modal">
+                        <i class="material-icons" data-toggle="tooltip" title="Xóa">&#xE872;</i>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Delete Modal HTML -->
+<div id="deleteAccountModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h4 class="modal-title">Xóa tài khoản</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn có chắc muốn <b>XÓA</b> tài khoản này không?</p>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-danger" value="CÓ">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="KHÔNG">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+<script type="text/javascript" th:src="@{/js/manageTable.js}"></script>
+</body>
+</html>
