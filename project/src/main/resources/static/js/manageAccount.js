@@ -7,10 +7,13 @@ $(document).ready(function () {
     };
 
     $.getJSON(settings).done(function (data) {
+        // var list = JSON.parse(data);
+        // console.log(list.length);
         $.each(data, function (i, item) {
-            for (let prop in item[0]) {
-                $("#search-role").innerText = prop
-            }
+            $.each(item, function (i, list) {
+                $('#search-role').append(`<li><span>` + list.roleName + `</span></li>`);
+                console.log(list.roleName);
+            });
         });
     });
 });
