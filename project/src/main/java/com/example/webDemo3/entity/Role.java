@@ -22,9 +22,4 @@ public class Role implements Serializable {
 
     @Column(name = "ROLE_NAME")
     private String roleName;
-
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private List<User> listUser;
 }
