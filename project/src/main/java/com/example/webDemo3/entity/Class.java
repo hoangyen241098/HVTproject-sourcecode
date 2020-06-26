@@ -19,9 +19,4 @@ public class Class {
 
     @Column(name = "GIFTED_CLASS")
     private String giftedClass;
-
-    @OneToMany(mappedBy = "classSchool", cascade = CascadeType.ALL)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private List<User> listUser;
 }
