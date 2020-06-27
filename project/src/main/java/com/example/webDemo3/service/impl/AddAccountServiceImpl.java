@@ -51,7 +51,16 @@ public class AddAccountServiceImpl implements AddAccountService {
                 newUser.setClassSchool(new Class(classId));
             }
 
-            userRepository.save(newUser);
+            try {
+                userRepository.save(newUser);
+            }
+            catch (Exception e)
+            {
+                message.setMessageCode(1);
+                message.setMessage(e.toString());
+                return message;
+            }
+
             message = Constant.SUCCESS;
             return message;
         }

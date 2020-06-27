@@ -24,8 +24,8 @@ public class AddAccController {
      * kimpt142
      * 27/6/2020
      * catch request from client to add new account
-     * @param model is
-     * @return LoginDto with (1,success) if success
+     * @param model include all property of user table
+     * @return MessageDTO with (1,success) if success
      */
     @PostMapping("/createaccount")
     public MessageDTO login(@RequestBody AddAccResquestDTO model)
