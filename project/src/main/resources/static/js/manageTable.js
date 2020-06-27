@@ -11,7 +11,6 @@ $(document).ready(function () {
     });
 
     // Select/Deselect checkboxes
-
     $("#selectAll").click(function () {
         if (this.checked) {
             checkbox.each(function () {
@@ -103,7 +102,5 @@ $(document).on('click', '.searchable ul li', function () {
     $(this).closest(".searchable").find("input").val($(this).text()).blur();
     var roleID = $(this).attr("value");
     $(this).closest(".searchable").find("input").attr("value", roleID);
-    // $(this).closest(".searchable").find("ul li.selected").removeClass("selected");
-    // $(this).addClass("selected");
     onSelect($(this).text());
 });

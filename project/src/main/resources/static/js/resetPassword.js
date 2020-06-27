@@ -17,15 +17,15 @@ $(document).ready(function () {
             $('.errorTxt').text("Mật khẩu xác nhận không đúng.");
             return false;
         } else {
-            $('.errorTxt').text("Xong!");
+            $('#changePassword').css('display', 'block');
             // var password = {
-            //     oldpassword,
-            //     newpassword
+            //     newpassword,
+            //     confirmpassword
             // };
-            // e.preventDefault();
+            e.preventDefault();
             // $.ajax({
             //     type: 'POST',
-            //     url: "http://localhost:8080/api/user/changepassword",
+            //     url: '/api/admin/resetpassword',
             //     data: JSON.stringify(password),
             //     success: function (data) {
             //         var messageCode = data.message.messageCode;

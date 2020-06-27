@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>.::Tạo tài khoản::.</title>
+    <link th:href="@{/img/logo.png}" rel="shortcut icon" type="image/x-icon"/>
+
+    <!-- jQuery library -->
+    <script th:src="@{/js/jquery-3.5.1.min.js}"></script>
+
+    <!--Bootstrap 4-->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <!--Font-Awesome-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"/>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto|Varela+Round'>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <script type="text/javascript" th:src="@{/js/functions.js}"></script>
+</head>
+
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<div class="container">
+    <!-- MultiStep Form -->
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 mx-auto">
+            <form id="msform">
+                <h2 class="fs-title">Tạo tài khoản</h2>
+                <h3 class="fs-subtitle">Điền đầy đủ thông tin vào các trường để tạo tài khoản mới</h3>
+                <!-- progressbar -->
+                <ul id="progressbar">
+                    <li class="active">Chọn chức vụ</li>
+                    <li>Tạo tài khoản</li>
+                </ul>
+                <!-- fieldsets -->
+                <fieldset>
+                    <div class="form-group text-left">
+                        <label for="position-role">Chức vụ <span class="text-red">*</span></label>
+                        <select class="form-control" id="position-role" onchange="changeSelected()">
+                            <option value="0" selected>-- Chọn chức vụ ---</option>
+                        </select>
+                    </div>
+                    <div class="form-group text-left hide" id="position-class">
+                        <label for="class">Lớp <span class="text-red">*</span></label>
+                        <select class="form-control" id="class" onchange="changeSelected()">
+                            <option value="0" selected>-- Chọn lớp ---</option>
+                            <option value="1">10H</option>
+                            <option value="2">10T</option>
+                            <option value="3">10V</option>
+
+                        </select>
+                    </div>
+                    <div class="errMsg text-left"></div>
+                    <input type="button" id="next" class="next action-button" value="TIẾP"/>
+                </fieldset>
+                <fieldset>
+
+                    <div class="form-group fullName text-left">
+                        <label for="fullName">Họ và tên <span class="text-red">*</span></label>
+                        <input type="text" class="form-control" id="fullName" placeholder="Nguyễn văn A">
+                    </div>
+                    <div class="full-info">
+                        <div class="form-group text-left">
+                            <label for="phone">SĐT</label>
+                            <input type="text" class="form-control" id="phone" placeholder="0123 456 789">
+                        </div>
+                        <div class="form-group text-left">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="anv@gmail.com">
+                        </div>
+                    </div>
+
+                    <div class="form-group text-left username">
+                        <label for="username">Tên đăng nhập <span class="text-red">*</span></label>
+                        <input type="text" class="form-control" id="username" disabled="false"
+                               placeholder="loptruong10H">
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="password">Mật khẩu <span class="text-red">*</span></label>
+                        <input type="password" class="form-control" id="password">
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="confirm-password">Xác nhận mật khẩu <span class="text-red">*</span></label>
+                        <input type="password" class="form-control" id="confirm-password">
+                    </div>
+                    <div class="errMsg text-left"></div>
+                    <input type="button" id="previous" class="previous action-button-previous" value="Previous"/>
+                    <input type="submit" name="submit" class="submit action-button" value="TẠO"/>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    <!-- /.MultiStep Form -->
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+
+<script type="text/javascript" th:src="@{/js/createAccount.js}"></script>
+</html>

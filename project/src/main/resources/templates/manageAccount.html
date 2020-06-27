@@ -18,6 +18,8 @@
     <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto|Varela+Round'>
     <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <script type="text/javascript" th:src="@{/js/functions.js}"></script>
+
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
@@ -66,21 +68,19 @@
                     </div>
                 </div>
                 <div class="text-right col-xl-2 ">
-                    <button class="btn btn-search" id="search">
-                        <span>Tìm kiếm</span>
-                    </button>
+                    <button class="btn btn-search" id="search">Tìm kiếm</button>
                 </div>
             </div>
         </div>
         <div class="table-title-2">
             <div class="col-sm-6 d-flex justify-content-end align-items-center">
-                <a th:href="@{resetPassword}" class="btn btn-success" data-toggle="modal">
+                <a th:href="@{resetPassword}" class="btn btn-success">
                     <span>Đặt lại MK</span>
                 </a>
                 <a href="#deleteAccountModal" class="btn btn-success" data-toggle="modal">
                     <span>Xóa</span>
                 </a>
-                <a th:href="@{createAccount}" class="btn btn-success" data-toggle="modal">
+                <a th:href="@{createAccount}" class="btn btn-success">
                     <span>Tạo tài khoản</span>
                 </a>
             </div>
@@ -103,27 +103,27 @@
                 <th></th>
             </tr>
             </thead>
-            <tbody th:each="user : ${userList}">
-            <tr>
-                <td>
-                    <span class="custom-checkbox">
-                        <input type="checkbox" th:id="'checkbox' + ${user.username}" name="options[]" value="1">
-                        <label th:for="'checkbox' + ${user.username}"></label>
-                    </span>
-                </td>
-                <td><span th:text="*{user.username}"></span></td>
-                <td><span th:text="*{user.name}"></span></td>
-                <td><span th:text="*{user.roleId}"></span></td>
-                <td><span th:text="*{user.classId}"></span></td>
-                <td><span th:text="*{user.phone}"></span></td>
-                <td><span th:text="*{user.email}"></span></td>
-                <td>
-                    <a th:href="@{editAccount/id}" class="edit" data-toggle="modal">
-                        <i class="material-icons" data-toggle="tooltip" title="Sửa">&#xE254;</i>
-                    </a>
-                </td>
-            </tr>
-            </tbody>
+<!--            <tbody th:each="user : ${userList}">-->
+<!--            <tr>-->
+<!--                <td>-->
+<!--                    <span class="custom-checkbox">-->
+<!--                        <input type="checkbox" th:id="'checkbox' + ${user.username}" name="options[]" value="1">-->
+<!--                        <label th:for="'checkbox' + ${user.username}"></label>-->
+<!--                    </span>-->
+<!--                </td>-->
+<!--                <td><span th:text="*{user.username}"></span></td>-->
+<!--                <td><span th:text="*{user.name}"></span></td>-->
+<!--                <td><span th:text="*{user.role}"></span></td>-->
+<!--                <td><span th:text="*{user.classSchool}"></span></td>-->
+<!--                <td><span th:text="*{user.phone}"></span></td>-->
+<!--                <td><span th:text="*{user.email}"></span></td>-->
+<!--                <td>-->
+<!--                    <a th:href="@{editAccount/id}" class="edit" data-toggle="modal">-->
+<!--                        <i class="material-icons" data-toggle="tooltip" title="Sửa">&#xE254;</i>-->
+<!--                    </a>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
         </table>
     </div>
 </div>

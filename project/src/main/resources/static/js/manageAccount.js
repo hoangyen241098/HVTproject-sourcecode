@@ -1,16 +1,18 @@
 $(document).ready(function () {
-    var settings = {
-        "url": "http://localhost:8080/api/admin/rolelist",
-        "method": "POST",
-        "timeout": 0,
-        "format": "json",
-    };
-    $.getJSON(settings).done(function (data) {
-        $.each(data, function (i, item) {
-            $.each(item, function (i, list) {
-                $('#search-role').append(`<li value="` + list.roleId + `">` + list.roleName + `</li>`);
+    $.ajax({
+        url: '/api/admin/rolelist',
+        type: 'POST',
+        dataType: 'JSON',
+        success: function (data) {
+            $.each(data, function (i, item) {
+                $.each(item, function (i, list) {
+                    $('#search-role').append(`<li value="` + list.roleId + `">` + list.roleName + `</li>`);
+                });
             });
-        });
+        },
+        failure: function (errMsg) {
+            console.log(errMsg);
+        }
     });
 });
 

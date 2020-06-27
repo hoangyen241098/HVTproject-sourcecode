@@ -33,7 +33,7 @@ $(document).ready(function () {
             e.preventDefault();
             $.ajax({
                 type: 'POST',
-                url: "http://localhost:8080/api/user/changepassword",
+                url: "/api/user/changepassword",
                 data: JSON.stringify(password),
                 success: function (data) {
                     var messageCode = data.message.messageCode;
