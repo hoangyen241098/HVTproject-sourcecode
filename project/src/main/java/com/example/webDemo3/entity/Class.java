@@ -17,6 +17,16 @@ public class Class {
     @Column(name = "GRADE")
     private String grade;
 
-    @Column(name = "GIFTED_CLASS")
-    private String giftedClass;
+    @Column(name = "MAPPING_NAME")
+    private String mappingName;
+
+    @Column(name = "STATUS")
+    private Integer status;
+
+    public Class() {
+    }
+
+    public Class(Integer classId) {
+        this.classId = classId;
+    }
 }
