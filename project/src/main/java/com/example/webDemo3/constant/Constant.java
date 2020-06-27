@@ -18,4 +18,6 @@ public class Constant {
      */
     public static final MessageDTO SUCCESS =
             new MessageDTO(0,"Thành công.");
+    public static final MessageDTO RESET_PASS_SUCCESS =
+            new MessageDTO(0,"Mật khẩu đã được đặt lại.");
 }
