@@ -50,14 +50,24 @@
                             <option value="1">10H</option>
                             <option value="2">10T</option>
                             <option value="3">10V</option>
-
                         </select>
                     </div>
                     <div class="errMsg text-left"></div>
                     <input type="button" id="next" class="next action-button" value="TIẾP"/>
                 </fieldset>
                 <fieldset>
-
+                    <div class="form-group text-left username">
+                        <label for="username">Tên đăng nhập <span class="text-red">*</span></label>
+                        <input type="text" class="form-control" id="username" placeholder="loptruong10H" disabled>
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="password">Mật khẩu <span class="text-red">*</span></label>
+                        <input type="password" class="form-control" id="password">
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="confirm-password">Xác nhận mật khẩu <span class="text-red">*</span></label>
+                        <input type="password" class="form-control" id="confirm-password">
+                    </div>
                     <div class="form-group fullName text-left">
                         <label for="fullName">Họ và tên <span class="text-red">*</span></label>
                         <input type="text" class="form-control" id="fullName" placeholder="Nguyễn văn A">
@@ -72,28 +82,28 @@
                             <input type="email" class="form-control" id="email" placeholder="anv@gmail.com">
                         </div>
                     </div>
-
-                    <div class="form-group text-left username">
-                        <label for="username">Tên đăng nhập <span class="text-red">*</span></label>
-                        <input type="text" class="form-control" id="username" disabled="false"
-                               placeholder="loptruong10H">
-                    </div>
-                    <div class="form-group text-left">
-                        <label for="password">Mật khẩu <span class="text-red">*</span></label>
-                        <input type="password" class="form-control" id="password">
-                    </div>
-                    <div class="form-group text-left">
-                        <label for="confirm-password">Xác nhận mật khẩu <span class="text-red">*</span></label>
-                        <input type="password" class="form-control" id="confirm-password">
-                    </div>
                     <div class="errMsg text-left"></div>
                     <input type="button" id="previous" class="previous action-button-previous" value="Previous"/>
-                    <input type="submit" name="submit" class="submit action-button" value="TẠO"/>
+                    <input type="button" name="submit" id="submit" class="submit action-button" value="TẠO"/>
                 </fieldset>
             </form>
         </div>
     </div>
     <!-- /.MultiStep Form -->
+</div>
+<!--    Modal Create Success-->
+<div class="modal" tabindex="-1" role="dialog" id="createSuccess">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/1ABC9C/ok--v1.png"/>
+                <h5>Tạo tài khoản thành công!</h5>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-primary" th:href="@{createAccount}">ĐÓNG</a>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div th:replace="fragments/footer :: footer"></div>

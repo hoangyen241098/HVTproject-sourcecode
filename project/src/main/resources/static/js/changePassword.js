@@ -1,10 +1,10 @@
+$('.errorTxt').text("");
+var username = localStorage.getItem("username");
 $(document).ready(function () {
     $("#confirm").click(function (e) {
-        $('.errorTxt').text("");
         var oldpassword = $('#old-password').val();
         var newpassword = $('#new-password').val();
         var confirmpassword = $('#confirm-password').val();
-
 
         if (oldpassword.trim() == "" && newpassword.trim() == "" && confirmpassword.trim() == "" ||
             oldpassword.trim() == "" && newpassword.trim() == "" ||
@@ -27,6 +27,7 @@ $(document).ready(function () {
         } else {
             $('.errorTxt').text("");
             var password = {
+                username,
                 oldpassword,
                 newpassword
             };
@@ -36,8 +37,9 @@ $(document).ready(function () {
                 url: "/api/user/changepassword",
                 data: JSON.stringify(password),
                 success: function (data) {
-                    var messageCode = data.message.messageCode;
-                    var message = data.message.message;
+                    console.log(JSON.stringify(password));
+                    var messageCode = data.messageCode;
+                    var message = data.message;
                     console.log(messageCode);
                     console.log(message);
                     if (messageCode == 0) {
