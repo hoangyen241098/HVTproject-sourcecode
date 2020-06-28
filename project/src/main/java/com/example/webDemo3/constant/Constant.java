@@ -6,7 +6,7 @@ public class Constant {
     /**
      * Constant value
      */
-    public static final Integer PAGE_SIZE = 5;
+    public static final Integer PAGE_SIZE = 10;
     /**
      * Fail message
      */
