@@ -4,8 +4,10 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.List;
 
+/**
+ * lamnt98 - 27/06
+ */
 @Entity
 @Data
 @Table(name = "CLASSES")
@@ -17,6 +19,15 @@ public class Class {
     @Column(name = "GRADE")
     private String grade;
 
-    @Column(name = "GIFTED_CLASS")
-    private String giftedClass;
+    @Column(name = "MAPPING_NAME")
+    private String mappingName;
+
+    @Column(name = "STATUS")
+    private Integer status;
+
+    @ManyToOne
+    @JoinColumn(name = "GIFTED_CLASS_ID")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private GiftedClass giftedClass;
 }

@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class ViewPerInforRequestDto {
-    private String username;
+    private String userName;
 }
