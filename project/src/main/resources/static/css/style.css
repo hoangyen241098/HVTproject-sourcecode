@@ -521,6 +521,10 @@ div.searchable {
     font-size: 13px;
 }
 
+#msform input:disabled, #msform textarea:disabled {
+    background: rgb(235, 235, 228);
+}
+
 #msform input:focus, #msform textarea:focus {
     box-shadow: none !important;
     border: 1px solid #80bdff;

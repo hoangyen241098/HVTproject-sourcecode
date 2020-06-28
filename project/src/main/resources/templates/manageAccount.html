@@ -38,9 +38,8 @@
                         <div class="searchable" id="sortBy">
                             <input type="text" placeholder="Sắp xếp theo" onkeyup="filterFunction(this,event)">
                             <ul>
-                                <li value="1">Tên đăng nhập</li>
-                                <li value="2">Họ và tên</li>
-                                <li value="3">Lớp</li>
+                                <li value="0" selected="">Tên đăng nhập</li>
+                                <li value="1">Họ và tên</li>
                             </ul>
                         </div>
                     </div>
@@ -58,11 +57,11 @@
                     </div>
                     <div class="search-line">
                         <span>Thứ tự</span>
-                        <div class="searchable" id="sort">
+                        <div class="searchable" id="orderBy">
                             <input type="text" placeholder="Thứ tự" onkeyup="filterFunction(this,event)">
                             <ul>
-                                <li value="asc">Tăng dần</li>
-                                <li value="dec">Giảm dần</li>
+                                <li value="0" selected="">Giảm dần</li>
+                                <li value="1">Tăng dần</li>
                             </ul>
                         </div>
                     </div>
@@ -103,27 +102,8 @@
                 <th></th>
             </tr>
             </thead>
-<!--            <tbody th:each="user : ${userList}">-->
-<!--            <tr>-->
-<!--                <td>-->
-<!--                    <span class="custom-checkbox">-->
-<!--                        <input type="checkbox" th:id="'checkbox' + ${user.username}" name="options[]" value="1">-->
-<!--                        <label th:for="'checkbox' + ${user.username}"></label>-->
-<!--                    </span>-->
-<!--                </td>-->
-<!--                <td><span th:text="*{user.username}"></span></td>-->
-<!--                <td><span th:text="*{user.name}"></span></td>-->
-<!--                <td><span th:text="*{user.role}"></span></td>-->
-<!--                <td><span th:text="*{user.classSchool}"></span></td>-->
-<!--                <td><span th:text="*{user.phone}"></span></td>-->
-<!--                <td><span th:text="*{user.email}"></span></td>-->
-<!--                <td>-->
-<!--                    <a th:href="@{editAccount/id}" class="edit" data-toggle="modal">-->
-<!--                        <i class="material-icons" data-toggle="tooltip" title="Sửa">&#xE254;</i>-->
-<!--                    </a>-->
-<!--                </td>-->
-<!--            </tr>-->
-<!--            </tbody>-->
+            <tbody>
+            </tbody>
         </table>
     </div>
 </div>

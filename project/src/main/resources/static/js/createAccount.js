@@ -1,10 +1,10 @@
 var fullName, userName, passWord, roleId, phone, email, classId;
 var current_fs, next_fs, previous_fs;
 var left, opacity, scale;
-var emailRegex = '/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/';
-var phoneRegex = '/(09|01[2|6|8|9])+([0-9]{8})\\b/g';
+var emailRegex = '^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$';
+var phoneRegex = '^[0-9\\-\\+]{9,15}$';
 /*Call API for Role List*/
-$('.errMsg').text("");
+$('.createAccount-err').text("");
 $.ajax({
     url: '/api/admin/rolelist',
     type: 'POST',
@@ -17,7 +17,7 @@ $.ajax({
         });
     },
     failure: function (errMsg) {
-        console.log(errMsg);
+        $('.createAccount-err').text(errMsg);
     }
 });
 /*Call API for Class List*/
@@ -33,7 +33,7 @@ $.ajax({
 //         });
 //     },
 //     failure: function (errMsg) {
-//         console.log(errMsg);
+//         $('.createAccount-err').text(errMsg);
 //     }
 // });
 
@@ -50,7 +50,7 @@ function changeSelected() {
 }
 
 $("#next").click(function () {
-    $('.errMsg').text("");
+    $('.createAccount-err').text("");
 
     var animating;
     if (animating) return false;
@@ -61,10 +61,10 @@ $("#next").click(function () {
 
     // /*Validate*/
     if (roleId == 0 || roleId == null) {
-        $('.errMsg').text("Hãy chọn chức vụ.");
+        $('.createAccount-err').text("Hãy chọn chức vụ.");
         return false;
     } else if (roleId == 3 && classId == 0 || roleId == 4 && classId == 0) {
-        $('.errMsg').text("Hãy chọn lớp.");
+        $('.createAccount-err').text("Hãy chọn lớp.");
         return false;
     } else {
         if (roleId == 1 || roleId == 2 || roleId == 5) {
@@ -114,26 +114,26 @@ $("#submit").click(function (e) {
     phone = $('#phone').val();
     email = $('#email').val();
     if (fullName.trim() == "") {
-        $('.errMsg').text("Hãy điền họ và tên.");
+        $('.createAccount-err').text("Hãy điền họ và tên.");
         return false;
     }
     if (userName.trim() == "") {
-        $('.errMsg').text("Hãy điền tên đăng nhập.");
+        $('.createAccount-err').text("Hãy điền tên đăng nhập.");
         return false;
     } else if (passWord.trim() == "") {
-        $('.errMsg').text("Hãy điền mật khẩu.");
+        $('.createAccount-err').text("Hãy điền mật khẩu.");
         return false;
     } else if (confirmPassword.trim() == "") {
-        $('.errMsg').text("Hãy xác nhận lại mật khẩu.");
+        $('.createAccount-err').text("Hãy xác nhận lại mật khẩu.");
         return false;
     } else if (passWord != confirmPassword) {
-        $('.errMsg').text("Mật khẩu xác nhận không đúng.");
+        $('.createAccount-err').text("Mật khẩu xác nhận không đúng.");
         return false;
-    } else if (phone.match(phoneRegex)) {
-        $('.errMsg').text("SĐT không đúng định dạng.");
+    } else if (!phone.match(phoneRegex)) {
+        $('.createAccount-err').text("SĐT không đúng định dạng.");
         return false;
-    } else if (email.match(emailRegex)) {
-        $('.errMsg').text("Email không đúng định dạng.");
+    } else if (!email.match(emailRegex)) {
+        $('.createAccount-err').text("Email không đúng định dạng.");
         return false;
     } else {
         var account = {
@@ -145,7 +145,6 @@ $("#submit").click(function (e) {
             email: email,
             classId: classId
         }
-        console.log(JSON.stringify(account));
         e.preventDefault();
         $.ajax({
             url: '/api/admin/createaccount',
@@ -155,15 +154,14 @@ $("#submit").click(function (e) {
                 var messageCode = data.messageCode;
                 var message = data.message;
                 if (messageCode == 0) {
-                    $('#changePassword').css('display', 'block');
-                    $('.errMsg').text("");
+                    $('#createSuccess').css('display', 'block');
+                    $('.createAccount-err').text("");
                 } else {
-                    $('.errMsg').text(message);
+                    $('.createAccount-err').text(message);
                 }
-                console.log(data);
             },
             failure: function (errMsg) {
-                $('.errMsg').text(errMsg);
+                $('.createAccount-err').text(errMsg);
             },
             dataType: "json",
             contentType: "application/json"
