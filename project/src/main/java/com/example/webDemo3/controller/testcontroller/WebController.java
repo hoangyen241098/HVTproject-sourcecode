@@ -15,7 +15,7 @@ public class WebController {
 
     @GetMapping("/") // Nếu người dùng request tới địa chỉ "/"
     public String index(Model model) {
-        model.addAttribute("userList", userRepository.findAll());
+//        model.addAttribute("userList", userRepository.findAll());
         return "index"; // Trả về file index.html
     }
 
@@ -39,10 +39,24 @@ public class WebController {
         return "changePassword";
     }
 
+    @GetMapping("/resetPassword")
+    public String resetPassword(Model model) {
+        return "resetPassword";
+    }
+
     @GetMapping("/manageAccount")
     public String manageAccount(Model model) {
-        model.addAttribute("userList", userRepository.findAll());
         return "manageAccount";
+    }
+
+    @GetMapping("/createAccount")
+    public String createAccount(Model model) {
+        return "createAccount";
+    }
+
+    @GetMapping("/userInformation")
+    public String userInformation(Model model) {
+        return "userInformation";
     }
 
 }

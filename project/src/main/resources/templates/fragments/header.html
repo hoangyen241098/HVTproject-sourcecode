@@ -14,9 +14,11 @@
     <script th:src="@{/js/popper.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <!--Font-Awesome-->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"
+          type="text/css"/>
 
-    <link th:href="@{/css/style.css}" rel="stylesheet" />
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <script type="text/javascript" th:src="@{/js/functions.js}"></script>
 </head>
 
 <body>
@@ -51,31 +53,53 @@
                     <li class="nav-item">
                         <a class="nav-link active" th:href="@{/}">TRANG CHỦ</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">TIN TỨC</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">HOẠT ĐỘNG</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">TIN TỨC</a>
+                        <div class="dropdown-menu">
+                            <a href="#" class="dropdown-item">Hoạt động của trường</a>
+                            <a href="#" class="dropdown-item">Sự kiện</a>
+                            <a href="#" class="dropdown-item">Hoạt động CLB</a>
+                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">TRỰC TUẦN</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">THỜI KHÓA BIỂU</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">THỜI KHÓA BIỂU</a>
+                        <div class="dropdown-menu">
+                            <a href="#" class="dropdown-item">Thời khóa biểu của lớp</a>
+                            <a href="#" class="dropdown-item">Thời khóa biểu của giáo viên</a>
+                            <a href="#" class="dropdown-item" id="schedule-manager">Quản lý thời khóa biểu</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown" id="admin">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">QUẢN LÝ</a>
+                        <div class="dropdown-menu">
+                            <a href="#" class="dropdown-item" th:href="@{manageAccount}">Quản lý tài khoản</a>
+                            <a href="#" class="dropdown-item">Quản lý giáo viên</a>
+                            <a href="#" class="dropdown-item">Quản lý lớp</a>
+                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">LIÊN HỆ</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" id="login">
                         <a class="btn btn-outline btn-login" th:href="@{login}">ĐĂNG NHẬP</a>
                     </li>
-
+                    <li class="nav-item dropdown" id="loginSuccess-menu">
+                        <button class="btn btn-outline btn-login p-1">
+                            <img src="https://img.icons8.com/material-rounded/30/FFFFFF/person-male.png"/>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a th:href="@{userInformation}" class="dropdown-item">Thông tin tài khoản</a>
+                            <a th:href="@{changePassword}" class="dropdown-item">Đổi mật khẩu</a>
+                            <a th:href="@{/}" id="logout" class="dropdown-item"><b>Đăng xuất</b></a>
+                        </div>
+                    </li>
                 </ul>
-
             </div>
         </div>
     </nav>
-
 </header>
 <!--END Header-->
 </body>
