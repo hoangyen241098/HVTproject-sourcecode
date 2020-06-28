@@ -38,6 +38,7 @@ public class LoginServiceImpl implements LoginService {
         catch (Exception e){
             message.setMessageCode(1);
             message.setMessage(e.toString());
+            loginDto.setMessage(message);
             return loginDto;
         }
 

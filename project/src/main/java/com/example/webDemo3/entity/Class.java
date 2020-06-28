@@ -30,4 +30,11 @@ public class Class {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private GiftedClass giftedClass;
+
+    public Class() {
+    }
+
+    public Class(Integer classId) {
+        this.classId = classId;
+    }
 }
