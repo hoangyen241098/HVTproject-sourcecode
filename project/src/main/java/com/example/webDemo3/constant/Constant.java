@@ -10,10 +10,24 @@ public class Constant {
             new MessageDTO(1,"Tên đăng nhập không tồn tại.");
     public static final MessageDTO WRONG_PASSWORD =
             new MessageDTO(1,"Mật khẩu không đúng.");
+    public static final MessageDTO USERNAME_EXIST =
+            new MessageDTO(1,"Tên tài khoản đã tồn tại.");
 
     /**
      * Success message
      */
     public static final MessageDTO SUCCESS =
             new MessageDTO(0,"Thành công.");
+
+    //Success message edit information of user
+    public static final MessageDTO EDIT_INFOR_SUCCESS =
+            new MessageDTO(0,"Thông tin sửa thành công!");
+
+    //Success message delete account
+    public static final MessageDTO DELETE_ACCOUNT_SUCCESS =
+            new MessageDTO(0,"Tài khoản đã bị xóa!");
+
+    public static final MessageDTO RESET_PASS_SUCCESS =
+            new MessageDTO(0,"Mật khẩu đã được đặt lại.");
+
 }

@@ -22,4 +22,11 @@ public class Role implements Serializable {
 
     @Column(name = "ROLE_NAME")
     private String roleName;
+
+    public Role() {
+    }
+
+    public Role(Integer roleId) {
+        this.roleId = roleId;
+    }
 }
