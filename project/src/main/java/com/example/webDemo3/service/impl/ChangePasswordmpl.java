@@ -1,5 +1,6 @@
 package com.example.webDemo3.service.impl;
 
+import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.request.ChangePasswordRequestDto;
 import com.example.webDemo3.entity.User;
@@ -27,30 +28,40 @@ public class ChangePasswordmpl implements ChangePasswordService {
         User newUser = null;
 
         /**
-         * find user in database
+         * Validate userName, oldPassword and newPassword
          */
         try {
-            newUser = userRepository.findUserByUsername(user.getUsername());
-        }
-        catch (Exception e){
+            if(user.getUserName().trim().isEmpty()){
+                message = Constant.USERNAME_EMPTY;
+            }else if(user.getOldPassword().trim().isEmpty()  || user.getNewPassword().trim().isEmpty()){
+                message = Constant.PASSWORD_EMPTY;
+            }else{
+                /**
+                 * find user in database
+                 */
+                if(userRepository.findUserByUsername(user.getUserName()) != null){
+                    newUser = userRepository.findUserByUsername(user.getUserName());
+                    /**
+                     * check oldpassword and update newpassword
+                     */
+                    if(!newUser.getPassword().equals(user.getOldPassword())){
+                        message = Constant.WRONG_PASSWORD;
+                    }
+                    else{
+                        newUser.setPassword(user.getNewPassword());
+                        userRepository.save(newUser);
+                        message = Constant.CHANGE_PASS_SUCCESS;
+                    }
+                }else {
+                    message = Constant.USER_NOT_EXIT;
+                }
+            }
+        }catch (Exception e){
             message.setMessageCode(1);
             message.setMessage(e.toString());
             return message;
         }
 
-        /**
-         * check oldpassword and update newpassword
-         */
-        if(!newUser.getPassword().equals(user.getOldpassword())){
-            message.setMessageCode(1);
-            message.setMessage("Mật khẩu không đúng.");
-        }
-        else{
-            newUser.setPassword(user.getNewpassword());
-            userRepository.save(newUser);
-            message.setMessageCode(0);
-            message.setMessage("Mật khẩu đã được đặt lại!");
-        }
         return message;
     }
 }

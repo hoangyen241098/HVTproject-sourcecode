@@ -22,30 +22,33 @@ public class EditPerInforServicempl implements EditPerInforService {
      * 26/06
      * find and edit information of user
      * @param editPerInforRequestDto
-     * @return
+     * @return MessageDTO
      */
     @Override
     public MessageDTO editUserInformation(EditPerInforRequestDto editPerInforRequestDto) {
         MessageDTO message = new MessageDTO();
         User user = null;
-        //Find username in database
+
         try {
-            user = userRepository.findUserByUsername(editPerInforRequestDto.getUserName());
+            //check userName empty or not
+            if(editPerInforRequestDto.getUserName().trim().isEmpty()){
+                message = Constant.USERNAME_EMPTY;
+            }
+            //check and find user in database
+            else if(userRepository.findUserByUsername(editPerInforRequestDto.getUserName()) != null){
+                user = userRepository.findUserByUsername(editPerInforRequestDto.getUserName());
+                user.setName(editPerInforRequestDto.getFullName());
+                user.setPhone(editPerInforRequestDto.getPhone());
+                user.setEmail(editPerInforRequestDto.getEmail());
+                userRepository.save(user);
+                message = Constant.EDIT_INFOR_SUCCESS;
+            }else{
+                message = Constant.USER_NOT_EXIT;
+            }
         } catch (Exception e) {
             message.setMessageCode(1);
             message.setMessage(e.toString());
             return message;
-        }
-
-        //check user
-        if (user == null) {
-            message = Constant.USER_NOT_EXIT;
-        } else {
-            user.setName(editPerInforRequestDto.getFullName());
-            user.setPhone(editPerInforRequestDto.getPhone());
-            user.setEmail(editPerInforRequestDto.getEmail());
-            userRepository.save(user);
-            message = Constant.EDIT_INFOR_SUCCESS;
         }
         return message;
     }

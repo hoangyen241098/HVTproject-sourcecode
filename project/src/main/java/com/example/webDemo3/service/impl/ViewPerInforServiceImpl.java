@@ -29,34 +29,39 @@ public class ViewPerInforServiceImpl implements ViewPerInfoService {
         MessageDTO message = new MessageDTO();
         User user = null;
 
-        //Find username in database
-        try {
-            user = userRepository.findUserByUsername(viewPerInforRequestDto.getUserName());
-        }
-        catch (Exception e){
+        try{
+            //check userName empty or not
+            if(viewPerInforRequestDto.getUserName().trim().isEmpty()){
+                message = Constant.USERNAME_EMPTY;
+            }else{
+                //Find username in database
+                user = userRepository.findUserByUsername(viewPerInforRequestDto.getUserName());
+
+                //check user
+                if(user==null) {
+                    message = Constant.USER_NOT_EXIT;
+                }
+                else {
+                    viewPerInforResponseDto.setFullName(user.getName());
+                    viewPerInforResponseDto.setUserName(user.getUsername());
+                    viewPerInforResponseDto.setEmail(user.getEmail());
+                    viewPerInforResponseDto.setPhone(user.getPhone());
+
+                    //check class of user
+                    if(user.getClassSchool() != null){
+                        viewPerInforResponseDto.setClassName(user.getClassSchool().getGrade().concat(user.getClassSchool().getGiftedClass().getName()));
+                    }
+                    viewPerInforResponseDto.setRoleName(user.getRole().getRoleName());
+                    message = Constant.SUCCESS;
+                }
+            }
+        }catch(Exception e){
             message.setMessageCode(1);
             message.setMessage(e.toString());
             viewPerInforResponseDto.setMessage(message);
             return viewPerInforResponseDto;
         }
 
-        //check user
-        if(user==null) {
-            message = Constant.USER_NOT_EXIT;
-        }
-        else {
-            viewPerInforResponseDto.setFullName(user.getName());
-            viewPerInforResponseDto.setUserName(user.getUsername());
-            viewPerInforResponseDto.setEmail(user.getEmail());
-            viewPerInforResponseDto.setPhone(user.getPhone());
-
-            //check class of user
-            if(user.getClassSchool() != null){
-                viewPerInforResponseDto.setClassName(user.getClassSchool().getGrade().concat(user.getClassSchool().getGiftedClass().getName()));
-            }
-            viewPerInforResponseDto.setRoleName(user.getRole().getRoleName());
-            message = Constant.SUCCESS;
-        }
         viewPerInforResponseDto.setMessage(message);
         return  viewPerInforResponseDto;
     }
