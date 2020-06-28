@@ -10,4 +10,5 @@ public class ViewPerInforResponseDto {
     private String phone;
     private String email;
     private String className;
+    private MessageDTO message;
 }

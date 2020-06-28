@@ -10,7 +10,6 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User,String> {
     User findUserByUsername(String username);
-    void deleteByUsername(String username);
 
     @Query("select u.username from User u")
     List<String> findAllUsername();
