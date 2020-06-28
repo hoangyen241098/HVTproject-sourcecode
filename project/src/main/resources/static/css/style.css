@@ -295,7 +295,7 @@ a:hover {
     background: #4292dc;
 }
 
-.error-text, .error, .errorTxt {
+.error {
     color: red;
     font-weight: 500;
 }
@@ -683,12 +683,14 @@ div.searchable {
     margin-right: -5px;
     min-width: 140px;
 }
+
 .userInfo-err {
-    font-weight: 500;
     margin-left: 20px;
 }
+
 .info-des .btn {
     margin-top: 20px;
     margin-left: 20px;
 }
+
 /*END User Information*/
