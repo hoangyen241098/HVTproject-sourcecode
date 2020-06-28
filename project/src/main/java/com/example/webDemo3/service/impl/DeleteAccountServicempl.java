@@ -3,6 +3,7 @@ package com.example.webDemo3.service.impl;
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.request.DeleteAccountRequestDto;
+import com.example.webDemo3.entity.User;
 import com.example.webDemo3.repository.UserRepository;
 import com.example.webDemo3.service.DeleteAccountService;
 import org.hibernate.service.spi.ServiceException;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -35,14 +37,21 @@ public class DeleteAccountServicempl implements DeleteAccountService {
         MessageDTO messageDTO = new MessageDTO();
         try{
             List<String> listUser = deleteAccount.getListUser();
-            Iterator iterator = listUser.iterator();
-            while (iterator.hasNext()){
-                userRepository.deleteById(iterator.next().toString());
+            for(String userName : listUser){
+                User user = userRepository.findUserByUsername(userName);
+                //check user exists or not
+                if(user != null){
+                    userRepository.deleteById(userName);
+                }else{
+                    messageDTO = Constant.USER_NOT_EXIT;
+                    return  messageDTO;
+                }
             }
             messageDTO = Constant.DELETE_ACCOUNT_SUCCESS;
         }catch (Exception e){
             messageDTO.setMessageCode(1);
             messageDTO.setMessage(e.toString());
+            return messageDTO;
         }
         return messageDTO;
     }

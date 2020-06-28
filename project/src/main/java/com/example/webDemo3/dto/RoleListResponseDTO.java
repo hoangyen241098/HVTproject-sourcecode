@@ -11,4 +11,5 @@ import java.util.List;
 @Data
 public class RoleListResponseDTO {
     private List<Role> listRole;
+    private MessageDTO message;
 }
