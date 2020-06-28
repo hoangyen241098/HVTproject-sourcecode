@@ -8,9 +8,12 @@ import com.example.webDemo3.dto.ClassListResponseDto;
 import com.example.webDemo3.repository.ClassRepository;
 import com.example.webDemo3.service.ClassListService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -50,6 +53,7 @@ public class ClassListServiceImpl implements ClassListService {
                 }
                 classResList.add(classDto);
             }
+            Collections.sort(classResList);
             responseDto.setClassList(classResList);
             message = Constant.SUCCESS;
             responseDto.setMessage(message);

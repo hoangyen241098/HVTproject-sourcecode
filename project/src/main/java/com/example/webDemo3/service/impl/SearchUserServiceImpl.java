@@ -34,6 +34,9 @@ public class SearchUserServiceImpl implements SearchUserService {
         Pageable paging;
         Integer orderBy = requestModel.getOrderBy();
         Integer pageNumber = requestModel.getPageNumber();
+        String username = requestModel.getUserName();
+        Integer roleId = requestModel.getRoleId();
+        Page<User> pagedResult;
         String orderByProperty;
         Integer pageSize = Constant.PAGE_SIZE;
         switch (orderBy){
@@ -42,10 +45,6 @@ public class SearchUserServiceImpl implements SearchUserService {
                 break;
             }
             case 1: {
-                orderByProperty = "classSchool.grade";
-                break;
-            }
-            case 2: {
                 orderByProperty = "name";
                 break;
             }
@@ -58,8 +57,14 @@ public class SearchUserServiceImpl implements SearchUserService {
         else {
             paging = PageRequest.of(pageNumber, pageSize, Sort.by(orderByProperty).ascending());
         }
-        String username = requestModel.getUserName();
-        Page<User> pagedResult = userRepository.searchUserByCondition(username,requestModel.getRoleId(), paging);
+
+        if(roleId!=null){
+            pagedResult = userRepository.searchUserByCondition(username,roleId, paging);
+        }
+        else{
+            pagedResult = userRepository.searchUserByUsername(username, paging);
+        }
+
         responseDto.setUserList(pagedResult);
         return responseDto;
     }
