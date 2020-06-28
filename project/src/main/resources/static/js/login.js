@@ -21,18 +21,30 @@ $(document).ready(function () {
                 username: $('#username').val(),
                 password: $('#password').val(),
             };
-            console.log(user.username);
-            console.log(user.password);
             e.preventDefault();
             $.ajax({
                 type: 'POST',
-                url: "http://localhost:8080/api/user/login",
+                url: "/api/user/login",
                 data: JSON.stringify(user),
                 success: function (data) {
                     var messageCode = data.message.messageCode;
                     var message = data.message.message;
+                    var roleID = data.roleid;
+                    var account = {
+                        username,
+                        password,
+                        roleID
+                    }
                     if (messageCode == 0) {
                         $('#loginSuccess').css('display', 'block');
+                        localStorage.setItem("username", account.username);
+                        localStorage.setItem("password", account.password);
+                        localStorage.setItem("roleID", account.roleID);
+                        $("#loginSuccess-menu").addClass("show");
+                        $('#login').css('display', 'none');
+                        if (roleID == 1) {
+                            $("#admin").addClass("show");
+                        }
                     } else {
                         $('.errorTxt').text(message);
                     }
@@ -46,19 +58,3 @@ $(document).ready(function () {
         }
     })
 });
-
-// <!--Get data from JSON-->
-// (function () {
-//     var settings = {
-//         "url": "http://localhost:8080/api/user/login",
-//         "method": "POST",
-//         "timeout": 0,
-//         "format": "json",
-//     };
-//
-//     $.getJSON(settings).done(function (data) {
-//         $.each(data, function (i, item) {
-//             $("#json-item").append(item.name + ": Username: " + item.username + "   |   Password: " + item.password);
-//         });
-//     });
-// })();
