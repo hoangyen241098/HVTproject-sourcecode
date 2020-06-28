@@ -17,7 +17,7 @@ public class Constant {
     public static final MessageDTO USERNAME_EXIST =
             new MessageDTO(1,"Tên tài khoản đã tồn tại.");
     public static final MessageDTO USERNAME_EMPTY =
-            new MessageDTO(1,"Hãy nhập trên đăng nhập.");
+            new MessageDTO(1,"Hãy nhập tên đăng nhập.");
     public static final MessageDTO PASSWORD_EMPTY =
             new MessageDTO(1,"Hãy nhập mật khẩu.");
     public static final MessageDTO CLASSNAME_NOT_EXIT =

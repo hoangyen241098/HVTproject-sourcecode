@@ -21,10 +21,4 @@ public interface UserRepository extends JpaRepository<User,String>, PagingAndSor
 
     @Query(value = "select u from User u where u.username like %:username% and u.role.roleId = :roleId")
     Page<User> searchUserByCondition(@Param("username") String username, @Param("roleId") Integer roleId, Pageable paging);
-
- /*   @Query(value = "select * from USERS u where u.USER_NAME = :username", nativeQuery = true)
-    List<User> searchUser(@Param("username") String username);*/
-
-//    @Query(value = "SELECT * FROM Users u WHERE u.status = :status and u.name = :name", nativeQuery = true)
-//    User findUserByNamedParamsNative(@Param("status") Integer status, @Param("name") String name);
 }
