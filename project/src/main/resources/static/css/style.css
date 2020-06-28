@@ -656,7 +656,16 @@ div.searchable {
     transition: all .5s;
     color: #303030;
     overflow: hidden;
-    padding-top: 15%!important;
+    padding-top: 15% !important;
+}
+
+.info-img {
+    margin: auto;
+    position: absolute;
+    left: 30%;
+    top: 30%;
+    padding: 0;
+    max-width: 250px;
 }
 
 .info-right {

@@ -26,29 +26,33 @@
 <div class="container">
     <div class="veen col-xl-10 mx-auto">
         <div class="info-left text-center">
-            <img src="https://img.icons8.com/bubbles/150/000000/gender-neutral-user.png"/>
-            <H5>ADMIN</H5>
+            <div class="info-img">
+                <img src="https://img.icons8.com/bubbles/150/000000/gender-neutral-user.png"/>
+                <H5 id="roleName"></H5>
+            </div>
         </div>
         <div class="info-right">
             <span class="input-info">
                 <label for="fullName">Họ và tên</label>
-                <input class="basic-slide" id="fullName" type="text" disabled/>
+                <input class="basic-slide" id="fullName" type="text" value="" disabled/>
             </span>
             <span class="input-info">
-                <label for="fullName">Tên đăng nhập</label>
-                <input class="basic-slide" id="username" type="text" disabled/>
+                <label for="username">Tên đăng nhập</label>
+                <input class="basic-slide" id="username" type="text" value="" disabled/>
             </span>
             <span class="input-info">
-                <label for="fullName">SĐT</label>
-                <input class="basic-slide" id="phone" type="text" disabled/>
+                <label for="phone">SĐT</label>
+                <input class="basic-slide" id="phone" type="text" value="" disabled/>
             </span>
             <span class="input-info">
-                <label for="fullName">Email</label>
-                <input class="basic-slide" id="email" type="text" disabled/>
+                <label for="email">Email</label>
+                <input class="basic-slide" id="email" type="text" value="" disabled/>
             </span>
             <span class="input-info">
-                <div class="errMsg"></div>
+                <label for="className">Lớp</label>
+                <input class="basic-slide" id="className" type="text" value="" disabled/>
             </span>
+            <div class="errMsg"></div>
             <div class="float-right">
                 <input type="button" class="btn btn-success" value="CHỈNH SỬA"/>
             </div>

@@ -1,21 +1,24 @@
 $('.errMsg').text("");
 var username = localStorage.getItem("username");
-user = '{"username":"' + username + '"}';
-$.ajax({
-    url: '/api/user/viewinformation',
-    type: 'POST',
-    dataType: user,
-    success: function (data) {
-        console.log(data);
-        // $.each(data, function (i, item) {
-        //     $.each(item, function (i, list) {
-        //         $('#position-role').append(`<option value="` + list.roleId + `">` + list.roleName + `</option>`);
-        //     });
-        // });
-    },
-    failure: function (errMsg) {
-        console.log(errMsg);
-    },
-    dataType: "json",
-    contentType: "application/json"
+var account = '{"userName":' + JSON.stringify(username) + '}'
+$(document).ready(function () {
+    $.ajax({
+        url: '/api/user/viewinformation',
+        type: 'POST',
+        data: account,
+        success: function (data) {
+            console.log(data);
+            $('#fullName').attr('value', data.fullName);
+            $('#username').attr('value', data.userName);
+            $('#phone').attr('value', data.phone);
+            $('#email').attr('value', data.email);
+            $('#className').attr('value', data.className);
+            $('#roleName').text(data.roleName);
+        },
+        failure: function (errMsg) {
+            console.log(errMsg);
+        },
+        dataType: "json",
+        contentType: "application/json"
+    });
 });
