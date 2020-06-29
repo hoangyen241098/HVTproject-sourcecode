@@ -373,6 +373,10 @@ tr.selected {
     background-color: #007bff40 !important;
 }
 
+.userlist-result {
+    text-align: center;
+    font-size: 25px;
+}
 
 /* Custom checkbox */
 .custom-checkbox {
