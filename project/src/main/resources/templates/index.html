@@ -22,7 +22,13 @@
 <div th:replace="fragments/header :: header"></div>
 <div class="container">
     <h1>This is Homepage</h1>
-
+    <div><a th:href="@{changePassword}">Thay đổi mật khẩu</a></div>
+    <div><a th:href="@{createAccount}">Tạo tài khoản</a></div>
+    <div><a th:href="@{forgotPassword}">Quên mật khẩu</a></div>
+    <div><a th:href="@{login}">Đăng nhập</a></div>
+    <div><a th:href="@{manageAccount}">Quản lý tài khoản</a></div>
+    <div><a th:href="@{resetPassword}">Đặt lại mật khẩu</a></div>
+    <div><a th:href="@{userInformation}">Thông tin cá nhân</a></div>
 </div>
 <footer>
     <div th:replace="fragments/footer :: footer"></div>

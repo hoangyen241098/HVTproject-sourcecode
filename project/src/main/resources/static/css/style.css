@@ -295,7 +295,7 @@ a:hover {
     background: #4292dc;
 }
 
-.error-text, .error, .errorTxt {
+.error {
     color: red;
     font-weight: 500;
 }
@@ -373,6 +373,10 @@ tr.selected {
     background-color: #007bff40 !important;
 }
 
+.userlist-result {
+    text-align: center;
+    font-size: 25px;
+}
 
 /* Custom checkbox */
 .custom-checkbox {
@@ -521,6 +525,10 @@ div.searchable {
     font-size: 13px;
 }
 
+#msform input:disabled, #msform textarea:disabled {
+    background: rgb(235, 235, 228);
+}
+
 #msform input:focus, #msform textarea:focus {
     box-shadow: none !important;
     border: 1px solid #80bdff;
@@ -637,45 +645,29 @@ div.searchable {
 
 /*User Information*/
 .veen {
-    margin: 100px auto;
-    background: rgba(219, 230, 247, 0.5);
-    min-height: 400px;
-    display: table;
-    position: relative;
-    box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, .31);
+    border: solid 1px #cbc9c9;
+    padding: 50px 10px;
 }
 
-.info-left {
-    position: absolute;
-    width: 40%;
-    height: 120%;
-    top: -10%;
-    left: 5%;
-    background: #fff;
-    box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
-    transition: all .5s;
-    color: #303030;
-    overflow: hidden;
-    padding-top: 15% !important;
+.veen h1 {
+    font-size: 32px;
+    font-weight: 300;
+    color: #4c4c4c;
+    text-align: center;
+    padding-top: 10px;
+    margin-bottom: 10px;
 }
 
-.info-img {
-    margin: auto;
-    position: absolute;
-    left: 30%;
-    top: 30%;
-    padding: 0;
-    max-width: 250px;
+.veen hr {
+    color: #a9a9a9;
+    opacity: 0.3;
 }
 
-.info-right {
-    right: -2%;
-    width: 50%;
-}
-
-.veen div {
-    display: table-cell;
-    padding: 30px 10px;
+.veen .info-des {
+    margin-top: 20px;
 }
 
 .basic-slide {
@@ -683,13 +675,10 @@ div.searchable {
     padding: 10px 0 10px 15px;
     font-weight: 400;
     border: 1px solid #4267b2;
-    border-radius: 3px;
 }
 
 .input-info {
-    position: relative;
-    display: inline-block;
-    margin: 10px;
+    text-align: center;
 }
 
 .input-info label {
@@ -700,7 +689,16 @@ div.searchable {
     border-bottom-left-radius: 3px;
     color: #fff;
     margin-right: -5px;
-    width: 140px;
+    min-width: 140px;
+}
+
+.userInfo-err {
+    margin-left: 20px;
+}
+
+.info-des .btn {
+    margin-top: 20px;
+    margin-left: 20px;
 }
 
 /*END User Information*/

@@ -1,34 +1,34 @@
 $(document).ready(function () {
     $("#confirm").click(function (e) {
-        $('.errorTxt').text("");
+        $('.changePassword-err').text("");
         var oldpassword = $('#old-password').val();
         var newpassword = $('#new-password').val();
         var confirmpassword = $('#confirm-password').val();
-
 
         if (oldpassword.trim() == "" && newpassword.trim() == "" && confirmpassword.trim() == "" ||
             oldpassword.trim() == "" && newpassword.trim() == "" ||
             newpassword.trim() == "" && confirmpassword.trim() == "" ||
             oldpassword.trim() == "" && confirmpassword.trim() == "") {
-            $('.errorTxt').text("Hãy điền đầy đủ tất cả các trường.");
+            $('.changePassword-err').text("Hãy điền đầy đủ tất cả các trường.");
             return false;
         } else if (oldpassword.trim() == "") {
-            $('.errorTxt').text("Hãy điền mật khẩu cũ.");
+            $('.changePassword-err').text("Hãy điền mật khẩu cũ.");
             return false;
         } else if (newpassword.trim() == "") {
-            $('.errorTxt').text("Hãy điền mật khẩu mới.");
+            $('.changePassword-err').text("Hãy điền mật khẩu mới.");
             return false;
         } else if (confirmpassword.trim() == "") {
-            $('.errorTxt').text("Hãy xác nhận lại mật khẩu.");
+            $('.changePassword-err').text("Hãy xác nhận lại mật khẩu.");
             return false;
         } else if (newpassword != confirmpassword) {
-            $('.errorTxt').text("Mật khẩu xác nhận không đúng.");
+            $('.changePassword-err').text("Mật khẩu xác nhận không đúng.");
             return false;
         } else {
-            $('.errorTxt').text("");
+            $('.changePassword-err').text("");
             var password = {
-                oldpassword,
-                newpassword
+                userName: localStorage.getItem('username'),
+                oldPassword: oldpassword,
+                newPassword: newpassword
             };
             e.preventDefault();
             $.ajax({
@@ -36,18 +36,17 @@ $(document).ready(function () {
                 url: "/api/user/changepassword",
                 data: JSON.stringify(password),
                 success: function (data) {
-                    var messageCode = data.message.messageCode;
-                    var message = data.message.message;
-                    console.log(messageCode);
-                    console.log(message);
+                    console.log(JSON.stringify(password));
+                    var messageCode = data.messageCode;
+                    var message = data.message;
                     if (messageCode == 0) {
                         $('#changePassword').css('display', 'block');
                     } else {
-                        $('.errorTxt').text(message);
+                        $('.changePassword-err').text(message);
                     }
                 },
                 failure: function (errMsg) {
-                    $('.errorTxt').text(errMsg);
+                    $('.changePassword-err').text(errMsg);
                 },
                 dataType: "json",
                 contentType: "application/json"
