@@ -2,6 +2,7 @@ package com.example.webDemo3.service.impl;
 
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.ClassResponseDto;
+import com.example.webDemo3.dto.ClassTableResponseDto;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.dto.ClassListResponseDto;
@@ -55,6 +56,30 @@ public class ClassListServiceImpl implements ClassListService {
             }
             Collections.sort(classResList);
             responseDto.setClassList(classResList);
+            message = Constant.SUCCESS;
+            responseDto.setMessage(message);
+            return responseDto;
+        }
+        message = Constant.CLASSLIST_NOT_EXIT;
+        responseDto.setMessage(message);
+        return responseDto;
+    }
+
+    /**
+     * kimpt142
+     * 29/6
+     * get list class to show in detail table
+     * @return a detail of class
+     */
+    @Override
+    public ClassTableResponseDto getClassTable() {
+        ClassTableResponseDto responseDto = new ClassTableResponseDto();
+        MessageDTO message = new MessageDTO();
+        List<Class> classList = classRepository.findAll();
+
+        if(classList!=null)
+        {
+            responseDto.setClassList(classList);
             message = Constant.SUCCESS;
             responseDto.setMessage(message);
             return responseDto;
