@@ -1,9 +1,10 @@
-var fullName, username, password, roleID, phone, email, className;
+var fullName, userName, passWord, roleId, phone, email, classId;
 var current_fs, next_fs, previous_fs;
 var left, opacity, scale;
-var animating;
-
-$('.errMsg').text("");
+var emailRegex = '^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$';
+var phoneRegex = '^[0-9\\-\\+]{9,15}$';
+/*Call API for Role List*/
+$('.createAccount-err').text("");
 $.ajax({
     url: '/api/admin/rolelist',
     type: 'POST',
@@ -16,25 +17,42 @@ $.ajax({
         });
     },
     failure: function (errMsg) {
-        console.log(errMsg);
+        $('.createAccount-err').text(errMsg);
     }
 });
+/*Call API for Class List*/
+// $.ajax({
+//     url: '/api/admin/classlist',
+//     type: 'POST',
+//     dataType: 'JSON',
+//     success: function (data) {
+//         $.each(data, function (i, item) {
+//             $.each(item, function (i, list) {
+//                 $('#class').append(`<option value="` + list.classID + `">` + list.className + `</option>`);
+//             });
+//         });
+//     },
+//     failure: function (errMsg) {
+//         $('.createAccount-err').text(errMsg);
+//     }
+// });
 
 function changeSelected() {
-    className = 0;
-    roleID = $('#position-role option:selected').val();
-    if (roleID == 3 || roleID == 4) {
+    classId = null;
+    roleId = $('#position-role option:selected').val();
+    if (roleId == 3 || roleId == 4) {
         $('#position-class').removeClass('hide');
     } else {
         $('#position-class').addClass('hide');
     }
-    className = $('#class option:selected').val();
-    console.log(roleID, className);
+    classId = $('#class option:selected').val();
+    console.log(roleId, classId);
 }
 
 $("#next").click(function () {
-    $('.errMsg').text("");
+    $('.createAccount-err').text("");
 
+    var animating;
     if (animating) return false;
     animating = true;
 
@@ -42,23 +60,28 @@ $("#next").click(function () {
     next_fs = $(this).parent().next();
 
     // /*Validate*/
-    if (roleID == 0 || roleID == null) {
-        $('.errMsg').text("Hãy chọn chức vụ.");
+    if (roleId == 0 || roleId == null) {
+        $('.createAccount-err').text("Hãy chọn chức vụ.");
         return false;
-    } else if (roleID == 3 && className == 0 || roleID == 4 && className == 0) {
-        $('.errMsg').text("Hãy chọn lớp.");
+    } else if (roleId == 3 && classId == 0 || roleId == 4 && classId == 0) {
+        $('.createAccount-err').text("Hãy chọn lớp.");
         return false;
     } else {
-        if (roleID == 1 || roleID == 2 || roleID == 5) {
+        if (roleId == 1 || roleId == 2 || roleId == 5) {
             $('.fullName').removeClass('hide');
             $('.full-info').removeClass('hide');
+            $('#username').prop('disabled', false);
+            classId = null;
 
-        } else if (roleID == 6) {
+        } else if (roleId == 6) {
             $('.fullName').removeClass('hide');
+            $('.full-info').addClass('hide');
+            $('#username').prop('disabled', false);
+            classId = null;
         } else {
             $('.fullName').addClass('hide');
             $('.full-info').addClass('hide');
-            $('.username').prop('disabled', true);
+            $('#username').prop('disabled', true);
         }
 
         $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
@@ -83,25 +106,72 @@ $("#next").click(function () {
     }
 });
 
-// $(".submit").click(function () {
-//     var account = {
-//         fullName, username, password, roleID, phone, email, className
-//     }
-//     e.preventDefault();
-//     $.ajax({
-//         url: '/api/admin/createaccount',
-//         type: 'POST',
-//         dataType: JSON.stringify(account),
-//         success: function (data) {
-//             $('.errMsg').text("Tài khoản đã được tạo thành công!");
-//         },
-//         failure: function (errMsg) {
-//             console.log(errMsg);
-//         }
-//     });
-// });
+$("#submit").click(function (e) {
+    fullName = $('#fullName').val();
+    userName = $('#username').val();
+    passWord = $('#password').val();
+    var confirmPassword = $('#confirm-password').val();
+    phone = $('#phone').val();
+    email = $('#email').val();
+    if (fullName.trim() == "") {
+        $('.createAccount-err').text("Hãy điền họ và tên.");
+        return false;
+    }
+    if (userName.trim() == "") {
+        $('.createAccount-err').text("Hãy điền tên đăng nhập.");
+        return false;
+    } else if (passWord.trim() == "") {
+        $('.createAccount-err').text("Hãy điền mật khẩu.");
+        return false;
+    } else if (confirmPassword.trim() == "") {
+        $('.createAccount-err').text("Hãy xác nhận lại mật khẩu.");
+        return false;
+    } else if (passWord != confirmPassword) {
+        $('.createAccount-err').text("Mật khẩu xác nhận không đúng.");
+        return false;
+    } else if (!phone.match(phoneRegex)) {
+        $('.createAccount-err').text("SĐT không đúng định dạng.");
+        return false;
+    } else if (!email.match(emailRegex)) {
+        $('.createAccount-err').text("Email không đúng định dạng.");
+        return false;
+    } else {
+        var account = {
+            userName: userName,
+            passWord: passWord,
+            fullName: fullName,
+            roleId: roleId,
+            phone: phone,
+            email: email,
+            classId: classId
+        }
+        e.preventDefault();
+        $.ajax({
+            url: '/api/admin/createaccount',
+            type: 'POST',
+            data: JSON.stringify(account),
+            success: function (data) {
+                var messageCode = data.messageCode;
+                var message = data.message;
+                if (messageCode == 0) {
+                    $('#createSuccess').css('display', 'block');
+                    $('.createAccount-err').text("");
+                } else {
+                    $('.createAccount-err').text(message);
+                }
+            },
+            failure: function (errMsg) {
+                $('.createAccount-err').text(errMsg);
+            },
+            dataType: "json",
+            contentType: "application/json"
+        });
+
+    }
+});
 
 $(".previous").click(function () {
+    var animating;
     if (animating) return false;
     animating = true;
 
@@ -109,7 +179,6 @@ $(".previous").click(function () {
     previous_fs = $(this).parent().prev();
 
     $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
-
     previous_fs.show();
     current_fs.animate({opacity: 0}, {
         step: function (now, mx) {
