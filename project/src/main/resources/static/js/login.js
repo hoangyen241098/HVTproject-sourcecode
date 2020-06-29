@@ -26,6 +26,12 @@ $(document).ready(function () {
                 type: 'POST',
                 url: "/api/user/login",
                 data: JSON.stringify(user),
+                beforeSend: function () {
+                    $('body').addClass("loading")
+                },
+                complete: function () {
+                    $('body').removeClass("loading")
+                },
                 success: function (data) {
                     var messageCode = data.message.messageCode;
                     var message = data.message.message;

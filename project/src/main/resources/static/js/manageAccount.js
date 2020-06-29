@@ -60,6 +60,12 @@ function search() {
         url: '/api/admin/userlist',
         type: 'POST',
         data: JSON.stringify(inforSearch),
+        beforeSend: function () {
+            $('body').addClass("loading")
+        },
+        complete: function () {
+            $('body').removeClass("loading")
+        },
         success: function (data) {
             if (data.userList.content.length == 0) {
                 $('tbody').append(
@@ -124,6 +130,12 @@ $("#deleteAccount").click(function (e) {
         url: '/api/admin/deleteaccount',
         type: 'DELETE',
         data: JSON.stringify(listUser),
+        beforeSend: function () {
+            $('body').addClass("loading")
+        },
+        complete: function () {
+            $('body').removeClass("loading")
+        },
         success: function (data) {
             var messageCode = data.messageCode;
             var message = data.message;
@@ -173,6 +185,12 @@ $("#resetPassword").click(function (e) {
             url: '/api/admin/resetpassword',
             type: 'POST',
             data: JSON.stringify(resetPassword),
+            beforeSend: function () {
+                $('body').addClass("loading")
+            },
+            complete: function () {
+                $('body').removeClass("loading")
+            },
             success: function (data) {
                 var messageCode = data.messageCode;
                 var message = data.message;

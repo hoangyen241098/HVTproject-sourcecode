@@ -47,9 +47,6 @@
                         <label for="class">Lớp <span class="text-red">*</span></label>
                         <select class="form-control" id="class" onchange="changeSelected()">
                             <option value="0" selected>-- Chọn lớp ---</option>
-                            <option value="1">10H</option>
-                            <option value="2">10T</option>
-                            <option value="3">10V</option>
                         </select>
                     </div>
                     <div class="error createAccount-err text-left"></div>
@@ -58,7 +55,7 @@
                 <fieldset>
                     <div class="form-group text-left username">
                         <label for="username">Tên đăng nhập <span class="text-red">*</span></label>
-                        <input type="text" class="form-control" id="username" placeholder="loptruong10H" disabled>
+                        <input type="text" class="form-control" id="username" placeholder="loptruong10H">
                     </div>
                     <div class="form-group text-left">
                         <label for="password">Mật khẩu <span class="text-red">*</span></label>
@@ -107,6 +104,7 @@
 </div>
 
 <div th:replace="fragments/footer :: footer"></div>
+<div class="modal-loading"></div>
 </body>
 
 <script type="text/javascript" th:src="@{/js/createAccount.js}"></script>

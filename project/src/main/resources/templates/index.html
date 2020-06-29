@@ -27,12 +27,9 @@
     <div><a th:href="@{forgotPassword}">Quên mật khẩu</a></div>
     <div><a th:href="@{login}">Đăng nhập</a></div>
     <div><a th:href="@{manageAccount}">Quản lý tài khoản</a></div>
-    <div><a th:href="@{resetPassword}">Đặt lại mật khẩu</a></div>
     <div><a th:href="@{userInformation}">Thông tin cá nhân</a></div>
 </div>
-<footer>
-    <div th:replace="fragments/footer :: footer"></div>
-
-</footer>
+<div th:replace="fragments/footer :: footer"></div>
+<div class="modal-loading"></div>
 </body>
 </html>

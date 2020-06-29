@@ -10,10 +10,8 @@ $.ajax({
     type: 'POST',
     dataType: 'JSON',
     success: function (data) {
-        $.each(data, function (i, item) {
-            $.each(item, function (i, list) {
-                $('#position-role').append(`<option value="` + list.roleId + `">` + list.roleName + `</option>`);
-            });
+        $.each(data.listRole, function (i, list) {
+            $('#position-role').append(`<option value="` + list.roleId + `">` + list.roleName + `</option>`);
         });
     },
     failure: function (errMsg) {
@@ -21,21 +19,19 @@ $.ajax({
     }
 });
 /*Call API for Class List*/
-// $.ajax({
-//     url: '/api/admin/classlist',
-//     type: 'POST',
-//     dataType: 'JSON',
-//     success: function (data) {
-//         $.each(data, function (i, item) {
-//             $.each(item, function (i, list) {
-//                 $('#class').append(`<option value="` + list.classID + `">` + list.className + `</option>`);
-//             });
-//         });
-//     },
-//     failure: function (errMsg) {
-//         $('.createAccount-err').text(errMsg);
-//     }
-// });
+$.ajax({
+    url: '/api/admin/classlist',
+    type: 'POST',
+    dataType: 'JSON',
+    success: function (data) {
+        $.each(data.classList, function (i, list) {
+            $('#class').append(`<option value="` + list.classID + `">` + list.className + `</option>`);
+        });
+    },
+    failure: function (errMsg) {
+        $('.createAccount-err').text(errMsg);
+    }
+});
 
 function changeSelected() {
     classId = null;
@@ -71,13 +67,13 @@ $("#next").click(function () {
             $('.fullName').removeClass('hide');
             $('.full-info').removeClass('hide');
             $('#username').prop('disabled', false);
-            classId = null;
+            classId = "0";
 
         } else if (roleId == 6) {
             $('.fullName').removeClass('hide');
             $('.full-info').addClass('hide');
             $('#username').prop('disabled', false);
-            classId = null;
+            classId = "0";
         } else {
             $('.fullName').addClass('hide');
             $('.full-info').addClass('hide');
@@ -113,7 +109,10 @@ $("#submit").click(function (e) {
     var confirmPassword = $('#confirm-password').val();
     phone = $('#phone').val();
     email = $('#email').val();
-    if (fullName.trim() == "") {
+    if (roleId == 1 && fullName.trim() == "" ||
+        roleId == 2 && fullName.trim() == "" ||
+        roleId == 5 && fullName.trim() == "" ||
+        roleId == 6 && fullName.trim() == "") {
         $('.createAccount-err').text("Hãy điền họ và tên.");
         return false;
     }
@@ -129,10 +128,12 @@ $("#submit").click(function (e) {
     } else if (passWord != confirmPassword) {
         $('.createAccount-err').text("Mật khẩu xác nhận không đúng.");
         return false;
-    } else if (!phone.match(phoneRegex)) {
+    } else if (phone.trim() != "" && !phone.match(phoneRegex)) {
+        console.log(phone.trim());
         $('.createAccount-err').text("SĐT không đúng định dạng.");
         return false;
-    } else if (!email.match(emailRegex)) {
+    } else if (email.trim() != "" && !email.match(emailRegex)) {
+        console.log(email.trim());
         $('.createAccount-err').text("Email không đúng định dạng.");
         return false;
     } else {
@@ -150,6 +151,12 @@ $("#submit").click(function (e) {
             url: '/api/admin/createaccount',
             type: 'POST',
             data: JSON.stringify(account),
+            beforeSend: function () {
+                $('body').addClass("loading")
+            },
+            complete: function () {
+                $('body').removeClass("loading")
+            },
             success: function (data) {
                 var messageCode = data.messageCode;
                 var message = data.message;
