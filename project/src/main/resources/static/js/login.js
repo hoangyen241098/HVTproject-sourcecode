@@ -38,7 +38,7 @@ $(document).ready(function () {
                     if (messageCode == 0) {
                         $('#loginSuccess').css('display', 'block');
                         localStorage.setItem("username", account.username);
-                        localStorage.setItem("password", account.password);
+                        localStorage.setItem("loginSuccess", messageCode);
                         localStorage.setItem("roleID", account.roleID);
                         $("#loginSuccess-menu").addClass("show");
                         $('#login').css('display', 'none');
