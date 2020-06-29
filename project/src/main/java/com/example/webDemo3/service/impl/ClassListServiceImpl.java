@@ -41,16 +41,16 @@ public class ClassListServiceImpl implements ClassListService {
             {
                 ClassResponseDto classDto = new ClassResponseDto();
                 classDto.setClassID(item.getClassId());
-                String grade = item.getGrade();
+                //String grade = item.getGrade();
                 String giftedName = item.getGiftedClass().getName();
-                if(!grade.trim().equals("") && !giftedName.trim().equals("")){
-                    classDto.setClassName(grade + " " + giftedName);
-                }
-                else{
-                    message = Constant.CLASSNAME_NOT_EXIT;
-                    responseDto.setMessage(message);
-                    return  responseDto;
-                }
+                //if(!grade.trim().equals("") && !giftedName.trim().equals("")){
+                   // classDto.setClassName(grade + " " + giftedName);
+                //}
+                //else{
+                    //message = Constant.CLASSNAME_NOT_EXIT;
+                    //responseDto.setMessage(message);
+                   // return  responseDto;
+                //}
                 classResList.add(classDto);
             }
             Collections.sort(classResList);

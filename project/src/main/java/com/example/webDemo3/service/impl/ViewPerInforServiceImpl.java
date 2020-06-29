@@ -49,7 +49,7 @@ public class ViewPerInforServiceImpl implements ViewPerInfoService {
 
                     //check class of user
                     if(user.getClassSchool() != null){
-                        viewPerInforResponseDto.setClassName(user.getClassSchool().getGrade().concat(user.getClassSchool().getGiftedClass().getName()));
+                        viewPerInforResponseDto.setClassName(user.getClassSchool().getGrade().toString().concat(user.getClassSchool().getGiftedClass().getName()));
                     }
                     viewPerInforResponseDto.setRoleName(user.getRole().getRoleName());
                     message = Constant.SUCCESS;

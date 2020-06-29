@@ -17,10 +17,10 @@ public class Class {
     private Integer classId;
 
     @Column(name = "GRADE")
-    private String grade;
+    private Integer grade;
 
-    @Column(name = "MAPPING_NAME")
-    private String mappingName;
+    @Column(name = "CLASS_IDENTIFIER")
+    private String classIdentifier;
 
     @Column(name = "STATUS")
     private Integer status;
