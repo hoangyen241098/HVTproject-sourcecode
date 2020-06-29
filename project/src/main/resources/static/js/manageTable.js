@@ -15,11 +15,11 @@ function filterFunction(that, event) {
                 $(this).hide();
             }
         });
-
-        container.find("ul li").removeClass("selected");
-        setTimeout(function () {
-            container.find("ul li:visible").first().addClass("selected");
-        }, 100)
+        //
+        // container.find("ul li").removeClass("selected");
+        // setTimeout(function () {
+        //     container.find("ul li:visible").first().addClass("selected");
+        // }, 100)
     }
 }
 

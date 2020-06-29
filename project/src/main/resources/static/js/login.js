@@ -1,18 +1,18 @@
 <!--Send data to JSON-->
 $(document).ready(function () {
     $("#signin").click(function (e) {
-        $('.errorTxt').text("");
+        $('.login-err').text("");
         var username = $('#username').val();
         var password = $('#password').val();
 
         if (username.trim() == "" && password.trim() == "") {
-            $('.errorTxt').text("Hãy điền tên đăng nhập và mật khẩu.");
+            $('.login-err').text("Hãy điền tên đăng nhập và mật khẩu.");
             return false;
         } else if (username.trim() == "") {
-            $('.errorTxt').text("Hãy điền tên đăng nhập.");
+            $('.login-err').text("Hãy điền tên đăng nhập.");
             return false;
         } else if (password.trim() == "") {
-            $('.errorTxt').text("Hãy điền mật khẩu.");
+            $('.login-err').text("Hãy điền mật khẩu.");
             return false;
         } else {
             $('#error-username').text("");
@@ -52,11 +52,11 @@ $(document).ready(function () {
                             $("#admin").addClass("show");
                         }
                     } else {
-                        $('.errorTxt').text(message);
+                        $('.login-err').text(message);
                     }
                 },
                 failure: function (errMsg) {
-                    $('.errorTxt').text(errMsg);
+                    $('.login-err').text(errMsg);
                 },
                 dataType: "json",
                 contentType: "application/json"
