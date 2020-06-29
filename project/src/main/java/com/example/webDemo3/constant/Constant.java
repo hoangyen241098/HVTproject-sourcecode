@@ -30,6 +30,18 @@ public class Constant {
             new MessageDTO(1,"Tài khoản này đã bị khóa!");
     public static final MessageDTO GIFTEDCLASSLIST_NOT_EXIT =
             new MessageDTO(1,"Danh sách hệ chuyên trống.");
+    public static final MessageDTO GRADE_EMPTY =
+            new MessageDTO(1,"Hãy lựa chọn khối lớp.");
+    public static final MessageDTO GIFTEDCLASSID_EMPTY =
+            new MessageDTO(1,"Hãy lựa chọn hệ chuyên.");
+    public static final MessageDTO CLASSIDENTIFIER_EMPTY =
+            new MessageDTO(1,"Hãy nhập tên định danh cho lớp.");
+    public static final MessageDTO CLASSIDENTIFIER_EXIST =
+            new MessageDTO(1,"Tên định danh này đã tồn tại.");
+    public static final MessageDTO CLASSNAME_EXIST =
+            new MessageDTO(1,"Tên lớp này tồn tại.");
+    public static final MessageDTO USERLIST_NULL =
+            new MessageDTO(1,"Danh sách lớp trống.");
 
     /**
      * Success message
