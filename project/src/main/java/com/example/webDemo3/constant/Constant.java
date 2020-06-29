@@ -28,6 +28,8 @@ public class Constant {
             new MessageDTO(1,"Tài khoản xóa không thành công!");
     public static final MessageDTO USER_INACTIVE =
             new MessageDTO(1,"Tài khoản này đã bị khóa!");
+    public static final MessageDTO GIFTEDCLASSLIST_NOT_EXIT =
+            new MessageDTO(1,"Danh sách hệ chuyên trống.");
 
     /**
      * Success message
