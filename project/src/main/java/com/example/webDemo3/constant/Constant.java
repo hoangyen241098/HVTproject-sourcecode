@@ -26,6 +26,8 @@ public class Constant {
             new MessageDTO(1,"Danh sách lớp trống.");
     public static final MessageDTO DELETE_FALSE =
             new MessageDTO(1,"Tài khoản xóa không thành công!");
+    public static final MessageDTO USER_INACTIVE =
+            new MessageDTO(1,"Tài khoản này đã bị khóa!");
 
     /**
      * Success message

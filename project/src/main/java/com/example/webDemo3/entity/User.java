@@ -30,6 +30,9 @@ public class User implements Serializable {
     @Column(name = "EMAIL")
     private String email;
 
+    @Column(name = "STATUS")
+    private Integer status;
+
     @ManyToOne
     @JoinColumn(name = "ROLE_ID")
     @EqualsAndHashCode.Exclude
