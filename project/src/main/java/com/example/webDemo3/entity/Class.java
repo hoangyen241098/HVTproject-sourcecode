@@ -12,15 +12,17 @@ import javax.persistence.*;
 @Data
 @Table(name = "CLASSES")
 public class Class {
+
     @Id
     @Column(name = "CLASS_ID")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer classId;
 
     @Column(name = "GRADE")
-    private String grade;
+    private Integer grade;
 
-    @Column(name = "MAPPING_NAME")
-    private String mappingName;
+    @Column(name = "CLASS_IDENTIFIER")
+    private String classIdentifier;
 
     @Column(name = "STATUS")
     private Integer status;
