@@ -7,6 +7,12 @@ $(document).ready(function () {
         url: '/api/user/viewinformation',
         type: 'POST',
         data: JSON.stringify(account),
+        beforeSend: function () {
+            $('body').addClass("loading")
+        },
+        complete: function () {
+            $('body').removeClass("loading")
+        },
         success: function (data) {
             $('#fullName').attr('value', data.fullName);
             $('#username').attr('value', data.userName);
@@ -71,6 +77,12 @@ $("#confirmEdit").click(function (e) {
             url: '/api/user/editinformation',
             type: 'POST',
             data: JSON.stringify(info),
+            beforeSend: function () {
+                $('body').addClass("loading")
+            },
+            complete: function () {
+                $('body').removeClass("loading")
+            },
             success: function (data) {
                 console.log(data);
                 var messageCode = data.messageCode;
