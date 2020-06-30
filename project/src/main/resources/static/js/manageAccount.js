@@ -60,8 +60,13 @@ $("#search").click(function () {
 search();
 
 function pagingClick() {
-    var value = $(this).prop("value");
-    console.log(value);
+    $('.table-paging input').on('click', function (event) {
+        var value = ($(this).val() - 1);
+        inforSearch.pageNumber = value;
+        $('tbody').html("");
+        $('.table-paging').html("");
+        search();
+    })
 }
 
 /*Load user list*/
@@ -79,14 +84,17 @@ function search() {
         success: function (data) {
             if (data.message.messageCode == 0) {
                 for (var i = 0; i < data.userList.totalPages; i++) {
-                    $('.table-paging').append(
-                        `<button type="button" value="1" class="table-paging__page" onclick="pagingClick()">` + (i + 1) + `</button>`
-                    );
-                    // if ($('.table-paging a').attr('value') == inforSearch.pageNumber) {
-                    //     $('.table-paging__page').addClass('table-paging__page_cur');
-                    // } else {
-                    //     $('.table-paging a').remove('table-paging__page_cur');
-                    // }
+
+                    if (i == inforSearch.pageNumber) {
+                        $('.table-paging').append(
+                            `<input type="button" value="` + (i + 1) + `" class="table-paging__page table-paging__page_cur"/>`
+                        );
+                    } else {
+                        $('.table-paging').append(
+                            `<input type="button" value="` + (i + 1) + `" class="table-paging__page"/>`
+                        );
+                    }
+
                 }
 
                 $.each(data.userList.content, function (i, item) {
@@ -128,6 +136,7 @@ function search() {
             </tr>`);
                 });
                 selectCheckbox();
+                pagingClick();
             } else {
                 $('tbody').append(
                     `<tr>
