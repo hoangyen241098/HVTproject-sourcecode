@@ -4,7 +4,9 @@ import com.example.webDemo3.dto.ClassTableResponseDto;
 import com.example.webDemo3.dto.GiftedClassResponseDto;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.request.AddClassRequestDto;
+import com.example.webDemo3.dto.request.AddGiftedClassRequestDto;
 import com.example.webDemo3.service.AddClassService;
+import com.example.webDemo3.service.AddGiftedClassService;
 import com.example.webDemo3.service.ClassListService;
 import com.example.webDemo3.service.GiftedClassListService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class ClassController {
 
     @Autowired
     private AddClassService addClassService;
+
+    @Autowired
+    private AddGiftedClassService addGiftedClassService;
 
     /**
      * kimpt142
@@ -57,12 +62,24 @@ public class ClassController {
     /**
      * kimpt142
      * 29/6
-     * catch request to get gifted class list
-     * @return reponseDTO with a gifted class list and messagedto
+     * catch request to add new class
+     * @return MessageDTO
      */
     @PostMapping("/addclass")
     public MessageDTO addNewClass(@RequestBody AddClassRequestDto model)
     {
         return addClassService.addNewClass(model);
+    }
+
+    /**
+     * kimpt142
+     * 30/6
+     * catch request to add new gifted class
+     * @return MessageDTO
+     */
+    @PostMapping("/addgifftedclass")
+    public MessageDTO addNewGiftedClass(@RequestBody AddGiftedClassRequestDto model)
+    {
+        return addGiftedClassService.addGiftedClass(model);
     }
 }
