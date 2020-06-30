@@ -7,6 +7,7 @@ import lombok.Data;
  */
 @Data
 public class EditClassRequestDto {
+    private Integer classId;
     private String giftedClassName;
     private Integer status;
 }

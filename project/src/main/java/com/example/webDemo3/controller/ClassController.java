@@ -5,10 +5,8 @@ import com.example.webDemo3.dto.GiftedClassResponseDto;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.request.AddClassRequestDto;
 import com.example.webDemo3.dto.request.AddGiftedClassRequestDto;
-import com.example.webDemo3.service.AddClassService;
-import com.example.webDemo3.service.AddGiftedClassService;
-import com.example.webDemo3.service.ClassListService;
-import com.example.webDemo3.service.GiftedClassListService;
+import com.example.webDemo3.dto.request.EditClassRequestDto;
+import com.example.webDemo3.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +28,9 @@ public class ClassController {
 
     @Autowired
     private AddGiftedClassService addGiftedClassService;
+
+    @Autowired
+    private EditClassService editClassService;
 
     /**
      * kimpt142
@@ -81,5 +82,17 @@ public class ClassController {
     public MessageDTO addNewGiftedClass(@RequestBody AddGiftedClassRequestDto model)
     {
         return addGiftedClassService.addGiftedClass(model);
+    }
+
+    /**
+     * kimpt142
+     * 30/6
+     * catch request to edit class
+     * @return MessageDTO
+     */
+    @PostMapping("/editclass")
+    public MessageDTO editClass(@RequestBody EditClassRequestDto model)
+    {
+        return editClassService.editClass(model);
     }
 }
