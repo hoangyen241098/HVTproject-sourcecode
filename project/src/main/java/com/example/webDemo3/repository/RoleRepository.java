@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository;
  * kimpt142 - 25/6
  */
 @Repository
-public interface RoleRepository extends JpaRepository<Role,String> {
+public interface RoleRepository extends JpaRepository<Role,Integer> {
+    Role findByRoleId(Integer roleId);
 }
