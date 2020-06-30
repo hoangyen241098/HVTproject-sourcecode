@@ -20,3 +20,12 @@ $(document).ready(function () {
         localStorage.clear();
     })
 });
+
+$(document).on({
+    ajaxStart: function () {
+        $('body').addClass("loading");
+    },
+    ajaxComplete: function () {
+        $('body').removeClass("loading");
+    }
+})

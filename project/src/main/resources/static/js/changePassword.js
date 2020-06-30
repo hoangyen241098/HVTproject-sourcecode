@@ -35,6 +35,12 @@ $(document).ready(function () {
                 type: 'POST',
                 url: "/api/user/changepassword",
                 data: JSON.stringify(password),
+                beforeSend: function () {
+                    $('body').addClass("loading")
+                },
+                complete: function () {
+                    $('body').removeClass("loading")
+                },
                 success: function (data) {
                     console.log(JSON.stringify(password));
                     var messageCode = data.messageCode;
