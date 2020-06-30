@@ -42,18 +42,14 @@ public class LoginServiceImpl implements LoginService {
             return loginDto;
         }
 
-        //check status of account
-        if (user.getStatus() == 1){
-            message = Constant.USER_INACTIVE;
-            loginDto.setMessage(message);
-            return loginDto;
-        }
-
         /**
          * check username and password
          */
         if(user==null){
             message = Constant.USER_NOT_EXIT;
+        }
+        else if(user.getStatus() == 1){
+            message = Constant.USER_INACTIVE;
         }
         else if(!u.getPassword().equals(user.getPassword())){
             message = Constant.WRONG_PASSWORD;
