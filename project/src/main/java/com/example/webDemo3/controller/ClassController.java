@@ -1,5 +1,6 @@
 package com.example.webDemo3.controller;
 
+import com.example.webDemo3.dto.AddClassResponseDto;
 import com.example.webDemo3.dto.ClassTableResponseDto;
 import com.example.webDemo3.dto.GiftedClassResponseDto;
 import com.example.webDemo3.dto.MessageDTO;
@@ -67,7 +68,7 @@ public class ClassController {
      * @return MessageDTO
      */
     @PostMapping("/addclass")
-    public MessageDTO addNewClass(@RequestBody AddClassRequestDto model)
+    public AddClassResponseDto addNewClass(@RequestBody AddClassRequestDto model)
     {
         return addClassService.addNewClass(model);
     }

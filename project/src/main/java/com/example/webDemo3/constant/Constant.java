@@ -67,6 +67,8 @@ public class Constant {
             new MessageDTO(1,"Chức vụ không tồn tại.");
     public static final MessageDTO CLASS_EXIST =
             new MessageDTO(1,"Lớp này đã tồn tại.");
+    public static final MessageDTO GIFTEDCLASSNAME_NOT_EXIST =
+            new MessageDTO(1,"Tên hệ chuyên không tồn tại.");
     /**
      * Success message
      */

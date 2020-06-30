@@ -1,6 +1,7 @@
 package com.example.webDemo3.service.impl;
 
 import com.example.webDemo3.constant.Constant;
+import com.example.webDemo3.dto.AddClassResponseDto;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.request.AddClassRequestDto;
 import com.example.webDemo3.dto.request.GenerateNameRequestDto;
@@ -42,8 +43,9 @@ public class AddClassServiceImpl implements AddClassService {
      * @return message if success or fail
      */
     @Override
-    public MessageDTO addNewClass(AddClassRequestDto model) {
-
+    public AddClassResponseDto addNewClass(AddClassRequestDto model) {
+        AddClassResponseDto responseDto = new AddClassResponseDto();
+        List<User> userList = new ArrayList<>();
         Class addClass = new Class();
         MessageDTO message = new MessageDTO();
         String classIdentifier = model.getClassIdentifier();
@@ -52,17 +54,20 @@ public class AddClassServiceImpl implements AddClassService {
 
         if(classIdentifier.trim().equals("")){
             message = Constant.CLASSIDENTIFIER_EMPTY;
-            return message;
+            responseDto.setMessage(message);
+            return responseDto;
         }
 
         if(grade == null){
             message = Constant.GRADE_EMPTY;
-            return message;
+            responseDto.setMessage(message);
+            return responseDto;
         }
 
         if(giftedClassId == null){
             message = Constant.GIFTEDCLASSID_EMPTY;
-            return message;
+            responseDto.setMessage(message);
+            return responseDto;
         }
 
         addClass.setClassIdentifier(classIdentifier);
@@ -84,6 +89,7 @@ public class AddClassServiceImpl implements AddClassService {
                     userRedStar.setClassSchool(saveClass);
                     userRedStar.setPassword("123@#123a");
                     userRepository.save(userRedStar);
+                    userList.add(userRedStar);
                 }
             }
             if(model.getIsMonitor()){
@@ -94,20 +100,25 @@ public class AddClassServiceImpl implements AddClassService {
                 userMonitor.setClassSchool(saveClass);
                 userMonitor.setPassword("123@#123a");
                 userRepository.save(userMonitor);
+                userList.add(userMonitor);
             }
         }
         catch (DataIntegrityViolationException e){
             message = Constant.CLASS_EXIST;
-            return message;
+            responseDto.setMessage(message);
+            return responseDto;
         }
         catch (Exception e)
         {
             message.setMessageCode(1);
             message.setMessage(e.toString());
-            return message;
+            responseDto.setMessage(message);
+            return responseDto;
         }
 
         message = Constant.SUCCESS;
-        return message;
+        responseDto.setMessage(message);
+        responseDto.setUserList(userList);
+        return responseDto;
     }
 }
