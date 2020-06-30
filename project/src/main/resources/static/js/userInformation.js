@@ -47,13 +47,10 @@ $("#confirmEdit").click(function (e) {
     var phone = $('#phone').val();
     var email = $('#email').val();
 
-    if (fullName.trim() == "") {
-        $('.userInfo-err').text("Hãy điền họ và tên.");
-        return false;
-    } else if (!phone.match(phoneRegex)) {
+    if (phone.trim() != "" && !phone.match(phoneRegex)) {
         $('.userInfo-err').text("SĐT không đúng định dạng.");
         return false;
-    } else if (!email.match(emailRegex)) {
+    } else if (email.trim() != "" && !email.match(emailRegex)) {
         $('.userInfo-err').text("Email không đúng định dạng.");
         return false;
     } else {

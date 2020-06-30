@@ -40,17 +40,12 @@ $("#search").click(function () {
     } else {
         orderBy = $('#orderBy option:selected').val();
     }
-    if ($('.table-paging__page_cur').attr("value") == null) {
-        pageNumber = "0";
-    } else {
-        pageNumber = $('.table-paging__page_cur').attr("value");
-    }
     inforSearch = {
         userName: userName,
         roleId: roleId,
         sortBy: sortBy,
         orderBy: orderBy,
-        pageNumber: pageNumber
+        pageNumber: '0'
     }
     console.log(JSON.stringify(inforSearch));
     $('tbody').html("");
@@ -60,8 +55,13 @@ $("#search").click(function () {
 search();
 
 function pagingClick() {
-    var value = $(this).prop("value");
-    console.log(value);
+    $('.table-paging input').on('click', function (event) {
+        var value = ($(this).val() - 1);
+        inforSearch.pageNumber = value;
+        $('tbody').html("");
+        $('.table-paging').html("");
+        search();
+    })
 }
 
 /*Load user list*/
@@ -77,60 +77,76 @@ function search() {
             $('body').removeClass("loading")
         },
         success: function (data) {
-            if (data.userList.content.length == 0) {
-                $('tbody').append(
-                    `<tr>
-                        <td colspan="7" class="userlist-result">
-                            Không có kết quả trả về!
-                        </td>
-                    </tr>`
-                )
-            }
-            for (var i = 0; i < data.userList.totalPages; i++) {
-                $('.table-paging').append(
-                    `<button type="button" value="1" class="table-paging__page" onclick="pagingClick()">` + (i + 1) + `</button>`
-                );
-                // if ($('.table-paging a').attr('value') == inforSearch.pageNumber) {
-                //     $('.table-paging__page').addClass('table-paging__page_cur');
-                // } else {
-                //     $('.table-paging a').remove('table-paging__page_cur');
-                // }
-            }
+            if (data.message.messageCode == 0) {
+                for (var i = 0; i < data.userList.totalPages; i++) {
 
-            $.each(data.userList.content, function (i, item) {
-                var mappingName, phone, email;
-                if (item.classSchool == null) {
-                    mappingName = "";
-                } else {
-                    mappingName = item.classSchool.mappingName;
+                    if (i == inforSearch.pageNumber) {
+                        $('.table-paging').append(
+                            `<input type="button" value="` + (i + 1) + `" class="table-paging__page table-paging__page_cur"/>`
+                        );
+                    } else {
+                        $('.table-paging').append(
+                            `<input type="button" value="` + (i + 1) + `" class="table-paging__page"/>`
+                        );
+                    }
+
                 }
-                if (item.phone == null) {
-                    phone = "";
-                } else {
-                    phone = item.phone;
-                }
-                if (item.email == null) {
-                    email = "";
-                } else {
-                    email = item.email;
-                }
-                $('tbody').append(
-                    `<tr>
+
+                $.each(data.userList.content, function (i, item) {
+                    var mappingName, phone, email, name;
+                    if (item.name == null) {
+                        name = "";
+                    } else {
+                        name = item.name;
+                    }
+                    if (item.phone == null) {
+                        phone = "";
+                    } else {
+                        phone = item.phone;
+                    }
+                    if (item.email == null) {
+                        email = "";
+                    } else {
+                        email = item.email;
+                    }
+                    if (item.classSchool == null) {
+                        mappingName = "";
+                    } else {
+                        mappingName = item.classSchool.grade + " " + item.classSchool.giftedClass.name;
+                    }
+                    var s = "";
+                    var checked = ""
+                    if (ischeck(item.username)) {
+                        s = "selected"
+                        checked = "checked"
+                    }
+                    $('tbody').append(
+                        `<tr class="` + s + `">
                 <td>
-                    <span class="custom-checkbox">
-                        <input id="` + item.username + `"type="checkbox" name="options" value="` + item.username + `">
+                    <span class="custom-checkbox ">
+                        <input id="` + item.username + `"type="checkbox" name="options" value="` + item.username + `" ` + checked + `>
                         <label for="` + item.username + `"></label>
                     </span>
                 </td>
                 <td><span id="userName">` + item.username + `</span></td>
-                <td><span id="fullName">` + item.name + `</span></td>
+                <td><span id="fullName">` + name + `</span></td>
                 <td><span id="roleName">` + item.role.roleName + `</span></td>
                 <td><span id="className">` + mappingName + `</span></td>
                 <td><span id="phone">` + phone + `</span></td>
                 <td><span id="email">` + email + `</span></td>
-            </tr>`);
-            });
-            selectCheckbox();
+            </trselected>`);
+                });
+                selectCheckbox();
+                pagingClick();
+            } else {
+                $('tbody').append(
+                    `<tr>
+                        <td colspan="7" class="userlist-result">
+                            ` + data.message.message + `
+                        </td>
+                    </tr>`
+                )
+            }
         },
         failure: function (errMsg) {
             console.log(errMsg);
@@ -138,6 +154,18 @@ function search() {
         dataType: "json",
         contentType: "application/json"
     });
+}
+
+function ischeck(username) {
+    if (listUser == null || listUser.length == 0) {
+        return false;
+    }
+    for (var i = 0; i < listUser.length; i++) {
+        if (listUser[i] == username) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function checkUser() {
@@ -182,7 +210,7 @@ $("#deleteAccount").click(function (e) {
     console.log(JSON.stringify(listUser));
     $.ajax({
         url: '/api/admin/deleteaccount',
-        type: 'DELETE',
+        type: 'POST',
         data: JSON.stringify(listUser),
         beforeSend: function () {
             $('body').addClass("loading")
@@ -290,11 +318,16 @@ function selectCheckbox() {
                 this.checked = true;
             });
             $('tbody tr').addClass('selected');
+            listUser.push(checkbox.val());
         } else {
             checkbox.each(function () {
                 this.checked = false;
             });
             $('tbody tr').removeClass('selected');
+            var removeItem = checkbox.val();
+            listUser = $.grep(listUser, function (value) {
+                return value != removeItem;
+            });
         }
 
     });
@@ -303,4 +336,5 @@ function selectCheckbox() {
             $("#selectAll").prop("checked", false);
         }
     });
+    console.log(listUser)
 }

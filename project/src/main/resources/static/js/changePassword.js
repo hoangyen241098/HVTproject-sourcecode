@@ -60,3 +60,7 @@ $(document).ready(function () {
         }
     })
 });
+
+$('#changePassword .modal-footer a').click(function () {
+    localStorage.clear();
+})

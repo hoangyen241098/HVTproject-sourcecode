@@ -76,7 +76,8 @@ $("#next").click(function () {
     if (roleId == 0 || roleId == null) {
         $('.createAccount-err').text("Hãy chọn chức vụ.");
         return false;
-    } else if (roleId == 3 && classId == 0 || roleId == 4 && classId == 0) {
+    } else if (roleId == 3 && classId == 0 || roleId == 4 && classId == 0 ||
+        roleId == 3 && classId == null || roleId == 4 && classId == null) {
         $('.createAccount-err').text("Hãy chọn lớp.");
         return false;
     } else {
@@ -84,13 +85,13 @@ $("#next").click(function () {
             $('.fullName').removeClass('hide');
             $('.full-info').removeClass('hide');
             $('#username').prop('disabled', false);
-            classId = "0";
+            classId = null;
 
         } else if (roleId == 6) {
             $('.fullName').removeClass('hide');
             $('.full-info').addClass('hide');
             $('#username').prop('disabled', false);
-            classId = "0";
+            classId = null;
         } else {
             $('.fullName').addClass('hide');
             $('.full-info').addClass('hide');
@@ -131,13 +132,6 @@ $("#submit").click(function (e) {
     phone = $('#phone').val();
     email = $('#email').val();
 
-    if (roleId == 1 && fullName.trim() == "" ||
-        roleId == 2 && fullName.trim() == "" ||
-        roleId == 5 && fullName.trim() == "" ||
-        roleId == 6 && fullName.trim() == "") {
-        $('.createAccount-err').text("Hãy điền họ và tên.");
-        return false;
-    }
     if (userName.trim() == "") {
         $('.createAccount-err').text("Hãy điền tên đăng nhập.");
         return false;

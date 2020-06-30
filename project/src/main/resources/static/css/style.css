@@ -422,7 +422,7 @@ tr.selected {
     justify-content: flex-end;
 }
 
-.table-paging button {
+.table-paging input {
     box-sizing: border-box;
     display: inline-block;
     min-width: 1.5em;
@@ -437,17 +437,17 @@ tr.selected {
     background: transparent;
 }
 
-.table-paging button.table-paging__page_cur {
+.table-paging input.table-paging__page_cur {
     color: white !important;
     background-color: #0070d2;
     border: 1px solid #0070d2;
 }
 
-.table-paging button:hover {
+.table-paging input:hover {
     text-decoration: underline;
 }
 
-.table-paging button.table-paging__page_cur:hover {
+.table-paging input.table-paging__page_cur:hover {
     cursor: default;
     text-decoration: none;
 }
