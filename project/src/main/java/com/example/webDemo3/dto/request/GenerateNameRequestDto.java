@@ -9,4 +9,12 @@ kimpt142 - 30/6
 public class GenerateNameRequestDto {
     private Integer roleId;
     private Integer classId;
+
+    public GenerateNameRequestDto() {
+    }
+
+    public GenerateNameRequestDto(Integer roleId, Integer classId) {
+        this.roleId = roleId;
+        this.classId = classId;
+    }
 }

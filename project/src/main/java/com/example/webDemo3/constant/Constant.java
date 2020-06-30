@@ -64,7 +64,9 @@ public class Constant {
     public static final MessageDTO CLASS_EMPTY =
             new MessageDTO(1,"Hãy nhập lớp.");
     public static final MessageDTO ROLE_NOT_EXIST =
-            new MessageDTO(1,"Chức vụ không tồn tại");
+            new MessageDTO(1,"Chức vụ không tồn tại.");
+    public static final MessageDTO CLASS_EXIST =
+            new MessageDTO(1,"Lớp này đã tồn tại.");
     /**
      * Success message
      */
