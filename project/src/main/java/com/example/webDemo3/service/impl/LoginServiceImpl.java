@@ -43,12 +43,12 @@ public class LoginServiceImpl implements LoginService {
         }
 
         /**
-         * check username and password
+         * check username, status and password
          */
         if(user==null){
             message = Constant.USER_NOT_EXIT;
         }
-        else if(user.getStatus() == 1){
+        else if(user.getStatus() == null || user.getStatus() != 0){
             message = Constant.USER_INACTIVE;
         }
         else if(!u.getPassword().equals(user.getPassword())){
