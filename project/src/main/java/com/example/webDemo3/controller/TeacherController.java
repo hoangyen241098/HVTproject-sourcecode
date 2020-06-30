@@ -5,7 +5,7 @@ import com.example.webDemo3.dto.ViewTeaListResponseDto;
 import com.example.webDemo3.dto.request.AddTeacherRequestDto;
 import com.example.webDemo3.dto.request.DeleteTeacherRequestDto;
 import com.example.webDemo3.dto.request.EditTeaInforRequestDto;
-import com.example.webDemo3.dto.request.ViewTeaListResquestDto;
+import com.example.webDemo3.dto.request.ViewTeaListRequestDto;
 import com.example.webDemo3.service.AddTeacherService;
 import com.example.webDemo3.service.DeleteTeacherService;
 import com.example.webDemo3.service.EditTeaInforService;
@@ -79,7 +79,7 @@ public class TeacherController {
      * @return ViewTeaListResponseDto
      */
     @PostMapping("/teacherlist")
-    public ViewTeaListResponseDto addTeacher(@RequestBody ViewTeaListResquestDto model)
+    public ViewTeaListResponseDto addTeacher(@RequestBody ViewTeaListRequestDto model)
     {
         return viewTeaListService.searchTeacher(model);
     }

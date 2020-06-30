@@ -3,7 +3,7 @@ package com.example.webDemo3.service.impl;
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.ViewTeaListResponseDto;
-import com.example.webDemo3.dto.request.ViewTeaListResquestDto;
+import com.example.webDemo3.dto.request.ViewTeaListRequestDto;
 import com.example.webDemo3.entity.Teacher;
 import com.example.webDemo3.repository.TeacherRepository;
 import com.example.webDemo3.service.ViewTeaListService;
@@ -32,7 +32,7 @@ public class ViewTeaListServicempl implements ViewTeaListService {
      * @return ViewTeaListResponseDto
      */
     @Override
-    public ViewTeaListResponseDto searchTeacher(ViewTeaListResquestDto viewTeacherList) {
+    public ViewTeaListResponseDto searchTeacher(ViewTeaListRequestDto viewTeacherList) {
         ViewTeaListResponseDto viewListResponse = new ViewTeaListResponseDto();
         MessageDTO message = new MessageDTO();
         Pageable paging;
