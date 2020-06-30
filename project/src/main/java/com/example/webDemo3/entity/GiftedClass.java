@@ -20,4 +20,11 @@ public class GiftedClass {
 
     @Column(name = "NAME")
     private String name;
+
+    public GiftedClass() {
+    }
+
+    public GiftedClass(Integer giftedClassId) {
+        this.giftedClassId = giftedClassId;
+    }
 }
