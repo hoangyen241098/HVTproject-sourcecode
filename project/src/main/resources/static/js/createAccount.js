@@ -1,4 +1,4 @@
-var fullName, userName, passWord, roleId, phone, email, classId;
+var fullName, userName, passWord, roleId, phone, email, classId, roleName, className;
 var current_fs, next_fs, previous_fs;
 var left, opacity, scale;
 var emailRegex = '^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$';
@@ -10,10 +10,8 @@ $.ajax({
     type: 'POST',
     dataType: 'JSON',
     success: function (data) {
-        $.each(data, function (i, item) {
-            $.each(item, function (i, list) {
-                $('#position-role').append(`<option value="` + list.roleId + `">` + list.roleName + `</option>`);
-            });
+        $.each(data.listRole, function (i, list) {
+            $('#position-role').append(`<option value="` + list.roleId + `" name="` + list.roleName + `">` + list.roleName + `</option>`);
         });
     },
     failure: function (errMsg) {
@@ -21,32 +19,47 @@ $.ajax({
     }
 });
 /*Call API for Class List*/
-// $.ajax({
-//     url: '/api/admin/classlist',
-//     type: 'POST',
-//     dataType: 'JSON',
-//     success: function (data) {
-//         $.each(data, function (i, item) {
-//             $.each(item, function (i, list) {
-//                 $('#class').append(`<option value="` + list.classID + `">` + list.className + `</option>`);
-//             });
-//         });
-//     },
-//     failure: function (errMsg) {
-//         $('.createAccount-err').text(errMsg);
-//     }
-// });
+$.ajax({
+    url: '/api/admin/classlist',
+    type: 'POST',
+    dataType: 'JSON',
+    success: function (data) {
+        $.each(data.classList, function (i, list) {
+            $('#class').append(`<option value="` + list.classID + `" name="` + list.className + `">` + list.className + `</option>`);
+        });
+    },
+    failure: function (errMsg) {
+        $('.createAccount-err').text(errMsg);
+    }
+});
 
 function changeSelected() {
     classId = null;
     roleId = $('#position-role option:selected').val();
+    roleName = $('#position-role option:selected').attr('name');
     if (roleId == 3 || roleId == 4) {
         $('#position-class').removeClass('hide');
     } else {
         $('#position-class').addClass('hide');
     }
     classId = $('#class option:selected').val();
+    className = $('#class option:selected').attr('name');
     console.log(roleId, classId);
+}
+
+function convertString(str) {
+    str = str.toLowerCase();
+    str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+    str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+    str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+    str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+    str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+    str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+    str = str.replace(/đ/g, "d");
+    str = str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, " ");
+    str = str.replace(/\s+/g, '');
+    str = str.trim();
+    return str;
 }
 
 $("#next").click(function () {
@@ -71,17 +84,21 @@ $("#next").click(function () {
             $('.fullName').removeClass('hide');
             $('.full-info').removeClass('hide');
             $('#username').prop('disabled', false);
-            classId = null;
+            classId = "0";
 
         } else if (roleId == 6) {
             $('.fullName').removeClass('hide');
             $('.full-info').addClass('hide');
             $('#username').prop('disabled', false);
-            classId = null;
+            classId = "0";
         } else {
             $('.fullName').addClass('hide');
             $('.full-info').addClass('hide');
             $('#username').prop('disabled', true);
+            roleName = convertString(roleName);
+            className = convertString(className);
+            $('#username').val(roleName + className);
+            console.log(roleName + className);
         }
 
         $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
@@ -113,7 +130,11 @@ $("#submit").click(function (e) {
     var confirmPassword = $('#confirm-password').val();
     phone = $('#phone').val();
     email = $('#email').val();
-    if (fullName.trim() == "") {
+
+    if (roleId == 1 && fullName.trim() == "" ||
+        roleId == 2 && fullName.trim() == "" ||
+        roleId == 5 && fullName.trim() == "" ||
+        roleId == 6 && fullName.trim() == "") {
         $('.createAccount-err').text("Hãy điền họ và tên.");
         return false;
     }
@@ -129,10 +150,12 @@ $("#submit").click(function (e) {
     } else if (passWord != confirmPassword) {
         $('.createAccount-err').text("Mật khẩu xác nhận không đúng.");
         return false;
-    } else if (!phone.match(phoneRegex)) {
+    } else if (phone.trim() != "" && !phone.match(phoneRegex)) {
+        console.log(phone.trim());
         $('.createAccount-err').text("SĐT không đúng định dạng.");
         return false;
-    } else if (!email.match(emailRegex)) {
+    } else if (email.trim() != "" && !email.match(emailRegex)) {
+        console.log(email.trim());
         $('.createAccount-err').text("Email không đúng định dạng.");
         return false;
     } else {
@@ -150,6 +173,12 @@ $("#submit").click(function (e) {
             url: '/api/admin/createaccount',
             type: 'POST',
             data: JSON.stringify(account),
+            beforeSend: function () {
+                $('body').addClass("loading")
+            },
+            complete: function () {
+                $('body').removeClass("loading")
+            },
             success: function (data) {
                 var messageCode = data.messageCode;
                 var message = data.message;
