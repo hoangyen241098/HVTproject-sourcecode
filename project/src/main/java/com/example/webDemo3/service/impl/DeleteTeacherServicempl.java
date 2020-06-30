@@ -15,6 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * lamnt98
+ * 30/06
+ */
 @Service
 public class DeleteTeacherServicempl implements DeleteTeacherService {
 
@@ -30,7 +34,7 @@ public class DeleteTeacherServicempl implements DeleteTeacherService {
             for(Integer teacherId : listTeacher){
                 Teacher teacher = teacherRepository.findById(teacherId).orElse(null);
                 //check teacher exists or not
-                if(teacher != null && teacher.getStatus() == null || teacher.getStatus() != 1){
+                if(teacher != null && (teacher.getStatus() == null || teacher.getStatus() != 1)){
                     teacher.setStatus(1);
                     teacherRepository.save(teacher);
                 }else{
