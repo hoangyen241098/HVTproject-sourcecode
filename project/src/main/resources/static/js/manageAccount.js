@@ -4,7 +4,7 @@ $.ajax({
     type: 'POST',
     success: function (data) {
         $.each(data.listRole, function (i, item) {
-            $('#search-role').append(`<li value="` + item.roleId + `">` + item.roleName + `</li>`);
+            $('#role-name').append(`<option value="` + item.roleId + `">` + item.roleName + `</option>`);
         });
     },
     failure: function (errMsg) {
@@ -15,7 +15,7 @@ $.ajax({
 });
 var inforSearch = {
     userName: "",
-    roleId: "",
+    roleId: null,
     sortBy: "0",
     orderBy: "0",
     pageNumber: "0"
@@ -25,21 +25,25 @@ var listUser = [];
 $("#search").click(function () {
     var userName, roleId, sortBy, orderBy, pageNumber;
     userName = $('#searchByUsername input').val();
-    pageNumber = 0;
-    if ($('#role-name input').attr("value") == null) {
-        roleId = 0;
+    if ($('#role-name option:selected').val() == null) {
+        roleId = null;
     } else {
-        roleId = $('#role-name input').attr("value");
+        roleId = $('#role-name option:selected').val();
     }
-    if ($('#sortBy input').attr("value") == null) {
-        sortBy = 0;
+    if ($('#sortBy option:selected').val() == null) {
+        sortBy = "0";
     } else {
-        sortBy = $('#sortBy input').attr("value");
+        sortBy = $('#sortBy option:selected').val();
     }
-    if ($('#orderBy input').attr("value") == null) {
-        orderBy = 0;
+    if ($('#orderBy option:selected').val() == null) {
+        orderBy = "0";
     } else {
-        orderBy = $('#orderBy input').attr("value");
+        orderBy = $('#orderBy option:selected').val();
+    }
+    if ($('.table-paging__page_cur').attr("value") == null) {
+        pageNumber = "0";
+    } else {
+        pageNumber = $('.table-paging__page_cur').attr("value");
     }
     inforSearch = {
         userName: userName,
@@ -50,9 +54,15 @@ $("#search").click(function () {
     }
     console.log(JSON.stringify(inforSearch));
     $('tbody').html("");
+    $('.table-paging').html("");
     search();
 });
 search();
+
+function pagingClick() {
+    var value = $(this).prop("value");
+    console.log(value);
+}
 
 /*Load user list*/
 function search() {
@@ -60,6 +70,12 @@ function search() {
         url: '/api/admin/userlist',
         type: 'POST',
         data: JSON.stringify(inforSearch),
+        beforeSend: function () {
+            $('body').addClass("loading")
+        },
+        complete: function () {
+            $('body').removeClass("loading")
+        },
         success: function (data) {
             if (data.userList.content.length == 0) {
                 $('tbody').append(
@@ -70,6 +86,17 @@ function search() {
                     </tr>`
                 )
             }
+            for (var i = 0; i < data.userList.totalPages; i++) {
+                $('.table-paging').append(
+                    `<button type="button" value="1" class="table-paging__page" onclick="pagingClick()">` + (i + 1) + `</button>`
+                );
+                // if ($('.table-paging a').attr('value') == inforSearch.pageNumber) {
+                //     $('.table-paging__page').addClass('table-paging__page_cur');
+                // } else {
+                //     $('.table-paging a').remove('table-paging__page_cur');
+                // }
+            }
+
             $.each(data.userList.content, function (i, item) {
                 var mappingName, phone, email;
                 if (item.classSchool == null) {
@@ -113,17 +140,56 @@ function search() {
     });
 }
 
+function checkUser() {
+    $('#deleteAccountModal .modal-body').html("");
+    var userErr = localStorage.getItem("username");
+    if (jQuery.inArray(userErr, listUser) != -1) {
+        $('#deleteAccountModal .modal-body').append(`<h5>Bạn không thể xoá tài khoản <b class="error">` + userErr + `</b></h5>`);
+        $('#deleteAccountModal .modal-footer .btn-danger').addClass('hide');
+        $('#deleteAccountModal .modal-footer .btn-primary').attr('value', 'ĐÓNG');
+    } else if (listUser.length == 0) {
+        $('#deleteAccountModal .modal-body').append(`<h5>Hãy chọn tài khoản mà bạn muốn xóa</h5>`);
+        $('#deleteAccountModal .modal-footer .btn-danger').addClass('hide');
+        $('#deleteAccountModal .modal-footer .btn-primary').attr('value', 'ĐÓNG');
+    } else {
+        $('#deleteAccountModal .modal-body').append(`<h5>Bạn có chắc muốn <b>XÓA</b> tài khoản này không?</h5>`);
+        $('#deleteAccountModal .modal-footer .btn-danger').removeClass('hide');
+        $('#deleteAccountModal .modal-footer .btn-primary').attr('value', 'KHÔNG');
+    }
+}
+
+function checkResetPassword() {
+    if (listUser.length == 0) {
+        $('#resetPasswordModal .modal-body .form-group').addClass('hide');
+        $('#resetPasswordModal .modal-body').append(`<h5>Hãy chọn tài khoản mà bạn muốn đặt lại mật khẩu</h5>`);
+        $('#resetPasswordModal .modal-footer .btn-danger').addClass('hide');
+        $('#resetPasswordModal .modal-footer .btn-primary').attr('value', 'ĐÓNG');
+    } else {
+        $('#resetPasswordModal .modal-body .form-group').removeClass('hide');
+        $('#resetPasswordModal .modal-body h5').addClass('hide');
+        $('#resetPasswordModal .modal-footer .btn-danger').removeClass('hide');
+        $('#resetPasswordModal .modal-footer .btn-primary').attr('value', 'KHÔNG');
+    }
+}
+
 /*Delete account*/
 $("#deleteAccount").click(function (e) {
     listUser = {
         listUser: listUser,
     }
+
     e.preventDefault();
     console.log(JSON.stringify(listUser));
     $.ajax({
         url: '/api/admin/deleteaccount',
         type: 'DELETE',
         data: JSON.stringify(listUser),
+        beforeSend: function () {
+            $('body').addClass("loading")
+        },
+        complete: function () {
+            $('body').removeClass("loading")
+        },
         success: function (data) {
             var messageCode = data.messageCode;
             var message = data.message;
@@ -138,7 +204,7 @@ $("#deleteAccount").click(function (e) {
             }
         },
         failure: function (errMsg) {
-            console.log(errMsg);
+            $('#message-delete').text(errMsg);
         },
         dataType: "json",
         contentType: "application/json"
@@ -173,6 +239,12 @@ $("#resetPassword").click(function (e) {
             url: '/api/admin/resetpassword',
             type: 'POST',
             data: JSON.stringify(resetPassword),
+            beforeSend: function () {
+                $('body').addClass("loading")
+            },
+            complete: function () {
+                $('body').removeClass("loading")
+            },
             success: function (data) {
                 var messageCode = data.messageCode;
                 var message = data.message;
@@ -187,7 +259,7 @@ $("#resetPassword").click(function (e) {
                 }
             },
             failure: function (errMsg) {
-                console.log(errMsg);
+                $('#message-reset').text(errMsg);
             },
             dataType: "json",
             contentType: "application/json"
@@ -203,7 +275,6 @@ function selectCheckbox() {
         if ($(this).is(':checked')) {
             row.addClass('selected');
             listUser.push($(this).val());
-            // console.log("My favourite sports are: " + userList.join(", "));
         } else {
             row.removeClass('selected');
             var removeItem = $(this).val();
@@ -211,7 +282,6 @@ function selectCheckbox() {
                 return value != removeItem;
             });
         }
-        console.log(listUser);
     });
 
     $("#selectAll").click(function () {

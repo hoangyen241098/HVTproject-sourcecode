@@ -40,8 +40,9 @@ public class DeleteAccountServicempl implements DeleteAccountService {
             for(String userName : listUser){
                 User user = userRepository.findUserByUsername(userName);
                 //check user exists or not
-                if(user != null){
-                    userRepository.deleteById(userName);
+                if(user != null && user.getStatus() == null || user.getStatus() != 1){
+                    user.setStatus(1);
+                    userRepository.save(user);
                 }else{
                     messageDTO = Constant.USER_NOT_EXIT;
                     return  messageDTO;
