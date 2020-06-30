@@ -1,9 +1,6 @@
 package com.example.webDemo3.controller;
 
-import com.example.webDemo3.dto.ClassListResponseDto;
-import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.dto.RoleListResponseDTO;
-import com.example.webDemo3.dto.SearchUserResponseDto;
+import com.example.webDemo3.dto.*;
 import com.example.webDemo3.dto.request.*;
 import com.example.webDemo3.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,15 +26,6 @@ public class AdminController {
 
     @Autowired
     private ClassListService classListService;
-
-    @Autowired
-    private EditTeaInforService editTeaInforService;
-
-    @Autowired
-    private  DeleteTeacherService deleteTeacherService;
-
-    @Autowired
-    private AddTeacherService addTeacherService;
 
     /**
      * kimpt142
@@ -115,21 +103,4 @@ public class AdminController {
         return  responseDto;
     }
 
-    @PostMapping("/editteacherinformation")
-    public MessageDTO editTeacherInfor(@RequestBody EditTeaInforRequestDto model)
-    {
-        return editTeaInforService.editTeacherInformation(model);
-    }
-
-    @PostMapping("/deleteteacher")
-    public MessageDTO deleteTeacher(@RequestBody DeleteTeacherRequestDto model)
-    {
-        return deleteTeacherService.deleteTeacher(model);
-    }
-
-    @PostMapping("/addteacher")
-    public MessageDTO addTeacher(@RequestBody AddTeacherRequestDto model)
-    {
-        return addTeacherService.addTeacher(model);
-    }
 }
