@@ -2,10 +2,7 @@ package com.example.webDemo3.entity;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * lamnt98 - 27/06
@@ -16,6 +13,7 @@ import javax.persistence.Table;
 public class GiftedClass {
     @Id
     @Column(name = "GIFTED_CLASS_ID")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer giftedClassId;
 
     @Column(name = "NAME")

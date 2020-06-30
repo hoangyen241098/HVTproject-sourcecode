@@ -42,6 +42,8 @@ public class Constant {
             new MessageDTO(1,"Tên lớp này tồn tại.");
     public static final MessageDTO USERLIST_NULL =
             new MessageDTO(1,"Danh sách lớp trống.");
+    public static final MessageDTO GIFTEDCLASSID_EXIST =
+            new MessageDTO(1,"Tên hệ chuyên đã tồn tại.");
 
     /**
      * Success message
