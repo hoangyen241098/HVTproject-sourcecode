@@ -70,9 +70,9 @@ public class AddAccountServiceImpl implements AddAccountService {
                 newUser.setRole(new Role(roleId));
             }
 
-            //if(classId != null){
-                //newUser.setClassSchool(new Class(classId));
-            //}
+            if(classId != null){
+                newUser.setClassSchool(new Class(classId));
+            }
 
             try {
                 userRepository.save(newUser);
