@@ -57,6 +57,8 @@ public class Constant {
             new MessageDTO(1,"Thông tin không đúng định dạng.");
     public static final MessageDTO TEACHERLIST_NULL =
             new MessageDTO(1,"Danh sách giáo viên trống.");
+    public static final MessageDTO CLASS_NOT_EXIST =
+            new MessageDTO(1,"Lớp này không tồn tại.");
     /**
      * Success message
      */
