@@ -4,10 +4,7 @@ import com.example.webDemo3.dto.ClassListResponseDto;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.RoleListResponseDTO;
 import com.example.webDemo3.dto.SearchUserResponseDto;
-import com.example.webDemo3.dto.request.AddAccResquestDTO;
-import com.example.webDemo3.dto.request.DeleteAccountRequestDto;
-import com.example.webDemo3.dto.request.ResetPassRequestDTO;
-import com.example.webDemo3.dto.request.SearchUserRequestDto;
+import com.example.webDemo3.dto.request.*;
 import com.example.webDemo3.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +23,21 @@ public class AdminController {
 
     @Autowired
     private ResetPassService resetPassService;
+
+    @Autowired
+    private RoleService roleService;
+
+    @Autowired
+    private ClassListService classListService;
+
+    @Autowired
+    private EditTeaInforService editTeaInforService;
+
+    @Autowired
+    private  DeleteTeacherService deleteTeacherService;
+
+    @Autowired
+    private AddTeacherService addTeacherService;
 
     /**
      * kimpt142
@@ -47,7 +59,7 @@ public class AdminController {
      * @param model
      * @return
      */
-    @DeleteMapping("/deleteaccount")
+    @PostMapping("/deleteaccount")
     public MessageDTO login(@RequestBody DeleteAccountRequestDto model)
     {
         return deleteAccountService.deleteAccount(model);
@@ -66,12 +78,6 @@ public class AdminController {
     {
         return resetPassService.resetMultiplePassword(model.getUserNameList(), model.getPassWord());
     }
-
-    @Autowired
-    private RoleService roleService;
-
-    @Autowired
-    private ClassListService classListService;
 
     /**
      * kimpt142
@@ -107,5 +113,23 @@ public class AdminController {
         SearchUserResponseDto responseDto = new SearchUserResponseDto();
         responseDto = searchUserService.searchUser(model);
         return  responseDto;
+    }
+
+    @PostMapping("/editteacherinformation")
+    public MessageDTO editTeacherInfor(@RequestBody EditTeaInforRequestDto model)
+    {
+        return editTeaInforService.editTeacherInformation(model);
+    }
+
+    @PostMapping("/deleteteacher")
+    public MessageDTO deleteTeacher(@RequestBody DeleteTeacherRequestDto model)
+    {
+        return deleteTeacherService.deleteTeacher(model);
+    }
+
+    @PostMapping("/addteacher")
+    public MessageDTO addTeacher(@RequestBody AddTeacherRequestDto model)
+    {
+        return addTeacherService.addTeacher(model);
     }
 }
