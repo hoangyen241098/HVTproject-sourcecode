@@ -55,6 +55,8 @@ public class Constant {
             new MessageDTO(1,"Tên định danh của giáo viên đã tồn tại.");
     public static final MessageDTO TEACHER_ID_INVALID =
             new MessageDTO(1,"Thông tin không đúng định dạng.");
+    public static final MessageDTO CLASS_NOT_EXIST =
+            new MessageDTO(1,"Lớp này không tồn tại.");
     /**
      * Success message
      */
