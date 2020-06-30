@@ -27,6 +27,9 @@ public class AdminController {
     @Autowired
     private ClassListService classListService;
 
+    @Autowired
+    private GenerateAccountService generateAccountService;
+
     /**
      * kimpt142
      * 27/6/2020
@@ -95,6 +98,12 @@ public class AdminController {
         return  classDto;
     }
 
+    /**
+     * kimpt142
+     * 28/6
+     * catch request to get user list
+     * @return reponseDTO with a user list and messagedto
+     */
     @PostMapping("/userlist")
     public SearchUserResponseDto getUserList(@RequestBody SearchUserRequestDto model)
     {
@@ -103,4 +112,17 @@ public class AdminController {
         return  responseDto;
     }
 
+    /**
+     * kimpt142
+     * 28/6
+     * catch request to generate account name
+     * @return reponseDTO with an account name and messagedto
+     */
+    @PostMapping("/genaccname")
+    public GenerateNameResponseDto getUserList(@RequestBody GenerateNameRequestDto model)
+    {
+        GenerateNameResponseDto responseDto = new GenerateNameResponseDto();
+        responseDto = generateAccountService.generateAccountName(model);
+        return  responseDto;
+    }
 }
