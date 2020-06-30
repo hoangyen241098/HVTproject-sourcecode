@@ -77,7 +77,7 @@ public class GenerateAccountServiceImpl implements GenerateAccountService {
             userName = stripAccents(rollName+className);
         }
 
-        Integer indexAccount = userRepository.findAllByClassSchoolClassId(classId).size() + 1;
+        Integer indexAccount = 1;
         List<String> userNameList = userRepository.findAllUsername();
 
         while (userNameList.contains(userName.concat(indexAccount.toString()))){
