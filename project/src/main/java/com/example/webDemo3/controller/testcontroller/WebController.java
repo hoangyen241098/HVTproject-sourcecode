@@ -24,6 +24,7 @@ public class WebController {
         return "test";
     }
 
+    /*Module 1: Quản lý tài khoản*/
     @GetMapping("/forgotPassword")
     public String forgotPassword(Model model) {
         return "forgotPassword";
@@ -59,4 +60,40 @@ public class WebController {
         return "userInformation";
     }
 
+    /*Module 2: Quản lý giáo viên*/
+    @GetMapping("/manageTeacher")
+    public String manageTeacher(Model model) {
+        return "manageTeacher";
+    }
+
+    @GetMapping("/createTeacher")
+    public String createTeacher(Model model) {
+        return "createTeacher";
+    }
+
+    @GetMapping("/teacherInformation")
+    public String teacherInformation(Model model) {
+        return "teacherInformation";
+    }
+
+    /*Module 3: Quản lý lớp*/
+    @GetMapping("/manageClass")
+    public String manageClass(Model model) {
+        return "manageClass";
+    }
+
+    @GetMapping("/createClass")
+    public String createClass(Model model) {
+        return "createClass";
+    }
+
+    @GetMapping("/editClass")
+    public String editClass(Model model) {
+        return "editClass";
+    }
+
+    @GetMapping("/createGifftedClass")
+    public String createGifftedClass(Model model) {
+        return "createGifftedClass";
+    }
 }
