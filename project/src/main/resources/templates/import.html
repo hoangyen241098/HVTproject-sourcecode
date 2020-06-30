@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/import}" method="post" enctype="multipart/form-data">
+
+    <input type="file" th:name="file">
+
+    <input th:type="submit" value="Import"/>
+</form>
+aa
+<!--<tbody th:each="s : ${test}">-->
+<!--    <p th:text="${s}"></p>-->
+<!--</tbody>-->
+</body>
+</html>
