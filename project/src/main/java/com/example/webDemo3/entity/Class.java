@@ -12,8 +12,10 @@ import javax.persistence.*;
 @Data
 @Table(name = "CLASSES")
 public class Class {
+
     @Id
     @Column(name = "CLASS_ID")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer classId;
 
     @Column(name = "GRADE")

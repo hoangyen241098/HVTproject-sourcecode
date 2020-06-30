@@ -24,39 +24,52 @@
 <div th:replace="fragments/header :: header"></div>
 
 <div class="container">
-    <div class="veen col-xl-10 mx-auto">
-        <div class="info-left text-center">
-            <div class="info-img">
-                <img src="https://img.icons8.com/bubbles/150/000000/gender-neutral-user.png"/>
-                <H5 id="roleName"></H5>
-            </div>
-        </div>
-        <div class="info-right">
-            <span class="input-info">
+    <div class="col-xl-6 col-md-auto mx-auto veen">
+        <h1>Thông tin cá nhân</h1>
+        <hr>
+        <div class="info-des col-xl-9 mx-auto">
+            <div class="input-info">
                 <label for="fullName">Họ và tên</label>
                 <input class="basic-slide" id="fullName" type="text" value="" disabled/>
-            </span>
-            <span class="input-info">
+            </div>
+            <div class="input-info">
+                <label for="roleName">Chức vụ</label>
+                <input class="basic-slide" id="roleName" type="text" value="" disabled/>
+            </div>
+            <div class="input-info">
                 <label for="username">Tên đăng nhập</label>
                 <input class="basic-slide" id="username" type="text" value="" disabled/>
-            </span>
-            <span class="input-info">
+            </div>
+            <div class="input-info">
                 <label for="phone">SĐT</label>
                 <input class="basic-slide" id="phone" type="text" value="" disabled/>
-            </span>
-            <span class="input-info">
+            </div>
+            <div class="input-info">
                 <label for="email">Email</label>
                 <input class="basic-slide" id="email" type="text" value="" disabled/>
-            </span>
-            <span class="input-info">
+            </div>
+            <div class="input-info">
                 <label for="className">Lớp</label>
                 <input class="basic-slide" id="className" type="text" value="" disabled/>
-            </span>
-            <div class="errMsg"></div>
-            <div class="float-right">
-                <input type="button" class="btn btn-success" value="CHỈNH SỬA"/>
             </div>
+            <div class="text-red userInfo-err"></div>
+            <button type="button" class="btn btn-success" id="editInfo">CHỈNH SỬA</button>
+            <button type="button" class="btn btn-success hide" id="confirmEdit">XONG</button>
+        </div>
+    </div>
+</div>
 
+<!--    Modal Edit Information Success-->
+<div class="modal" tabindex="-1" role="dialog" id="editInfoSuccess">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/1ABC9C/ok--v1.png"/>
+                <h5>Thông tin sửa thành công!</h5>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-primary" th:href="@{userInformation}">ĐÓNG</a>
+            </div>
         </div>
     </div>
 </div>

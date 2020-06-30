@@ -108,7 +108,7 @@ public class AdminController {
     }
 
     @PostMapping("/userlist")
-    public SearchUserResponseDto getRoleList(@RequestBody SearchUserRequestDto model)
+    public SearchUserResponseDto getUserList(@RequestBody SearchUserRequestDto model)
     {
         SearchUserResponseDto responseDto = new SearchUserResponseDto();
         responseDto = searchUserService.searchUser(model);

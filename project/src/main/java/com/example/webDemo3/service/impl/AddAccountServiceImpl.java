@@ -64,6 +64,7 @@ public class AddAccountServiceImpl implements AddAccountService {
             newUser.setName(resquestDTO.getFullName());
             newUser.setPhone(resquestDTO.getPhone());
             newUser.setEmail(resquestDTO.getEmail());
+            newUser.setStatus(0);
 
             if(roleId != null){
                 newUser.setRole(new Role(roleId));

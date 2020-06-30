@@ -38,9 +38,8 @@
                         <div class="searchable" id="sortBy">
                             <input type="text" placeholder="Sắp xếp theo" onkeyup="filterFunction(this,event)">
                             <ul>
-                                <li value="1">Tên đăng nhập</li>
-                                <li value="2">Họ và tên</li>
-                                <li value="3">Lớp</li>
+                                <li value="0" selected="">Tên đăng nhập</li>
+                                <li value="1">Họ và tên</li>
                             </ul>
                         </div>
                     </div>
@@ -58,11 +57,11 @@
                     </div>
                     <div class="search-line">
                         <span>Thứ tự</span>
-                        <div class="searchable" id="sort">
+                        <div class="searchable" id="orderBy">
                             <input type="text" placeholder="Thứ tự" onkeyup="filterFunction(this,event)">
                             <ul>
-                                <li value="asc">Tăng dần</li>
-                                <li value="dec">Giảm dần</li>
+                                <li value="0" selected="">Giảm dần</li>
+                                <li value="1">Tăng dần</li>
                             </ul>
                         </div>
                     </div>
@@ -74,7 +73,7 @@
         </div>
         <div class="table-title-2">
             <div class="col-sm-6 d-flex justify-content-end align-items-center">
-                <a th:href="@{resetPassword}" class="btn btn-success">
+                <a href="#resetPasswordModal" class="btn btn-success" data-toggle="modal">
                     <span>Đặt lại MK</span>
                 </a>
                 <a href="#deleteAccountModal" class="btn btn-success" data-toggle="modal">
@@ -100,30 +99,10 @@
                 <th>Lớp</th>
                 <th>SĐT</th>
                 <th>Email</th>
-                <th></th>
             </tr>
             </thead>
-<!--            <tbody th:each="user : ${userList}">-->
-<!--            <tr>-->
-<!--                <td>-->
-<!--                    <span class="custom-checkbox">-->
-<!--                        <input type="checkbox" th:id="'checkbox' + ${user.username}" name="options[]" value="1">-->
-<!--                        <label th:for="'checkbox' + ${user.username}"></label>-->
-<!--                    </span>-->
-<!--                </td>-->
-<!--                <td><span th:text="*{user.username}"></span></td>-->
-<!--                <td><span th:text="*{user.name}"></span></td>-->
-<!--                <td><span th:text="*{user.role}"></span></td>-->
-<!--                <td><span th:text="*{user.classSchool}"></span></td>-->
-<!--                <td><span th:text="*{user.phone}"></span></td>-->
-<!--                <td><span th:text="*{user.email}"></span></td>-->
-<!--                <td>-->
-<!--                    <a th:href="@{editAccount/id}" class="edit" data-toggle="modal">-->
-<!--                        <i class="material-icons" data-toggle="tooltip" title="Sửa">&#xE254;</i>-->
-<!--                    </a>-->
-<!--                </td>-->
-<!--            </tr>-->
-<!--            </tbody>-->
+            <tbody>
+            </tbody>
         </table>
     </div>
 </div>
@@ -141,7 +120,8 @@
                     <p>Bạn có chắc muốn <b>XÓA</b> tài khoản này không?</p>
                 </div>
                 <div class="modal-footer">
-                    <input type="submit" class="btn btn-danger" value="CÓ">
+                    <input type="submit" class="btn btn-danger" data-toggle="modal" data-target="#deleteSuccess"
+                           id="deleteAccount" data-dismiss="modal" value="CÓ">
                     <input type="button" class="btn btn-primary" data-dismiss="modal" value="KHÔNG">
                 </div>
             </form>
@@ -150,12 +130,64 @@
 </div>
 
 <!--    Modal Delete Success-->
-<div class="modal" tabindex="-1" role="dialog" id="deleteSuccess">
+<div class="modal fade" tabindex="-1" role="dialog" id="deleteSuccess">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body text-center">
-                <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/1ABC9C/ok--v1.png"/>
-                <h5>Tài khoản đã bị xóa</h5>
+                <img class="mb-3 mt-3 img-success hide" src="https://img.icons8.com/material/100/1ABC9C/ok--v1.png"/>
+                <img class="mb-3 mt-3 img-fail hide" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+                <h5 id="message-delete"></h5>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-primary" th:href="@{manageAccount}">ĐÓNG</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reset Password Modal HTML -->
+<div id="resetPasswordModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h4 class="modal-title">Đặt lại mật khẩu</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="form-group-input">
+                            <label class="input-text" for="new-password"><i class="fa fa-lock"></i></label>
+                            <input type="password" name="new-password" id="new-password" placeholder="Mật khẩu mới"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-group-input">
+                            <label class="input-text" for="confirm-password"><i class="fa fa-lock"></i></label>
+                            <input type="password" name="confirm-password" id="confirm-password"
+                                   placeholder="Xác nhận mật khẩu mới"/>
+                        </div>
+                    </div>
+                    <div class="error resetPass-err"></div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-danger" data-toggle="modal" data-target="#resetSuccess"
+                           id="resetPassword" data-dismiss="modal" value="XÁC NHẬN">
+                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="KHÔNG">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--    Modal Reset Password Success-->
+<div class="modal fade" tabindex="-1" role="dialog" id="resetSuccess">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <img class="mb-3 mt-3 img-success hide" src="https://img.icons8.com/material/100/1ABC9C/ok--v1.png"/>
+                <img class="mb-3 mt-3 img-fail hide" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+                <h5 id="message-reset"></h5>
             </div>
             <div class="modal-footer">
                 <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
@@ -163,9 +195,9 @@
         </div>
     </div>
 </div>
-
 <div th:replace="fragments/footer :: footer"></div>
-<script type="text/javascript" th:src="@{/js/manageTable.js}"></script>
 <script type="text/javascript" th:src="@{/js/manageAccount.js}"></script>
+<script type="text/javascript" th:src="@{/js/manageTable.js}"></script>
+
 </body>
 </html>

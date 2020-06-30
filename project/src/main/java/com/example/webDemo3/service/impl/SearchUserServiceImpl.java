@@ -1,6 +1,7 @@
 package com.example.webDemo3.service.impl;
 
 import com.example.webDemo3.constant.Constant;
+import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.SearchUserResponseDto;
 import com.example.webDemo3.dto.request.SearchUserRequestDto;
 import com.example.webDemo3.entity.User;
@@ -31,6 +32,7 @@ public class SearchUserServiceImpl implements SearchUserService {
     @Override
     public SearchUserResponseDto searchUser(SearchUserRequestDto requestModel) {
         SearchUserResponseDto responseDto = new SearchUserResponseDto();
+        MessageDTO message = new MessageDTO();
         Pageable paging;
         Integer orderBy = requestModel.getOrderBy();
         Integer pageNumber = requestModel.getPageNumber();
@@ -65,6 +67,15 @@ public class SearchUserServiceImpl implements SearchUserService {
             pagedResult = userRepository.searchUserByUsername(username, paging);
         }
 
+        //check result when get list
+        if(pagedResult.getTotalElements() == 0){
+            message = Constant.USERLIST_NULL;
+            responseDto.setMessage(message);
+            return responseDto;
+        }
+
+        message = Constant.SUCCESS;
+        responseDto.setMessage(message);
         responseDto.setUserList(pagedResult);
         return responseDto;
     }
