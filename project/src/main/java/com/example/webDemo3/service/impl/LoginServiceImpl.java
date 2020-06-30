@@ -48,7 +48,7 @@ public class LoginServiceImpl implements LoginService {
         if(user==null){
             message = Constant.USER_NOT_EXIT;
         }
-        else if(user.getStatus() == null || user.getStatus() != 0){
+        else if(user.getStatus() != null && user.getStatus() == 1){
             message = Constant.USER_INACTIVE;
         }
         else if(!u.getPassword().equals(user.getPassword())){
