@@ -10,4 +10,6 @@ public class AddClassRequestDto {
     private String classIdentifier;
     private Integer grade;
     private Integer giftedClassId;
+    private Boolean isRedStar;
+    private Boolean isMonitor;
 }

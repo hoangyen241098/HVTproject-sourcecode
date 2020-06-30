@@ -5,8 +5,10 @@ import com.example.webDemo3.dto.GenerateNameResponseDto;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.request.GenerateNameRequestDto;
 import com.example.webDemo3.entity.Class;
+import com.example.webDemo3.entity.GiftedClass;
 import com.example.webDemo3.entity.Role;
 import com.example.webDemo3.repository.ClassRepository;
+import com.example.webDemo3.repository.GiftedClassRepository;
 import com.example.webDemo3.repository.RoleRepository;
 import com.example.webDemo3.repository.UserRepository;
 import com.example.webDemo3.service.GenerateAccountService;
@@ -30,6 +32,9 @@ public class GenerateAccountServiceImpl implements GenerateAccountService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private GiftedClassRepository giftedClassRepository;
     /**
      * kimpt142
      * 30/6
@@ -42,6 +47,7 @@ public class GenerateAccountServiceImpl implements GenerateAccountService {
         GenerateNameResponseDto responseDto = new GenerateNameResponseDto();
         MessageDTO message = new MessageDTO();
         String userName = null;
+        String giftedClassName;
         Integer roleId = model.getRoleId();
         Integer classId = model.getClassId();
 
@@ -64,14 +70,23 @@ public class GenerateAccountServiceImpl implements GenerateAccountService {
             responseDto.setMessage(message);
             return responseDto;
         }
+
         if(genClass == null){
             message = Constant.CLASS_NOT_EXIST;
             responseDto.setMessage(message);
             return responseDto;
         }
 
+        GiftedClass giftedClass = giftedClassRepository.findById(genClass.getGiftedClass().getGiftedClassId()).orElse(null);
+        if(giftedClass == null){
+            message = Constant.GIFTEDCLASSNAME_NOT_EXIST;
+            responseDto.setMessage(message);
+            return responseDto;
+        }
+
         String rollName = role.getRoleName();
-        String className = genClass.getGrade().toString().concat(genClass.getGiftedClass().getName());
+        giftedClassName = giftedClass.getName();
+        String className = genClass.getGrade().toString() + giftedClassName;
 
         if(!rollName.equalsIgnoreCase("") && !className.equalsIgnoreCase("")){
             userName = stripAccents(rollName+className);
