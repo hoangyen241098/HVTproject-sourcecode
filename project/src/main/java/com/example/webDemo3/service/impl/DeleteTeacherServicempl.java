@@ -30,7 +30,7 @@ public class DeleteTeacherServicempl implements DeleteTeacherService {
             for(Integer teacherId : listTeacher){
                 Teacher teacher = teacherRepository.findById(teacherId).orElse(null);
                 //check teacher exists or not
-                if(teacher != null && !teacher.getStatus().toString().equals("1")){
+                if(teacher != null && teacher.getStatus() == null || teacher.getStatus() != 1){
                     teacher.setStatus(1);
                     teacherRepository.save(teacher);
                 }else{
