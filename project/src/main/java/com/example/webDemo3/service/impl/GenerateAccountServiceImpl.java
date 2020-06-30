@@ -64,7 +64,6 @@ public class GenerateAccountServiceImpl implements GenerateAccountService {
         }
         Role role = roleRepository.findByRoleId(roleId);
         Class genClass = classRepository.findByClassId(classId);
-        GiftedClass giftedClass = giftedClassRepository.findById(genClass.getGiftedClass().getGiftedClassId()).orElse(null);
 
         if(role == null){
             message = Constant.ROLE_NOT_EXIST;
@@ -78,6 +77,7 @@ public class GenerateAccountServiceImpl implements GenerateAccountService {
             return responseDto;
         }
 
+        GiftedClass giftedClass = giftedClassRepository.findById(genClass.getGiftedClass().getGiftedClassId()).orElse(null);
         if(giftedClass == null){
             message = Constant.GIFTEDCLASSNAME_NOT_EXIST;
             responseDto.setMessage(message);
