@@ -16,6 +16,9 @@ public interface TeacherRepository extends JpaRepository<Teacher,Integer>{
     @Query(value = "select t from Teacher t where t.teacherIdentifier like %:teacherIdentifier%")
     Teacher findTeacherTeacherIdentifier(@Param("teacherIdentifier") String teacherIdentifier);
 
-    @Query(value = "select t from Teacher t where t.fullName like %:fullName% and t.status <> 1 or t.status is null" )
+    @Query(value = "select t from Teacher t where (t.fullName like %:fullName%) and (t.status <> 1 or t.status is null)")
     Page<Teacher> searchTeacherBy(@Param("fullName") String fullName, Pageable paging);
+
+    @Query(value = "select t from Teacher t where (t.status <> 1 or t.status is null)")
+    Page<Teacher> selectAll(Pageable paging);
 }

@@ -27,6 +27,7 @@ public class EditTeaInforServicempl implements EditTeaInforService {
     public MessageDTO editTeacherInformation(EditTeaInforRequestDto editTeaInforRequestDto) {
         MessageDTO message = new MessageDTO();
         Teacher teacher = null;
+        Teacher newTeacher = null;
 
         try {
             Integer teacherId = editTeaInforRequestDto.getTeacherId();
@@ -47,6 +48,12 @@ public class EditTeaInforServicempl implements EditTeaInforService {
             teacher = teacherRepository.findById(teacherId).orElse(null);
             if(teacher != null)
             {
+                //check teacherIdentifier exist or not
+                newTeacher = teacherRepository.findTeacherTeacherIdentifier(editTeaInforRequestDto.getTeacherIdentifier());
+                if(newTeacher != null && newTeacher.getTeacherId() != teacherId){
+                    message = Constant.TEACHER_EXIT;
+                    return message;
+                }
                 teacher.setFullName(editTeaInforRequestDto.getFullName());
                 teacher.setPhone(editTeaInforRequestDto.getPhone());
                 teacher.setEmail(editTeaInforRequestDto.getEmail());
