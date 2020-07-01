@@ -2,11 +2,9 @@ package com.example.webDemo3.service.impl;
 
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
+import com.example.webDemo3.dto.ViewTeaInforResponseDto;
 import com.example.webDemo3.dto.ViewTeaListResponseDto;
-import com.example.webDemo3.dto.request.AddTeacherRequestDto;
-import com.example.webDemo3.dto.request.DeleteTeacherRequestDto;
-import com.example.webDemo3.dto.request.EditTeaInforRequestDto;
-import com.example.webDemo3.dto.request.ViewTeaListRequestDto;
+import com.example.webDemo3.dto.request.*;
 import com.example.webDemo3.entity.Teacher;
 import com.example.webDemo3.repository.TeacherRepository;
 import com.example.webDemo3.service.TeacherService;
@@ -28,6 +26,13 @@ public class TeacherServicempl implements TeacherService {
     @Autowired
     private TeacherRepository teacherRepository;
 
+    /**
+     * lamnt98
+     * 01/07
+     * add teacher
+     * @param addTeacher
+     * @return MessageDTO
+     */
     @Override
     public MessageDTO addTeacher(AddTeacherRequestDto addTeacher) {
         MessageDTO messageDTO = new MessageDTO();
@@ -64,6 +69,13 @@ public class TeacherServicempl implements TeacherService {
         return messageDTO;
     }
 
+    /**
+     * lamnt98
+     * 01/07
+     * delete teacher
+     * @param deleteTeacher
+     * @return MessageDTO
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {ServiceException.class})
     public MessageDTO deleteTeacher(DeleteTeacherRequestDto deleteTeacher) {
@@ -95,6 +107,13 @@ public class TeacherServicempl implements TeacherService {
         return messageDTO;
     }
 
+    /**
+     * lamnt98
+     * 01/07
+     * edit teacher information
+     * @param editTeaInforRequestDto
+     * @return MessageDTO
+     */
     @Override
     public MessageDTO editTeacherInformation(EditTeaInforRequestDto editTeaInforRequestDto) {
         MessageDTO message = new MessageDTO();
@@ -143,6 +162,13 @@ public class TeacherServicempl implements TeacherService {
         return message;
     }
 
+    /**
+     * lamnt98
+     * 01/07
+     * search teacher list
+     * @param viewTeacherList
+     * @return ViewTeaListResponseDto
+     */
     @Override
     public ViewTeaListResponseDto searchTeacher(ViewTeaListRequestDto viewTeacherList) {
         ViewTeaListResponseDto viewListResponse = new ViewTeaListResponseDto();
@@ -182,5 +208,50 @@ public class TeacherServicempl implements TeacherService {
         viewListResponse.setMessage(message);
         viewListResponse.setTeacherList(pagedResult);
         return viewListResponse;
+    }
+
+    /**
+     * lamnt98
+     * 01/07
+     * view teacher information
+     * @param viewTeaInforRequestDto
+     * @return ViewTeaInforResponseDto
+     */
+    @Override
+    public ViewTeaInforResponseDto viewTeacherInfor(ViewTeaInforRequestDto viewTeaInforRequestDto) {
+        Teacher teacher = null;
+        ViewTeaInforResponseDto viewTeaInforResponseDto = new ViewTeaInforResponseDto();
+        MessageDTO messageDTO = new MessageDTO();
+        try {
+            Integer teacherId = viewTeaInforRequestDto.getTeacherId();
+
+            //check teacherId empty or not
+            if (teacherId == null) {
+                messageDTO = Constant.TEACHER_ID_NULL;
+                viewTeaInforResponseDto.setMessageDTO(messageDTO);
+                return viewTeaInforResponseDto;
+            }
+
+            //check and find teacher in database
+            teacher = teacherRepository.findById(teacherId).orElse(null);
+            if (teacher != null) {
+                viewTeaInforResponseDto.setTeacherId(teacher.getTeacherId());
+                viewTeaInforResponseDto.setTeacherIdentifier(teacher.getTeacherIdentifier());
+                viewTeaInforResponseDto.setEmail(teacher.getEmail());
+                viewTeaInforResponseDto.setPhone(teacher.getPhone());
+                viewTeaInforResponseDto.setFullName(teacher.getFullName());
+                messageDTO = Constant.SUCCESS;
+            } else {
+                messageDTO = Constant.TEACHER_NOT_EXIT;
+            }
+        }catch (Exception e){
+            messageDTO.setMessageCode(1);
+            messageDTO.setMessage(e.toString());
+            viewTeaInforResponseDto.setMessageDTO(messageDTO);
+            return  viewTeaInforResponseDto;
+        }
+
+        viewTeaInforResponseDto.setMessageDTO(messageDTO);
+        return  viewTeaInforResponseDto;
     }
 }
