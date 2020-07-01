@@ -6,6 +6,5 @@ import com.example.webDemo3.dto.request.ListWeekRequestDto;
 
 public interface TimeTableService {
     public ListYearAndClassResponseDto getListYearAndClass();
-    
     public ListWeekResponseDto getListWeekByYearId(ListWeekRequestDto listWeekRequestDto);
 }
