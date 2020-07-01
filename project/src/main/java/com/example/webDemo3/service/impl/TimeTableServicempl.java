@@ -77,7 +77,6 @@ public class TimeTableServicempl implements TimeTableService {
         }
         list.setYearIdCurrent(yearIdCurrent);
 
-        list.setYearIdCurrent(yearIdCurrent);
         listWeek = schoolWeek.findSchoolWeeksByYearID(yearIdCurrent);
 
         //check listWeek null or not
