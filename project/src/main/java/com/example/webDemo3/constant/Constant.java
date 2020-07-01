@@ -77,6 +77,8 @@ public class Constant {
             new MessageDTO(1,"Không có danh sách năm.");
     public static final MessageDTO WEEK_ID_NULL =
             new MessageDTO(1,"Không có tuần trong năm hiện tại.");
+    public static final MessageDTO TEACHER_ID_NULL =
+            new MessageDTO(1,"Hãy chọn giáo viên.");
     /**
      * Success message
      */
