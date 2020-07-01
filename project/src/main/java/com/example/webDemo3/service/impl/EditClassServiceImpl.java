@@ -34,7 +34,7 @@ public class EditClassServiceImpl implements EditClassService {
     @Override
     public MessageDTO editClass(EditClassRequestDto model) {
         Integer classId = model.getClassId();
-        String classIdentifier = model.getGiftedClassName().trim();
+        String classIdentifier = model.getClassIdentifier().trim();
         Integer status = model.getStatus();
         MessageDTO message = new MessageDTO();
 
@@ -43,19 +43,15 @@ public class EditClassServiceImpl implements EditClassService {
             return message;
         }
 
-        List<Class> classList = classRepository.findAll();
-        for(Class item : classList){
-            //check class identifier
-            if(item.getClassIdentifier().equalsIgnoreCase(classIdentifier))
-            {
-                message = Constant.CLASSIDENTIFIER_EXIST;
-                return message;
-            }
-        }
-
         Class editClass = classRepository.findByClassId(classId);
         if(editClass == null){
             message = Constant.CLASS_NOT_EXIST;
+            return message;
+        }
+
+        Class classByNewIdetifier = classRepository.findByClassIdentifier(classIdentifier);
+        if(!classIdentifier.equalsIgnoreCase(editClass.getClassIdentifier()) && classByNewIdetifier != null){
+            message = Constant.CLASSIDENTIFIER_EXIST;
             return message;
         }
 

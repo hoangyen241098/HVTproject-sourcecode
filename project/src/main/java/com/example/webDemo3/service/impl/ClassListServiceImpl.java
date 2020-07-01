@@ -1,11 +1,9 @@
 package com.example.webDemo3.service.impl;
 
 import com.example.webDemo3.constant.Constant;
-import com.example.webDemo3.dto.ClassResponseDto;
-import com.example.webDemo3.dto.ClassTableResponseDto;
-import com.example.webDemo3.dto.MessageDTO;
+import com.example.webDemo3.dto.*;
+import com.example.webDemo3.dto.request.ClassInforRequestDto;
 import com.example.webDemo3.entity.Class;
-import com.example.webDemo3.dto.ClassListResponseDto;
 import com.example.webDemo3.repository.ClassRepository;
 import com.example.webDemo3.service.ClassListService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +83,32 @@ public class ClassListServiceImpl implements ClassListService {
             return responseDto;
         }
         message = Constant.CLASSLIST_NOT_EXIT;
+        responseDto.setMessage(message);
+        return responseDto;
+    }
+
+    /**
+     * kimpt142
+     * 1/7
+     * get class information from classId
+     * @param model include classId
+     * @return class information
+     */
+    @Override
+    public ClassInforResponseDto getClassInfor(ClassInforRequestDto model) {
+        ClassInforResponseDto responseDto = new ClassInforResponseDto();
+        MessageDTO message = new MessageDTO();
+
+        Class classInfor = classRepository.findByClassId(model.getClassId());
+        if(classInfor == null) {
+            message = Constant.CLASS_NOT_EXIST;
+            responseDto.setMessage(message);
+            return responseDto;
+        }
+        
+        responseDto.setClassIdentifier(classInfor.getClassIdentifier());
+        responseDto.setStatus(classInfor.getStatus());
+        message = Constant.SUCCESS;
         responseDto.setMessage(message);
         return responseDto;
     }
