@@ -21,13 +21,28 @@
 <body>
 <div th:replace="fragments/header :: header"></div>
 <div class="container">
-    <h1>This is Homepage</h1>
-    <div><a th:href="@{changePassword}">Thay đổi mật khẩu</a></div>
-    <div><a th:href="@{createAccount}">Tạo tài khoản</a></div>
-    <div><a th:href="@{forgotPassword}">Quên mật khẩu</a></div>
+    <br>
+    <h2>Module 1: Quản lý tài khoản</h2>
     <div><a th:href="@{login}">Đăng nhập</a></div>
-    <div><a th:href="@{manageAccount}">Quản lý tài khoản</a></div>
+    <div><a th:href="@{forgotPassword}">Quên mật khẩu</a></div>
+    <div><a th:href="@{changePassword}">Thay đổi mật khẩu</a></div>
     <div><a th:href="@{userInformation}">Thông tin cá nhân</a></div>
+    <div><a th:href="@{manageAccount}">Quản lý tài khoản</a></div>
+    <div><a th:href="@{createAccount}">Tạo tài khoản</a></div>
+    <br>
+    <h2>Module 2: Quản lý giáo viên</h2>
+    <div><a th:href="@{manageTeacher}">Quản lý giáo viên</a></div>
+    <div><a th:href="@{createTeacher}">Thêm giáo viên</a></div>
+    <div><a th:href="@{teacherInformation}">Sửa thông tin giáo viên</a></div>
+    <br>
+    <h2>Module 3: Quản lý lớp</h2>
+    <div><a th:href="@{manageClass}">Quản lý lớp</a></div>
+    <div><a th:href="@{createClass}">Thêm lớp</a></div>
+    <div><a th:href="@{editClass}">Sửa thông tin lớp</a></div>
+    <div><a th:href="@{createGifftedClass}">Thêm hệ chuyên</a></div>
+    <br>
+    <h2>Module 4: Thời khóa biểu</h2>
+    <br>
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 <div class="modal-loading"></div>

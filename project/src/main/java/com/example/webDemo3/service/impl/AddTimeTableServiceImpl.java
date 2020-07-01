@@ -7,7 +7,7 @@ import com.example.webDemo3.entity.TimeTable;
 import com.example.webDemo3.repository.ClassRepository;
 import com.example.webDemo3.repository.TeacherRepository;
 import com.example.webDemo3.repository.TimetableRepository;
-import com.example.webDemo3.service.TimetableService;
+import com.example.webDemo3.service.AddTimeTableService;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class TimetableServiceImpl implements TimetableService {
+public class AddTimeTableServiceImpl implements AddTimeTableService {
     @Autowired
     private TimetableRepository timetableRepository;
 

@@ -1,15 +1,7 @@
 package com.example.webDemo3.controller;
 
-import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.entity.Class;
-import com.example.webDemo3.entity.Teacher;
-import com.example.webDemo3.entity.TimeTable;
-import com.example.webDemo3.repository.ClassRepository;
-import com.example.webDemo3.repository.TeacherRepository;
-import com.example.webDemo3.repository.TimetableRepository;
-import com.example.webDemo3.service.TimetableService;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
+import com.example.webDemo3.service.AddTimeTableService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,7 +28,7 @@ public class TimeTableController1 {
 //    private ClassRepository classRepository;
 
     @Autowired
-    private TimetableService timetableService;
+    private AddTimeTableService addTimeTableService;
 
 
     @GetMapping("/import")
@@ -57,7 +49,7 @@ public class TimeTableController1 {
         MessageDTO message = new MessageDTO();
         try {
             HSSFWorkbook workbook = new HSSFWorkbook(reapExcelDataFile.getInputStream());
-            message = timetableService.addTimetable(workbook,1);
+            message = addTimeTableService.addTimetable(workbook,1);
 //            HSSFSheet worksheet = workbook.getSheetAt(0);
 //            timetableService.addTimetableMorning(worksheet);
         }catch (Exception e){

@@ -8,7 +8,6 @@ $('.createAccount-err').text("");
 $.ajax({
     url: '/api/admin/rolelist',
     type: 'POST',
-    dataType: 'JSON',
     success: function (data) {
         $.each(data.listRole, function (i, list) {
             $('#position-role').append(`<option value="` + list.roleId + `" name="` + list.roleName + `">` + list.roleName + `</option>`);
@@ -16,13 +15,14 @@ $.ajax({
     },
     failure: function (errMsg) {
         $('.createAccount-err').text(errMsg);
-    }
+    },
+    dataType: 'JSON',
+    contentType: "application/json"
 });
 /*Call API for Class List*/
 $.ajax({
     url: '/api/admin/classlist',
     type: 'POST',
-    dataType: 'JSON',
     success: function (data) {
         $.each(data.classList, function (i, list) {
             $('#class').append(`<option value="` + list.classID + `" name="` + list.className + `">` + list.className + `</option>`);
@@ -30,7 +30,9 @@ $.ajax({
     },
     failure: function (errMsg) {
         $('.createAccount-err').text(errMsg);
-    }
+    },
+    dataType: 'JSON',
+    contentType: "application/json"
 });
 
 function changeSelected() {
@@ -45,21 +47,6 @@ function changeSelected() {
     classId = $('#class option:selected').val();
     className = $('#class option:selected').attr('name');
     console.log(roleId, classId);
-}
-
-function convertString(str) {
-    str = str.toLowerCase();
-    str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
-    str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
-    str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
-    str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
-    str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
-    str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
-    str = str.replace(/đ/g, "d");
-    str = str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, " ");
-    str = str.replace(/\s+/g, '');
-    str = str.trim();
-    return str;
 }
 
 $("#next").click(function () {
@@ -96,10 +83,24 @@ $("#next").click(function () {
             $('.fullName').addClass('hide');
             $('.full-info').addClass('hide');
             $('#username').prop('disabled', true);
-            roleName = convertString(roleName);
-            className = convertString(className);
-            $('#username').val(roleName + className);
-            console.log(roleName + className);
+            var userName = {
+                classId: classId,
+                roleId: roleId,
+            }
+            console.log(userName);
+            $.ajax({
+                url: '/api/admin/genaccname',
+                type: 'POST',
+                data: JSON.stringify(userName),
+                success: function (data) {
+                    $('#username').val(data.userName);
+                },
+                failure: function (errMsg) {
+                    $('.createAccount-err').text(errMsg);
+                },
+                dataType: 'JSON',
+                contentType: "application/json"
+            });
         }
 
         $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
