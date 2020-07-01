@@ -20,4 +20,7 @@ public interface ClassRepository extends JpaRepository<Class,Integer> {
 
     @Query(value = "select c from Class c where c.classIdentifier like %:classIdentifier%")
     Page<Class> searchClassByClassIdentifier(@Param("classIdentifier") String classIdentifier, Pageable paging);
+
+    @Query(value = "select c from Class c where c.grade = :grade and c.giftedClass.giftedClassId = :giftedName ")
+    Class searchClassByGradeAndGifedId(@Param("grade") Integer classIdentifier,@Param("giftedName") Integer giftedId);
 }
