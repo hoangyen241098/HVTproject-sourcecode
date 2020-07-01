@@ -30,24 +30,24 @@
         <div class="info-des col-xl-10 mx-auto">
             <div class="input-info">
                 <label for="fullName">Họ và tên</label>
-                <input class="basic-slide" id="fullName" type="text" value="" disabled/>
+                <input class="basic-slide" id="fullName" type="text" value="" />
             </div>
             <div class="input-info">
                 <label for="identifier">Tên định danh</label>
-                <input class="basic-slide" id="identifier" type="text" value="" disabled/>
+                <input class="basic-slide" id="identifier" type="text" value="" />
             </div>
             <div class="input-info">
                 <label for="phone">SĐT</label>
-                <input class="basic-slide" id="phone" type="text" value="" disabled/>
+                <input class="basic-slide" id="phone" type="text" value="" />
             </div>
             <div class="input-info">
                 <label for="email">Email</label>
-                <input class="basic-slide" id="email" type="text" value="" disabled/>
+                <input class="basic-slide" id="email" type="text" value="" />
             </div>
-            <div class="error teacherInfo-err"></div>
+            <div class="input-info ml-3 text-left">
+                <div class="error teacherInfo-err"></div></div>
             <div class="text-center">
                 <button type="button" class="btn btn-customer" id="editInfo">CHỈNH SỬA</button>
-                <button type="button" class="btn btn-customer hide" id="confirmEdit">XONG</button>
             </div>
         </div>
     </div>
@@ -62,7 +62,7 @@
                 <h5>Thông tin sửa thành công!</h5>
             </div>
             <div class="modal-footer">
-                <a type="button" class="btn btn-primary" th:href="@{teacherInformation}">ĐÓNG</a>
+                <a type="button" class="btn btn-primary" th:href="@{manageTeacher}">ĐÓNG</a>
             </div>
         </div>
     </div>

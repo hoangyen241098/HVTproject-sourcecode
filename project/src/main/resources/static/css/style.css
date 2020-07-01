@@ -559,6 +559,43 @@ div.searchable {
     color: #333;
 }
 
+.bt-table-field {
+    display: block;
+    font-size: 20px;
+    text-align: center;
+    color: #3a70d2;
+}
+
+
+.bt-table-field i:before {
+    content: "\f044";
+}
+
+.bt-table-edit {
+    cursor: pointer;
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.bt-risk-indicator {
+    font-size: 16px;
+    text-align: center;
+    padding: 0 !important;
+}
+
+.status-active {
+    color: #4bdd33;
+    margin-left: 30px;
+}
+
+.status-deactive {
+    color: #ff3154;
+    margin-left: 30px;
+}
+/*status-active i:before, .status-deactive i:before {*/
+/*    content: "\f111"!important;*/
+/*}*/
 /*END Manage Account*/
 
 /*Create Account*/
@@ -837,7 +874,7 @@ div.searchable {
     visibility: hidden;
 }
 
-.checkbox-toggle > .checkbox-toggle input[type=checkbox]:checked{
+.checkbox-toggle > .checkbox-toggle input[type=checkbox]:checked {
     background: #ced4da;
     border: 1px solid #adb5bd;
 }
