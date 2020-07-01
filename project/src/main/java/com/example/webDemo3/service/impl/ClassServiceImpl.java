@@ -5,6 +5,7 @@ import com.example.webDemo3.dto.*;
 import com.example.webDemo3.dto.request.*;
 import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.entity.GiftedClass;
+import com.example.webDemo3.entity.Role;
 import com.example.webDemo3.entity.User;
 import com.example.webDemo3.repository.ClassRepository;
 import com.example.webDemo3.repository.GiftedClassRepository;
@@ -160,6 +161,8 @@ public class ClassServiceImpl implements ClassService {
                     userRedStar.setUsername(userName);
                     userRedStar.setClassSchool(saveClass);
                     userRedStar.setPassword("123@#123a");
+                    userRedStar.setRole(new Role(3));
+                    userRedStar.setStatus(0);
                     userRepository.save(userRedStar);
                     userList.add(userRedStar);
                 }
@@ -171,6 +174,8 @@ public class ClassServiceImpl implements ClassService {
                 userMonitor.setUsername(userName);
                 userMonitor.setClassSchool(saveClass);
                 userMonitor.setPassword("123@#123a");
+                userMonitor.setRole(new Role(4));
+                userMonitor.setStatus(0);
                 userRepository.save(userMonitor);
                 userList.add(userMonitor);
             }
@@ -307,6 +312,18 @@ public class ClassServiceImpl implements ClassService {
 
         responseDto.setClassIdentifier(classInfor.getClassIdentifier());
         responseDto.setStatus(classInfor.getStatus());
+        responseDto.setGrade(classInfor.getGrade());
+
+        String giftedClassName = classInfor.getGiftedClass().getName();
+        if(giftedClassName != null){
+            responseDto.setGiftedClassName(giftedClassName);
+        }
+        else{
+            message = Constant.GIFTEDCLASSNAME_NOT_EXIST;
+            responseDto.setMessage(message);
+            return responseDto;
+        }
+
         message = Constant.SUCCESS;
         responseDto.setMessage(message);
         return responseDto;
