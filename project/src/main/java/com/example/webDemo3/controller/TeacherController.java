@@ -1,15 +1,10 @@
 package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.MessageDTO;
+import com.example.webDemo3.dto.ViewTeaInforResponseDto;
 import com.example.webDemo3.dto.ViewTeaListResponseDto;
-import com.example.webDemo3.dto.request.AddTeacherRequestDto;
-import com.example.webDemo3.dto.request.DeleteTeacherRequestDto;
-import com.example.webDemo3.dto.request.EditTeaInforRequestDto;
-import com.example.webDemo3.dto.request.ViewTeaListRequestDto;
-import com.example.webDemo3.service.AddTeacherService;
-import com.example.webDemo3.service.DeleteTeacherService;
-import com.example.webDemo3.service.EditTeaInforService;
-import com.example.webDemo3.service.ViewTeaListService;
+import com.example.webDemo3.dto.request.*;
+import com.example.webDemo3.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,16 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TeacherController {
 
     @Autowired
-    private EditTeaInforService editTeaInforService;
-
-    @Autowired
-    private DeleteTeacherService deleteTeacherService;
-
-    @Autowired
-    private AddTeacherService addTeacherService;
-
-    @Autowired
-    private ViewTeaListService viewTeaListService;
+    private TeacherService teacherService;
 
     /**
      * lamnt98
@@ -42,7 +28,7 @@ public class TeacherController {
     @PostMapping("/editteacherinformation")
     public MessageDTO editTeacherInfor(@RequestBody EditTeaInforRequestDto model)
     {
-        return editTeaInforService.editTeacherInformation(model);
+        return teacherService.editTeacherInformation(model);
     }
 
     /**
@@ -55,7 +41,7 @@ public class TeacherController {
     @PostMapping("/deleteteacher")
     public MessageDTO deleteTeacher(@RequestBody DeleteTeacherRequestDto model)
     {
-        return deleteTeacherService.deleteTeacher(model);
+        return teacherService.deleteTeacher(model);
     }
 
     /**
@@ -68,19 +54,32 @@ public class TeacherController {
     @PostMapping("/addteacher")
     public MessageDTO addTeacher(@RequestBody AddTeacherRequestDto model)
     {
-        return addTeacherService.addTeacher(model);
+        return teacherService.addTeacher(model);
     }
 
     /**
      * lamnt98
      * 30/06
-     * catch request from client to search teacher
+     * catch request from client to search list teacher
      * @param model
      * @return ViewTeaListResponseDto
      */
     @PostMapping("/teacherlist")
     public ViewTeaListResponseDto addTeacher(@RequestBody ViewTeaListRequestDto model)
     {
-        return viewTeaListService.searchTeacher(model);
+        return teacherService.searchTeacher(model);
+    }
+
+    /**
+     * lamnt98
+     * 01/07
+     * catch request from client to find teacher information
+     * @param model
+     * @return ViewTeaListResponseDto
+     */
+    @PostMapping("/viewteacherinformation")
+    public ViewTeaInforResponseDto addTeacher(@RequestBody ViewTeaInforRequestDto model)
+    {
+        return teacherService.viewTeacherInfor(model);
     }
 }
