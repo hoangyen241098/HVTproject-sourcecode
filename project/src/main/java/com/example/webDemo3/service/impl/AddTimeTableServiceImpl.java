@@ -4,14 +4,18 @@ import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.entity.Teacher;
 import com.example.webDemo3.entity.TimeTable;
+import com.example.webDemo3.exception.TimeTableException;
 import com.example.webDemo3.repository.ClassRepository;
 import com.example.webDemo3.repository.TeacherRepository;
 import com.example.webDemo3.repository.TimetableRepository;
 import com.example.webDemo3.service.AddTimeTableService;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +52,9 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
         return message;
     }
 
-    public MessageDTO addTimetableMorning(HSSFSheet worksheet,int applyWeekId) throws Exception {
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {TimeTableException.class})
+    public MessageDTO addTimetableMorning(HSSFSheet worksheet,int applyWeekId) throws TimeTableException
+    {
         MessageDTO message = new MessageDTO();
 
         List<String> teacherList = new ArrayList<>();
@@ -88,6 +94,7 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
                 System.out.println("không tìm thấy lớp " + lop);
                 message.setMessageCode(1);
                 message.setMessage("không tìm thấy lớp " + lop);
+                throw new TimeTableException(message.getMessage());
 //                return message;
             }
 
