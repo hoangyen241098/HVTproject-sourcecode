@@ -1,23 +1,23 @@
 $(document).ready(function () {
     $("#confirm").click(function (e) {
         $('.changePassword-err').text("");
-        var oldpassword = $('#old-password').val();
-        var newpassword = $('#new-password').val();
-        var confirmpassword = $('#confirm-password').val();
+        var oldpassword = $('#old-password').val().trim();
+        var newpassword = $('#new-password').val().trim();
+        var confirmpassword = $('#confirm-password').val().trim();
 
-        if (oldpassword.trim() == "" && newpassword.trim() == "" && confirmpassword.trim() == "" ||
-            oldpassword.trim() == "" && newpassword.trim() == "" ||
-            newpassword.trim() == "" && confirmpassword.trim() == "" ||
-            oldpassword.trim() == "" && confirmpassword.trim() == "") {
+        if (oldpassword == "" && newpassword == "" && confirmpassword == "" ||
+            oldpassword == "" && newpassword == "" ||
+            newpassword == "" && confirmpassword == "" ||
+            oldpassword == "" && confirmpassword == "") {
             $('.changePassword-err').text("Hãy điền đầy đủ tất cả các trường.");
             return false;
-        } else if (oldpassword.trim() == "") {
+        } else if (oldpassword == "") {
             $('.changePassword-err').text("Hãy điền mật khẩu cũ.");
             return false;
-        } else if (newpassword.trim() == "") {
+        } else if (newpassword == "") {
             $('.changePassword-err').text("Hãy điền mật khẩu mới.");
             return false;
-        } else if (confirmpassword.trim() == "") {
+        } else if (confirmpassword == "") {
             $('.changePassword-err').text("Hãy xác nhận lại mật khẩu.");
             return false;
         } else if (newpassword != confirmpassword) {
@@ -42,7 +42,6 @@ $(document).ready(function () {
                     $('body').removeClass("loading")
                 },
                 success: function (data) {
-                    console.log(JSON.stringify(password));
                     var messageCode = data.messageCode;
                     var message = data.message;
                     if (messageCode == 0) {

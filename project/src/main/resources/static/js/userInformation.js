@@ -43,14 +43,14 @@ $("#editInfo").click(function () {
 $("#confirmEdit").click(function (e) {
     var emailRegex = '^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$';
     var phoneRegex = '^[0-9\\-\\+]{9,15}$';
-    var fullName = $('#fullName').val();
-    var phone = $('#phone').val();
-    var email = $('#email').val();
+    var fullName = $('#fullName').val().trim();
+    var phone = $('#phone').val().trim();
+    var email = $('#email').val().trim();
 
-    if (phone.trim() != "" && !phone.match(phoneRegex)) {
+    if (phone != "" && !phone.match(phoneRegex)) {
         $('.userInfo-err').text("SĐT không đúng định dạng.");
         return false;
-    } else if (email.trim() != "" && !email.match(emailRegex)) {
+    } else if (email != "" && !email.match(emailRegex)) {
         $('.userInfo-err').text("Email không đúng định dạng.");
         return false;
     } else {
@@ -68,7 +68,6 @@ $("#confirmEdit").click(function (e) {
             phone: phone,
             email: email
         }
-        console.log(JSON.stringify(info));
         e.preventDefault();
         $.ajax({
             url: '/api/user/editinformation',
@@ -81,7 +80,6 @@ $("#confirmEdit").click(function (e) {
                 $('body').removeClass("loading")
             },
             success: function (data) {
-                console.log(data);
                 var messageCode = data.messageCode;
                 var message = data.message;
                 if (messageCode == 0) {

@@ -4,13 +4,13 @@ var inforSearch = {
     pageNumber: "0"
 }
 var listTeacher = [];
-
+localStorage.removeItem("teacherId");
 search();
 
 /*Search button*/
 $("#search").click(function () {
     var fullName, orderBy, pageNumber;
-    fullName = $('#searchByFullName input').val();
+    fullName = $('#searchByFullName input').val().trim();
     if ($('#orderBy option:selected').val() == null) {
         orderBy = "0";
     } else {
@@ -41,7 +41,6 @@ function search() {
         success: function (data) {
             if (data.message.messageCode == 0) {
                 for (var i = 0; i < data.teacherList.totalPages; i++) {
-
                     if (i == inforSearch.pageNumber) {
                         $('.table-paging').append(
                             `<input type="button" value="` + (i + 1) + `" class="table-paging__page table-paging__page_cur"/>`
@@ -107,7 +106,13 @@ function search() {
             }
         },
         failure: function (errMsg) {
-            console.log(errMsg);
+            $('tbody').append(
+                `<tr>
+                        <td colspan="7" class="userlist-result">
+                            ` + errMsg + `
+                        </td>
+                    </tr>`
+            )
         },
         dataType: "json",
         contentType: "application/json"
@@ -120,7 +125,6 @@ function getTeacherID() {
     $(teacherId).on('click', function (e) {
         teacherId = $(this).prop('id');
         localStorage.setItem("teacherId", teacherId);
-        console.log(localStorage.getItem("teacherId"));
     });
 }
 
@@ -215,7 +219,6 @@ function selectCheckbox() {
                 return value != removeItem;
             });
         }
-        console.log(JSON.stringify(listTeacher));
     });
 
     $("#selectAll").click(function () {
@@ -238,7 +241,6 @@ function selectCheckbox() {
                 });
             });
         }
-        console.log(JSON.stringify(listTeacher));
     });
     checkbox.click(function () {
         if (!this.checked) {

@@ -3,21 +3,21 @@ var emailRegex = '^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$';
 var phoneRegex = '^[0-9\\-\\+]{9,15}$';
 
 $("#submit").click(function (e) {
-    fullName = $('#fullName').val();
-    identifier = $('#identifier').val();
-    phone = $('#phone').val();
-    email = $('#email').val();
+    fullName = $('#fullName').val().trim();
+    identifier = $('#identifier').val().trim();
+    phone = $('#phone').val().trim();
+    email = $('#email').val().trim();
 
-    if (fullName.trim() == "") {
+    if (fullName == "") {
         $('.createTeacher-err').text("Hãy điền họ và tên.");
         return false;
-    } else if (identifier.trim() == "") {
+    } else if (identifier == "") {
         $('.createTeacher-err').text("Hãy điền tên định danh.");
         return false;
-    } else if (phone.trim() != "" && !phone.match(phoneRegex)) {
+    } else if (phone != "" && !phone.match(phoneRegex)) {
         $('.createTeacher-err').text("SĐT không đúng định dạng.");
         return false;
-    } else if (email.trim() != "" && !email.match(emailRegex)) {
+    } else if (email != "" && !email.match(emailRegex)) {
         $('.createTeacher-err').text("Email không đúng định dạng.");
         return false;
     } else {

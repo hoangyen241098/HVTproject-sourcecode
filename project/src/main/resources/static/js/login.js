@@ -2,16 +2,16 @@
 $(document).ready(function () {
     $("#signin").click(function (e) {
         $('.login-err').text("");
-        var username = $('#username').val();
-        var password = $('#password').val();
+        var username = $('#username').val().trim();
+        var password = $('#password').val().trim();
 
-        if (username.trim() == "" && password.trim() == "") {
+        if (username == "" && password == "") {
             $('.login-err').text("Hãy điền tên đăng nhập và mật khẩu.");
             return false;
-        } else if (username.trim() == "") {
+        } else if (username == "") {
             $('.login-err').text("Hãy điền tên đăng nhập.");
             return false;
-        } else if (password.trim() == "") {
+        } else if (password == "") {
             $('.login-err').text("Hãy điền mật khẩu.");
             return false;
         } else {
