@@ -44,7 +44,8 @@
                 <label for="email">Email</label>
                 <input class="basic-slide" id="email" type="text" value="" disabled/>
             </div>
-            <div class="error teacherInfo-err"></div>
+            <div class="input-info ml-3 text-left">
+                <div class="error teacherInfo-err"></div></div>
             <div class="text-center">
                 <button type="button" class="btn btn-customer" id="editInfo">CHỈNH SỬA</button>
                 <button type="button" class="btn btn-customer hide" id="confirmEdit">XONG</button>
@@ -62,7 +63,7 @@
                 <h5>Thông tin sửa thành công!</h5>
             </div>
             <div class="modal-footer">
-                <a type="button" class="btn btn-primary" th:href="@{teacherInformation}">ĐÓNG</a>
+                <a type="button" class="btn btn-primary" th:href="@{manageTeacher}">ĐÓNG</a>
             </div>
         </div>
     </div>
