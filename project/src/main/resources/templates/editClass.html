@@ -29,16 +29,31 @@
         <hr>
         <div class="info-des col-xl-10 mx-auto">
             <div class="input-info">
+                <label for="grade">Khối</label>
+                <input class="basic-slide" id="grade" type="text" value="" disabled/>
+            </div>
+            <div class="input-info">
+                <label for="giftedClassName">Hệ chuyên</label>
+                <input class="basic-slide" id="giftedClassName" type="text" value="" disabled/>
+            </div>
+            <div class="input-info">
                 <label for="identifier">Tên định danh</label>
                 <input class="basic-slide" id="identifier" type="text" value=""/>
             </div>
             <div class="input-info">
-                <label for="status">Trạng thái</label>
-                <div class="checkbox-toggle">
-                    <input type="checkbox" id="status" checked/>
-                    <label for="status"></label>
+                <label for="status" class="label-customer">Trạng thái</label>
+                <div class="basic-slide text-left" id="status">
+                    <div class="form-check">
+                        <div class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optradio">Hoạt động
+                        </div>
+                    </div>
+                    <div class="form-check">
+                        <div class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optradio">Không hoạt động
+                        </div>
+                    </div>
                 </div>
-
             </div>
             <div class="error classInfo-err"></div>
             <div class="text-center">

@@ -1,7 +1,7 @@
 var inforSearch = {
     fullName: "",
     orderBy: "1",
-    pageNumber: "0"
+    pageNumber: 0
 }
 var listTeacher = [];
 localStorage.removeItem("teacherId");
@@ -19,7 +19,7 @@ $("#search").click(function () {
     inforSearch = {
         fullName: fullName,
         orderBy: orderBy,
-        pageNumber: '0'
+        pageNumber: 0
     }
     $('tbody').html("");
     $('.table-paging').html("");
@@ -40,16 +40,36 @@ function search() {
         },
         success: function (data) {
             if (data.message.messageCode == 0) {
-                for (var i = 0; i < data.teacherList.totalPages; i++) {
-                    if (i == inforSearch.pageNumber) {
-                        $('.table-paging').append(
-                            `<input type="button" value="` + (i + 1) + `" class="table-paging__page table-paging__page_cur"/>`
-                        );
-                    } else {
-                        $('.table-paging').append(
-                            `<input type="button" value="` + (i + 1) + `" class="table-paging__page"/>`
-                        );
-                    }
+                // for (var i = 0; i < data.teacherList.totalPages; i++) {
+                //     if (i == inforSearch.pageNumber) {
+                //         $('.table-paging').append(
+                //             `<input type="button" value="` + (i + 1) + `" class="table-paging__page table-paging__page_cur"/>`
+                //         );
+                //     } else {
+                //         $('.table-paging').append(
+                //             `<input type="button" value="` + (i + 1) + `" class="table-paging__page"/>`
+                //         );
+                //     }
+                // }
+                var totalPages = data.teacherList.totalPages;
+                $('.table-paging').append(
+                    `<button type="button" class="btn btn-page btn-prev" id="prevPage" title="Trang trước"><i class="fa fa-chevron-left"></i></button>`
+                );
+                $('.table-paging').append(
+                    `<button type="button" class="btn btn-page btn-next" id="nextPage" title="Trang sau"><i class="fa fa-chevron-right"></i></button>`
+                );
+                $('.table-paging').append(
+                    `<div class="pageNumber"><b>` + (inforSearch.pageNumber + 1) + ` </b>/ ` + totalPages + `</div>`
+                );
+                if (inforSearch.pageNumber == 0) {
+                    $('#prevPage').prop('disabled', true);
+                } else {
+                    $('#prevPage').prop('disabled', false);
+                }
+                if ((inforSearch.pageNumber + 1) == totalPages) {
+                    $('#nextPage').prop('disabled', true);
+                } else {
+                    $('#nextPage').prop('disabled', false);
                 }
 
                 $.each(data.teacherList.content, function (i, item) {
@@ -88,7 +108,9 @@ function search() {
                 });
                 getTeacherID();
                 selectCheckbox();
-                pagingClick();
+                prevPage();
+                nextPage();
+                // pagingClick();
             } else {
                 $('tbody').append(
                     `<tr>
@@ -110,15 +132,6 @@ function search() {
         },
         dataType: "json",
         contentType: "application/json"
-    });
-}
-
-/*Edit teacher information by ID*/
-function getTeacherID() {
-    var teacherId = $('.bt-table-edit');
-    $(teacherId).on('click', function (e) {
-        teacherId = $(this).prop('id');
-        localStorage.setItem("teacherId", teacherId);
     });
 }
 
@@ -241,4 +254,33 @@ function selectCheckbox() {
             $("#selectAll").prop("checked", false);
         }
     });
+}
+
+/*Edit teacher information by ID*/
+function getTeacherID() {
+    var teacherId = $('.bt-table-edit');
+    $(teacherId).on('click', function (e) {
+        teacherId = $(this).prop('id');
+        localStorage.setItem("teacherId", teacherId);
+    });
+}
+
+function nextPage() {
+    $('#nextPage').on('click', function (event) {
+        $("#selectAll").prop("checked", false);
+        inforSearch.pageNumber++;
+        $('tbody').html("");
+        $('.table-paging').html("");
+        search();
+    })
+}
+
+function prevPage() {
+    $('#prevPage').on('click', function (event) {
+        $("#selectAll").prop("checked", false);
+        inforSearch.pageNumber--;
+        $('tbody').html("");
+        $('.table-paging').html("");
+        search();
+    })
 }
