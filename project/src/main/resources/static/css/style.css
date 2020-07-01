@@ -846,3 +846,56 @@ div.searchable {
 }
 
 /*END User Information*/
+
+/*Timetable*/
+.timetable {
+    width: 100%;
+    table-layout: fixed;
+    text-align: center;
+    border-collapse: collapse;
+    margin-top: 30px;
+}
+
+.timetable, .timetable tr, .timetable td {
+    height: 60px;
+    font-size: 20px;
+    border: 1px solid #456c83;
+}
+
+.timtable-title {
+    text-transform: uppercase;
+    background: #44515d;
+    color: #fff;
+}
+
+.timetable .session {
+    text-transform: uppercase;
+    font-weight: 500;
+    background: #c2e9fe;
+}
+
+.timetable .slot {
+    font-weight: 500;
+}
+
+.timetable .afternoon {
+    background: #d9edf7;
+}
+
+.timetable .sub-note {
+    font-weight: 700;
+    color: #1e7e34;
+    background: #28a74538;
+}
+
+.timetable .subject {
+    font-weight: 500;
+}
+
+.timetable .teacher {
+    color: #e74c3c;
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+/*END Timetable*/
