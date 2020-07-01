@@ -46,7 +46,6 @@ function changeSelected() {
     }
     classId = $('#class option:selected').val();
     className = $('#class option:selected').attr('name');
-    console.log(roleId, classId);
 }
 
 $("#next").click(function () {
@@ -87,7 +86,6 @@ $("#next").click(function () {
                 classId: classId,
                 roleId: roleId,
             }
-            console.log(userName);
             $.ajax({
                 url: '/api/admin/genaccname',
                 type: 'POST',
@@ -126,31 +124,29 @@ $("#next").click(function () {
 });
 
 $("#submit").click(function (e) {
-    fullName = $('#fullName').val();
-    userName = $('#username').val();
-    passWord = $('#password').val();
-    var confirmPassword = $('#confirm-password').val();
-    phone = $('#phone').val();
-    email = $('#email').val();
+    fullName = $('#fullName').val().trim();
+    userName = $('#username').val().trim();
+    passWord = $('#password').val().trim();
+    var confirmPassword = $('#confirm-password').val().trim();
+    phone = $('#phone').val().trim();
+    email = $('#email').val().trim();
 
-    if (userName.trim() == "") {
+    if (userName == "") {
         $('.createAccount-err').text("Hãy điền tên đăng nhập.");
         return false;
-    } else if (passWord.trim() == "") {
+    } else if (passWord == "") {
         $('.createAccount-err').text("Hãy điền mật khẩu.");
         return false;
-    } else if (confirmPassword.trim() == "") {
+    } else if (confirmPassword == "") {
         $('.createAccount-err').text("Hãy xác nhận lại mật khẩu.");
         return false;
     } else if (passWord != confirmPassword) {
         $('.createAccount-err').text("Mật khẩu xác nhận không đúng.");
         return false;
-    } else if (phone.trim() != "" && !phone.match(phoneRegex)) {
-        console.log(phone.trim());
+    } else if (phone != "" && !phone.match(phoneRegex)) {
         $('.createAccount-err').text("SĐT không đúng định dạng.");
         return false;
-    } else if (email.trim() != "" && !email.match(emailRegex)) {
-        console.log(email.trim());
+    } else if (email != "" && !email.match(emailRegex)) {
         $('.createAccount-err').text("Email không đúng định dạng.");
         return false;
     } else {

@@ -27,7 +27,7 @@ search();
 /*Search button*/
 $("#search").click(function () {
     var userName, roleId, sortBy, orderBy, pageNumber;
-    userName = $('#searchByUsername input').val();
+    userName = $('#searchByUsername input').val().trim();
     if ($('#role-name option:selected').val() == null) {
         roleId = null;
     } else {
@@ -139,7 +139,11 @@ function search() {
             }
         },
         failure: function (errMsg) {
-            console.log(errMsg);
+            $('tbody').append(
+                `<tr>
+                    <td colspan="7" class="userlist-result">` + errMsg + ` </td>
+                </tr>`
+            )
         },
         dataType: "json",
         contentType: "application/json"
@@ -186,16 +190,16 @@ $("#deleteAccount").click(function (e) {
 /*Reset Account*/
 $("#resetPassword").click(function (e) {
     $('.resetPass-err').text("");
-    var newpassword = $('#new-password').val();
-    var confirmpassword = $('#confirm-password').val();
+    var newpassword = $('#new-password').val().trim();
+    var confirmpassword = $('#confirm-password').val().trim();
 
-    if (newpassword.trim() == "" && confirmpassword.trim() == "") {
+    if (newpassword == "" && confirmpassword == "") {
         $('.resetPass-err').text("Hãy điền đầy đủ tất cả các trường.");
         return false;
-    } else if (newpassword.trim() == "") {
+    } else if (newpassword == "") {
         $('.resetPass-err').text("Hãy điền mật khẩu mới.");
         return false;
-    } else if (confirmpassword.trim() == "") {
+    } else if (confirmpassword == "") {
         $('.resetPass-err').text("Hãy xác nhận lại mật khẩu.");
         return false;
     } else if (newpassword != confirmpassword) {
@@ -313,7 +317,6 @@ function selectCheckbox() {
                 return value != removeItem;
             });
         }
-        console.log(JSON.stringify(listUser));
     });
 
     $("#selectAll").click(function () {
@@ -336,7 +339,6 @@ function selectCheckbox() {
                 });
             });
         }
-        console.log(JSON.stringify(listUser));
     });
     checkbox.click(function () {
         if (!this.checked) {
