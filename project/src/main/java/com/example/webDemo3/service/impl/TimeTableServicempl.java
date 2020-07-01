@@ -124,7 +124,7 @@ public class TimeTableServicempl implements TimeTableService {
 
     /**
      * lamnt98
-     * 01/0
+     * 01/07
      * find list week by yearIdCurrent
      * @param listWeekRequestDto
      * @return ListWeekResponseDto

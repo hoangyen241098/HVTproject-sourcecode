@@ -1,11 +1,9 @@
 package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.MessageDTO;
+import com.example.webDemo3.dto.ViewTeaInforResponseDto;
 import com.example.webDemo3.dto.ViewTeaListResponseDto;
-import com.example.webDemo3.dto.request.AddTeacherRequestDto;
-import com.example.webDemo3.dto.request.DeleteTeacherRequestDto;
-import com.example.webDemo3.dto.request.EditTeaInforRequestDto;
-import com.example.webDemo3.dto.request.ViewTeaListRequestDto;
+import com.example.webDemo3.dto.request.*;
 import com.example.webDemo3.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -62,7 +60,7 @@ public class TeacherController {
     /**
      * lamnt98
      * 30/06
-     * catch request from client to search teacher
+     * catch request from client to search list teacher
      * @param model
      * @return ViewTeaListResponseDto
      */
@@ -70,5 +68,18 @@ public class TeacherController {
     public ViewTeaListResponseDto addTeacher(@RequestBody ViewTeaListRequestDto model)
     {
         return teacherService.searchTeacher(model);
+    }
+
+    /**
+     * lamnt98
+     * 01/07
+     * catch request from client to find teacher information
+     * @param model
+     * @return ViewTeaListResponseDto
+     */
+    @PostMapping("/viewteacherinformation")
+    public ViewTeaInforResponseDto addTeacher(@RequestBody ViewTeaInforRequestDto model)
+    {
+        return teacherService.viewTeacherInfor(model);
     }
 }
