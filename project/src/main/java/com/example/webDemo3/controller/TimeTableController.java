@@ -1,7 +1,9 @@
 package com.example.webDemo3.controller;
 
+import com.example.webDemo3.dto.ClassTimeTableResponseDto;
 import com.example.webDemo3.dto.ListWeekResponseDto;
 import com.example.webDemo3.dto.ListYearAndClassResponseDto;
+import com.example.webDemo3.dto.request.ClassTimeTableRequestDto;
 import com.example.webDemo3.dto.request.ListWeekRequestDto;
 import com.example.webDemo3.service.TimeTableService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +43,18 @@ public class TimeTableController {
     public ListWeekResponseDto getlistweek(@RequestBody ListWeekRequestDto listWeekRequestDto)
     {
         return viewTimTaClassService.getListWeekByYearId(listWeekRequestDto);
+    }
+
+    /**
+     * lamnt98
+     * 01/07
+     * catch request from client to find class timetable by weekId and classId
+     * @param classTimeTableRequestDto
+     * @return ClassTimeTableResponseDto
+     */
+    @PostMapping("/classtimetable")
+    public ClassTimeTableResponseDto getClassTimeTable(@RequestBody ClassTimeTableRequestDto classTimeTableRequestDto)
+    {
+        return viewTimTaClassService.getClassTimeTable(classTimeTableRequestDto);
     }
 }

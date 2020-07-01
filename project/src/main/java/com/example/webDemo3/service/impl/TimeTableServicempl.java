@@ -1,16 +1,20 @@
 package com.example.webDemo3.service.impl;
 
 import com.example.webDemo3.constant.Constant;
+import com.example.webDemo3.dto.ClassTimeTableResponseDto;
 import com.example.webDemo3.dto.ListWeekResponseDto;
 import com.example.webDemo3.dto.ListYearAndClassResponseDto;
 import com.example.webDemo3.dto.MessageDTO;
+import com.example.webDemo3.dto.request.ClassTimeTableRequestDto;
 import com.example.webDemo3.dto.request.ListWeekRequestDto;
 import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.entity.SchoolWeek;
 import com.example.webDemo3.entity.SchoolYear;
+import com.example.webDemo3.entity.TimeTable;
 import com.example.webDemo3.repository.ClassRepository;
 import com.example.webDemo3.repository.SchoolWeekRepository;
 import com.example.webDemo3.repository.SchoolYearRepository;
+import com.example.webDemo3.repository.TimetableRepository;
 import com.example.webDemo3.service.TimeTableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +38,9 @@ public class TimeTableServicempl implements TimeTableService {
 
     @Autowired
     private ClassRepository classRepository;
+
+    @Autowired
+    private TimetableRepository timetableRepository;
 
     /**
      * lamnt98
@@ -155,5 +162,63 @@ public class TimeTableServicempl implements TimeTableService {
         messageDTO = Constant.SUCCESS;
         listWeekResponseDto.setMessageDTO(messageDTO);
         return listWeekResponseDto;
+    }
+
+    /**
+     * lamnt98
+     * 01/07
+     * find timetable of class by weekId and classId
+     * @param classTimeTable
+     * @return ClassTimeTableResponseDto
+     */
+    @Override
+    public ClassTimeTableResponseDto getClassTimeTable(ClassTimeTableRequestDto classTimeTable) {
+        ClassTimeTableResponseDto timeTabel = new ClassTimeTableResponseDto();
+        List<TimeTable> morningTimeTable;
+        List<TimeTable> afternoonTimeTable;
+        MessageDTO messageDTO = new MessageDTO();
+        Integer weekId;
+        Integer classId;
+
+        try {
+            weekId = classTimeTable.getWeekId();
+
+            //check weekId null or not
+            if(weekId == null){
+                messageDTO = Constant.WEEK_ID_NULL;
+                timeTabel.setMessageDTO(messageDTO);
+                return  timeTabel;
+            }
+
+            classId = classTimeTable.getClassId();
+
+            //check classId null or not
+            if(classId == null){
+                messageDTO = Constant.CLASS_ID_NULL;
+                timeTabel.setMessageDTO(messageDTO);
+                return  timeTabel;
+            }
+
+            morningTimeTable = timetableRepository.getMorningTimeTable(weekId,classId);
+            afternoonTimeTable = timetableRepository.getAfternoonTimeTable(weekId,classId);
+
+            //check timetable exist or not
+            if(morningTimeTable.size() == 0 && afternoonTimeTable.size() == 0){
+                messageDTO = Constant.TIMETABLE_NULL;
+                timeTabel.setMessageDTO(messageDTO);
+                return  timeTabel;
+            }
+
+            messageDTO = Constant.SUCCESS;
+            timeTabel.setMessageDTO(messageDTO);
+            timeTabel.setMorningTimeTable(morningTimeTable);
+            timeTabel.setAfternoonTimeTable(afternoonTimeTable);
+        }catch (Exception e){
+            messageDTO.setMessageCode(1);
+            messageDTO.setMessage(e.toString());
+            timeTabel.setMessageDTO(messageDTO);
+            return  timeTabel;
+        }
+        return timeTabel;
     }
 }
