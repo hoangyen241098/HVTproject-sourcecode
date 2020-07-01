@@ -1,10 +1,7 @@
 package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.*;
-import com.example.webDemo3.dto.request.AddClassRequestDto;
-import com.example.webDemo3.dto.request.AddGiftedClassRequestDto;
-import com.example.webDemo3.dto.request.ClassInforRequestDto;
-import com.example.webDemo3.dto.request.EditClassRequestDto;
+import com.example.webDemo3.dto.request.*;
 import com.example.webDemo3.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,10 +23,10 @@ public class ClassController {
      * @return reponseDTO with a class list and messagedto
      */
     @PostMapping("/classtable")
-    public ClassTableResponseDto getClassTale()
+    public ClassTableResponseDto getClassTale(@RequestBody ClassTableRequestDto requestModel)
     {
         ClassTableResponseDto responseDto = new ClassTableResponseDto();
-        responseDto = classService.getClassTable();
+        responseDto = classService.getClassTable(requestModel);
         return  responseDto;
     }
 

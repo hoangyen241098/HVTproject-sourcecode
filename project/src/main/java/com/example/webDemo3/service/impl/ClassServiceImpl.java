@@ -13,6 +13,10 @@ import com.example.webDemo3.service.ClassService;
 import com.example.webDemo3.service.GenerateAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -64,30 +68,6 @@ public class ClassServiceImpl implements ClassService {
             }
             Collections.sort(classResList);
             responseDto.setClassList(classResList);
-            message = Constant.SUCCESS;
-            responseDto.setMessage(message);
-            return responseDto;
-        }
-        message = Constant.CLASSLIST_NOT_EXIT;
-        responseDto.setMessage(message);
-        return responseDto;
-    }
-
-    /**
-     * kimpt142
-     * 29/6
-     * get list class to show in detail table
-     * @return a detail of class
-     */
-    @Override
-    public ClassTableResponseDto getClassTable() {
-        ClassTableResponseDto responseDto = new ClassTableResponseDto();
-        MessageDTO message = new MessageDTO();
-        List<Class> classList = classRepository.findAll();
-
-        if(classList!=null)
-        {
-            responseDto.setClassList(classList);
             message = Constant.SUCCESS;
             responseDto.setMessage(message);
             return responseDto;
@@ -329,6 +309,64 @@ public class ClassServiceImpl implements ClassService {
         responseDto.setStatus(classInfor.getStatus());
         message = Constant.SUCCESS;
         responseDto.setMessage(message);
+        return responseDto;
+    }
+
+
+    /**
+     * kimpt142
+     * 1/7
+     * get list class to show in detail table
+     * @return a detail of class
+     */
+    @Override
+    public ClassTableResponseDto getClassTable(ClassTableRequestDto requestModel) {
+        ClassTableResponseDto responseDto = new ClassTableResponseDto();
+        MessageDTO message = new MessageDTO();
+        Pageable paging;
+        Integer orderBy = requestModel.getOrderBy();
+        Integer pageNumber = requestModel.getPageNumber();
+        String classIdentifier = requestModel.getClassIdentifier();
+        Integer grade = requestModel.getGrade();
+        Page<Class> pagedResult;
+        String orderByProperty;
+        Integer pageSize = Constant.PAGE_SIZE;
+        switch (orderBy){
+            case 0: {
+                orderByProperty = "classIdentifier";
+                break;
+            }
+            case 1: {
+                orderByProperty = "grade";
+                break;
+            }
+            default: orderByProperty = "classIdentifier";
+        }
+
+        if(requestModel.getSortBy() == 0){
+            paging = PageRequest.of(pageNumber, pageSize, Sort.by(orderByProperty).descending());
+        }
+        else {
+            paging = PageRequest.of(pageNumber, pageSize, Sort.by(orderByProperty).ascending());
+        }
+
+        if(grade!=null){
+            pagedResult = classRepository.searchClassByCondition(classIdentifier,grade, paging);
+        }
+        else{
+            pagedResult = classRepository.searchClassByClassIdentifier(classIdentifier, paging);
+        }
+
+        //check result when get list
+        if(pagedResult.getTotalElements() == 0){
+            message = Constant.CLASSLIST_NOT_EXIT;
+            responseDto.setMessage(message);
+            return responseDto;
+        }
+
+        message = Constant.SUCCESS;
+        responseDto.setMessage(message);
+        responseDto.setClassList(pagedResult);
         return responseDto;
     }
 }
