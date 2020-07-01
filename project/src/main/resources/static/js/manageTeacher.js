@@ -1,6 +1,6 @@
 var inforSearch = {
     fullName: "",
-    orderBy: "0",
+    orderBy: "1",
     pageNumber: "0"
 }
 var listTeacher = [];
@@ -12,7 +12,7 @@ $("#search").click(function () {
     var fullName, orderBy, pageNumber;
     fullName = $('#searchByFullName input').val().trim();
     if ($('#orderBy option:selected').val() == null) {
-        orderBy = "0";
+        orderBy = "1";
     } else {
         orderBy = $('#orderBy option:selected').val();
     }
@@ -53,12 +53,7 @@ function search() {
                 }
 
                 $.each(data.teacherList.content, function (i, item) {
-                    var phone, email, status;
-                    if (item.status == null || item.status == 0) {
-                        status = `<span id="true" class="status-active"><i class="fa fa-circle" aria-hidden="true"></i></span>`;
-                    } else {
-                        status = `<span id="false" class="status-deactive"><i class="fa fa-circle" aria-hidden="true"></i></span>`;
-                    }
+                    var phone, email;
                     if (item.phone == null) {
                         phone = "";
                     } else {
@@ -87,7 +82,6 @@ function search() {
                 <td><span id="teacherIdentifier">` + item.teacherIdentifier + `</span></td>
                 <td><span id="phone">` + phone + `</span></td>
                 <td><span id="email">` + email + `</span></td>
-                <td><span id="status">` + status + `</span></td>
                 <td><span class="bt-table-field"><a href="teacherInformation" id="` + item.teacherId + `" class="bt-table-edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></input></span>
                 </td>
                 </tr>`);
