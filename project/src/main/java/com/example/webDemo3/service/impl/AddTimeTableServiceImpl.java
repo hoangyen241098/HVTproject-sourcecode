@@ -30,18 +30,30 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
     @Override
     public MessageDTO addTimetable(HSSFWorkbook workbook,int applyWeekId) {
         MessageDTO message = new MessageDTO();
-
-        HSSFSheet worksheet = workbook.getSheetAt(0);
-        addTimetableMorning(worksheet,applyWeekId);
-
+        try {
+            HSSFSheet worksheet = workbook.getSheet("TKB Sang");
+                    //.getSheetAt(0);
+            message = addTimetableMorning(worksheet,applyWeekId);
+        }catch (Exception e){
+            System.out.println(e);
+            if(message == null){
+                message.setMessageCode(1);
+                message.setMessage("không có sheet TKB Sang");
+            }
+            else{
+                message.setMessageCode(1);
+                message.setMessage(e.toString());
+            }
+        } ;
         return message;
     }
 
-    public void addTimetableMorning(HSSFSheet worksheet,int applyWeekId) {
+    public MessageDTO addTimetableMorning(HSSFSheet worksheet,int applyWeekId) throws Exception {
+        MessageDTO message = new MessageDTO();
+
         List<String> teacherList = new ArrayList<>();
         List<String> classList = new ArrayList<>();
         List<List<String>> dataList = new ArrayList<List<String>>();
-
 
         int row = 35;
         int j = 3;
@@ -74,7 +86,9 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
             Class classTb = classRepository.findByClassIdentifier(lop);
             if(classTb == null){
                 System.out.println("không tìm thấy lớp " + lop);
-                return;
+                message.setMessageCode(1);
+                message.setMessage("không tìm thấy lớp " + lop);
+//                return message;
             }
 
             List<String> subData = dataList.get(i);
@@ -99,7 +113,9 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
                     teacherTb = teacherRepository.findTeacherTeacherIdentifier(gv);
                     if(teacherTb == null){
                         System.out.println("không tìm thấy giáo viên " + gv);
-                        return;
+                        message.setMessageCode(1);
+                        message.setMessage("không tìm thấy giáo viên " + gv);
+                        return message;
                     }
                 }
 
@@ -124,10 +140,16 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
                     timetableRepository.save(tb);
                 } catch (Exception e) {
                     System.out.println(e);
+                    message.setMessageCode(1);
+                    message.setMessage("không thêm được data");
+                    return message;
                 }
             }
         }
         System.out.println("thành công");
+        message.setMessageCode(0);
+        message.setMessage("thành công");
+        return message;
     }
 
 
