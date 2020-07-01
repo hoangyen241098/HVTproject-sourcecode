@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 public interface TeacherRepository extends JpaRepository<Teacher,Integer>{
-    @Query(value = "select t from Teacher t where t.teacherIdentifier like %:teacherIdentifier%")
+    @Query(value = "select t from Teacher t where t.teacherIdentifier = :teacherIdentifier")
     Teacher findTeacherTeacherIdentifier(@Param("teacherIdentifier") String teacherIdentifier);
 
     @Query(value = "select t from Teacher t where (t.fullName like %:fullName%) and (t.status <> 1 or t.status is null)")
