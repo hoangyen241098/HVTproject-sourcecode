@@ -1,11 +1,9 @@
 package com.example.webDemo3.controller;
 
-import com.example.webDemo3.dto.AddClassResponseDto;
-import com.example.webDemo3.dto.ClassTableResponseDto;
-import com.example.webDemo3.dto.GiftedClassResponseDto;
-import com.example.webDemo3.dto.MessageDTO;
+import com.example.webDemo3.dto.*;
 import com.example.webDemo3.dto.request.AddClassRequestDto;
 import com.example.webDemo3.dto.request.AddGiftedClassRequestDto;
+import com.example.webDemo3.dto.request.ClassInforRequestDto;
 import com.example.webDemo3.dto.request.EditClassRequestDto;
 import com.example.webDemo3.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,5 +93,17 @@ public class ClassController {
     public MessageDTO editClass(@RequestBody EditClassRequestDto model)
     {
         return editClassService.editClass(model);
+    }
+
+    /**
+     * kimpt142
+     * 1/7
+     * catch request to get class infor
+     * @return ClassInforResponseDto include identifier, status and message
+     */
+    @PostMapping("/viewclassinfor")
+    public ClassInforResponseDto viewClassInfor(@RequestBody ClassInforRequestDto model)
+    {
+        return classListService.getClassInfor(model);
     }
 }
