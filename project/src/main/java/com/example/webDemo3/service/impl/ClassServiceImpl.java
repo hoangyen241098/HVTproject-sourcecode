@@ -2,10 +2,7 @@ package com.example.webDemo3.service.impl;
 
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.*;
-import com.example.webDemo3.dto.request.AddClassRequestDto;
-import com.example.webDemo3.dto.request.AddGiftedClassRequestDto;
-import com.example.webDemo3.dto.request.EditClassRequestDto;
-import com.example.webDemo3.dto.request.GenerateNameRequestDto;
+import com.example.webDemo3.dto.request.*;
 import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.entity.GiftedClass;
 import com.example.webDemo3.entity.User;
@@ -255,6 +252,7 @@ public class ClassServiceImpl implements ClassService {
         return message;
     }
 
+
     /**
      * kimpt142
      * 30/6
@@ -265,7 +263,7 @@ public class ClassServiceImpl implements ClassService {
     @Override
     public MessageDTO editClass(EditClassRequestDto model) {
         Integer classId = model.getClassId();
-        String classIdentifier = model.getGiftedClassName().trim();
+        String classIdentifier = model.getClassIdentifier().trim();
         Integer status = model.getStatus();
         MessageDTO message = new MessageDTO();
 
@@ -274,19 +272,15 @@ public class ClassServiceImpl implements ClassService {
             return message;
         }
 
-        List<Class> classList = classRepository.findAll();
-        for(Class item : classList){
-            //check class identifier
-            if(item.getClassIdentifier().equalsIgnoreCase(classIdentifier))
-            {
-                message = Constant.CLASSIDENTIFIER_EXIST;
-                return message;
-            }
-        }
-
         Class editClass = classRepository.findByClassId(classId);
         if(editClass == null){
             message = Constant.CLASS_NOT_EXIST;
+            return message;
+        }
+
+        Class classByNewIdetifier = classRepository.findByClassIdentifier(classIdentifier);
+        if(!classIdentifier.equalsIgnoreCase(editClass.getClassIdentifier()) && classByNewIdetifier != null){
+            message = Constant.CLASSIDENTIFIER_EXIST;
             return message;
         }
 
@@ -310,5 +304,31 @@ public class ClassServiceImpl implements ClassService {
         }
         message = Constant.SUCCESS;
         return message;
+    }
+
+    /**
+     * kimpt142
+     * 1/7
+     * get class information from classId
+     * @param model include classId
+     * @return class information
+     */
+    @Override
+    public ClassInforResponseDto getClassInfor(ClassInforRequestDto model) {
+        ClassInforResponseDto responseDto = new ClassInforResponseDto();
+        MessageDTO message = new MessageDTO();
+
+        Class classInfor = classRepository.findByClassId(model.getClassId());
+        if(classInfor == null) {
+            message = Constant.CLASS_NOT_EXIST;
+            responseDto.setMessage(message);
+            return responseDto;
+        }
+
+        responseDto.setClassIdentifier(classInfor.getClassIdentifier());
+        responseDto.setStatus(classInfor.getStatus());
+        message = Constant.SUCCESS;
+        responseDto.setMessage(message);
+        return responseDto;
     }
 }
