@@ -83,7 +83,7 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
             String gvcn = teacherList.get(i);
 
             String lop = classList.get(i);
-            Class classTb = classRepository.findByClassIdentifier(lop);
+            Class classTb = classRepository.findClassActiveByClassIdentifier(lop);
             if(classTb == null){
                 System.out.println("không tìm thấy lớp " + lop);
                 message.setMessageCode(1);

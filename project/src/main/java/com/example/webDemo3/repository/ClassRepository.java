@@ -8,12 +8,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import java.util.List;
 
 @Repository
 public interface ClassRepository extends JpaRepository<Class,Integer> {
     Class findByClassId(Integer classId);
 
-    Class findByClassIdentifier(String classIdentifier);
+    List<Class> findByClassIdentifier(String classIdentifier);
 
     @Query(value = "select c from Class c where c.classIdentifier like %:classIdentifier% and c.grade = :roleId")
     Page<Class> searchClassByCondition(@Param("classIdentifier") String classIdentifier, @Param("roleId") Integer roleId, Pageable paging);
@@ -23,4 +24,7 @@ public interface ClassRepository extends JpaRepository<Class,Integer> {
 
     @Query(value = "select c from Class c where c.grade = :grade and c.giftedClass.giftedClassId = :giftedName ")
     Class searchClassByGradeAndGifedId(@Param("grade") Integer classIdentifier,@Param("giftedName") Integer giftedId);
+
+    @Query(value = "select c from Class c where c.classIdentifier = :classIdentifier and (c.status <> 1 or c.status is null)")
+    Class findClassActiveByClassIdentifier(@Param("classIdentifier") String classIdentifier);
 }
