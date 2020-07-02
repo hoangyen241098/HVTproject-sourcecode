@@ -143,6 +143,36 @@ public class ClassServiceImpl implements ClassService {
             return responseDto;
         }
 
+        Class classByClassIdentifier = classRepository.findByClassIdentifier(classIdentifier);
+        if(classByClassIdentifier != null){
+            if(classByClassIdentifier.getStatus() != null && classByClassIdentifier.getStatus() == 1 ){
+                message = Constant.CLASSIDENTIFIER_EXIST_BLOCK;
+                responseDto.setClassId(classByClassIdentifier.getClassId());
+                responseDto.setMessage(message);
+                return responseDto;
+            }
+            else{
+                message = Constant.CLASSIDENTIFIER_EXIST;
+                responseDto.setMessage(message);
+                return responseDto;
+            }
+        }
+
+        Class classByGradeAndGiftedId = classRepository.searchClassByGradeAndGifedId(grade, giftedClassId);
+        if(classByGradeAndGiftedId != null){
+            if(classByGradeAndGiftedId.getStatus() != null && classByGradeAndGiftedId.getStatus() == 1 ){
+                message = Constant.CLASSNAME_EXIST_BLOCK;
+                responseDto.setClassId(classByGradeAndGiftedId.getClassId());
+                responseDto.setMessage(message);
+                return responseDto;
+            }
+            else{
+                message = Constant.CLASS_EXIST;
+                responseDto.setMessage(message);
+                return responseDto;
+            }
+        }
+
         addClass.setClassIdentifier(classIdentifier);
         addClass.setGrade(grade);
         addClass.setGiftedClass(new GiftedClass(giftedClassId));

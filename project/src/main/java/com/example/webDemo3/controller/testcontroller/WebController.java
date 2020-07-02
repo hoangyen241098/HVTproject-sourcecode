@@ -96,4 +96,20 @@ public class WebController {
     public String createGifftedClass(Model model) {
         return "createGifftedClass";
     }
+
+    /*Module 4: Thời khóa biểu*/
+    @GetMapping("/timetableClass")
+    public String timetableClass(Model model) {
+        return "timetableClass";
+    }
+
+    @GetMapping("/timetableTeacher")
+    public String timetableTeacher(Model model) {
+        return "timetableTeacher";
+    }
+
+    @GetMapping("/manageTimetable")
+    public String manageTimetable(Model model) {
+        return "manageTimetable";
+    }
 }

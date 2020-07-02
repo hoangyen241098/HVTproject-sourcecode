@@ -83,6 +83,10 @@ public class Constant {
             new MessageDTO(1,"Hãy chọn lớp");
     public static final MessageDTO TIMETABLE_NULL =
             new MessageDTO(1,"Không có kết quả.");
+    public static final MessageDTO CLASSIDENTIFIER_EXIST_BLOCK =
+            new MessageDTO(2,"Tên định danh này đã tồn tại nhưng bị khóa.");
+    public static final MessageDTO CLASSNAME_EXIST_BLOCK =
+            new MessageDTO(2,"Tên lớp này đã tồn tại nhưng bị khóa.");
     /**
      * Success message
      */
