@@ -1,10 +1,7 @@
 package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.*;
-import com.example.webDemo3.dto.request.AddClassRequestDto;
-import com.example.webDemo3.dto.request.AddGiftedClassRequestDto;
-import com.example.webDemo3.dto.request.ClassInforRequestDto;
-import com.example.webDemo3.dto.request.EditClassRequestDto;
+import com.example.webDemo3.dto.request.*;
 import com.example.webDemo3.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,19 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ClassController {
 
     @Autowired
-    private ClassListService classListService;
-
-    @Autowired
-    private GiftedClassListService giftedClassListService;
-
-    @Autowired
-    private AddClassService addClassService;
-
-    @Autowired
-    private AddGiftedClassService addGiftedClassService;
-
-    @Autowired
-    private EditClassService editClassService;
+    private ClassService classService;
 
     /**
      * kimpt142
@@ -38,10 +23,10 @@ public class ClassController {
      * @return reponseDTO with a class list and messagedto
      */
     @PostMapping("/classtable")
-    public ClassTableResponseDto getClassTale()
+    public ClassTableResponseDto getClassTale(@RequestBody ClassTableRequestDto requestModel)
     {
         ClassTableResponseDto responseDto = new ClassTableResponseDto();
-        responseDto = classListService.getClassTable();
+        responseDto = classService.getClassTable(requestModel);
         return  responseDto;
     }
 
@@ -55,7 +40,7 @@ public class ClassController {
     public GiftedClassResponseDto getGiftedClassList()
     {
         GiftedClassResponseDto responseDto = new GiftedClassResponseDto();
-        responseDto = giftedClassListService.getGiftedClassList();
+        responseDto = classService.getGiftedClassList();
         return  responseDto;
     }
 
@@ -68,7 +53,7 @@ public class ClassController {
     @PostMapping("/addclass")
     public AddClassResponseDto addNewClass(@RequestBody AddClassRequestDto model)
     {
-        return addClassService.addNewClass(model);
+        return classService.addNewClass(model);
     }
 
     /**
@@ -80,7 +65,7 @@ public class ClassController {
     @PostMapping("/addgifftedclass")
     public MessageDTO addNewGiftedClass(@RequestBody AddGiftedClassRequestDto model)
     {
-        return addGiftedClassService.addGiftedClass(model);
+        return classService.addGiftedClass(model);
     }
 
     /**
@@ -92,7 +77,7 @@ public class ClassController {
     @PostMapping("/editclass")
     public MessageDTO editClass(@RequestBody EditClassRequestDto model)
     {
-        return editClassService.editClass(model);
+        return classService.editClass(model);
     }
 
     /**
@@ -104,6 +89,6 @@ public class ClassController {
     @PostMapping("/viewclassinfor")
     public ClassInforResponseDto viewClassInfor(@RequestBody ClassInforRequestDto model)
     {
-        return classListService.getClassInfor(model);
+        return classService.getClassInfor(model);
     }
 }

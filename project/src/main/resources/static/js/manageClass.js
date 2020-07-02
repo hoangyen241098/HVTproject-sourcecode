@@ -1,70 +1,139 @@
 localStorage.removeItem("classId");
-$.ajax({
-    url: '/api/admin/classtable',
-    type: 'POST',
-    beforeSend: function () {
-        $('body').addClass("loading")
-    },
-    complete: function () {
-        $('body').removeClass("loading")
-    },
-    success: function (data) {
-        if (data.message.messageCode == 0) {
-            var id = 0;
-            $.each(data.classList, function (i, item) {
-                id +=1;
-                var grade, classIdentifier, status, giftedClassName;
-                if (item.grade == null) {
-                    grade = "";
-                } else {
-                    grade = item.grade;
-                }
-                if (item.classIdentifier == null) {
-                    classIdentifier = "";
-                } else {
-                    classIdentifier = item.classIdentifier;
-                }
-                if (item.status == null) {
-                    status = "";
-                } else {
-                    status = item.status;
-                }
-                if (item.giftedClass == null) {
-                    giftedClassName = "";
-                } else {
-                    giftedClassName = item.giftedClass.name;
-                }
+var inforSearch = {
+    classIdentifier: "",
+    grade: "",
+    sortBy: "1",
+    orderBy: "0",
+    pageNumber: 0
+}
+search();
+/*Search button*/
+$("#search").click(function () {
+    var grade, classIdentifier, sortBy, orderBy;
+    classIdentifier = $('#searchByIdentifier input').val().trim();
+    if ($('#searchByGrade option:selected').val() == null|| $('#searchByGrade option:selected').val() == "0") {
+        grade = "";
+    } else {
+        grade = $('#searchByGrade option:selected').val();
+    }
+    if ($('#sortBy option:selected').val() == null) {
+        sortBy = "1";
+    } else {
+        sortBy = $('#sortBy option:selected').val();
+    }
+    if ($('#orderBy option:selected').val() == null) {
+        orderBy = "0";
+    } else {
+        orderBy = $('#orderBy option:selected').val();
+    }
+    inforSearch = {
+        classIdentifier: classIdentifier,
+        grade: grade,
+        sortBy: sortBy,
+        orderBy: orderBy,
+        pageNumber: 0
+    }
+    $('tbody').html("");
+    $('.table-paging').html("");
+    search();
+});
 
+/*Load class list*/
+function search() {
+    $.ajax({
+        url: '/api/admin/classtable',
+        type: 'POST',
+        data: JSON.stringify(inforSearch),
+        beforeSend: function () {
+            $('body').addClass("loading")
+        },
+        complete: function () {
+            $('body').removeClass("loading")
+        },
+        success: function (data) {
+            if (data.message.messageCode == 0) {
+                var totalPages = data.classList.totalPages;
+                var id = 0 + inforSearch.pageNumber*10;
+                $('.table-paging').append(
+                    `<button type="button" class="btn btn-page btn-prev" id="prevPage" title="Trang trước"><i class="fa fa-chevron-left"></i></button>`
+                );
+                $('.table-paging').append(
+                    `<button type="button" class="btn btn-page btn-next" id="nextPage" title="Trang sau"><i class="fa fa-chevron-right"></i></button>`
+                );
+                $('.table-paging').append(
+                    `<div class="pageNumber"><b>` + (inforSearch.pageNumber + 1) + ` </b>/ ` + totalPages + `</div>`
+                );
+                if (inforSearch.pageNumber == 0) {
+                    $('#prevPage').prop('disabled', true);
+                } else {
+                    $('#prevPage').prop('disabled', false);
+                }
+                if ((inforSearch.pageNumber + 1) == totalPages) {
+                    $('#nextPage').prop('disabled', true);
+                } else {
+                    $('#nextPage').prop('disabled', false);
+                }
+                if (data.classList != null) {
+                    $.each(data.classList.content, function (i, item) {
+                        var grade, classIdentifier, status, giftedClassName;
+                        id += 1;
+                        if (item.grade == null) {
+                            grade = "";
+                        } else {
+                            grade = item.grade;
+                        }
+                        if (item.classIdentifier == null) {
+                            classIdentifier = "";
+                        } else {
+                            classIdentifier = item.classIdentifier;
+                        }
+                        if (item.status == null || item.status == 0) {
+                            status = `<span class="status-active"><i class="fa fa-circle" aria-hidden="true"></i></span>`;
+                        } else {
+                            status = `<span class="status-deactive"><i class="fa fa-circle" aria-hidden="true"></i></span>`;
+                        }
+                        if (item.giftedClass == null) {
+                            giftedClass = "";
+                        } else {
+                            giftedClassName = item.giftedClass.name;
+                        }
+                        $('tbody').append(
+                            `<tr>
+                                <td><span>` + id + `</span></td>
+                                <td><span id="grade">` + grade + `</span></td>
+                                <td><span id="giftedClassName">` + giftedClassName + `</span></td>
+                                <td><span id="classIdentifier">` + classIdentifier + `</span></td>
+                                <td><span id="status">` + status + `</span></td>
+                                <td><span class="bt-table-field"><a href="editClass" id="${item.classId}" class="bt-table-edit">
+                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i></input></span></td>
+                            </tr>`
+                        );
+                    });
+                    getClassID();
+                    prevPage();
+                    nextPage();
+                }
+            } else {
                 $('tbody').append(
                     `<tr>
-                        <td><span>` + id + `</span></td>
-                        <td><span id="grade">` + grade + `</span></td>
-                        <td><span id="giftedClassName">` + giftedClassName + `</span></td>
-                        <td><span id="classIdentifier">` + classIdentifier + `</span></td>
-                        <td><span id="status">` + status + `</span></td>
-                        <td><span class="bt-table-field"><a href="editClass" id="${item.classId}" class="bt-table-edit">
-                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i></input></span></td>
+                        <td colspan="6" class="userlist-result">
+                            ` + data.message.message + `
+                        </td>
                     </tr>`
-                );
-            });
-            getClassID();
-        } else {
+                )
+            }
+        },
+        failure: function (errMsg) {
             $('tbody').append(
                 `<tr>
-                    <td colspan="7" class="userlist-result">
-                        ` + data.message.message + `
-                    </td>
+                    <td colspan="6" class="userlist-result">` + errMsg + ` </td>
                 </tr>`
             )
-        }
-
-    },
-    failure: function (errMsg) {
-        console.log(errMsg);
-    },
-    dataType: "json",
-    contentType: "application/json"
-});
+        },
+        dataType: "json",
+        contentType: "application/json"
+    });
+}
 
 /*Edit class information by ID*/
 function getClassID() {
@@ -74,4 +143,24 @@ function getClassID() {
         localStorage.setItem("classId", classId);
         console.log(localStorage.getItem("classId"));
     });
+}
+
+function nextPage() {
+    $('#nextPage').on('click', function (event) {
+        $("#selectAll").prop("checked", false);
+        inforSearch.pageNumber++;
+        $('tbody').html("");
+        $('.table-paging').html("");
+        search();
+    })
+}
+
+function prevPage() {
+    $('#prevPage').on('click', function (event) {
+        $("#selectAll").prop("checked", false);
+        inforSearch.pageNumber--;
+        $('tbody').html("");
+        $('.table-paging').html("");
+        search();
+    })
 }

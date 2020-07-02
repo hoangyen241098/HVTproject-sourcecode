@@ -67,9 +67,11 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">THỜI KHÓA BIỂU</a>
                         <div class="dropdown-menu">
-                            <a href="#" class="dropdown-item">Thời khóa biểu của lớp</a>
-                            <a href="#" class="dropdown-item">Thời khóa biểu của giáo viên</a>
-                            <a href="#" class="dropdown-item" id="schedule-manager">Quản lý thời khóa biểu</a>
+                            <a href="#" class="dropdown-item" th:href="@{timetableClass}">Thời khóa biểu của lớp</a>
+                            <a href="#" class="dropdown-item" th:href="@{timetableTeacher}">Thời khóa biểu của giáo
+                                viên</a>
+                            <a href="#" class="dropdown-item" id="schedule-manager" th:href="@{manageTimetable}">Quản lý
+                                thời khóa biểu</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown" id="admin">

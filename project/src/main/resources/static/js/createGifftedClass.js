@@ -27,6 +27,11 @@ $("#submit").click(function (e) {
                 var messageCode = data.messageCode;
                 var message = data.message;
                 if (messageCode == 0) {
+                    $("#createSuccess .modal-body").append(
+                        `
+                        <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
+                        <h5>Tạo hệ chuyên thành công!</h5>
+                        `)
                     $('#createSuccess').css('display', 'block');
                     $('.giftedClassName-err').text("");
                 } else {

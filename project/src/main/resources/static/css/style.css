@@ -403,6 +403,12 @@ body.loading .modal-loading {
     margin: 0 10px;
 }
 
+.table-title-note {
+    text-align: right;
+    margin-right: 20px;
+    font-size: 14px;
+}
+
 .table thead th {
     vertical-align: baseline !important;
 }
@@ -420,6 +426,7 @@ tr.selected {
     padding: 15px 5px;
     display: flex;
     justify-content: flex-end;
+    align-items: center;
 }
 
 .table-paging input {
@@ -450,6 +457,21 @@ tr.selected {
 .table-paging input.table-paging__page_cur:hover {
     cursor: default;
     text-decoration: none;
+}
+
+.btn-page {
+    border-radius: 3px 0 0 3px;
+    border: 1px solid #aaa;
+    min-width: 36px;
+    height: 34px;
+    line-height: 34px;
+    font-size: 13px;
+    background: #fff;
+    padding: 0;
+}
+
+.pageNumber {
+    margin-left: 20px;
 }
 
 /* Custom checkbox */
@@ -593,6 +615,7 @@ div.searchable {
     color: #ff3154;
     margin-left: 30px;
 }
+
 /*status-active i:before, .status-deactive i:before {*/
 /*    content: "\f111"!important;*/
 /*}*/
@@ -618,7 +641,12 @@ div.searchable {
     margin: 0 10%;
     position: relative;
 }
-
+fieldset .note {
+    text-align: left;
+    font-weight: normal;
+    font-size: 13px;
+    color: #666;
+}
 /*Hide all except first fieldset*/
 #msform fieldset:not(:first-of-type) {
     display: none;
@@ -756,6 +784,30 @@ div.searchable {
     border: 2px solid #4267b2;
 }
 
+.info-account {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.roleName {
+    font-weight: 500;
+    text-align: left;
+}
+
+.account {
+    border: 1px solid;
+    border-radius: 10px;
+    padding: 10px 20px;
+    text-align: left;
+    min-width: 300px;
+}
+
+.account p {
+    margin: 0;
+}
+
 /*END Create Account*/
 
 /*User Information*/
@@ -799,6 +851,9 @@ div.searchable {
 
 .input-info {
     text-align: center;
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
 }
 
 .input-info label {
@@ -810,6 +865,11 @@ div.searchable {
     color: #fff;
     margin-right: -5px;
     min-width: 140px;
+    margin: 0;
+}
+
+.input-info .label-customer {
+    padding: 30px 15px;
 }
 
 .userInfo-err {
@@ -820,67 +880,57 @@ div.searchable {
     margin: 20px auto;
 }
 
-.checkbox-toggle {
-    display: inline-block;
-    margin: auto 85px;
-    width: 80px;
-    height: 26px;
-    background: #27ae606b;
-    transition: 0.3s ease all;
-    position: relative;
-    border-radius: 50px;
-    border: 1px solid #27ae60;
-}
-
-.checkbox-toggle:after {
-    content: 'OFF';
-    color: #000;
-    position: absolute;
-    right: 10px;
-    z-index: 0;
-    font: 12px/26px Arial, sans-serif;
-    font-weight: bold;
-    text-shadow: 1px 1px 0px rgba(255, 255, 255, .15);
-}
-
-.checkbox-toggle:before {
-    content: 'ON';
-    color: #27ae60;
-    position: absolute;
-    left: 10px;
-    z-index: 0;
-    font: 12px/26px Arial, sans-serif;
-    font-weight: bold;
-}
-
-.checkbox-toggle label {
-    display: block;
-    min-width: 34px;
-    height: 20px;
-    cursor: pointer;
-    position: absolute;
-    top: 2px;
-    left: 3px;
-    z-index: 1;
-    background: #fcfff4;
-    border-radius: 50px;
-    transition: all 0.4s ease;
-    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
-    padding: 1px;
-    margin: 0;
-}
-
-.checkbox-toggle input[type=checkbox] {
-    visibility: hidden;
-}
-
-.checkbox-toggle > .checkbox-toggle input[type=checkbox]:checked {
-    background: #ced4da;
-    border: 1px solid #adb5bd;
-}
-
-.checkbox-toggle input[type=checkbox]:checked + label {
-    left: 43px;
-}
-
 /*END User Information*/
+
+/*Timetable*/
+.timetable {
+    width: 100%;
+    table-layout: fixed;
+    text-align: center;
+    border-collapse: collapse;
+    margin-top: 30px;
+}
+
+.timetable, .timetable tr, .timetable td {
+    height: 60px;
+    font-size: 20px;
+    border: 1px solid #456c83;
+}
+
+.timtable-title {
+    text-transform: uppercase;
+    background: #44515d;
+    color: #fff;
+}
+
+.timetable .session {
+    text-transform: uppercase;
+    font-weight: 500;
+    background: #c2e9fe;
+}
+
+.timetable .slot {
+    font-weight: 500;
+}
+
+.timetable .afternoon {
+    background: #d9edf7;
+}
+
+.timetable .sub-note {
+    font-weight: 700;
+    color: #1e7e34;
+    background: #28a74538;
+}
+
+.timetable .subject {
+    font-weight: 500;
+}
+
+.timetable .teacher {
+    color: #e74c3c;
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+/*END Timetable*/

@@ -30,12 +30,10 @@ $("#submit").click(function (e) {
     isRedStar = false;
     isMonitor = false;
     classIdentifier = $('#identifier').val().trim();
-    if ($('#isRedStar').is(":checked"))
-    {
+    if ($('#isRedStar').is(":checked")) {
         isRedStar = true;
     }
-    if ($('#isMonitor').is(":checked"))
-    {
+    if ($('#isMonitor').is(":checked")) {
         isMonitor = true;
     }
 
@@ -45,12 +43,10 @@ $("#submit").click(function (e) {
     } else if (giftedClassId == 0 || giftedClassId == null) {
         $('.createClass-err').text("Hãy chọn hệ chuyên!");
         return false;
-    }
-    else if(classIdentifier == ""){
+    } else if (classIdentifier == "") {
         $('.createClass-err').text("Hãy nhập tên định danh!");
         return false;
-    }
-    else {
+    } else {
         var addClass = {
             classIdentifier: classIdentifier,
             grade: grade,
@@ -72,15 +68,55 @@ $("#submit").click(function (e) {
             success: function (data) {
                 var messageCode = data.message.messageCode;
                 var message = data.message.message;
-                var listUserText = "";
-                if (messageCode == 0) {
-                    //$('#createSuccess').css('display', 'block');
-                    if(data.userList.length != 0) {
-                        $.each(data.userList, function (i, item) {
-                            listUserText += item.username + " " + item.password;
-                        });
+                var listUser = data.userList;
+                if (messageCode == 2) {
+                    $("#createSuccess .modal-body").append(
+                        `
+                        <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+                        <h5>` + message + `</h5>
+                        <h5>Nếu muốn tiếp tục sử dụng thì chỉnh sửa <a href="editClass">TẠI ĐÂY</a></h5>
+                        `)
+                    $('#createSuccess').css('display', 'block');
+                    localStorage.setItem("classId", data.classId);
+                } else if (messageCode == 0) {
+                    if (listUser == null) {
+                        $("#createSuccess .modal-body").append(
+                            `
+                        <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
+                        <h5>Tạo lớp thành công!</h5>
+                        `
+                        )
+                    } else {
+                        $("#createSuccess .modal-body").append(
+                            `
+                        <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
+                        <h5>Tạo lớp thành công!</h5>
+                        <h5 class="text-left ml-2 pt-2">Các tài khoản được tự động tạo:</h5>
+                        `)
+                        var index = 1;
+                        for (var i = 0; i < data.userList.length; i++) {
+                            var roleAcc = data.userList[i].role.roleId;
+                            var roleName;
+                            if (roleAcc == 4) {
+                                roleName = "Tài khoản Lớp trưởng:";
+                            } else if (roleAcc == 3) {
+                                roleName = "Tài khoản Cờ đỏ " + index + ":";
+                                index++;
+                            }
+                            $("#createSuccess .modal-body").append(
+                                `
+                                <div class="info-account">
+                        <div class="text-left"><b>` + roleName + `</b></div>
+                        <div class="account">
+                        <p><span class="roleName">Tên đăng nhập:</span> ` + data.userList[i].username + `</p>
+                        <p><span class="roleName">Mật khẩu:</span> ` + data.userList[i].password + `</p></div>
+                                </div>
+                                `
+                            )
+                        }
                     }
-                    $('.createClass-err').text(listUserText);
+                    $('#createSuccess').css('display', 'block');
+
                 } else {
                     $('.createClass-err').text(message);
                 }
@@ -94,3 +130,6 @@ $("#submit").click(function (e) {
     }
 });
 
+$('#closeDialog').click(function () {
+    localStorage.removeItem("classId");
+})

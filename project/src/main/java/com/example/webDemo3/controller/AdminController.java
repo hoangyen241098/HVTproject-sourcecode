@@ -25,7 +25,7 @@ public class AdminController {
     private RoleService roleService;
 
     @Autowired
-    private ClassListService classListService;
+    private ClassService classService;
 
     @Autowired
     private GenerateAccountService generateAccountService;
@@ -94,7 +94,7 @@ public class AdminController {
     public ClassListResponseDto getClassList()
     {
         ClassListResponseDto classDto = new ClassListResponseDto();
-        classDto = classListService.getClassList();
+        classDto = classService.getClassList();
         return  classDto;
     }
 
