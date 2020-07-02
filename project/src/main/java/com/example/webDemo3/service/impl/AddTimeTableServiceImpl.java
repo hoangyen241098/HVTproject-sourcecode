@@ -11,11 +11,10 @@ import com.example.webDemo3.repository.TimetableRepository;
 import com.example.webDemo3.service.AddTimeTableService;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,27 +31,27 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
     private ClassRepository classRepository;
 
     @Override
+    @Transactional
     public MessageDTO addTimetable(HSSFWorkbook workbook,int applyWeekId) {
         MessageDTO message = new MessageDTO();
+        HSSFSheet worksheet = workbook.getSheet("TKB Sang");
+        //.getSheetAt(0);
+        if(worksheet == null){
+            message.setMessageCode(1);
+            message.setMessage("không có sheet TKB Sang");
+            return message;
+        }
         try {
-            HSSFSheet worksheet = workbook.getSheet("TKB Sang");
-                    //.getSheetAt(0);
-            message = addTimetableMorning(worksheet,applyWeekId);
-        }catch (Exception e){
-            System.out.println(e);
-            if(message == null){
-                message.setMessageCode(1);
-                message.setMessage("không có sheet TKB Sang");
-            }
-            else{
-                message.setMessageCode(1);
-                message.setMessage(e.toString());
-            }
-        } ;
+            message = addTimetableMorning(worksheet, applyWeekId);
+        } catch (Exception e) {
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
         return message;
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {TimeTableException.class})
+    //@Transactional(propagation = Propagation.REQUIRED, rollbackFor = {TimeTableException.class})
     public MessageDTO addTimetableMorning(HSSFSheet worksheet,int applyWeekId) throws TimeTableException
     {
         MessageDTO message = new MessageDTO();
@@ -90,11 +89,11 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
 
             String lop = classList.get(i);
             Class classTb = classRepository.findByClassIdentifier(lop);
-            if(classTb == null){
+            if(classTb == null) {
                 System.out.println("không tìm thấy lớp " + lop);
-                message.setMessageCode(1);
-                message.setMessage("không tìm thấy lớp " + lop);
-                throw new TimeTableException(message.getMessage());
+                throw new TimeTableException("không tìm thấy lớp " + lop);
+//                message.setMessageCode(1);
+//                message.setMessage("không tìm thấy lớp " + lop);
 //                return message;
             }
 
@@ -118,11 +117,12 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
                 Teacher teacherTb = null;
                 if (gv != null) {
                     teacherTb = teacherRepository.findTeacherTeacherIdentifier(gv);
-                    if(teacherTb == null){
+                    if(teacherTb == null) {
                         System.out.println("không tìm thấy giáo viên " + gv);
-                        message.setMessageCode(1);
-                        message.setMessage("không tìm thấy giáo viên " + gv);
-                        return message;
+                        throw new TimeTableException("không tìm thấy giáo viên " + gv);
+//                        message.setMessageCode(1);
+//                        message.setMessage("không tìm thấy giáo viên " + gv);
+//                        return message;
                     }
                 }
 
@@ -146,10 +146,11 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
                     tb.setIsAfternoon(0);
                     timetableRepository.save(tb);
                 } catch (Exception e) {
-                    System.out.println(e);
-                    message.setMessageCode(1);
-                    message.setMessage("không thêm được data");
-                    return message;
+//                    System.out.println(e);
+//                    message.setMessageCode(1);
+//                    message.setMessage("không thêm được data");
+                    throw new TimeTableException("không thêm được data");
+                    //return message;
                 }
             }
         }
