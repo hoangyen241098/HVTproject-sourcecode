@@ -89,7 +89,7 @@ $("#editInfo").click(function (e) {
                     oldIdentifierName = newClassIdentifier;
                     oldStatus = newStatus;
                     $('#editInfoSuccess').css('display', 'block');
-                    $('.classInfo-err').text("Thành công");
+                    $('.classInfo-err').text("");
                 } else {
                     $('.classInfo-err').text(message);
                 }
