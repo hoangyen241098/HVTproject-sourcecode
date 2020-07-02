@@ -30,6 +30,7 @@
                 <h2 class="fs-title">Thêm lớp</h2>
                 <h3 class="fs-subtitle">Điền thông tin vào các trường để thêm lớp mới</h3>
                 <fieldset>
+                    <p class="note">(<span class="text-red">*</span>) Bắt buộc </p>
                     <div class="form-group text-left">
                         <label for="grade">Khối <span class="text-red">*</span></label>
                         <select class="form-control" id="grade" onchange="changeSelected()">
@@ -74,7 +75,7 @@
             <div class="modal-body text-center">
             </div>
             <div class="modal-footer">
-                <a type="button" class="btn btn-primary" th:href="@{createClass}">ĐÓNG</a>
+                <a type="button" id="closeDialog" class="btn btn-primary" th:href="@{createClass}">ĐÓNG</a>
             </div>
         </div>
     </div>

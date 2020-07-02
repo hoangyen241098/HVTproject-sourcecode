@@ -403,6 +403,12 @@ body.loading .modal-loading {
     margin: 0 10px;
 }
 
+.table-title-note {
+    text-align: right;
+    margin-right: 20px;
+    font-size: 14px;
+}
+
 .table thead th {
     vertical-align: baseline !important;
 }
@@ -635,7 +641,12 @@ div.searchable {
     margin: 0 10%;
     position: relative;
 }
-
+fieldset .note {
+    text-align: left;
+    font-weight: normal;
+    font-size: 13px;
+    color: #666;
+}
 /*Hide all except first fieldset*/
 #msform fieldset:not(:first-of-type) {
     display: none;
@@ -771,6 +782,30 @@ div.searchable {
     background: #4267b2;
     color: white;
     border: 2px solid #4267b2;
+}
+
+.info-account {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.roleName {
+    font-weight: 500;
+    text-align: left;
+}
+
+.account {
+    border: 1px solid;
+    border-radius: 10px;
+    padding: 10px 20px;
+    text-align: left;
+    min-width: 300px;
+}
+
+.account p {
+    margin: 0;
 }
 
 /*END Create Account*/
