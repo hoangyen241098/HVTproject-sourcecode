@@ -49,7 +49,7 @@ function search() {
         success: function (data) {
             if (data.message.messageCode == 0) {
                 var totalPages = data.classList.totalPages;
-                var id = 0;
+                var id = 0 + inforSearch.pageNumber*10;
                 $('.table-paging').append(
                     `<button type="button" class="btn btn-page btn-prev" id="prevPage" title="Trang trước"><i class="fa fa-chevron-left"></i></button>`
                 );
@@ -86,7 +86,7 @@ function search() {
                         if (item.status == null || item.status == 0) {
                             status = `<span class="status-active"><i class="fa fa-circle" aria-hidden="true"></i></span>`;
                         } else {
-                            status = `<span class="status-dactive"><i class="fa fa-circle" aria-hidden="true"></i></span>`;
+                            status = `<span class="status-deactive"><i class="fa fa-circle" aria-hidden="true"></i></span>`;
                         }
                         if (item.giftedClass == null) {
                             giftedClass = "";
