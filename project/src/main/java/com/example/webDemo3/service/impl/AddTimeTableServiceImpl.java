@@ -57,7 +57,6 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
         return message;
     }
 
-    //@Transactional(propagation = Propagation.REQUIRED, rollbackFor = {TimeTableException.class})
     public MessageDTO addTimetableMorning(HSSFSheet worksheet,int applyWeekId) throws TimeTableException
     {
         MessageDTO message = new MessageDTO();
@@ -68,8 +67,6 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
 
         int row = 35;
         int j = 3;
-        //int coll = 50;
-        //for (int j = 3; j < coll; j++) {
         while (true) {
             String teacherItem = getData(worksheet, 3, j);
             String classItem = getData(worksheet, 4, j);
@@ -99,9 +96,6 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
             if(classTb == null){
                 System.out.println("không tìm thấy lớp " + lop);
                 throw new TimeTableException("không tìm thấy lớp " + lop);
-//                message.setMessageCode(1);
-//                message.setMessage("không tìm thấy lớp " + lop);
-//                return message;
             }
 
             List<String> subData = dataList.get(i);
@@ -127,15 +121,10 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
                     if(teacherTb == null) {
                         System.out.println("không tìm thấy giáo viên " + gv);
                         throw new TimeTableException("không tìm thấy giáo viên " + gv);
-//                        message.setMessageCode(1);
-//                        message.setMessage("không tìm thấy giáo viên " + gv);
-//                        return message;
                     }
                 }
 
                 int slot = k % 5 + 1;
-                //if (slot == 0) slot = 5;
-
 
                 int day = 1;
                 if (k > 0) day = k / 5 + 1;
@@ -153,11 +142,7 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
                     tb.setIsAfternoon(0);
                     timetableRepository.save(tb);
                 } catch (Exception e) {
-//                    System.out.println(e);
-//                    message.setMessageCode(1);
-//                    message.setMessage("không thêm được data");
                     throw new TimeTableException("không thêm được data");
-                    //return message;
                 }
             }
         }
