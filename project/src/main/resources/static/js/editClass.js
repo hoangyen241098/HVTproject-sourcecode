@@ -18,12 +18,14 @@ $(document).ready(function () {
             if (data.message.messageCode == 0) {
                 oldIdentifierName = data.classIdentifier;
                 $('#identifier').attr('value', data.classIdentifier);
-                if(data.status == null || data.status == 1){
-                    $('#status').prop('checked', false);
+                $('#giftedClassName').attr('value', data.giftedClassName);
+                $('#grade').attr('value', data.grade);
+                if(data.status != null && data.status == 1){
+                    $("input[name=optradio][value='1']").prop('checked', true);
                     oldStatus = 1;
                 }
                 else{
-                    $('#status').prop('checked', true);
+                    $("input[name=optradio][value='0']").prop('checked', true);
                     oldStatus = 0;
                 }
             } else {
@@ -49,14 +51,16 @@ $(document).ready(function () {
 $("#editInfo").click(function (e) {
     var newStatus = 1;
     newClassIdentifier = $('#identifier').val().trim();
-    if ($('#status').is(":checked")) {
+    var radioValue = $("input[name=optradio]:checked").val();
+    if (radioValue == '0') {
         newStatus = 0;
     }
 
     if(newClassIdentifier == ""){
         $('.classInfo-err').text("Hãy nhập tên định danh!");
         return false;
-    }else if (newStatus == oldStatus && newClassIdentifier == oldIdentifierName) {
+    }
+    else if (newStatus == oldStatus && newClassIdentifier == oldIdentifierName) {
         $('.classInfo-err').text("Hãy thay đổi thông tin !");
         return false;
     }
