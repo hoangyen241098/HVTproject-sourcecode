@@ -34,15 +34,21 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
     @Transactional
     public MessageDTO addTimetable(HSSFWorkbook workbook,int applyWeekId) {
         MessageDTO message = new MessageDTO();
-        HSSFSheet worksheet = workbook.getSheet("TKB Sang");
-        //.getSheetAt(0);
-        if(worksheet == null){
+        HSSFSheet worksheetMorning = workbook.getSheet("TKB Sang") ;//.getSheetAt(0);
+        HSSFSheet worksheetAfternoon = workbook.getSheet("TKB Chiều");
+        if(worksheetMorning == null){
             message.setMessageCode(1);
             message.setMessage("không có sheet TKB Sang");
             return message;
         }
+        if(worksheetAfternoon == null){
+            message.setMessageCode(1);
+            message.setMessage("không có sheet TKB Chiều");
+            return message;
+        }
         try {
-            message = addTimetableMorning(worksheet, applyWeekId);
+            message = addTimetableMorning(worksheetMorning, applyWeekId);
+            message = addTimetableAfternoon(worksheetAfternoon, applyWeekId);
         } catch (Exception e) {
             message.setMessageCode(1);
             message.setMessage(e.toString());
@@ -151,6 +157,104 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
 //                    message.setMessage("không thêm được data");
                     throw new TimeTableException("không thêm được data");
                     //return message;
+                }
+            }
+        }
+        System.out.println("thành công");
+        message.setMessageCode(0);
+        message.setMessage("thành công");
+        return message;
+    }
+
+    public MessageDTO addTimetableAfternoon(HSSFSheet worksheet,int applyWeekId) throws Exception
+    {
+        MessageDTO message = new MessageDTO();
+
+        List<String> teacherList = new ArrayList<>();
+        List<String> classList = new ArrayList<>();
+        List<List<String>> dataList = new ArrayList<List<String>>();
+
+        int row = 29;
+        int j = 3;
+        while (true) {
+            String teacherItem = getData(worksheet, 3, j);
+            String classItem = getData(worksheet, 4, j);
+            if (teacherItem == null || teacherItem.trim().isEmpty()
+                    || classItem == null || classItem.trim().isEmpty()) {
+                break;
+            }
+            teacherList.add(teacherItem);
+            classList.add(classItem);
+            List<String> subDatalist = new ArrayList<>();
+            for (int i = 5; i < row; i++) {
+                String s = getData(worksheet, i, j);
+                subDatalist.add(s);
+            }
+            dataList.add(subDatalist);
+            j++;
+        }
+
+        System.out.println(teacherList.size());
+
+        for (int i = 0; i < dataList.size(); i++) {
+            String gvcn = teacherList.get(i);
+
+            String lop = classList.get(i);
+            Class classTb = classRepository.findByClassIdentifier(lop);
+            if(classTb == null) {
+                System.out.println("không tìm thấy lớp " + lop);
+                throw new TimeTableException("không tìm thấy lớp " + lop);
+            }
+
+            List<String> subData = dataList.get(i);
+            for (int k = 0; k < subData.size(); k++) {
+                String data = subData.get(k);
+
+                if (data == null || data.trim().isEmpty()) {
+                    continue;
+                }
+
+                int vt = data.indexOf("-");
+                String mh, gv = null;
+                if (vt == -1) {
+                    mh = data;
+                } else {
+                    mh = data.substring(0, vt);
+                    gv = data.substring(vt + 1);
+                }
+
+                Teacher teacherTb = null;
+                if (gv != null) {
+                    teacherTb = teacherRepository.findTeacherTeacherIdentifier(gv);
+                    if(teacherTb == null) {
+                        System.out.println("không tìm thấy giáo viên " + gv);
+                        throw new TimeTableException("không tìm thấy giáo viên " + gv);
+                    }
+                }
+
+                int slot = k % 2 + 1;
+                int day = 1;
+                if (k > 0) day = k / 4 + 1;
+                int isOdd = 1;
+                if(k % 4 == 0 || k % 4 ==1 ){
+                    isOdd = 0;
+                }
+
+                try {
+                    TimeTable tb = new TimeTable();
+                    if (teacherTb != null) {
+                        tb.setTeacherId(teacherTb.getTeacherId());
+                    }
+                    tb.setClassId(classTb.getClassId());
+                    tb.setSlot(slot);
+                    tb.setDayId(day);
+                    tb.setSubject(mh);
+                    tb.setWeekApply(applyWeekId);
+                    tb.setIsAfternoon(1);
+                    tb.setIsOddWeek(isOdd);
+                    timetableRepository.save(tb);
+                } catch (Exception e) {
+                    throw new TimeTableException("không thêm được data");
                 }
             }
         }
