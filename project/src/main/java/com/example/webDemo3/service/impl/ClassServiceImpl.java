@@ -161,7 +161,7 @@ public class ClassServiceImpl implements ClassService {
         Class classByGradeAndGiftedId = classRepository.searchClassByGradeAndGifedId(grade, giftedClassId);
         if(classByGradeAndGiftedId != null){
             if(classByGradeAndGiftedId.getStatus() != null && classByGradeAndGiftedId.getStatus() == 1 ){
-                message = Constant.CLASSNAME_EXIST_BLOCK;
+                message = Constant.CLASS_EXIST_BLOCK;
                 responseDto.setClassId(classByGradeAndGiftedId.getClassId());
                 responseDto.setMessage(message);
                 return responseDto;
