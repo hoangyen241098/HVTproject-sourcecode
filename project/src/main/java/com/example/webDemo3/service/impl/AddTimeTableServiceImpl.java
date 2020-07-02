@@ -94,8 +94,9 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
             String gvcn = teacherList.get(i);
 
             String lop = classList.get(i);
-            Class classTb = classRepository.findByClassIdentifier(lop);
-            if(classTb == null) {
+
+            Class classTb = classRepository.findClassActiveByClassIdentifier(lop);
+            if(classTb == null){
                 System.out.println("không tìm thấy lớp " + lop);
                 throw new TimeTableException("không tìm thấy lớp " + lop);
 //                message.setMessageCode(1);
@@ -200,7 +201,7 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
             String gvcn = teacherList.get(i);
 
             String lop = classList.get(i);
-            Class classTb = classRepository.findByClassIdentifier(lop);
+            Class classTb = classRepository.findClassActiveByClassIdentifier(lop);
             if(classTb == null) {
                 System.out.println("không tìm thấy lớp " + lop);
                 throw new TimeTableException("không tìm thấy lớp " + lop);
