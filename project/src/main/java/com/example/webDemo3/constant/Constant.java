@@ -37,11 +37,11 @@ public class Constant {
     public static final MessageDTO CLASSIDENTIFIER_EMPTY =
             new MessageDTO(1,"Hãy nhập tên định danh cho lớp.");
     public static final MessageDTO CLASSIDENTIFIER_EXIST =
-            new MessageDTO(1,"Tên định danh này đã tồn tại.");
+            new MessageDTO(1,"Tên định danh này đã tồn tại với một lớp đang hoạt động.");
     public static final MessageDTO CLASSNAME_EXIST =
             new MessageDTO(1,"Tên lớp này tồn tại.");
     public static final MessageDTO USERLIST_NULL =
-            new MessageDTO(1,"Danh sách lớp trống.");
+            new MessageDTO(1,"Danh sách tài khoản trống.");
     public static final MessageDTO GIFTEDCLASSID_EXIST =
             new MessageDTO(1,"Tên hệ chuyên đã tồn tại.");
 
