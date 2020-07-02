@@ -14,7 +14,7 @@ import java.util.List;
 public interface ClassRepository extends JpaRepository<Class,Integer> {
     Class findByClassId(Integer classId);
 
-    List<Class> findByClassIdentifier(String classIdentifier);
+    List<Class> findClassListByClassIdentifier(String classIdentifier);
 
     @Query(value = "select c from Class c where c.classIdentifier like %:classIdentifier% and c.grade = :roleId")
     Page<Class> searchClassByCondition(@Param("classIdentifier") String classIdentifier, @Param("roleId") Integer roleId, Pageable paging);

@@ -158,7 +158,7 @@ public class ClassServiceImpl implements ClassService {
             }
         }*/
 
-        List<Class> classByClassIdentifier = classRepository.findByClassIdentifier(classIdentifier);
+        List<Class> classByClassIdentifier = classRepository.findClassListByClassIdentifier(classIdentifier);
         if(classByClassIdentifier.size() != 0){
             for(int i = 0; i < classByClassIdentifier.size(); i++){
                 if(classByClassIdentifier.get(i).getStatus() == null || classByClassIdentifier.get(i).getStatus() == 0 ){
@@ -310,7 +310,7 @@ public class ClassServiceImpl implements ClassService {
             return message;
         }*/
 
-        List<Class> classListByNewIdetifier = classRepository.findByClassIdentifier(classIdentifier);
+        List<Class> classListByNewIdetifier = classRepository.findClassListByClassIdentifier(classIdentifier);
         if(classListByNewIdetifier.size() == 1){
             Class checkClass = classListByNewIdetifier.get(0);
             if(!editClass.getClassIdentifier().equalsIgnoreCase(classIdentifier)){
