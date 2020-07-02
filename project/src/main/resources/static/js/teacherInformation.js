@@ -36,6 +36,7 @@ $("#editInfo").click(function (e) {
     var phone = $('#phone').val().trim();
     var email = $('#email').val().trim();
     if (localStorage.getItem("teacherId") == null) {
+        $('.teacherInfo-err').text("");
         $('.teacherInfo-err').append(`Hãy quay lại chọn giáo viên mà bạn muốn sửa thông tin tại <a href="manageTeacher">ĐÂY</a>`);
     } else {
         $('.teacherInfo-err').text("");

@@ -127,7 +127,7 @@ a:hover {
 }
 
 /*hide navbar*/
-#admin, #schedule-manager, #loginSuccess-menu {
+#adminMenu, #scheduleManagerMenu, #loginSuccessMenu {
     display: none;
 }
 
