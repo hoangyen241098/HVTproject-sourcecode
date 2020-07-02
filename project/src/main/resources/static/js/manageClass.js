@@ -10,8 +10,12 @@ search();
 /*Search button*/
 $("#search").click(function () {
     var grade, classIdentifier, sortBy, orderBy;
-    grade = $('#searchByGrade input').val().trim();
     classIdentifier = $('#searchByIdentifier input').val().trim();
+    if ($('#searchByGrade option:selected').val() == null|| $('#searchByGrade option:selected').val() == "0") {
+        grade = "";
+    } else {
+        grade = $('#searchByGrade option:selected').val();
+    }
     if ($('#sortBy option:selected').val() == null) {
         sortBy = "1";
     } else {

@@ -1,8 +1,8 @@
 var inforSearch = {
     userName: "",
     roleId: null,
-    sortBy: "0",
-    orderBy: "1",
+    sortBy: "1",
+    orderBy: "0",
     pageNumber: 0
 }
 var listUser = [];
@@ -34,12 +34,12 @@ $("#search").click(function () {
         roleId = $('#role-name option:selected').val();
     }
     if ($('#sortBy option:selected').val() == null) {
-        sortBy = "0";
+        sortBy = "1";
     } else {
         sortBy = $('#sortBy option:selected').val();
     }
     if ($('#orderBy option:selected').val() == null) {
-        orderBy = "1";
+        orderBy = "0";
     } else {
         orderBy = $('#orderBy option:selected').val();
     }

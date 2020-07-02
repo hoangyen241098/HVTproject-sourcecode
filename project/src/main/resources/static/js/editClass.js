@@ -84,7 +84,7 @@ $("#editInfo").click(function (e) {
                 if (messageCode == 0) {
                     oldIdentifierName = newClassIdentifier;
                     oldStatus = newStatus;
-                    $('#createSuccess').css('display', 'block');
+                    $('#editInfoSuccess').css('display', 'block');
                     $('.classInfo-err').text("Thành công");
                 } else {
                     $('.classInfo-err').text(message);
