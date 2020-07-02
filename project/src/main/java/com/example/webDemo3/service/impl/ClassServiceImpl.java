@@ -143,7 +143,7 @@ public class ClassServiceImpl implements ClassService {
             return responseDto;
         }
 
-        Class classByClassIdentifier = classRepository.findByClassIdentifier(classIdentifier);
+/*      Class classByClassIdentifier = classRepository.findByClassIdentifier(classIdentifier);
         if(classByClassIdentifier != null){
             if(classByClassIdentifier.getStatus() != null && classByClassIdentifier.getStatus() == 1 ){
                 message = Constant.CLASSIDENTIFIER_EXIST_BLOCK;
@@ -155,6 +155,17 @@ public class ClassServiceImpl implements ClassService {
                 message = Constant.CLASSIDENTIFIER_EXIST;
                 responseDto.setMessage(message);
                 return responseDto;
+            }
+        }*/
+
+        List<Class> classByClassIdentifier = classRepository.findClassListByClassIdentifier(classIdentifier);
+        if(classByClassIdentifier.size() != 0){
+            for(int i = 0; i < classByClassIdentifier.size(); i++){
+                if(classByClassIdentifier.get(i).getStatus() == null || classByClassIdentifier.get(i).getStatus() == 0 ){
+                    message = Constant.CLASSIDENTIFIER_EXIST;
+                    responseDto.setMessage(message);
+                    return responseDto;
+                }
             }
         }
 
@@ -180,7 +191,7 @@ public class ClassServiceImpl implements ClassService {
 
         try {
             classRepository.save(addClass);
-            Class saveClass = classRepository.findByClassIdentifier(classIdentifier);
+            Class saveClass = classRepository.findClassActiveByClassIdentifier(classIdentifier);
             Integer classId = saveClass.getClassId();
             GenerateNameRequestDto requestDto;
             if(model.getIsRedStar()){
@@ -293,10 +304,33 @@ public class ClassServiceImpl implements ClassService {
             return message;
         }
 
-        Class classByNewIdetifier = classRepository.findByClassIdentifier(classIdentifier);
+/*        Class classByNewIdetifier = classRepository.findByClassIdentifier(classIdentifier);
         if(!classIdentifier.equalsIgnoreCase(editClass.getClassIdentifier()) && classByNewIdetifier != null){
             message = Constant.CLASSIDENTIFIER_EXIST;
             return message;
+        }*/
+
+        List<Class> classListByNewIdetifier = classRepository.findClassListByClassIdentifier(classIdentifier);
+        if(classListByNewIdetifier.size() == 1){
+            Class checkClass = classListByNewIdetifier.get(0);
+            if(!editClass.getClassIdentifier().equalsIgnoreCase(classIdentifier)){
+                if(status == 0){
+                    if(checkClass.getStatus() == null || checkClass.getStatus() == 0){
+                        message = Constant.CLASSIDENTIFIER_EXIST;
+                        return message;
+                    }
+                }
+            }
+        }
+        else if(classListByNewIdetifier.size() > 1){
+            if(status == 0){
+                for(int i = 0; i<classListByNewIdetifier.size() ;i++){
+                    if(classListByNewIdetifier.get(i).getStatus() == null || classListByNewIdetifier.get(i).getStatus() == 0){
+                        message = Constant.CLASSIDENTIFIER_EXIST;
+                        return message;
+                    }
+                }
+            }
         }
 
         try {
