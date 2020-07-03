@@ -1,6 +1,7 @@
 package com.example.webDemo3.dto;
 
 import com.example.webDemo3.entity.SchoolWeek;
+import com.example.webDemo3.entity.TimeTableWeek;
 import lombok.Data;
 
 import java.util.List;
@@ -11,6 +12,6 @@ import java.util.List;
  */
 @Data
 public class ListWeekResponseDto {
-    private List<SchoolWeek> listWeek;
+    private List<TimeTableWeek> listWeek;
     private MessageDTO messageDTO;
 }

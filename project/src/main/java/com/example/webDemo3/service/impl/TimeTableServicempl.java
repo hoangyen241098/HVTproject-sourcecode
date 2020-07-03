@@ -25,9 +25,6 @@ import java.util.List;
 public class TimeTableServicempl implements TimeTableService {
 
     @Autowired
-    private SchoolWeekRepository schoolWeek;
-
-    @Autowired
     private SchoolYearRepository schoolYear;
 
     @Autowired
@@ -38,6 +35,9 @@ public class TimeTableServicempl implements TimeTableService {
 
     @Autowired
     private TeacherRepository teacherRepository;
+
+    @Autowired
+    private TimeTableWeekRepository timeTableWeekRepository;
 
     /**
      * lamnt98
@@ -104,7 +104,7 @@ public class TimeTableServicempl implements TimeTableService {
     public ListWeekResponseDto getListWeekByYearId(ListWeekRequestDto listWeekRequestDto) {
         Integer yearIdCurrent = listWeekRequestDto.getYearIdCurrent();
         ListWeekResponseDto listWeekResponseDto = new ListWeekResponseDto();
-        List<SchoolWeek> listWeek;
+        List<TimeTableWeek> listWeek;
         MessageDTO messageDTO = new MessageDTO();
 
         try {
@@ -115,7 +115,7 @@ public class TimeTableServicempl implements TimeTableService {
                 return listWeekResponseDto;
             }
 
-            listWeek = schoolWeek.findByYearIdANdSortByFromDate(yearIdCurrent);
+            listWeek = timeTableWeekRepository.findByYearIdANdSortByFromDate(yearIdCurrent);
 
             //check listWeek null or not
             if (listWeek.size() == 0) {
@@ -349,11 +349,11 @@ public class TimeTableServicempl implements TimeTableService {
     public ListYearAndWeekResponseDto getListYearAndListWeek(){
         ListYearAndWeekResponseDto list = new ListYearAndWeekResponseDto();
         List<SchoolYear> listYear = null;
-        List<SchoolWeek> listWeek = null;
+        List<TimeTableWeek> listWeek = null;
         Integer yearIdCurrent = null;
         Integer weekIdCurrent = null;
         Date date = Date.valueOf(LocalDate.now());
-        //listWeek = schoolWeek.findAll();
+
         listYear = schoolYear.findAllSortByFromDate();
         if(listYear.size() != 0){
             list.setListYear(listYear);
@@ -371,23 +371,23 @@ public class TimeTableServicempl implements TimeTableService {
             list.setYearIdCurrent(yearIdCurrent);
         }
 
-        listWeek = schoolWeek.findByYearIdANdSortByFromDate(yearIdCurrent);
+        listWeek = timeTableWeekRepository.findByYearIdANdSortByFromDate(yearIdCurrent);
 
         //check listWeek null or not
         if (listWeek.size() != 0) {
             list.setListWeek(listWeek);
             for (int i = 0; i < listWeek.size(); i++) {
-                SchoolWeek schoolWeek = listWeek.get(i);
+                TimeTableWeek timeTableWeek = listWeek.get(i);
                 //find weekIdCurrent
-                if (date.compareTo(schoolWeek.getFromDate()) > 0 && date.compareTo(schoolWeek.getToDate()) < 0) {
-                    weekIdCurrent = schoolWeek.getWeekID();
+                if (date.compareTo(timeTableWeek.getFromDate()) > 0 && date.compareTo(timeTableWeek.getToDate()) < 0) {
+                    weekIdCurrent = timeTableWeek.getTimeTableWeekId();
                     break;
                 }
             }
 
             //check weekIdCurrent null or not
             if (weekIdCurrent == null) {
-                weekIdCurrent = listWeek.get(0).getWeekID();
+                weekIdCurrent = listWeek.get(0).getTimeTableWeekId();
             }
             list.setWeekIdCurrent(weekIdCurrent);
         }
