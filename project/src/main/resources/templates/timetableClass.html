@@ -57,19 +57,19 @@
         <table class="timetable table-bordered">
             <thead>
             <tr class="timtable-title">
-                <td>Buổi</td>
-                <td>Tiết</td>
-                <td id="1">Thứ 2</td>
-                <td id="2">Thứ 3</td>
-                <td id="3">Thứ 4</td>
-                <td id="4">Thứ 5</td>
-                <td id="5">Thứ 6</td>
-                <td id="6">Thứ 7</td>
+                <th colspan="2">Buổi</th>
+                <th>Tiết</th>
+                <th>Thứ 2</th>
+                <th>Thứ 3</th>
+                <th>Thứ 4</th>
+                <th>Thứ 5</th>
+                <th>Thứ 6</th>
+                <th>Thứ 7</th>
             </tr>
             </thead>
             <tbody>
             <tr class="morning">
-                <td rowspan="5" class="session">SÁNG</td>
+                <td rowspan="5" colspan="2" class="session">SÁNG</td>
                 <td class="slot">1</td>
                 <td></td>
                 <td></td>
@@ -115,7 +115,8 @@
                 <td></td>
             </tr>
             <tr class="afternoon">
-                <td rowspan="2" class="session">CHIỀU</td>
+                <td rowspan="4" class="session">CHIỀU</td>
+                <td rowspan="2" class="week">(Tuần chẵn)</td>
                 <td class="slot">1</td>
                 <td></td>
                 <td></td>
@@ -125,6 +126,25 @@
                 <td></td>
             </tr>
             <tr class="afternoon">
+                <td class="slot">2</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr class="afternoon isOdd">
+                <td rowspan="2" class="week">(Tuần lẻ)</td>
+                <td class="slot">1</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr class="afternoon isOdd">
                 <td class="slot">2</td>
                 <td></td>
                 <td></td>
