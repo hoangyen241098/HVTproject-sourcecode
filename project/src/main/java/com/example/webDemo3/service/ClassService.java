@@ -17,4 +17,6 @@ public interface ClassService {
     ClassInforResponseDto getClassInfor(ClassInforRequestDto model);
 
     ClassTableResponseDto getClassTable(ClassTableRequestDto model);
+
+    MessageDTO deleteGiftedClassById(DelGifedClassRequestDto model);
 }
