@@ -459,6 +459,11 @@ tr.selected {
     text-decoration: none;
 }
 
+#prevPage:disabled, #nextPage:disabled {
+    background: #dddbda;
+    cursor: no-drop;
+}
+
 .btn-page {
     border-radius: 3px 0 0 3px;
     border: 1px solid #aaa;
@@ -916,8 +921,9 @@ fieldset .note {
 }
 
 .isOdd {
-    background: #fff!important;
+    background: #fff !important;
 }
+
 .timetable .afternoon {
     background: #dee2e6;
 }
