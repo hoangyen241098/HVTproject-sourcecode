@@ -199,10 +199,12 @@ function pagingClick() {
 function checkTeacher() {
     $('#deleteTeacherModal .modal-body').html("");
     if (listTeacher.length == 0) {
+        $("#deleteTeacherModal .modal-body").html("");
         $('#deleteTeacherModal .modal-body').append(`<h5>Hãy chọn giáo viên mà bạn muốn xóa</h5>`);
         $('#deleteTeacherModal .modal-footer .btn-danger').addClass('hide');
         $('#deleteTeacherModal .modal-footer .btn-primary').attr('value', 'ĐÓNG');
     } else {
+        $("#deleteTeacherModal .modal-body").html("");
         $('#deleteTeacherModal .modal-body').append(`<h5>Bạn có chắc muốn <b>XÓA</b> giáo viên này không?</h5>`);
         $('#deleteTeacherModal .modal-footer .btn-danger').removeClass('hide');
         $('#deleteTeacherModal .modal-footer .btn-primary').attr('value', 'KHÔNG');
