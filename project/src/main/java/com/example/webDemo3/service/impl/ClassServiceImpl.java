@@ -36,6 +36,9 @@ public class ClassServiceImpl implements ClassService {
     @Autowired
     private GiftedClassRepository giftedClassRepository;
 
+    @Autowired
+    private GenerateAccountService generateAccountService;
+
     /**
      * kimpt142
      * 28/6
@@ -105,9 +108,6 @@ public class ClassServiceImpl implements ClassService {
         return responseDto;
     }
 
-    @Autowired
-    private GenerateAccountService generateAccountService;
-
     /**
      * kimpt142
      * 29/6
@@ -142,21 +142,6 @@ public class ClassServiceImpl implements ClassService {
             responseDto.setMessage(message);
             return responseDto;
         }
-
-/*      Class classByClassIdentifier = classRepository.findByClassIdentifier(classIdentifier);
-        if(classByClassIdentifier != null){
-            if(classByClassIdentifier.getStatus() != null && classByClassIdentifier.getStatus() == 1 ){
-                message = Constant.CLASSIDENTIFIER_EXIST_BLOCK;
-                responseDto.setClassId(classByClassIdentifier.getClassId());
-                responseDto.setMessage(message);
-                return responseDto;
-            }
-            else{
-                message = Constant.CLASSIDENTIFIER_EXIST;
-                responseDto.setMessage(message);
-                return responseDto;
-            }
-        }*/
 
         List<Class> classByClassIdentifier = classRepository.findClassListByClassIdentifier(classIdentifier);
         if(classByClassIdentifier.size() != 0){
@@ -303,12 +288,6 @@ public class ClassServiceImpl implements ClassService {
             message = Constant.CLASS_NOT_EXIST;
             return message;
         }
-
-/*        Class classByNewIdetifier = classRepository.findByClassIdentifier(classIdentifier);
-        if(!classIdentifier.equalsIgnoreCase(editClass.getClassIdentifier()) && classByNewIdetifier != null){
-            message = Constant.CLASSIDENTIFIER_EXIST;
-            return message;
-        }*/
 
         List<Class> classListByNewIdetifier = classRepository.findClassListByClassIdentifier(classIdentifier);
         if(classListByNewIdetifier.size() == 1){
