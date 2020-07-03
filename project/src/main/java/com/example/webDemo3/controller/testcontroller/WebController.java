@@ -97,6 +97,11 @@ public class WebController {
         return "createGifftedClass";
     }
 
+    @GetMapping("/deleteGifftedClass")
+    public String deleteGifftedClass(Model model) {
+        return "deleteGifftedClass";
+    }
+
     /*Module 4: Thời khóa biểu*/
     @GetMapping("/timetableClass")
     public String timetableClass(Model model) {
