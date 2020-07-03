@@ -28,15 +28,12 @@
                 <div class="col-xl-4 d-inline-block">
                     <div class="search-line">
                         <span>Năm học</span>
-                        <select class="combobox searchable" id="year">
-                            <option value="0" selected="selected">--- Chọn năm học ---</option>
+                        <select class="combobox searchable" id="year" onchange="changeSelected()">
                         </select>
                     </div>
-                    <div class="search-line combo-box-week hide">
+                    <div class="search-line combo-box-week">
                         <span>Tuần</span>
                         <select class="combobox searchable" id="week">
-                            <option value="0" selected="selected">-- Chọn tuần ---</option>
-                            <option value="1">Tuần 1</option>
                         </select>
                     </div>
                 </div>
@@ -45,7 +42,6 @@
                     <div class="search-line">
                         <span>Lớp</span>
                         <select class="combobox searchable" id="class">
-                            <option value="0" selected="selected">--- Chọn lớp ---</option>
                         </select>
                     </div>
                 </div>
@@ -69,7 +65,7 @@
             </thead>
             <tbody>
             <tr class="morning">
-                <td rowspan="5" colspan="2" class="session">SÁNG</td>
+                <td rowspan="5" colspan="2" class="session"><p>SÁNG</p></td>
                 <td class="slot">1</td>
                 <td></td>
                 <td></td>
@@ -115,7 +111,7 @@
                 <td></td>
             </tr>
             <tr class="afternoon">
-                <td rowspan="4" class="session">CHIỀU</td>
+                <td rowspan="4" class="session"><p>CHIỀU</p></td>
                 <td rowspan="2" class="week">(Tuần chẵn)</td>
                 <td class="slot">1</td>
                 <td></td>
