@@ -2,19 +2,19 @@ $(document).ready(function () {
     var loginSuccess = localStorage.getItem("loginSuccess");
     var roleID = localStorage.getItem("roleID");
     if (loginSuccess == 0) {
-        $("#loginSuccess-menu").addClass("show");
-        $('#login').css('display', 'none');
+        $("#loginSuccessMenu").addClass("show");
+        $('#loginMenu').css('display', 'none');
         if (roleID == 1) {
-            $("#admin").addClass("show");
+            $("#adminMenu").addClass("show");
         }
         if (roleID == 2) {
-            $("#schedule-manager").addClass("show");
+            $("#scheduleManagerMenu").addClass("show");
         }
     } else {
-        $('#login').css('display', 'block');
-        $("#loginSuccess-menu").removeClass("show");
-        $("#admin").removeClass("show");
-        $("#schedule-manager").removeClass("show");
+        $('#loginMenu').css('display', 'block');
+        $("#loginSuccessMenu").removeClass("show");
+        $("#adminMenu").removeClass("show");
+        $("#scheduleManagerMenu").removeClass("show");
     }
     $("#logout").click(function () {
         localStorage.clear();

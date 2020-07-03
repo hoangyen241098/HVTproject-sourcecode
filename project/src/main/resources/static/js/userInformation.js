@@ -1,7 +1,14 @@
+var roleId = localStorage.getItem("roleID");
 $(document).ready(function () {
     $('.userInfo-err').text("");
     var account = {
         userName: localStorage.getItem("username")
+    }
+    if(roleId == 3 || roleId == 4){
+        $("#editInfo").addClass('hide');
+        $("#fullNameDiv").addClass('hide');
+        $("#phoneDiv").addClass('hide');
+        $("#emailDiv").addClass('hide');
     }
     $.ajax({
         url: '/api/user/viewinformation',
@@ -30,14 +37,15 @@ $(document).ready(function () {
 });
 
 $("#editInfo").click(function () {
-    $('#fullName').prop('disabled', false);
-    $('#phone').prop('disabled', false);
-    $('#email').prop('disabled', false);
-    $('#editInfo').addClass('hide');
-    $('#editInfo').removeClass('show');
-    $('#confirmEdit').addClass('show');
-    $('#confirmEdit').removeClass('hide');
-
+    if(roleId != 3 && roleId != 4) {
+        $('#fullName').prop('disabled', false);
+        $('#phone').prop('disabled', false);
+        $('#email').prop('disabled', false);
+        $('#editInfo').addClass('hide');
+        $('#editInfo').removeClass('show');
+        $('#confirmEdit').addClass('show');
+        $('#confirmEdit').removeClass('hide');
+    }
 });
 
 $("#confirmEdit").click(function (e) {

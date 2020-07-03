@@ -87,6 +87,8 @@ public class Constant {
             new MessageDTO(2,"Tên định danh này đã tồn tại nhưng bị khóa.");
     public static final MessageDTO CLASS_EXIST_BLOCK =
             new MessageDTO(2,"Lớp này đã tồn tại nhưng bị khóa.");
+    public static final MessageDTO DEL_GIFTEDCLASS_FAIL =
+            new MessageDTO(1,"Không thể xóa hệ chuyên này.");
     /**
      * Success message
      */

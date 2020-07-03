@@ -317,14 +317,17 @@ function checkUser() {
     $('#deleteAccountModal .modal-body').html("");
     var userErr = localStorage.getItem("username");
     if (jQuery.inArray(userErr, listUser) != -1) {
+        $("#deleteAccountModal .modal-body").html("");
         $('#deleteAccountModal .modal-body').append(`<h5>Bạn không thể xoá tài khoản <b class="error">` + userErr + `</b></h5>`);
         $('#deleteAccountModal .modal-footer .btn-danger').addClass('hide');
         $('#deleteAccountModal .modal-footer .btn-primary').attr('value', 'ĐÓNG');
     } else if (listUser.length == 0) {
+        $("#deleteAccountModal .modal-body").html("");
         $('#deleteAccountModal .modal-body').append(`<h5>Hãy chọn tài khoản mà bạn muốn xóa</h5>`);
         $('#deleteAccountModal .modal-footer .btn-danger').addClass('hide');
         $('#deleteAccountModal .modal-footer .btn-primary').attr('value', 'ĐÓNG');
     } else {
+        $("#deleteAccountModal .modal-body").html("");
         $('#deleteAccountModal .modal-body').append(`<h5>Bạn có chắc muốn <b>XÓA</b> tài khoản này không?</h5>`);
         $('#deleteAccountModal .modal-footer .btn-danger').removeClass('hide');
         $('#deleteAccountModal .modal-footer .btn-primary').attr('value', 'KHÔNG');
@@ -334,11 +337,13 @@ function checkUser() {
 /*Check user before reset password*/
 function checkResetPassword() {
     if (listUser.length == 0) {
+        $("#resetPasswordModal .modal-body").html("");
         $('#resetPasswordModal .modal-body .form-group').addClass('hide');
         $('#resetPasswordModal .modal-body').append(`<h5>Hãy chọn tài khoản mà bạn muốn đặt lại mật khẩu</h5>`);
         $('#resetPasswordModal .modal-footer .btn-danger').addClass('hide');
         $('#resetPasswordModal .modal-footer .btn-primary').attr('value', 'ĐÓNG');
     } else {
+        $("#resetPasswordModal .modal-body").html("");
         $('#resetPasswordModal .modal-body .form-group').removeClass('hide');
         $('#resetPasswordModal .modal-body h5').addClass('hide');
         $('#resetPasswordModal .modal-footer .btn-danger').removeClass('hide');

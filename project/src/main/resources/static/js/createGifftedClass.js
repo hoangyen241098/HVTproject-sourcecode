@@ -27,6 +27,7 @@ $("#submit").click(function (e) {
                 var messageCode = data.messageCode;
                 var message = data.message;
                 if (messageCode == 0) {
+                    $("#createSuccess .modal-body").html("");
                     $("#createSuccess .modal-body").append(
                         `
                         <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
