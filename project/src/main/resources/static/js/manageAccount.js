@@ -344,8 +344,21 @@ function checkResetPassword() {
         $('#resetPasswordModal .modal-footer .btn-primary').attr('value', 'ĐÓNG');
     } else {
         $("#resetPasswordModal .modal-body").html("");
-        $('#resetPasswordModal .modal-body .form-group').removeClass('hide');
-        $('#resetPasswordModal .modal-body h5').addClass('hide');
+        $('#resetPasswordModal .modal-body').append(`
+        <div class="form-group">
+            <div class="form-group-input">
+                <label class="input-text" for="new-password"><i class="fa fa-lock"></i></label>
+                <input type="password" name="new-password" id="new-password" placeholder="Mật khẩu mới"/>
+            </div>
+        </div>
+        <div class="form-group">
+             <div class="form-group-input">
+                 <label class="input-text" for="confirm-password"><i class="fa fa-lock"></i></label>
+                 <input type="password" name="confirm-password" id="confirm-password" placeholder="Xác nhận mật khẩu mới"/>
+             </div>
+        </div>
+        <div class="error resetPass-err"></div>
+        `);
         $('#resetPasswordModal .modal-footer .btn-danger').removeClass('hide');
         $('#resetPasswordModal .modal-footer .btn-primary').attr('value', 'KHÔNG');
     }
