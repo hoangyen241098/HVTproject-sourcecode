@@ -49,10 +49,10 @@ public class TimeTableController {
      * 01/07
      * catch request from client to find class timetable by weekId and classId
      * @param classTimeTableRequestDto
-     * @return ClassTimeTableResponseDto
+     * @return TimeTableResponseDto
      */
     @PostMapping("/classtimetable")
-    public ClassTimeTableResponseDto getClassTimeTable(@RequestBody ClassTimeTableRequestDto classTimeTableRequestDto)
+    public TimeTableResponseDto getClassTimeTable(@RequestBody ClassTimeTableRequestDto classTimeTableRequestDto)
     {
         return viewTimTaClassService.getClassTimeTable(classTimeTableRequestDto);
     }
@@ -75,10 +75,10 @@ public class TimeTableController {
      * 02/07
      * catch request from client to find tacher timetable by weekId and teacherId
      * @param teacherTimeTableRequestDto
-     * @return TeacherTimeTableResponseDto
+     * @return TimeTableResponseDto
      */
     @PostMapping("/teachertimetable")
-    public TeacherTimeTableResponseDto getTeacherTimeTable(@RequestBody TeacherTimeTableRequestDto teacherTimeTableRequestDto)
+    public TimeTableResponseDto getTeacherTimeTable(@RequestBody TeacherTimeTableRequestDto teacherTimeTableRequestDto)
     {
         return viewTimTaClassService.getTeacherTimeTable(teacherTimeTableRequestDto);
     }
