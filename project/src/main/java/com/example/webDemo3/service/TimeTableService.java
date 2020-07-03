@@ -8,8 +8,8 @@ import com.example.webDemo3.dto.request.TeacherTimeTableRequestDto;
 public interface TimeTableService {
     public ListYearAndClassResponseDto getListYearAndClass();
     public ListWeekResponseDto getListWeekByYearId(ListWeekRequestDto listWeekRequestDto);
-    public ClassTimeTableResponseDto getClassTimeTable(ClassTimeTableRequestDto classTimeTable);
+    public TimeTableResponseDto getClassTimeTable(ClassTimeTableRequestDto classTimeTable);
 
     public ListYearAndTeacherResponseDto getListYearAndTeacher();
-    public TeacherTimeTableResponseDto getTeacherTimeTable(TeacherTimeTableRequestDto teacherTimeTable);
+    public TimeTableResponseDto getTeacherTimeTable(TeacherTimeTableRequestDto teacherTimeTable);
 }

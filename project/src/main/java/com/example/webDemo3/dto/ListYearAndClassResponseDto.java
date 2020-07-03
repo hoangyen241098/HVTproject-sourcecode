@@ -12,11 +12,6 @@ import java.util.List;
  * 01/07
  */
 @Data
-public class ListYearAndClassResponseDto {
-    private Integer yearIdCurrent;
-    private Integer weekIdCurrent;
-    private List<SchoolYear> listYear;
-    private List<SchoolWeek> listWeek;
+public class ListYearAndClassResponseDto extends ListYearAndWeekResponseDto {
     private List<Class> classList;
-    private MessageDTO messageDTO;
 }
