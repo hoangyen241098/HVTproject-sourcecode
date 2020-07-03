@@ -429,4 +429,31 @@ public class ClassServiceImpl implements ClassService {
         responseDto.setClassList(pagedResult);
         return responseDto;
     }
+
+    /**
+     * kimpt142
+     * 3/7
+     * delete a gifted class by id
+     * @param model include gifted class id
+     * @return message
+     */
+    @Override
+    public MessageDTO deleteGiftedClassById(DelGifedClassRequestDto model) {
+        Integer giftedClassId = model.getGiftedClassId();
+        MessageDTO message = new MessageDTO();
+
+        if(giftedClassId == null){
+            message = Constant.GIFTEDCLASSID_EMPTY;
+            return message;
+        }
+
+        try {
+            giftedClassRepository.deleteById(giftedClassId);
+        }catch (Exception e){
+            message = Constant.DEL_GIFTEDCLASS_FAIL;
+            return message;
+        }
+        message = Constant.SUCCESS;
+        return message;
+    }
 }

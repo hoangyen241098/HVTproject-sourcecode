@@ -92,7 +92,6 @@ function editClass(e) {
         status: newStatus.toString()
     }
     e.preventDefault();
-    console.log(JSON.stringify(editClass));
     $.ajax({
         url: '/api/admin/editclass',
         type: 'POST',

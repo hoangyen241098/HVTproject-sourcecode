@@ -91,4 +91,16 @@ public class ClassController {
     {
         return classService.getClassInfor(model);
     }
+
+    /**
+     * kimpt142
+     * 3/7
+     * catch request to delete gifted class
+     * @return message
+     */
+    @PostMapping("/deletegiftedclass")
+    public MessageDTO deleteGiftedClass(@RequestBody DelGifedClassRequestDto model)
+    {
+        return classService.deleteGiftedClassById(model);
+    }
 }
