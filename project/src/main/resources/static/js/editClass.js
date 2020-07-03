@@ -1,8 +1,8 @@
-var editClassId,oldIdentifierName, oldStatus;
+var editClassId, oldIdentifierName, oldStatus, newStatus;
 $(document).ready(function () {
     editClassId = localStorage.getItem("classId")
     var classRequest = {
-        classId : editClassId
+        classId: editClassId
     }
     $.ajax({
         url: '/api/admin/viewclassinfor',
@@ -20,11 +20,10 @@ $(document).ready(function () {
                 $('#identifier').attr('value', data.classIdentifier);
                 $('#giftedClassName').attr('value', data.giftedClassName);
                 $('#grade').attr('value', data.grade);
-                if(data.status != null && data.status == 1){
+                if (data.status != null && data.status == 1) {
                     $("input[name=optradio][value='1']").prop('checked', true);
                     oldStatus = 1;
-                }
-                else{
+                } else {
                     $("input[name=optradio][value='0']").prop('checked', true);
                     oldStatus = 0;
                 }
@@ -49,56 +48,81 @@ $(document).ready(function () {
 
 //edit information of class
 $("#editInfo").click(function (e) {
-    var newStatus = 1;
+    newStatus = 1;
     newClassIdentifier = $('#identifier').val().trim();
     var radioValue = $("input[name=optradio]:checked").val();
     if (radioValue == '0') {
         newStatus = 0;
     }
 
-    if(newClassIdentifier == ""){
+    if (newClassIdentifier == "") {
         $('.classInfo-err').text("Hãy nhập tên định danh!");
         return false;
-    }
-    else if (newStatus == oldStatus && newClassIdentifier == oldIdentifierName) {
+    } else if (newStatus == oldStatus && newClassIdentifier == oldIdentifierName) {
         $('.classInfo-err').text("Hãy thay đổi thông tin !");
         return false;
-    }
-    else {
-        var editClass = {
-            classId : editClassId,
-            classIdentifier: newClassIdentifier,
-            status: newStatus.toString()
+    } else {
+        if (newStatus != oldStatus) {
+            $("#confirmEditModal .modal-body").html("");
+            $('#confirmEditModal .modal-body').append(`
+                <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+                <h5>Bạn có chắc muốn <b>CẬP NHẬT</b> trạng thái của lớp này không?</h5>
+            `);
+            $('#confirmEditModal .modal-footer .btn-danger').removeClass('hide');
+            $('#confirmEditModal .modal-footer .btn-primary').attr('value', 'KHÔNG');
+            $('#confirmEditModal').css('display', 'block');
+            $('#editClassModal').click(function (e) {
+                $('#confirmEditModal').css('display', 'none');
+                editClass(e);
+            })
+            $('#closeModal').click(function (e) {
+                $('#confirmEditModal').css('display', 'none');
+            })
+        } else {
+            editClass(e);
         }
-        e.preventDefault();
-        console.log(JSON.stringify(editClass));
-        $.ajax({
-            url: '/api/admin/editclass',
-            type: 'POST',
-            data: JSON.stringify(editClass),
-            beforeSend: function () {
-                $('body').addClass("loading")
-            },
-            complete: function () {
-                $('body').removeClass("loading")
-            },
-            success: function (data) {
-                var messageCode = data.messageCode;
-                var message = data.message;
-                if (messageCode == 0) {
-                    oldIdentifierName = newClassIdentifier;
-                    oldStatus = newStatus;
-                    $('#editInfoSuccess').css('display', 'block');
-                    $('.classInfo-err').text("");
-                } else {
-                    $('.classInfo-err').text(message);
-                }
-            },
-            failure: function (errMsg) {
-                $('.classInfo-err').text(errMsg);
-            },
-            dataType: "json",
-            contentType: "application/json"
-        });
     }
 });
+
+
+function editClass(e) {
+    var editClass = {
+        classId: editClassId,
+        classIdentifier: newClassIdentifier,
+        status: newStatus.toString()
+    }
+    e.preventDefault();
+    $.ajax({
+        url: '/api/admin/editclass',
+        type: 'POST',
+        data: JSON.stringify(editClass),
+        beforeSend: function () {
+            $('body').addClass("loading")
+        },
+        complete: function () {
+            $('body').removeClass("loading")
+        },
+        success: function (data) {
+            var messageCode = data.messageCode;
+            var message = data.message;
+            if (messageCode == 0) {
+                if(oldStatus != newStatus){
+                    $('#editInfoSuccess .modal-body').append(`
+                        <h5>Trạng thái của tài khoản cờ đỏ và lớp trưởng của lớp cũng đã thay đổi thành công.</h5>
+                    `);
+                }
+                oldIdentifierName = newClassIdentifier;
+                oldStatus = newStatus;
+                $('#editInfoSuccess').css('display', 'block');
+                $('.classInfo-err').text("");
+            } else {
+                $('.classInfo-err').text(message);
+            }
+        },
+        failure: function (errMsg) {
+            $('.classInfo-err').text(errMsg);
+        },
+        dataType: "json",
+        contentType: "application/json"
+    });
+}

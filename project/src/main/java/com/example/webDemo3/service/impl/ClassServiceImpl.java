@@ -36,6 +36,9 @@ public class ClassServiceImpl implements ClassService {
     @Autowired
     private GiftedClassRepository giftedClassRepository;
 
+    @Autowired
+    private GenerateAccountService generateAccountService;
+
     /**
      * kimpt142
      * 28/6
@@ -105,9 +108,6 @@ public class ClassServiceImpl implements ClassService {
         return responseDto;
     }
 
-    @Autowired
-    private GenerateAccountService generateAccountService;
-
     /**
      * kimpt142
      * 29/6
@@ -142,21 +142,6 @@ public class ClassServiceImpl implements ClassService {
             responseDto.setMessage(message);
             return responseDto;
         }
-
-/*      Class classByClassIdentifier = classRepository.findByClassIdentifier(classIdentifier);
-        if(classByClassIdentifier != null){
-            if(classByClassIdentifier.getStatus() != null && classByClassIdentifier.getStatus() == 1 ){
-                message = Constant.CLASSIDENTIFIER_EXIST_BLOCK;
-                responseDto.setClassId(classByClassIdentifier.getClassId());
-                responseDto.setMessage(message);
-                return responseDto;
-            }
-            else{
-                message = Constant.CLASSIDENTIFIER_EXIST;
-                responseDto.setMessage(message);
-                return responseDto;
-            }
-        }*/
 
         List<Class> classByClassIdentifier = classRepository.findClassListByClassIdentifier(classIdentifier);
         if(classByClassIdentifier.size() != 0){
@@ -304,12 +289,6 @@ public class ClassServiceImpl implements ClassService {
             return message;
         }
 
-/*        Class classByNewIdetifier = classRepository.findByClassIdentifier(classIdentifier);
-        if(!classIdentifier.equalsIgnoreCase(editClass.getClassIdentifier()) && classByNewIdetifier != null){
-            message = Constant.CLASSIDENTIFIER_EXIST;
-            return message;
-        }*/
-
         List<Class> classListByNewIdetifier = classRepository.findClassListByClassIdentifier(classIdentifier);
         if(classListByNewIdetifier.size() == 1){
             Class checkClass = classListByNewIdetifier.get(0);
@@ -449,5 +428,32 @@ public class ClassServiceImpl implements ClassService {
         responseDto.setMessage(message);
         responseDto.setClassList(pagedResult);
         return responseDto;
+    }
+
+    /**
+     * kimpt142
+     * 3/7
+     * delete a gifted class by id
+     * @param model include gifted class id
+     * @return message
+     */
+    @Override
+    public MessageDTO deleteGiftedClassById(DelGifedClassRequestDto model) {
+        Integer giftedClassId = model.getGiftedClassId();
+        MessageDTO message = new MessageDTO();
+
+        if(giftedClassId == null){
+            message = Constant.GIFTEDCLASSID_EMPTY;
+            return message;
+        }
+
+        try {
+            giftedClassRepository.deleteById(giftedClassId);
+        }catch (Exception e){
+            message = Constant.DEL_GIFTEDCLASS_FAIL;
+            return message;
+        }
+        message = Constant.SUCCESS;
+        return message;
     }
 }
