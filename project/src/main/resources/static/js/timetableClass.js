@@ -87,20 +87,36 @@ function loadTimetable() {
                         var dayId = afternoon[i].dayId;
                         var subject = afternoon[i].subject;
                         var teacherId = afternoon[i].teacherId;
+                        var isOddWeek = afternoon[i].isOddWeek;
                         if (teacherId == null) {
                             teacherId = "";
                         }
-                        if (slot == 1) {
-                            $('tbody').find('tr').eq(slot + 4).find('td').eq(dayId + 1).html(
-                                `<div class="subject">` + subject + `</div>
+                        if (isOddWeek == 0 || isOddWeek == null) {
+                            if (slot == 1) {
+                                $('tbody').find('tr').eq(slot + 4).find('td').eq(dayId + 2).html(
+                                    `<div class="subject">` + subject + `</div>
                             <div class="teacher">` + teacherId + `</div>`
-                            )
+                                )
+                            } else {
+                                $('tbody').find('tr').eq(slot + 4).find('td').eq(dayId).html(
+                                    `<div class="subject">` + subject + `</div>
+                            <div class="teacher">` + teacherId + `</div>`
+                                )
+                            }
                         } else {
-                            $('tbody').find('tr').eq(slot + 4).find('td').eq(dayId).html(
-                                `<div class="subject">` + subject + `</div>
+                            if (slot == 1) {
+                                $('tbody').find('tr').eq(slot + 6).find('td').eq(dayId + 1).html(
+                                    `<div class="subject">` + subject + `</div>
                             <div class="teacher">` + teacherId + `</div>`
-                            )
+                                )
+                            } else {
+                                $('tbody').find('tr').eq(slot + 6).find('td').eq(dayId).html(
+                                    `<div class="subject">` + subject + `</div>
+                            <div class="teacher">` + teacherId + `</div>`
+                                )
+                            }
                         }
+
                     }
                 }
 

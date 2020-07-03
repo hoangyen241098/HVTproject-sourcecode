@@ -459,6 +459,11 @@ tr.selected {
     text-decoration: none;
 }
 
+#prevPage:disabled, #nextPage:disabled {
+    background: #dddbda;
+    cursor: no-drop;
+}
+
 .btn-page {
     border-radius: 3px 0 0 3px;
     border: 1px solid #aaa;
@@ -641,12 +646,14 @@ div.searchable {
     margin: 0 10%;
     position: relative;
 }
+
 fieldset .note {
     text-align: left;
     font-weight: normal;
     font-size: 13px;
     color: #666;
 }
+
 /*Hide all except first fieldset*/
 #msform fieldset:not(:first-of-type) {
     display: none;
@@ -892,8 +899,7 @@ fieldset .note {
 }
 
 .timetable, .timetable tr, .timetable td {
-    height: 60px;
-    font-size: 20px;
+    height: 50px;
     border: 1px solid #456c83;
 }
 
@@ -905,16 +911,25 @@ fieldset .note {
 
 .timetable .session {
     text-transform: uppercase;
-    font-weight: 500;
+    font-weight: 700;
     background: #c2e9fe;
+    font-size: 20px;
+}
+
+.timetable .session p {
+    transform: rotate(-90deg);
 }
 
 .timetable .slot {
-    font-weight: 500;
+    font-weight: 700;
+}
+
+.isOdd {
+    background: #fff !important;
 }
 
 .timetable .afternoon {
-    background: #d9edf7;
+    background: #dee2e6;
 }
 
 .timetable .sub-note {
@@ -931,6 +946,12 @@ fieldset .note {
     color: #e74c3c;
     font-size: 0.75em;
     font-weight: 500;
+}
+
+
+.afternoon .week {
+    font-weight: 500;
+    background: #c2e9fe;
 }
 
 /*END Timetable*/
