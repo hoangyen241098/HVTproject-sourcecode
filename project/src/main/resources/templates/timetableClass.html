@@ -27,16 +27,15 @@
             <div class="search">
                 <div class="col-xl-4 d-inline-block">
                     <div class="search-line">
-                        <span>Niên khóa</span>
+                        <span>Năm học</span>
                         <select class="combobox searchable" id="year">
-                            <option value="0" selected="selected">---Chọn niên khóa---</option>
-                            <option value="1">2020 - 2021</option>
+                            <option value="0" selected="selected">--- Chọn năm học ---</option>
                         </select>
                     </div>
-                    <div class="search-line">
+                    <div class="search-line combo-box-week hide">
                         <span>Tuần</span>
                         <select class="combobox searchable" id="week">
-                            <option value="0" selected="selected">--Chọn tuần---</option>
+                            <option value="0" selected="selected">-- Chọn tuần ---</option>
                             <option value="1">Tuần 1</option>
                         </select>
                     </div>
@@ -46,7 +45,7 @@
                     <div class="search-line">
                         <span>Lớp</span>
                         <select class="combobox searchable" id="class">
-                            <option value="0" selected="selected">---Chọn lớp---</option>
+                            <option value="0" selected="selected">--- Chọn lớp ---</option>
                         </select>
                     </div>
                 </div>
@@ -56,184 +55,91 @@
             </div>
         </div>
         <table class="timetable table-bordered">
+            <thead>
             <tr class="timtable-title">
-                <th>Buổi</th>
-                <th>Tiết</th>
-                <th>Thứ 2</th>
-                <th>Thứ 3</th>
-                <th>Thứ 4</th>
-                <th>Thứ 5</th>
-                <th>Thứ 6</th>
-                <th>Thứ 7</th>
+                <td>Buổi</td>
+                <td>Tiết</td>
+                <td id="1">Thứ 2</td>
+                <td id="2">Thứ 3</td>
+                <td id="3">Thứ 4</td>
+                <td id="4">Thứ 5</td>
+                <td id="5">Thứ 6</td>
+                <td id="6">Thứ 7</td>
             </tr>
-            <tr>
+            </thead>
+            <tbody>
+            <tr class="morning">
                 <td rowspan="5" class="session">SÁNG</td>
                 <td class="slot">1</td>
-                <td class="sub-note">CHÀO CỜ</td>
-                <td class="sub-note">THỂ DỤC</td>
-                <td>
-                    <div class="subject">T</div>
-                    <div class="teacher">BHương</div>
-                </td>
-                <td>
-                    <div class="subject">TN</div>
-                    <div class="teacher">Trung</div>
-                </td>
-                <td>
-                    <div class="subject">SU</div>
-                    <div class="teacher">P.Thảo</div>
-                </td>
-                <td>
-                    <div class="subject">GDCD</div>
-                    <div class="teacher">V.Hiền</div>
-                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>
-            <tr>
+            <tr class="morning">
                 <td class="slot">2</td>
-                <td>
-                    <div class="subject">T</div>
-                    <div class="teacher">BHương</div>
-                </td>
-                <td class="sub-note">THỂ DỤC</td>
-                <td>
-                    <div class="subject">Toan</div>
-                    <div class="teacher">BHương</div>
-                </td>
-                <td>
-                    <div class="subject">S</div>
-                    <div class="teacher">Mạnh</div>
-                </td>
-                <td>
-                    <div class="subject">L</div>
-                    <div class="teacher">LThiện</div>
-                </td>
-                <td>
-                    <div class="subject">SU</div>
-                    <div class="teacher">P.Thảo</div>
-                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>
-            <tr>
+            <tr class="morning">
                 <td class="slot">3</td>
-                <td>
-                    <div class="subject">Toan</div>
-                    <div class="teacher">BHương</div>
-                </td>
-                <td>
-                    <div class="subject">TN</div>
-                    <div class="teacher">Trung</div>
-                </td>
-                <td>
-                    <div class="subject">V</div>
-                    <div class="teacher">G.Hương</div>
-                </td>
-                <td>
-                    <div class="subject">V</div>
-                    <div class="teacher">G.Hương</div>
-                </td>
-                <td>
-                    <div class="subject">L</div>
-                    <div class="teacher">LThiện</div>
-                </td>
-                <td>
-                    <div class="subject">A</div>
-                    <div class="teacher">Cảnh</div>
-                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>
-            <tr>
+            <tr class="morning">
                 <td class="slot">4</td>
-                <td>
-                    <div class="subject">Đ</div>
-                    <div class="teacher">Hòa</div>
-                </td>
-                <td>
-                    <div class="subject">Toan</div>
-                    <div class="teacher">BHương</div>
-                </td>
-                <td>
-                    <div class="subject">A</div>
-                    <div class="teacher">Cảnh</div>
-                </td>
-                <td>
-                    <div class="subject">V</div>
-                    <div class="teacher">G.Hương</div>
-                </td>
-                <td>
-                    <div class="subject">H</div>
-                    <div class="teacher">P.Lan</div>
-                </td>
-                <td>
-                    <div class="subject">A</div>
-                    <div class="teacher">Cảnh</div>
-                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>
-            <tr>
+            <tr class="morning">
                 <td class="slot">5</td>
-                <td>
-                    <div class="subject">L</div>
-                    <div class="teacher">LThiện</div>
-                </td>
-                <td>
-                    <div class="subject">T</div>
-                    <div class="teacher">BHương</div>
-                </td>
                 <td></td>
                 <td></td>
-                <td>
-                    <div class="subject">H</div>
-                    <div class="teacher">P.Lan</div>
-                </td>
-                <td>
-                    <div class="subject">SH</div>
-                    <div class="teacher">BHương</div>
-                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>
             <tr class="afternoon">
                 <td rowspan="2" class="session">CHIỀU</td>
                 <td class="slot">1</td>
-                <td>
-                    <div class="subject">T</div>
-                    <div class="teacher">BHương</div>
-                </td>
-                <td>
-                    <div class="subject">T</div>
-                    <div class="teacher">BHương</div>
-                </td>
-                <td>
-                    <div class="subject">H</div>
-                    <div class="teacher">P.Lan</div>
-                </td>
                 <td></td>
-                <td>
-                    <div class="subject">H</div>
-                    <div class="teacher">P.Lan</div>
-                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td></td>
             </tr>
             <tr class="afternoon">
                 <td class="slot">2</td>
-                <td>
-                    <div class="subject">L</div>
-                    <div class="teacher">LThiện</div>
-                </td>
-                <td>
-                    <div class="subject">T</div>
-                    <div class="teacher">BHương</div>
-                </td>
-                <td>
-                    <div class="subject">T</div>
-                    <div class="teacher">BHương</div>
-                </td>
                 <td></td>
-                <td>
-                    <div class="subject">L</div>
-                    <div class="teacher">LThiện</div>
-                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td></td>
             </tr>
+            </tbody>
+
         </table>
     </div>
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 <div class="modal-loading"></div>
 </body>
+<script type="text/javascript" th:src="@{/js/timetableClass.js}"></script>
 </html>

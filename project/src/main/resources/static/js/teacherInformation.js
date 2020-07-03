@@ -39,6 +39,7 @@ $("#editInfo").click(function (e) {
     var fullName = $('#fullName').val().trim();
     var phone = $('#phone').val().trim();
     var email = $('#email').val().trim();
+
     $('.teacherInfo-err').text("");
     if (fullName == "") {
         $('.teacherInfo-err').text("Hãy điền họ và tên.");
@@ -52,7 +53,8 @@ $("#editInfo").click(function (e) {
     } else if (email != "" && !email.match(emailRegex)) {
         $('.teacherInfo-err').text("Email không đúng định dạng.");
         return false;
-    } else {
+    }
+    else {
         $('.teacherInfo-err').text("");
         var info = {
             teacherId: localStorage.getItem("teacherId"),

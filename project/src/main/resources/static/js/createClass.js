@@ -70,6 +70,7 @@ $("#submit").click(function (e) {
                 var message = data.message.message;
                 var listUser = data.userList;
                 if (messageCode == 2) {
+                    $("#createSuccess .modal-body").html("");
                     $("#createSuccess .modal-body").append(
                         `
                         <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
@@ -80,6 +81,7 @@ $("#submit").click(function (e) {
                     localStorage.setItem("classId", data.classId);
                 } else if (messageCode == 0) {
                     if (listUser == null) {
+                        $("#createSuccess .modal-body").html("");
                         $("#createSuccess .modal-body").append(
                             `
                         <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
@@ -87,11 +89,11 @@ $("#submit").click(function (e) {
                         `
                         )
                     } else {
+                        $("#createSuccess .modal-body").html("");
                         $("#createSuccess .modal-body").append(
                             `
                         <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
                         <h5>Tạo lớp thành công!</h5>
-                        <h5 class="text-left ml-2 pt-2">Các tài khoản được tự động tạo:</h5>
                         `)
                         var index = 1;
                         for (var i = 0; i < data.userList.length; i++) {
@@ -132,4 +134,5 @@ $("#submit").click(function (e) {
 
 $('#closeDialog').click(function () {
     localStorage.removeItem("classId");
+    $('#createSuccess').css('display', 'none');
 })

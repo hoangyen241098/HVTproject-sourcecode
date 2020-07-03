@@ -8,10 +8,7 @@ $("#submit").click(function (e) {
     phone = $('#phone').val().trim();
     email = $('#email').val().trim();
 
-    if (fullName == "") {
-        $('.createTeacher-err').text("Hãy điền họ và tên.");
-        return false;
-    } else if (identifier == "") {
+    if (identifier == "") {
         $('.createTeacher-err').text("Hãy điền tên định danh.");
         return false;
     } else if (phone != "" && !phone.match(phoneRegex)) {
