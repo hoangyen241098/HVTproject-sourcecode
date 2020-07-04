@@ -69,73 +69,62 @@ function loadTimetable() {
             if (messageCode == 0) {
                 var morning = data.morningTimeTable;
                 var afternoon = data.afternoonTimeTable;
-                if (morning == null) {
-                    $('tbody').html(
-                        ` <tr><td colspan="8" class="userlist-result">Không có thời khóa biểu buổi sáng.</td> </tr> `
-                    )
-                } else {
-                    for (var i = 0; i < morning.length; i++) {
-                        var slot = morning[i].slotId;
-                        var dayId = morning[i].dayId;
-                        var subject = morning[i].subject;
-                        var teacher = morning[i].teacherIdentifier;
-                        if (teacher == null) {
-                            teacher = "";
-                        }
-                        if (slot == 1) {
-                            $('tbody').find('tr').eq(slot - 1).find('td').eq(dayId + 1).html(
-                                `<div class="subject">` + subject + `</div>
-                            <div class="teacher">` + teacher + `</div>`
-                            )
-                        } else {
-                            $('tbody').find('tr').eq(slot - 1).find('td').eq(dayId).html(
-                                `<div class="subject">` + subject + `</div>
-                            <div class="teacher">` + teacher + `</div>`
-                            )
-                        }
 
+                for (var i = 0; i < morning.length; i++) {
+                    var slot = morning[i].slotId;
+                    var dayId = morning[i].dayId;
+                    var subject = morning[i].subject;
+                    var teacher = morning[i].teacherIdentifier;
+                    if (teacher == null) {
+                        teacher = "";
                     }
-                }
-                if (afternoon == null) {
-                    $('tbody').html(
-                        ` <tr><td colspan="8" class="userlist-result">Không có thời khóa biểu buổi chiều</td> </tr> `
-                    )
-                } else {
-                    for (var i = 0; i < afternoon.length; i++) {
-                        var slot = afternoon[i].slotId;
-                        var dayId = afternoon[i].dayId;
-                        var subject = afternoon[i].subject;
-                        var teacher = afternoon[i].teacherIdentifier;
-                        var isOddWeek = afternoon[i].isOddWeek;
-                        if (teacher == null) {
-                            teacher = "";
-                        }
-                        if (isOddWeek == 0 || isOddWeek == null) {
-                            if (slot == 1) {
-                                $('tbody').find('tr').eq(slot + 4).find('td').eq(dayId + 2).html(
-                                    `<div class="subject">` + subject + `</div>
+                    if (slot == 1) {
+                        $('tbody').find('tr').eq(slot - 1).find('td').eq(dayId + 1).html(
+                            `<div class="subject">` + subject + `</div>
                             <div class="teacher">` + teacher + `</div>`
-                                )
-                            } else {
-                                $('tbody').find('tr').eq(slot + 4).find('td').eq(dayId).html(
-                                    `<div class="subject">` + subject + `</div>
+                        )
+                    } else {
+                        $('tbody').find('tr').eq(slot - 1).find('td').eq(dayId).html(
+                            `<div class="subject">` + subject + `</div>
                             <div class="teacher">` + teacher + `</div>`
-                                )
-                            }
-                        } else {
-                            if (slot == 1) {
-                                $('tbody').find('tr').eq(slot + 6).find('td').eq(dayId + 1).html(
-                                    `<div class="subject">` + subject + `</div>
-                            <div class="teacher">` + teacher + `</div>`
-                                )
-                            } else {
-                                $('tbody').find('tr').eq(slot + 6).find('td').eq(dayId).html(
-                                    `<div class="subject">` + subject + `</div>
-                            <div class="teacher">` + teacher + `</div>`
-                                )
-                            }
-                        }
+                        )
+                    }
 
+                }
+
+                for (var i = 0; i < afternoon.length; i++) {
+                    var slot = afternoon[i].slotId;
+                    var dayId = afternoon[i].dayId;
+                    var subject = afternoon[i].subject;
+                    var teacher = afternoon[i].teacherIdentifier;
+                    var isOddWeek = afternoon[i].isOddWeek;
+                    if (teacher == null) {
+                        teacher = "";
+                    }
+                    if (isOddWeek == 0 || isOddWeek == null) {
+                        if (slot == 1) {
+                            $('tbody').find('tr').eq(slot + 4).find('td').eq(dayId + 2).html(
+                                `<div class="subject">` + subject + `</div>
+                            <div class="teacher">` + teacher + `</div>`
+                            )
+                        } else {
+                            $('tbody').find('tr').eq(slot + 4).find('td').eq(dayId).html(
+                                `<div class="subject">` + subject + `</div>
+                            <div class="teacher">` + teacher + `</div>`
+                            )
+                        }
+                    } else {
+                        if (slot == 1) {
+                            $('tbody').find('tr').eq(slot + 6).find('td').eq(dayId + 1).html(
+                                `<div class="subject">` + subject + `</div>
+                            <div class="teacher">` + teacher + `</div>`
+                            )
+                        } else {
+                            $('tbody').find('tr').eq(slot + 6).find('td').eq(dayId).html(
+                                `<div class="subject">` + subject + `</div>
+                            <div class="teacher">` + teacher + `</div>`
+                            )
+                        }
                     }
                 }
             } else {

@@ -1,3 +1,4 @@
+document.write('<script type="text/javascript" src="functions.js" ></script>');
 var inforSearch = {
     userName: "",
     roleId: null,
@@ -151,7 +152,7 @@ function search() {
                 <td><span id="email">` + email + `</span></td>
                 </tr>`);
                 });
-                selectCheckbox();
+                selectCheckbox(listUser);
                 prevPage();
                 nextPage();
                 // pagingClick();
@@ -365,48 +366,48 @@ function checkResetPassword() {
 }
 
 /*Select checkbox*/
-function selectCheckbox() {
-    var checkbox = $('table tbody input[type="checkbox"]');
-    $(checkbox).on('change', function (e) {
-        row = $(this).closest('tr');
-        if ($(this).is(':checked')) {
-            row.addClass('selected');
-            if (jQuery.inArray($(this).val(), listUser) == -1) {
-                listUser.push($(this).val());
-            }
-        } else {
-            row.removeClass('selected');
-            var removeItem = $(this).val();
-            listUser = $.grep(listUser, function (value) {
-                return value != removeItem;
-            });
-        }
-    });
-
-    $("#selectAll").click(function () {
-        var checkbox = $('table tbody input[type="checkbox"]');
-        if (this.checked) {
-            checkbox.each(function () {
-                this.checked = true;
-                $('tbody tr').addClass('selected');
-                if (jQuery.inArray($(this).val(), listUser) == -1) {
-                    listUser.push($(this).val());
-                }
-            });
-        } else {
-            checkbox.each(function () {
-                this.checked = false;
-                $('tbody tr').removeClass('selected');
-                var removeItem = $(this).val();
-                listUser = $.grep(listUser, function (value) {
-                    return value != removeItem;
-                });
-            });
-        }
-    });
-    checkbox.click(function () {
-        if (!this.checked) {
-            $("#selectAll").prop("checked", false);
-        }
-    });
-}
+// function selectCheckbox() {
+//     var checkbox = $('table tbody input[type="checkbox"]');
+//     $(checkbox).on('change', function (e) {
+//         row = $(this).closest('tr');
+//         if ($(this).is(':checked')) {
+//             row.addClass('selected');
+//             if (jQuery.inArray($(this).val(), listUser) == -1) {
+//                 listUser.push($(this).val());
+//             }
+//         } else {
+//             row.removeClass('selected');
+//             var removeItem = $(this).val();
+//             listUser = $.grep(listUser, function (value) {
+//                 return value != removeItem;
+//             });
+//         }
+//     });
+//
+//     $("#selectAll").click(function () {
+//         var checkbox = $('table tbody input[type="checkbox"]');
+//         if (this.checked) {
+//             checkbox.each(function () {
+//                 this.checked = true;
+//                 $('tbody tr').addClass('selected');
+//                 if (jQuery.inArray($(this).val(), listUser) == -1) {
+//                     listUser.push($(this).val());
+//                 }
+//             });
+//         } else {
+//             checkbox.each(function () {
+//                 this.checked = false;
+//                 $('tbody tr').removeClass('selected');
+//                 var removeItem = $(this).val();
+//                 listUser = $.grep(listUser, function (value) {
+//                     return value != removeItem;
+//                 });
+//             });
+//         }
+//     });
+//     checkbox.click(function () {
+//         if (!this.checked) {
+//             $("#selectAll").prop("checked", false);
+//         }
+//     });
+// }
