@@ -1,4 +1,4 @@
-package com.example.webDemo3.controller.testcontroller;
+package com.example.webDemo3.controller;
 
 import com.example.webDemo3.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,8 +113,8 @@ public class WebController {
         return "timetableTeacher";
     }
 
-    @GetMapping("/manageTimetable")
-    public String manageTimetable(Model model) {
-        return "manageTimetable";
-    }
+//    @GetMapping("/manageTimetable")
+//    public String manageTimetable(Model model) {
+//        return "manageTimetable";
+//    }
 }

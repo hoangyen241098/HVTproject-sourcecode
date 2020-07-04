@@ -12,4 +12,6 @@ public interface TimeTableService {
 
     public ListYearAndTeacherResponseDto getListYearAndTeacher();
     public TimeTableResponseDto getTeacherTimeTable(TeacherTimeTableRequestDto teacherTimeTable);
+
+    public ListYearAndWeekResponseDto getListYearAndListWeek();
 }

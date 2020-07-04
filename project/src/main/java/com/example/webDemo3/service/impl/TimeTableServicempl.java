@@ -346,6 +346,7 @@ public class TimeTableServicempl implements TimeTableService {
      * @param
      * @return ListYearAndWeekResponseDto
      */
+    @Override
     public ListYearAndWeekResponseDto getListYearAndListWeek(){
         ListYearAndWeekResponseDto list = new ListYearAndWeekResponseDto();
         List<SchoolYear> listYear = null;
