@@ -49,6 +49,10 @@
             </div>
         </div>
     </div>
+<!--tao demo ra đây loan nhé-->
+    <tbody th:each="week : ${listWeek}">
+       <p th:text="${week.fromDate}"></p>
+    </tbody>
 
 </div>
 <div th:replace="fragments/footer :: footer"></div>

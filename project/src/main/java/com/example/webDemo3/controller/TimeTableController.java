@@ -26,8 +26,7 @@ public class TimeTableController {
 
     @GetMapping("/manageTimetable")
     public String index(Model model) {
-        ListYearAndWeekResponseDto list = new ListYearAndWeekResponseDto();
-        list = viewTimTaClassService.getListYearAndListWeek();
+        ListYearAndWeekResponseDto list = viewTimTaClassService.getListYearAndListWeek();
         model.addAttribute("listWeek",list.getListWeek());
         return "manageTimetable";
     }
