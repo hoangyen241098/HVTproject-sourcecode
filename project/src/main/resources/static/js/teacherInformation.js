@@ -4,32 +4,34 @@ $(document).ready(function () {
     var teacher = {
         teacherId: teacherId,
     }
-    if(teacherId == null){
+    if (teacherId == null) {
         $('.teacherInfo-err').append(`Hãy quay lại chọn giáo viên mà bạn muốn sửa thông tin tại <a href="manageTeacher">ĐÂY</a>`);
+        $("#editInfo").prop('disabled', true);
+    } else {
+        $("#editInfo").prop('disabled', false);
+        $.ajax({
+            url: '/api/admin/viewteacherinformation',
+            type: 'POST',
+            data: JSON.stringify(teacher),
+            beforeSend: function () {
+                $('body').addClass("loading")
+            },
+            complete: function () {
+                $('body').removeClass("loading")
+            },
+            success: function (data) {
+                $('#fullName').attr('value', data.fullName);
+                $('#identifier').attr('value', data.teacherIdentifier);
+                $('#phone').attr('value', data.phone);
+                $('#email').attr('value', data.email);
+            },
+            failure: function (errMsg) {
+                $('.teacherInfo-err').text(errMsg);
+            },
+            dataType: "json",
+            contentType: "application/json"
+        });
     }
-    console.log(JSON.stringify(teacher))
-    $.ajax({
-        url: '/api/admin/viewteacherinformation',
-        type: 'POST',
-        data: JSON.stringify(teacher),
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
-        success: function (data) {
-            $('#fullName').attr('value', data.fullName);
-            $('#identifier').attr('value', data.teacherIdentifier);
-            $('#phone').attr('value', data.phone);
-            $('#email').attr('value', data.email);
-        },
-        failure: function (errMsg) {
-            $('.teacherInfo-err').text(errMsg);
-        },
-        dataType: "json",
-        contentType: "application/json"
-    });
 });
 
 $("#editInfo").click(function (e) {
@@ -53,8 +55,7 @@ $("#editInfo").click(function (e) {
     } else if (email != "" && !email.match(emailRegex)) {
         $('.teacherInfo-err').text("Email không đúng định dạng.");
         return false;
-    }
-    else {
+    } else {
         $('.teacherInfo-err').text("");
         var info = {
             teacherId: localStorage.getItem("teacherId"),

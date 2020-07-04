@@ -898,6 +898,10 @@ fieldset .note {
     margin-top: 30px;
 }
 
+.table-err {
+    width: 100%;
+}
+
 .timetable, .timetable tr, .timetable td {
     height: 50px;
     border: 1px solid #456c83;
@@ -952,6 +956,12 @@ fieldset .note {
 .afternoon .week {
     font-weight: 500;
     background: #c2e9fe;
+}
+
+@media screen and (max-width: 600px) {
+    .timetable {
+        font-size: 13px;
+    }
 }
 
 /*END Timetable*/

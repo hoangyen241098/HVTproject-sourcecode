@@ -3,7 +3,7 @@ var inforSearch = {
     orderBy: "1",
     pageNumber: 0
 }
-var listTeacher = [];
+var list = [];
 localStorage.removeItem("teacherId");
 search();
 
@@ -40,77 +40,59 @@ function search() {
         },
         success: function (data) {
             if (data.message.messageCode == 0) {
-                // for (var i = 0; i < data.teacherList.totalPages; i++) {
-                //     if (i == inforSearch.pageNumber) {
-                //         $('.table-paging').append(
-                //             `<input type="button" value="` + (i + 1) + `" class="table-paging__page table-paging__page_cur"/>`
-                //         );
-                //     } else {
-                //         $('.table-paging').append(
-                //             `<input type="button" value="` + (i + 1) + `" class="table-paging__page"/>`
-                //         );
-                //     }
-                // }
                 var totalPages = data.teacherList.totalPages;
-                $('.table-paging').append(
-                    `<button type="button" class="btn btn-page btn-prev" id="prevPage" title="Trang trước"><i class="fa fa-chevron-left"></i></button>`
-                );
-                $('.table-paging').append(
-                    `<button type="button" class="btn btn-page btn-next" id="nextPage" title="Trang sau"><i class="fa fa-chevron-right"></i></button>`
-                );
-                $('.table-paging').append(
-                    `<div class="pageNumber"><b>` + (inforSearch.pageNumber + 1) + ` </b>/ ` + totalPages + `</div>`
-                );
-                if (inforSearch.pageNumber == 0) {
-                    $('#prevPage').prop('disabled', true);
+                paging(inforSearch, totalPages);
+                if (data.teacherList != null) {
+                    $.each(data.teacherList.content, function (i, item) {
+                        var phone, email;
+                        if (item.phone == null) {
+                            phone = "";
+                        } else {
+                            phone = item.phone;
+                        }
+                        if (item.email == null) {
+                            email = "";
+                        } else {
+                            email = item.email;
+                        }
+                        var selected = "";
+                        var checked = ""
+                        if (isCheck(item.teacherId)) {
+                            selected = "selected"
+                            checked = "checked"
+                        }
+                        $('tbody').append(
+                            `<tr class="` + selected + `">
+                                <td>
+                                    <span class="custom-checkbox ">
+                                        <input id="` + item.teacherId + `"type="checkbox" name="options" value="` + item.teacherId + `" ` + checked + `>
+                                        <label for="` + item.teacherId + `"></label>
+                                    </span>
+                                </td>
+                                <td><span id="fullName">` + item.fullName + `</span></td>
+                                <td><span id="teacherIdentifier">` + item.teacherIdentifier + `</span></td>
+                                <td><span id="phone">` + phone + `</span></td>
+                                <td><span id="email">` + email + `</span></td>
+                                <td><span class="bt-table-field">
+                                    <a href="teacherInformation" id="` + item.teacherId + `" class="bt-table-edit">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                    </span>
+                                </td>
+                            </tr>`
+                        );
+                    });
                 } else {
-                    $('#prevPage').prop('disabled', false);
-                }
-                if ((inforSearch.pageNumber + 1) == totalPages) {
-                    $('#nextPage').prop('disabled', true);
-                } else {
-                    $('#nextPage').prop('disabled', false);
-                }
-
-                $.each(data.teacherList.content, function (i, item) {
-                    var phone, email;
-                    if (item.phone == null) {
-                        phone = "";
-                    } else {
-                        phone = item.phone;
-                    }
-                    if (item.email == null) {
-                        email = "";
-                    } else {
-                        email = item.email;
-                    }
-                    var selected = "";
-                    var checked = ""
-                    if (isCheck(item.teacherId)) {
-                        selected = "selected"
-                        checked = "checked"
-                    }
                     $('tbody').append(
-                        `<tr class="` + selected + `">
-                <td>
-                    <span class="custom-checkbox ">
-                        <input id="` + item.teacherId + `"type="checkbox" name="options" value="` + item.teacherId + `" ` + checked + `>
-                        <label for="` + item.teacherId + `"></label>
-                    </span>
-                </td>
-                <td><span id="fullName">` + item.fullName + `</span></td>
-                <td><span id="teacherIdentifier">` + item.teacherIdentifier + `</span></td>
-                <td><span id="phone">` + phone + `</span></td>
-                <td><span id="email">` + email + `</span></td>
-                <td><span class="bt-table-field"><a href="teacherInformation" id="` + item.teacherId + `" class="bt-table-edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></input></span>
-                </td>
-                </tr>`);
-                });
+                        `<tr>
+                        <td colspan="7" class="userlist-result">
+                            ` + data.message.message + `
+                        </td>
+                    </tr>`
+                    )
+                }
                 getTeacherID();
                 selectCheckbox();
-                prevPage();
-                nextPage();
-                // pagingClick();
+                pagingClick();
             } else {
                 $('tbody').append(
                     `<tr>
@@ -138,7 +120,7 @@ function search() {
 /*Delete teacher*/
 $("#deleteTeacher").click(function (e) {
     listTeacher = {
-        listTeacher: listTeacher,
+        listTeacher: list,
     }
     e.preventDefault();
     $.ajax({
@@ -172,33 +154,10 @@ $("#deleteTeacher").click(function (e) {
     });
 });
 
-function isCheck(teacher) {
-    if (listTeacher == null || listTeacher.length == 0) {
-        return false;
-    }
-    for (var i = 0; i < listTeacher.length; i++) {
-        if (listTeacher[i] == teacher) {
-            return true;
-        }
-    }
-    return false;
-}
-
-function pagingClick() {
-    $('.table-paging input').on('click', function (event) {
-        $("#selectAll").prop("checked", false);
-        var value = ($(this).val() - 1);
-        inforSearch.pageNumber = value;
-        $('tbody').html("");
-        $('.table-paging').html("");
-        search();
-    })
-}
-
 /*Check teacher before delete account*/
 function checkTeacher() {
     $('#deleteTeacherModal .modal-body').html("");
-    if (listTeacher.length == 0) {
+    if (list.length == 0) {
         $("#deleteTeacherModal .modal-body").html("");
         $('#deleteTeacherModal .modal-body').append(`<h5>Hãy chọn giáo viên mà bạn muốn xóa</h5>`);
         $('#deleteTeacherModal .modal-footer .btn-danger').addClass('hide');
@@ -211,53 +170,6 @@ function checkTeacher() {
     }
 }
 
-/*Select checkbox*/
-function selectCheckbox() {
-    var checkbox = $('table tbody input[type="checkbox"]');
-    $(checkbox).on('change', function (e) {
-        row = $(this).closest('tr');
-        if ($(this).is(':checked')) {
-            row.addClass('selected');
-            if (jQuery.inArray($(this).val(), listTeacher) == -1) {
-                listTeacher.push($(this).val());
-            }
-        } else {
-            row.removeClass('selected');
-            var removeItem = $(this).val();
-            listTeacher = $.grep(listTeacher, function (value) {
-                return value != removeItem;
-            });
-        }
-    });
-
-    $("#selectAll").click(function () {
-        var checkbox = $('table tbody input[type="checkbox"]');
-        if (this.checked) {
-            checkbox.each(function () {
-                this.checked = true;
-                $('tbody tr').addClass('selected');
-                if (jQuery.inArray($(this).val(), listTeacher) == -1) {
-                    listTeacher.push($(this).val());
-                }
-            });
-        } else {
-            checkbox.each(function () {
-                this.checked = false;
-                $('tbody tr').removeClass('selected');
-                var removeItem = $(this).val();
-                listTeacher = $.grep(listTeacher, function (value) {
-                    return value != removeItem;
-                });
-            });
-        }
-    });
-    checkbox.click(function () {
-        if (!this.checked) {
-            $("#selectAll").prop("checked", false);
-        }
-    });
-}
-
 /*Edit teacher information by ID*/
 function getTeacherID() {
     var teacherId = $('.bt-table-edit');
@@ -265,24 +177,4 @@ function getTeacherID() {
         teacherId = $(this).prop('id');
         localStorage.setItem("teacherId", teacherId);
     });
-}
-
-function nextPage() {
-    $('#nextPage').on('click', function (event) {
-        $("#selectAll").prop("checked", false);
-        inforSearch.pageNumber++;
-        $('tbody').html("");
-        $('.table-paging').html("");
-        search();
-    })
-}
-
-function prevPage() {
-    $('#prevPage').on('click', function (event) {
-        $("#selectAll").prop("checked", false);
-        inforSearch.pageNumber--;
-        $('tbody').html("");
-        $('.table-paging').html("");
-        search();
-    })
 }

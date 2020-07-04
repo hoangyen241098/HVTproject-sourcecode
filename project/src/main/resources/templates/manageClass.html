@@ -28,21 +28,11 @@
         <div class="table-title">
             <h2>Danh sách lớp</h2>
             <div class="search">
-                <div class="col-xl-4 d-inline-block">
+                <div class="col-xl-5 d-inline-block">
                     <div class="search-line" id="searchByIdentifier">
                         <span>Tên định danh</span>
                         <input type="text" placeholder="Tên định danh">
                     </div>
-                    <div class="search-line">
-                        <span>Sắp xếp theo</span>
-                        <select class="combobox searchable" id="orderBy">
-                            <option value="0" selected="selected">Tên định danh</option>
-                            <option value="1">Khối</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-xl-2 d-inline-block"></div>
-                <div class="col-xl-4 d-inline-block">
                     <div class="search-line">
                         <span>Khối</span>
                         <select class="combobox searchable" id="searchByGrade">
@@ -53,13 +43,6 @@
                         </select>
                     </div>
                     <div class="search-line">
-                        <span>Thứ tự</span>
-                        <select class="combobox searchable" id="sortBy">
-                            <option value="0">Giảm dần</option>
-                            <option value="1" selected="selected">Tăng dần</option>
-                        </select>
-                    </div>
-                    <div class="search-line">
                         <span>Trạng thái</span>
                         <select class="combobox searchable" id="status">
                             <option value="" selected="selected">Tất cả</option>
@@ -67,6 +50,25 @@
                             <option value="1">Khóa</option>
                         </select>
                     </div>
+
+                </div>
+                <div class="col-xl-1 d-inline-block"></div>
+                <div class="col-xl-4 d-inline-block">
+                    <div class="search-line">
+                        <span>Sắp xếp theo</span>
+                        <select class="combobox searchable" id="orderBy">
+                            <option value="0" selected="selected">Tên định danh</option>
+                            <option value="1">Khối</option>
+                        </select>
+                    </div>
+                    <div class="search-line">
+                        <span>Thứ tự</span>
+                        <select class="combobox searchable" id="sortBy">
+                            <option value="0">Giảm dần</option>
+                            <option value="1" selected="selected">Tăng dần</option>
+                        </select>
+                    </div>
+
                 </div>
                 <div class="d-inline-block ml-2">
                     <button class="btn btn-search" id="search">Tìm kiếm</button>

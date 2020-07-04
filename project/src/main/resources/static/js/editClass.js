@@ -4,46 +4,52 @@ $(document).ready(function () {
     var classRequest = {
         classId: editClassId
     }
-    $.ajax({
-        url: '/api/admin/viewclassinfor',
-        type: 'POST',
-        data: JSON.stringify(classRequest),
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
-        success: function (data) {
-            if (data.message.messageCode == 0) {
-                oldIdentifierName = data.classIdentifier;
-                $('#identifier').attr('value', data.classIdentifier);
-                $('#giftedClassName').attr('value', data.giftedClassName);
-                $('#grade').attr('value', data.grade);
-                if (data.status != null && data.status == 1) {
-                    $("input[name=optradio][value='1']").prop('checked', true);
-                    oldStatus = 1;
+    if (editClassId == null) {
+        $('.classInfo-err').append(`Hãy quay lại chọn lớp mà bạn muốn sửa thông tin tại <a href="manageClass">ĐÂY</a>`);
+        $("#editInfo").prop('disabled', true);
+    } else {
+        $("#editInfo").prop('disabled', false);
+        $.ajax({
+            url: '/api/admin/viewclassinfor',
+            type: 'POST',
+            data: JSON.stringify(classRequest),
+            beforeSend: function () {
+                $('body').addClass("loading")
+            },
+            complete: function () {
+                $('body').removeClass("loading")
+            },
+            success: function (data) {
+                if (data.message.messageCode == 0) {
+                    oldIdentifierName = data.classIdentifier;
+                    $('#identifier').attr('value', data.classIdentifier);
+                    $('#giftedClassName').attr('value', data.giftedClassName);
+                    $('#grade').attr('value', data.grade);
+                    if (data.status != null && data.status == 1) {
+                        $("input[name=optradio][value='1']").prop('checked', true);
+                        oldStatus = 1;
+                    } else {
+                        $("input[name=optradio][value='0']").prop('checked', true);
+                        oldStatus = 0;
+                    }
                 } else {
-                    $("input[name=optradio][value='0']").prop('checked', true);
-                    oldStatus = 0;
-                }
-            } else {
-                $('tbody').append(
-                    `<tr>
+                    $('tbody').append(
+                        `<tr>
                     <td colspan="7" class="userlist-result">
                         ` + data.message.message + `
                     </td>
                 </tr>`
-                )
-            }
+                    )
+                }
 
-        },
-        failure: function (errMsg) {
-            console.log(errMsg);
-        },
-        dataType: "json",
-        contentType: "application/json"
-    });
+            },
+            failure: function (errMsg) {
+                console.log(errMsg);
+            },
+            dataType: "json",
+            contentType: "application/json"
+        });
+    }
 })
 
 //edit information of class
@@ -106,7 +112,7 @@ function editClass(e) {
             var messageCode = data.messageCode;
             var message = data.message;
             if (messageCode == 0) {
-                if(oldStatus != newStatus){
+                if (oldStatus != newStatus) {
                     $('#editInfoSuccess .modal-body').append(`
                         <h5>Trạng thái của tài khoản cờ đỏ và lớp trưởng của lớp cũng đã thay đổi thành công.</h5>
                     `);

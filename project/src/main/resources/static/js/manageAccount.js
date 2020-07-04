@@ -5,7 +5,7 @@ var inforSearch = {
     orderBy: "0",
     pageNumber: 0
 }
-var listUser = [];
+var list = [];
 
 /*Load role list*/
 $.ajax({
@@ -70,38 +70,7 @@ function search() {
         success: function (data) {
             if (data.message.messageCode == 0) {
                 var totalPages = data.userList.totalPages;
-
-                // for (var i = 0; i < totalPages; i++) {
-                //     if (i == inforSearch.pageNumber) {
-                //         $('.table-paging').append(
-                //             `<input type="button" value="` + (i + 1) + `" class="table-paging__page table-paging__page_cur"/>`
-                //         );
-                //     } else {
-                //         $('.table-paging').append(
-                //             `<input type="button" value="` + (i + 1) + `" class="table-paging__page"/>`
-                //         );
-                //     }
-                // }
-
-                $('.table-paging').append(
-                    `<button type="button" class="btn btn-page btn-prev" id="prevPage" title="Trang trước"><i class="fa fa-chevron-left"></i></button>`
-                );
-                $('.table-paging').append(
-                    `<button type="button" class="btn btn-page btn-next" id="nextPage" title="Trang sau"><i class="fa fa-chevron-right"></i></button>`
-                );
-                $('.table-paging').append(
-                    `<div class="pageNumber"><b>` + (inforSearch.pageNumber + 1) + ` </b>/ ` + totalPages + `</div>`
-                );
-                if (inforSearch.pageNumber == 0) {
-                    $('#prevPage').prop('disabled', true);
-                } else {
-                    $('#prevPage').prop('disabled', false);
-                }
-                if ((inforSearch.pageNumber + 1) == totalPages) {
-                    $('#nextPage').prop('disabled', true);
-                } else {
-                    $('#nextPage').prop('disabled', false);
-                }
+                paging(inforSearch, totalPages);
                 $.each(data.userList.content, function (i, item) {
                     var mappingName, phone, email, name, roleName;
                     if (item.name == null) {
@@ -152,9 +121,7 @@ function search() {
                 </tr>`);
                 });
                 selectCheckbox();
-                prevPage();
-                nextPage();
-                // pagingClick();
+                pagingClick();
             } else {
                 $('tbody').append(
                     `<tr>
@@ -180,7 +147,7 @@ function search() {
 /*Delete account*/
 $("#deleteAccount").click(function (e) {
     listUser = {
-        listUser: listUser,
+        listUser: list,
     }
     e.preventDefault();
     $.ajax({
@@ -234,7 +201,7 @@ $("#resetPassword").click(function (e) {
         return false;
     } else {
         var resetPassword = {
-            userNameList: listUser,
+            userNameList: list,
             passWord: newpassword,
         }
         e.preventDefault();
@@ -270,58 +237,16 @@ $("#resetPassword").click(function (e) {
     }
 });
 
-function isCheck(username) {
-    if (listUser == null || listUser.length == 0) {
-        return false;
-    }
-    for (var i = 0; i < listUser.length; i++) {
-        if (listUser[i] == username) {
-            return true;
-        }
-    }
-    return false;
-}
-
-// function pagingClick() {
-//     $('.table-paging input').on('click', function (event) {
-//         $("#selectAll").prop("checked", false);
-//         var value = ($(this).val() - 1);
-//         inforSearch.pageNumber = value;
-//         $('tbody').html("");
-//         $('.table-paging').html("");
-//         search();
-//     })
-// }
-function nextPage() {
-    $('#nextPage').on('click', function (event) {
-        $("#selectAll").prop("checked", false);
-        inforSearch.pageNumber++;
-        $('tbody').html("");
-        $('.table-paging').html("");
-        search();
-    })
-}
-
-function prevPage() {
-    $('#prevPage').on('click', function (event) {
-        $("#selectAll").prop("checked", false);
-        inforSearch.pageNumber--;
-        $('tbody').html("");
-        $('.table-paging').html("");
-        search();
-    })
-}
-
 /*Check user before delete account*/
 function checkUser() {
     $('#deleteAccountModal .modal-body').html("");
     var userErr = localStorage.getItem("username");
-    if (jQuery.inArray(userErr, listUser) != -1) {
+    if (jQuery.inArray(userErr, list) != -1) {
         $("#deleteAccountModal .modal-body").html("");
         $('#deleteAccountModal .modal-body').append(`<h5>Bạn không thể xoá tài khoản <b class="error">` + userErr + `</b></h5>`);
         $('#deleteAccountModal .modal-footer .btn-danger').addClass('hide');
         $('#deleteAccountModal .modal-footer .btn-primary').attr('value', 'ĐÓNG');
-    } else if (listUser.length == 0) {
+    } else if (list.length == 0) {
         $("#deleteAccountModal .modal-body").html("");
         $('#deleteAccountModal .modal-body').append(`<h5>Hãy chọn tài khoản mà bạn muốn xóa</h5>`);
         $('#deleteAccountModal .modal-footer .btn-danger').addClass('hide');
@@ -336,7 +261,7 @@ function checkUser() {
 
 /*Check user before reset password*/
 function checkResetPassword() {
-    if (listUser.length == 0) {
+    if (list.length == 0) {
         $("#resetPasswordModal .modal-body").html("");
         $('#resetPasswordModal .modal-body .form-group').addClass('hide');
         $('#resetPasswordModal .modal-body').append(`<h5>Hãy chọn tài khoản mà bạn muốn đặt lại mật khẩu</h5>`);
@@ -362,51 +287,4 @@ function checkResetPassword() {
         $('#resetPasswordModal .modal-footer .btn-danger').removeClass('hide');
         $('#resetPasswordModal .modal-footer .btn-primary').attr('value', 'KHÔNG');
     }
-}
-
-/*Select checkbox*/
-function selectCheckbox() {
-    var checkbox = $('table tbody input[type="checkbox"]');
-    $(checkbox).on('change', function (e) {
-        row = $(this).closest('tr');
-        if ($(this).is(':checked')) {
-            row.addClass('selected');
-            if (jQuery.inArray($(this).val(), listUser) == -1) {
-                listUser.push($(this).val());
-            }
-        } else {
-            row.removeClass('selected');
-            var removeItem = $(this).val();
-            listUser = $.grep(listUser, function (value) {
-                return value != removeItem;
-            });
-        }
-    });
-
-    $("#selectAll").click(function () {
-        var checkbox = $('table tbody input[type="checkbox"]');
-        if (this.checked) {
-            checkbox.each(function () {
-                this.checked = true;
-                $('tbody tr').addClass('selected');
-                if (jQuery.inArray($(this).val(), listUser) == -1) {
-                    listUser.push($(this).val());
-                }
-            });
-        } else {
-            checkbox.each(function () {
-                this.checked = false;
-                $('tbody tr').removeClass('selected');
-                var removeItem = $(this).val();
-                listUser = $.grep(listUser, function (value) {
-                    return value != removeItem;
-                });
-            });
-        }
-    });
-    checkbox.click(function () {
-        if (!this.checked) {
-            $("#selectAll").prop("checked", false);
-        }
-    });
 }

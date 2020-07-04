@@ -29,11 +29,13 @@
                 <fieldset>
                     <form th:action="@{/manageTimetable}" method="post" enctype="multipart/form-data" class="form">
                         <p class="note">(<span class="text-red">*</span>) Bắt buộc </p>
-                        <div class="form-group row text-left">
+                        <div class="form-group row text-left" >
                             <label for="date-input" class="col-4 col-form-label">Ngày áp dụng <span
                                     class="text-red">*</span></label>
-                            <div class="col-8">
-                                <input class="form-control" type="date" id="date-input">
+                            <div class="col-8" >
+                                <select class="form-control" id="date-input">
+                                    <option th:each="week : ${listWeek}"><span th:text="${week.fromDate}"></span></option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group text-left">
@@ -42,18 +44,13 @@
                                    aria-describedby="fileHelp">
                             <small id="fileHelp" class="form-text text-muted">Hỗ trợ định dạng XLSX, XLS.</small>
                         </div>
-                        <div class="error input-err"><span th:text="${message}"></span></div>
+                        <div class="error input-err text-left"><span th:text="${message}"></span></div>
                         <input th:type="submit" class="btn btn-customer" value="THAY ĐỔI THỜI KHÓA BIỂU"/>
                     </form>
                 </fieldset>
             </div>
         </div>
     </div>
-<!--tao demo ra đây loan nhé-->
-    <tbody th:each="week : ${listWeek}">
-       <p th:text="${week.fromDate}"></p>
-    </tbody>
-
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 <div class="modal-loading"></div>

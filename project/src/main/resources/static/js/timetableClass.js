@@ -1,8 +1,8 @@
 var infoSearch = {
-    weekId: 2,
-    classId: 1
+    weekId,
+    classId
 }
-var yearId, weekId, classId;
+var yearId, weekId, classId, weekIdCurrent;
 
 /*Load years and list*/
 $.ajax({
@@ -16,18 +16,23 @@ $.ajax({
     },
     success: function (data) {
         if (data.messageDTO.messageCode == 0) {
+            weekIdCurrent = data.weekIdCurrent;
             if (data.listYear == null) {
-                $('#year').html(`<option>Không có năm học nào</option>`);
+                $('#year').html(`<option>Không có năm học nào.</option>`);
             } else {
-                $('#year').html("")
+                $('#year').html("");
                 $.each(data.listYear, function (i, item) {
-                    $('#year').append(`<option value="` + item.yearID + `">` + item.year + `</option>`);
+                    if (item.yearID == data.yearIdCurrent) {
+                        $('#year').append(`<option value="` + item.yearID + `" selected>` + item.year + `</option>`);
+                    } else {
+                        $('#year').append(`<option value="` + item.yearID + `">` + item.year + `</option>`);
+                    }
                 });
                 yearId = $('#year option:selected').val();
                 loadWeek();
             }
             if (data.classList == null) {
-                $('#class').html(`<option value="">Không có lớp nào</option>`);
+                $('#class').html(`<option value="">Không có lớp nào.</option>`);
             } else {
                 $('#class').html("")
                 $.each(data.classList, function (i, item) {
@@ -37,6 +42,11 @@ $.ajax({
                 });
                 classId = $('#class option:selected').val();
             }
+            infoSearch = {
+                weekId: weekIdCurrent,
+                classId: classId
+            }
+            loadTimetable();
         } else {
             console.log(data.messageDTO.message);
         }
@@ -47,8 +57,6 @@ $.ajax({
     dataType: "json",
     contentType: "application/json"
 });
-
-loadTimetable();
 
 /*Load timetable*/
 function loadTimetable() {
@@ -63,16 +71,18 @@ function loadTimetable() {
             $('body').removeClass("loading")
         },
         success: function (data) {
+            $('.timetable').removeClass('hide');
+            $('.table-err').addClass('hide');
             var messageCode = data.messageDTO.messageCode;
             var message = data.messageDTO.message;
 
             if (messageCode == 0) {
+                $('.timetable').removeClass('hide');
+                $('.table-err').addClass('hide');
                 var morning = data.morningTimeTable;
                 var afternoon = data.afternoonTimeTable;
                 if (morning == null) {
-                    $('tbody').html(
-                        ` <tr><td colspan="8" class="userlist-result">Không có thời khóa biểu buổi sáng.</td> </tr> `
-                    )
+                    $('.morning .data').html('');
                 } else {
                     for (var i = 0; i < morning.length; i++) {
                         var slot = morning[i].slotId;
@@ -93,13 +103,10 @@ function loadTimetable() {
                             <div class="teacher">` + teacher + `</div>`
                             )
                         }
-
                     }
                 }
                 if (afternoon == null) {
-                    $('tbody').html(
-                        ` <tr><td colspan="8" class="userlist-result">Không có thời khóa biểu buổi chiều</td> </tr> `
-                    )
+                    $('.afternoon .data').html('');
                 } else {
                     for (var i = 0; i < afternoon.length; i++) {
                         var slot = afternoon[i].slotId;
@@ -135,58 +142,24 @@ function loadTimetable() {
                                 )
                             }
                         }
-
                     }
                 }
             } else {
-                $('.timetable').html(
+                $('.timetable').addClass('hide');
+                $('.table-err').removeClass('hide');
+                $('.table-err').html(
                     ` <tr><td colspan="8" class="userlist-result">` + message + `</td> </tr> `
                 )
             }
         },
         failure: function (errMsg) {
-            $('.timetable').html(
+            $('.timetable').addClass('hide');
+            $('.table-err').removeClass('hide');
+            $('.table-err').html(
                 ` <tr><td colspan="8" class="userlist-result">` + errMsg + `</td> </tr> `
             )
         },
         dataType: "json",
-        contentType: "application/json"
-    });
-}
-
-function loadWeek() {
-    var listweek = {
-        yearIdCurrent: yearId,
-    }
-    /*Call API for weeks List*/
-    $.ajax({
-        url: '/api/timetable/listweek',
-        type: 'POST',
-        data: JSON.stringify(listweek),
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
-        success: function (data) {
-            var messageCode = data.messageDTO.messageCode;
-            var message = data.messageDTO.message;
-            if (messageCode == 0) {
-                if (data.listWeek != null) {
-                    $('#week').html("");
-                    $.each(data.listWeek, function (i, list) {
-                        $('#week').append(`<option value="` + list.timeTableWeekId + `">` + list.fromDate + ` đến ` + list.toDate + `</option>`);
-                    });
-                }
-            } else {
-                $('#week').html(`<option value="0">` + message + `</option>`);
-            }
-        },
-        failure: function (errMsg) {
-            $('#week').html(`<option value="0">` + errMsg + `</option>`);
-        },
-        dataType: 'JSON',
         contentType: "application/json"
     });
 }
@@ -197,7 +170,7 @@ function changeSelected() {
     weekId = $('#week option:selected').val();
 }
 
-/*Search timetable for Classs*/
+/*Search timetable for Class*/
 $('#search').click(function (e) {
     weekId = $('#week option:selected').val();
     classId = $('#class option:selected').val();
@@ -206,6 +179,6 @@ $('#search').click(function (e) {
         classId: classId,
     }
     console.log(JSON.stringify(infoSearch));
+    $('tbody .data').html('');
     loadTimetable();
 })
-
