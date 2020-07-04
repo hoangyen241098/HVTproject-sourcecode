@@ -4,12 +4,13 @@ var inforSearch = {
     grade: "",
     sortBy: "1",
     orderBy: "0",
+    status: "",
     pageNumber: 0
 }
 search();
 /*Search button*/
 $("#search").click(function () {
-    var grade, classIdentifier, sortBy, orderBy;
+    var grade, classIdentifier, sortBy, orderBy, status;
     classIdentifier = $('#searchByIdentifier input').val().trim();
     if ($('#searchByGrade option:selected').val() == null|| $('#searchByGrade option:selected').val() == "0") {
         grade = "";
@@ -26,11 +27,17 @@ $("#search").click(function () {
     } else {
         orderBy = $('#orderBy option:selected').val();
     }
+    if ($('#status option:selected').val() == null) {
+        status = "";
+    } else {
+        status = $('#status option:selected').val();
+    }
     inforSearch = {
         classIdentifier: classIdentifier,
         grade: grade,
         sortBy: sortBy,
         orderBy: orderBy,
+        status: status,
         pageNumber: 0
     }
     $('tbody').html("");

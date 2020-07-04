@@ -19,8 +19,20 @@ public interface ClassRepository extends JpaRepository<Class,Integer> {
     @Query(value = "select c from Class c where c.classIdentifier like %:classIdentifier% and c.grade = :roleId")
     Page<Class> searchClassByCondition(@Param("classIdentifier") String classIdentifier, @Param("roleId") Integer roleId, Pageable paging);
 
+    @Query(value = "select c from Class c where c.classIdentifier like %:classIdentifier% and c.grade = :roleId and (c.status <> 1 or c.status is null)")
+    Page<Class> searchActiveClassByCondition(@Param("classIdentifier") String classIdentifier, @Param("roleId") Integer roleId, Pageable paging);
+
+    @Query(value = "select c from Class c where c.classIdentifier like %:classIdentifier% and c.grade = :roleId and (c.status = 1 and c.status is not null)")
+    Page<Class> searchInactiveClassByCondition(@Param("classIdentifier") String classIdentifier, @Param("roleId") Integer roleId, Pageable paging);
+
     @Query(value = "select c from Class c where c.classIdentifier like %:classIdentifier%")
     Page<Class> searchClassByClassIdentifier(@Param("classIdentifier") String classIdentifier, Pageable paging);
+
+    @Query(value = "select c from Class c where c.classIdentifier like %:classIdentifier% and (c.status <> 1 or c.status is null)")
+    Page<Class> searchActiveClassByClassIdentifier(@Param("classIdentifier") String classIdentifier, Pageable paging);
+
+    @Query(value = "select c from Class c where c.classIdentifier like %:classIdentifier% and (c.status = 1 and c.status is not null)")
+    Page<Class> searchInactiveClassByClassIdentifier(@Param("classIdentifier") String classIdentifier, Pageable paging);
 
     @Query(value = "select c from Class c where c.grade = :grade and c.giftedClass.giftedClassId = :giftedName ")
     Class searchClassByGradeAndGifedId(@Param("grade") Integer classIdentifier,@Param("giftedName") Integer giftedId);
