@@ -916,6 +916,10 @@ fieldset .note {
     font-size: 20px;
 }
 
+.timetable .session p {
+    transform: rotate(-90deg);
+}
+
 .timetable .slot {
     font-weight: 700;
 }
