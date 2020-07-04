@@ -26,6 +26,72 @@ $("#search").click(function () {
     search();
 });
 
+function paging(inforSearch,totalPages){
+    var pageNumber = parseInt(inforSearch.pageNumber)
+
+    if (pageNumber < 4){
+        var newTotalPages = (totalPages <= 4) ? (totalPages) : (4);
+        for (var i = 0; i <= newTotalPages; i++) {
+            if (i == pageNumber) {
+                $('.table-paging').append(
+                    `<input type="button" value="` + (i + 1) + `" class="table-paging__page table-paging__page_cur"/>`
+                );
+            } else {
+                $('.table-paging').append(
+                    `<input type="button" value="` + (i + 1) + `" class="table-paging__page"/>`
+                );
+            }
+        }
+        if(newTotalPages < totalPages){
+            $('.table-paging').append(
+                `<input type="button" value="..." class="table-paging__page"/>`
+            );
+        }
+    }
+    else {
+        $('.table-paging').append(
+            `<input type="button" value="` + (1) + `" class="table-paging__page"/>`
+        );
+        $('.table-paging').append(
+            `<input type="button" value="` + (2) + `" class="table-paging__page"/>`
+        );
+        $('.table-paging').append(
+            `<input type="button" value="..." class="table-paging__page"/>`
+        );
+        var pageEnd= (pageNumber + 2  < totalPages) ? (pageNumber + 2) : (totalPages);
+        for (var i = pageNumber - 1; i < pageEnd; i++) {
+            if (i == pageNumber) {
+                $('.table-paging').append(
+                    `<input type="button" value="` + (i + 1) + `" class="table-paging__page table-paging__page_cur"/>`
+                );
+            } else {
+                $('.table-paging').append(
+                    `<input type="button" value="` + (i + 1) + `" class="table-paging__page"/>`
+                );
+            }
+        }
+        if(pageEnd < totalPages){
+            $('.table-paging').append(
+                `<input type="button" value="..." class="table-paging__page"/>`
+            );
+        }
+    }
+    $('.table-paging').append(
+        `<input type="button" class="table-paging__page btn-next" id="nextPage" value="Sau"/>`
+    );
+    if (inforSearch.pageNumber == 0) {
+        $('#prevPage').prop('disabled', true);
+    } else {
+        $('#prevPage').prop('disabled', false);
+    }
+    if ((inforSearch.pageNumber + 1) == totalPages) {
+        $('#nextPage').prop('disabled', true);
+    } else {
+        $('#nextPage').prop('disabled', false);
+    }
+
+};
+
 /*Load teacher list*/
 function search() {
     $.ajax({
@@ -44,30 +110,8 @@ function search() {
                 $('.table-paging').append(
                     `<input type="button" class="table-paging__page btn-prev" id="prevPage" value="Trước"/>`
                 );
-                for (var i = 0; i < data.teacherList.totalPages; i++) {
-                    if (i == inforSearch.pageNumber) {
-                        $('.table-paging').append(
-                            `<input type="button" value="` + (i + 1) + `" class="table-paging__page table-paging__page_cur"/>`
-                        );
-                    } else {
-                        $('.table-paging').append(
-                            `<input type="button" value="` + (i + 1) + `" class="table-paging__page"/>`
-                        );
-                    }
-                }
-                $('.table-paging').append(
-                    `<input type="button" class="table-paging__page btn-next" id="nextPage" value="Sau"/>`
-                );
-                if (inforSearch.pageNumber == 0) {
-                    $('#prevPage').prop('disabled', true);
-                } else {
-                    $('#prevPage').prop('disabled', false);
-                }
-                if ((inforSearch.pageNumber + 1) == totalPages) {
-                    $('#nextPage').prop('disabled', true);
-                } else {
-                    $('#nextPage').prop('disabled', false);
-                }
+
+                paging(inforSearch,totalPages);
 
                 $.each(data.teacherList.content, function (i, item) {
                     var phone, email;
@@ -183,6 +227,12 @@ function pagingClick() {
     $('.table-paging input').on('click', function (event) {
         $("#selectAll").prop("checked", false);
         var value = ($(this).val() - 1);
+        if($(this).val() == "Sau"){
+            value = $('.table-paging__page_cur').val();
+        }
+        else if($(this).val() == "Trước"){
+            value = $('.table-paging__page_cur').val()-2;
+        }
         inforSearch.pageNumber = value;
         $('tbody').html("");
         $('.table-paging').html("");
