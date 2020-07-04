@@ -61,25 +61,7 @@ function search() {
             if (data.message.messageCode == 0) {
                 var totalPages = data.classList.totalPages;
                 var id = 0 + inforSearch.pageNumber*10;
-                $('.table-paging').append(
-                    `<button type="button" class="btn btn-page btn-prev" id="prevPage" title="Trang trước"><i class="fa fa-chevron-left"></i></button>`
-                );
-                $('.table-paging').append(
-                    `<button type="button" class="btn btn-page btn-next" id="nextPage" title="Trang sau"><i class="fa fa-chevron-right"></i></button>`
-                );
-                $('.table-paging').append(
-                    `<div class="pageNumber"><b>` + (inforSearch.pageNumber + 1) + ` </b>/ ` + totalPages + `</div>`
-                );
-                if (inforSearch.pageNumber == 0) {
-                    $('#prevPage').prop('disabled', true);
-                } else {
-                    $('#prevPage').prop('disabled', false);
-                }
-                if ((inforSearch.pageNumber + 1) == totalPages) {
-                    $('#nextPage').prop('disabled', true);
-                } else {
-                    $('#nextPage').prop('disabled', false);
-                }
+                paging(inforSearch, totalPages);
                 if (data.classList != null) {
                     $.each(data.classList.content, function (i, item) {
                         var grade, classIdentifier, status, giftedClassName;
@@ -117,8 +99,7 @@ function search() {
                         );
                     });
                     getClassID();
-                    prevPage();
-                    nextPage();
+                    pagingClick();
                 }
             } else {
                 $('tbody').append(
@@ -150,24 +131,4 @@ function getClassID() {
         localStorage.setItem("classId", classId);
         console.log(localStorage.getItem("classId"));
     });
-}
-
-function nextPage() {
-    $('#nextPage').on('click', function (event) {
-        $("#selectAll").prop("checked", false);
-        inforSearch.pageNumber++;
-        $('tbody').html("");
-        $('.table-paging').html("");
-        search();
-    })
-}
-
-function prevPage() {
-    $('#prevPage').on('click', function (event) {
-        $("#selectAll").prop("checked", false);
-        inforSearch.pageNumber--;
-        $('tbody').html("");
-        $('.table-paging').html("");
-        search();
-    })
 }
