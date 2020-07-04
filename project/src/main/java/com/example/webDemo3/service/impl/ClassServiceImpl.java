@@ -388,6 +388,7 @@ public class ClassServiceImpl implements ClassService {
         Integer pageNumber = requestModel.getPageNumber();
         String classIdentifier = requestModel.getClassIdentifier();
         Integer grade = requestModel.getGrade();
+        Integer status = requestModel.getStatus();
         Page<Class> pagedResult;
         String orderByProperty;
         Integer pageSize = Constant.PAGE_SIZE;
@@ -411,10 +412,26 @@ public class ClassServiceImpl implements ClassService {
         }
 
         if(grade!=null){
-            pagedResult = classRepository.searchClassByCondition(classIdentifier,grade, paging);
+            if(status==null){
+                pagedResult = classRepository.searchClassByCondition(classIdentifier,grade, paging);
+            }
+            else if(status == 0){
+                pagedResult = classRepository.searchActiveClassByCondition(classIdentifier,grade, paging);
+            }
+            else {
+                pagedResult = classRepository.searchInactiveClassByCondition(classIdentifier, grade, paging);
+            }
         }
         else{
-            pagedResult = classRepository.searchClassByClassIdentifier(classIdentifier, paging);
+            if(status==null){
+                pagedResult = classRepository.searchClassByClassIdentifier(classIdentifier, paging);
+            }
+            else if(status == 0){
+                pagedResult = classRepository.searchActiveClassByClassIdentifier(classIdentifier, paging);
+            }
+            else {
+                pagedResult = classRepository.searchInactiveClassByClassIdentifier(classIdentifier, paging);
+            }
         }
 
         //check result when get list
