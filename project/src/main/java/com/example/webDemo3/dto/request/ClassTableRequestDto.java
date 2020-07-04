@@ -11,5 +11,6 @@ public class ClassTableRequestDto {
     private Integer grade;
     private Integer sortBy;
     private Integer orderBy;
+    private Integer status;
     private Integer pageNumber;
 }
