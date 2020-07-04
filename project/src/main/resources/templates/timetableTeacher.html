@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>.::Thời khóa biểu của lớp::.</title>
+    <title>.::Thời khóa biểu của giáo viên::.</title>
     <link th:href="@{/img/logo.png}" rel="shortcut icon" type="image/x-icon"/>
 
     <!-- jQuery library -->
@@ -23,7 +23,7 @@
 <div class="container">
     <div class="table-wrapper">
         <div class="table-title">
-            <h2>Thời khóa biểu của lớp</h2>
+            <h2>Thời khóa biểu của giáo viên</h2>
             <div class="search">
                 <div class="col-xl-4 d-inline-block">
                     <div class="search-line">
@@ -40,8 +40,8 @@
                 <div class="col-xl-2 d-inline-block"></div>
                 <div class="col-xl-4 d-inline-block">
                     <div class="search-line">
-                        <span>Lớp</span>
-                        <select class="combobox searchable" id="class">
+                        <span>Giáo viên</span>
+                        <select class="combobox searchable" id="teacher">
                         </select>
                     </div>
                 </div>
@@ -157,5 +157,5 @@
 <div th:replace="fragments/footer :: footer"></div>
 <div class="modal-loading"></div>
 </body>
-<script type="text/javascript" th:src="@{/js/timetableClass.js}"></script>
+<script type="text/javascript" th:src="@{/js/timetableTeacher.js}"></script>
 </html>
