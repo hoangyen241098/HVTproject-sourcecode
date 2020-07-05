@@ -964,4 +964,19 @@ fieldset .note {
     }
 }
 
+/*Conbobox search*/
+.select2-container--default .select2-selection--single {
+    width: 220px;
+    color: #495057;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    height: auto;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    padding: 5px 7px;
+}
+.select2-selection__arrow {
+    top: 6px!important;
+}
 /*END Timetable*/
