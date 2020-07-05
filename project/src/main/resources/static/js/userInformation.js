@@ -4,11 +4,14 @@ $(document).ready(function () {
     var account = {
         userName: localStorage.getItem("username")
     }
-    if(roleId == 3 || roleId == 4){
+    if (roleId == 3 || roleId == 4) {
         $("#editInfo").addClass('hide');
         $("#fullNameDiv").addClass('hide');
         $("#phoneDiv").addClass('hide');
         $("#emailDiv").addClass('hide');
+    }
+    if (roleId != 3 && roleId != 4) {
+        $('#classDiv').addClass('hide');
     }
     $.ajax({
         url: '/api/user/viewinformation',
@@ -37,7 +40,7 @@ $(document).ready(function () {
 });
 
 $("#editInfo").click(function () {
-    if(roleId != 3 && roleId != 4) {
+    if (roleId != 3 && roleId != 4) {
         $('#fullName').prop('disabled', false);
         $('#phone').prop('disabled', false);
         $('#email').prop('disabled', false);
@@ -46,6 +49,7 @@ $("#editInfo").click(function () {
         $('#confirmEdit').addClass('show');
         $('#confirmEdit').removeClass('hide');
     }
+
 });
 
 $("#confirmEdit").click(function (e) {
