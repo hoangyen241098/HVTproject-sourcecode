@@ -155,4 +155,24 @@ public class WebController {
         return "editSchoolYear";
     }
 
+    /*Module 7: Trực tuần*/
+    @GetMapping("/assignWeekly")
+    public String assignWeekly(Model model) {
+        return "assignWeekly";
+    }
+
+    @GetMapping("/gradingToEmulation")
+    public String gradingToEmulation(Model model) {
+        return "gradingToEmulation";
+    }
+
+    @GetMapping("/violationListOfClass")
+    public String violationListOfClass(Model model) {
+        return "violationListOfClass";
+    }
+
+    @GetMapping("/addNewViolation")
+    public String addNewViolation(Model model) {
+        return "addNewViolation";
+    }
 }
