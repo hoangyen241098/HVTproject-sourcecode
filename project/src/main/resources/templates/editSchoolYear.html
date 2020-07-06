@@ -22,26 +22,33 @@
 <div th:replace="fragments/header :: header"></div>
 
 <div class="container">
-    <div class="col-xl-6 col-md-auto mx-auto veen">
-        <h1>Thông tin năm học</h1>
-        <hr>
-        <div class="info-des col-xl-10 mx-auto">
-            <div class="input-info">
-                <label for="schoolYearName">Tên năm học</label>
-                <input type="text" class="basic-slide" id="schoolYearName"/>
-            </div>
-            <div class="input-info">
-                <label for="fromDate">Ngày bắt đầu</label>
-                <input type="date" class="basic-slide" id="fromDate"/>
-            </div>
-            <div class="input-info">
-                <label for="toDate">Ngày kết thúc</label>
-                <input type="date" class="basic-slide" id="toDate"/>
-            </div>
-            <div class="error editSchoolYear-err"></div>
-            <div class="text-center">
-                <button type="button" class="btn btn-customer" id="editInfo">CHỈNH SỬA</button>
-            </div>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 mx-auto">
+            <form id="msform">
+                <h2 class="fs-title">Thông tin năm học</h2>
+                <fieldset>
+                    <p class="note">(<span class="text-red">*</span>) Bắt buộc </p>
+                    <div class="form-group text-left">
+                        <label for="fromYear">Năm học <span class="text-red">*</span></label>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <input type="number" min="2019" class="form-control col-md-5" id="fromYear" value="2020">
+                            <span>-</span>
+                            <input type="number" class="form-control col-md-5" id="toYear" th:value="${2020+1}"
+                                   disabled>
+                        </div>
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="fromDate">Thời gian <span class="text-red">*</span></label>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <input type="date" class="form-control col-md-5" id="fromDate">
+                            <span>-</span>
+                            <input type="date" class="form-control col-md-5" id="toDate">
+                        </div>
+                    </div>
+                    <div class="error addSchoolYear-err text-left"></div>
+                    <input type="button" name="submit" id="submit" class="submit btn-customer" value="CHỈNH SỬA"/>
+                </fieldset>
+            </form>
         </div>
     </div>
 </div>
@@ -55,7 +62,8 @@
                 <h5 id="message-confirm"></h5>
             </div>
             <div class="modal-footer">
-                <input type="submit" class="btn btn-danger" data-toggle="modal" data-target="#editInfoSuccess" data-dismiss="modal" value="CÓ">
+                <input type="submit" class="btn btn-danger" data-toggle="modal" data-target="#editInfoSuccess"
+                       data-dismiss="modal" value="CÓ">
                 <input type="button" class="btn btn-primary" id="closeModal" value="KHÔNG">
             </div>
         </div>
