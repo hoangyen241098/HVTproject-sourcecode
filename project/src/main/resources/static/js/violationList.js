@@ -1,5 +1,6 @@
-// $(".panel-collapse").hide();
+function toggleClick() {
+    $(".panel-heading").on('click', function () {
+        $(this).find(".fa-chevron-down").toggleClass("up");
+    })
 
-$(".panel-heading").click(function () {
-    $(this).parent().find(".fa-chevron-down").toggleClass("up");
-});
+}
