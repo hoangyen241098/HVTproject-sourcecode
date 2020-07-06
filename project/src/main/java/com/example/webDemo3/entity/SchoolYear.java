@@ -2,10 +2,7 @@ package com.example.webDemo3.entity;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Date;
 
 /**
@@ -19,6 +16,7 @@ public class SchoolYear {
 
     @Id
     @Column(name = "YEAR_ID")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer yearID;
 
     @Column(name = "FROM_DATE")
@@ -27,6 +25,9 @@ public class SchoolYear {
     @Column(name = "TO_DATE")
     private Date toDate;
 
-    @Column(name = "YEAR")
-    private String year;
+    @Column(name = "FROM_YEAR")
+    private Integer fromYear;
+
+    @Column(name = "TO_YEAR")
+    private Integer toYear;
 }
