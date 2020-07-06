@@ -113,8 +113,46 @@ public class WebController {
         return "timetableTeacher";
     }
 
-//    @GetMapping("/manageTimetable")
-//    public String manageTimetable(Model model) {
-//        return "manageTimetable";
-//    }
+    /*Module 5: Quản lý lỗi*/
+    @GetMapping("/violationList")
+    public String violationList(Model model) {
+        return "violationList";
+    }
+
+    @GetMapping("/editViolation")
+    public String editViolation(Model model) {
+        return "editViolation";
+    }
+
+    @GetMapping("/addViolation")
+    public String addViolation(Model model) {
+        return "addViolation";
+    }
+
+    @GetMapping("/editViolationType")
+    public String editViolationType(Model model) {
+        return "editViolationType";
+    }
+
+    @GetMapping("/addViolationType")
+    public String addViolationType(Model model) {
+        return "addViolationType";
+    }
+
+    /*Module 6: Quản lý năm học*/
+    @GetMapping("/schoolYearList")
+    public String schoolYearList(Model model) {
+        return "schoolYearList";
+    }
+
+    @GetMapping("/addSchoolYear")
+    public String addSchoolYear(Model model) {
+        return "addSchoolYear";
+    }
+
+    @GetMapping("/editSchoolYear")
+    public String editSchoolYear(Model model) {
+        return "editSchoolYear";
+    }
+
 }

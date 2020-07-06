@@ -594,7 +594,7 @@ div.searchable {
 }
 
 
-.bt-table-field i:before {
+.fa-pencil-square-o:before {
     content: "\f044";
 }
 
@@ -621,9 +621,6 @@ div.searchable {
     margin-left: 30px;
 }
 
-/*status-active i:before, .status-deactive i:before {*/
-/*    content: "\f111"!important;*/
-/*}*/
 /*END Manage Account*/
 
 /*Create Account*/
@@ -976,7 +973,42 @@ fieldset .note {
 .select2-container--default .select2-selection--single .select2-selection__rendered {
     padding: 5px 7px;
 }
+
 .select2-selection__arrow {
-    top: 6px!important;
+    top: 6px !important;
 }
+
 /*END Timetable*/
+
+/*violation list*/
+.panel-heading:hover {
+    cursor: pointer;
+}
+
+.panel-heading button {
+    float: right;
+    font-size: 20px;
+    background-color: transparent;
+    border-style: none;
+    padding: 0;
+    outline: none;
+}
+
+.panel-collapse {
+    margin: 0 auto;
+    padding: 0!important;
+    background-color: #fafafad4;
+    border: 1px solid #e3e3e3;
+}
+
+.rotate {
+    transition: all .5s linear;
+}
+
+.rotate.up {
+    transform: rotate(180deg);
+}
+
+.panel-collapse table.show {
+    display: table !important;
+}
