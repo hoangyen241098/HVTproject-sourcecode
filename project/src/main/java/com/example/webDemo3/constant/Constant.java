@@ -89,6 +89,29 @@ public class Constant {
             new MessageDTO(2,"Lớp này đã tồn tại nhưng bị khóa.");
     public static final MessageDTO DEL_GIFTEDCLASS_FAIL =
             new MessageDTO(1,"Không thể xóa hệ chuyên này.");
+    public static final MessageDTO VIOLATION_TYPE_EMPTY =
+            new MessageDTO(1,"Không có kết quả.");
+    public static final MessageDTO VIOLATION_ID_NULL =
+            new MessageDTO(1,"Hãy chọn lỗi.");
+    public static final MessageDTO VIOLATION_EMPTY =
+            new MessageDTO(1,"Không có lỗi như vậy.");
+    public static final MessageDTO VIOLATION_TYPE_ID_NULL =
+            new MessageDTO(1,"Hãy chọn nội quy.");
+
+    public static final MessageDTO VIOLATION_TYPE_NAME_EMPTY =
+            new MessageDTO(1,"Hãy điền nội quy.");
+
+    public static final MessageDTO TOTAL_GRAGE_EMPTY =
+            new MessageDTO(1,"Hãy nhập điểm.");
+
+    public static final MessageDTO VIOLATION_DESCIPTION_EMPTY =
+            new MessageDTO(1,"Hãy điền mô tả.");
+
+    public static final MessageDTO VIOLATION_SUBSTRACT_GRADE_EMPTY =
+            new MessageDTO(1,"Hãy nhập điểm trừ.");
+
+    public static final MessageDTO VIOLATION_EXISTS =
+            new MessageDTO(1,"Không thể xóa loại lỗi này! Vẫn còn các lỗi đang hoạt động.");
     /**
      * Success message
      */
@@ -122,5 +145,29 @@ public class Constant {
     //Success add teacher
     public static final MessageDTO ADD_TEACHER_SUCCESS =
             new MessageDTO(0,"Thêm Giáo viên thành công!");
+
+    //Success edit violation
+    public static final MessageDTO EDIT_VIOLATION_SUCCESS =
+            new MessageDTO(0,"Thông tin sửa thành công!");
+
+    //Success add violation
+    public static final MessageDTO ADD_VIOLATION_SUCCESS =
+            new MessageDTO(0,"Thêm lỗi thành công!");
+
+    //Success delete violation
+    public static final MessageDTO DELETE_VIOLATION_SUCCESS =
+            new MessageDTO(0,"Lỗi đã bị xóa!");
+
+    //Success edit violation type
+    public static final MessageDTO EDIT_VIOLATION_TYPE_SUCCESS =
+            new MessageDTO(0,"Thông tin sửa thành công!");
+
+    //Success add violation type
+    public static final MessageDTO ADD_VIOLATION_TYPE_SUCCESS =
+            new MessageDTO(0,"Thêm loại lỗi thành công!");
+
+    //Success delete violation type
+    public static final MessageDTO DELETE_VIOLATION_TYPE_SUCCESS =
+            new MessageDTO(0,"Loại lỗi đã bị xóa!");
 
 }
