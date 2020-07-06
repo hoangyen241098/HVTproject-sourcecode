@@ -4,6 +4,9 @@ var infoSearch = {
 }
 var yearId, weekId, teacherId, weekIdCurrent;
 
+$(document).ready(function () {
+    $("#teacher").select2();
+});
 /*Load years and list*/
 $.ajax({
     url: '/api/timetable/listyearandteacher',

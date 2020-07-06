@@ -94,7 +94,7 @@ function search() {
                                 <td><span id="classIdentifier">` + classIdentifier + `</span></td>
                                 <td><span id="status">` + status + `</span></td>
                                 <td><span class="bt-table-field"><a href="editClass" id="${item.classId}" class="bt-table-edit">
-                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i></input></span></td>
+                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></span></td>
                             </tr>`
                         );
                     });

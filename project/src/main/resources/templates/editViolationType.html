@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>.::Thông tin cá nhân::.</title>
+    <title>.::Chỉnh sửa thông tin nội quy::.</title>
     <link th:href="@{/img/logo.png}" rel="shortcut icon" type="image/x-icon"/>
 
     <!-- jQuery library -->
@@ -14,8 +14,6 @@
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <!--Font-Awesome-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"/>
-    <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
-    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto|Varela+Round'>
     <link th:href="@{/css/style.css}" rel="stylesheet"/>
     <script type="text/javascript" th:src="@{/js/functions.js}"></script>
 </head>
@@ -25,37 +23,36 @@
 
 <div class="container">
     <div class="col-xl-6 col-md-auto mx-auto veen">
-        <h1>Thông tin cá nhân</h1>
+        <h1>Thông tin nội quy</h1>
         <hr>
         <div class="info-des col-xl-10 mx-auto">
             <div class="input-info">
-                <label for="username">Tên đăng nhập</label>
-                <input class="basic-slide" id="username" type="text" value="" disabled/>
+                <label for="description">Mô tả nội quy</label>
+                <input class="basic-slide" id="description" type="text" value=""/>
             </div>
             <div class="input-info">
-                <label for="roleName">Chức vụ</label>
-                <input class="basic-slide" id="roleName" type="text" value="" disabled/>
+                <label for="substractGrade">Điểm trừ</label>
+                <input class="basic-slide" id="substractGrade" type="text" value=""/>
             </div>
-            <div class="input-info" id="fullNameDiv">
-                <label for="fullName">Họ và tên</label>
-                <input class="basic-slide" id="fullName" type="text" value="" disabled/>
-            </div>
-            <div class="input-info" id="phoneDiv">
-                <label for="phone">SĐT</label>
-                <input class="basic-slide" id="phone" type="text" value="" disabled/>
-            </div>
-            <div class="input-info" id="emailDiv">
-                <label for="email">Email</label>
-                <input class="basic-slide" id="email" type="text" value="" disabled/>
-            </div>
-            <div class="input-info" id="classDiv">
-                <label for="className">Lớp</label>
-                <input class="basic-slide" id="className" type="text" value="" disabled/>
-            </div>
-            <div class="error userInfo-err"></div>
+            <div class="error violation-err"></div>
             <div class="text-center">
                 <button type="button" class="btn btn-customer" id="editInfo">CHỈNH SỬA</button>
-                <button type="button" class="btn btn-customer hide" id="confirmEdit">XONG</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Confirm edit Modal HTML -->
+<div id="confirmEditModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+                <h5 id="message-confirm"></h5>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-danger" data-toggle="modal" data-target="#editInfoSuccess" data-dismiss="modal" value="CÓ">
+                <input type="button" class="btn btn-primary" id="closeModal" value="KHÔNG">
             </div>
         </div>
     </div>
@@ -70,7 +67,7 @@
                 <h5>Thông tin sửa thành công!</h5>
             </div>
             <div class="modal-footer">
-                <a type="button" class="btn btn-primary" th:href="@{userInformation}">ĐÓNG</a>
+                <a type="button" class="btn btn-primary" th:href="@{editViolationType}">ĐÓNG</a>
             </div>
         </div>
     </div>
@@ -80,5 +77,5 @@
 <div class="modal-loading"></div>
 </body>
 
-<script type="text/javascript" th:src="@{/js/userInformation.js}"></script>
+<script type="text/javascript" th:src="@{/js/editViolationType.js}"></script>
 </html>

@@ -3,7 +3,9 @@ var infoSearch = {
     classId
 }
 var yearId, weekId, classId, weekIdCurrent;
-
+$(document).ready(function () {
+    $("#class").select2();
+});
 /*Load years and list*/
 $.ajax({
     url: '/api/timetable/listyearandclass',

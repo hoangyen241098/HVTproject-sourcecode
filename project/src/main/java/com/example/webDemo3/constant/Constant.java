@@ -112,6 +112,28 @@ public class Constant {
 
     public static final MessageDTO VIOLATION_EXISTS =
             new MessageDTO(1,"Không thể xóa loại lỗi này! Vẫn còn các lỗi đang hoạt động.");
+    public static final MessageDTO SCHOOLYEARLIST_EMPTY =
+            new MessageDTO(1,"Danh sách năm học trống.");
+    public static final MessageDTO SCHOOLYEARID_EMPTY =
+            new MessageDTO(1,"Hãy lựa chọn năm học.");
+    public static final MessageDTO DELETESCHOOLYEAR_FAIL =
+            new MessageDTO(1,"Không thể xóa năm học này.");
+    public static final MessageDTO FROMYEAR_EMPTY =
+            new MessageDTO(1,"Hãy nhập năm bắt đầu.");
+    public static final MessageDTO TOYEAR_EMPTY =
+            new MessageDTO(1,"Hãy nhập năm kết thúc.");
+    public static final MessageDTO FROMDATE_EMPTY =
+            new MessageDTO(1,"Hãy nhập ngày bắt đầu.");
+    public static final MessageDTO TODATE_EMPTY =
+            new MessageDTO(1,"Hãy nhập ngày kết thúc.");
+    public static final MessageDTO FROMDATE_GREATER_TODATE =
+            new MessageDTO(1,"Hãy chọn ngày kết thúc xảy ra sau ngày bắt đầu.");
+    public static final MessageDTO FROMDATE_EXIST =
+            new MessageDTO(1,"Ngày bắt đầu đã nằm trong một năm học khác.");
+    public static final MessageDTO TODATE_EXIST =
+            new MessageDTO(1,"Ngày kết thúc đã nằm trong một năm học khác.");
+    public static final MessageDTO FROMDATE_GREATER_CURRENTDATE =
+            new MessageDTO(1,"Ngày bắt đầu của năm học hiện tại phải nhỏ hơn ngày hôm nay.");
     /**
      * Success message
      */
