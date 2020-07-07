@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    localStorage.removeItem("violationTypeID");
+    localStorage.removeItem("violationId");
     $.ajax({
         url: '/api/admin/violationandviolationtype',
         type: 'POST',
@@ -10,25 +12,48 @@ $(document).ready(function () {
         },
         success: function (data) {
             if (data.messageDTO.messageCode == 0) {
-                if(data.listViolationType.length !=0){
+                if (data.listViolationType.length != 0) {
                     $("#violationList").html("");
                     $.each(data.listViolationType, function (i, itemType) {
+                        var typeId, totalGrade, name;
+                        if (itemType.typeId == null) {
+                            typeId = "-";
+                        } else {
+                            typeId = itemType.typeId;
+                        }
+
+                        if (itemType.name == null) {
+                            name = "-";
+                        } else {
+                            name = itemType.name;
+                        }
+
+                        if (itemType.totalGrade == null) {
+                            totalGrade = "-";
+                        } else {
+                            totalGrade = itemType.totalGrade;
+                        }
                         $('#violationList').append(`
-                            <div class="panel-heading mt-3" data-toggle="collapse" data-target="#collapse`+itemType.typeId+`" onclick="toggleClick()">
+                            <div class="panel-heading mt-3" data-toggle="collapse" data-target="#collapse` + typeId + `" onclick="toggleClick()">
                                 <div>
-                                    <div class="d-flex align-items-center"><h5 class="my-0 mr-2">Nội quy theo dõi: </h5>` + itemType.name + `</div>
-                                    <div class="d-flex align-items-center"><h6 class="my-0 mr-2">Điểm:</h6>` + itemType.totalGrade + `</div>
+                                    <div class="d-flex align-items-center"><h5 class="my-0 mr-2">Nội quy theo dõi: </h5>` + name + `</div>
+                                    <div class="d-flex align-items-center"><h6 class="my-0 mr-2">Điểm:</h6>` + totalGrade + `</div>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <span class="bt-table-field mx-5">
-                                        <a href="editViolationType" class="bt-table-edit" title="Sửa" id="${itemType.typeId}">
+                                    <span class="bt-table-field mx-2">
+                                        <a href="editViolationType" class="bt-table-edit" title="Sửa" id="` + typeId + `">
                                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        </a>
+                                    </span>
+                                    <span class="bt-table-field mr-5">
+                                        <a title="Xóa" data-target="" data-toggle="modal" class="mx-2 bt-table-type-delete" id="` + typeId + `">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
                                         </a>
                                     </span>
                                     <button><i class="fa fa-chevron-down rotate"></i></button>
                                 </div>
                             </div>
-                            <div class="panel-collapse collapse in" id="collapse`+itemType.typeId+`">
+                            <div class="panel-collapse collapse in" id="collapse` + typeId + `">
                                 <table class="table table-hover">
                                     <thead>
                                     <th style="width: 5%"></th>
@@ -45,26 +70,41 @@ $(document).ready(function () {
 
                     $.each(data.listViolationType, function (i, itemType) {
                         var typeId = "#collapse" + itemType.typeId + " tbody";
-                        if (itemType.violation != null && itemType.violation.length != 0){
+                        if (itemType.violation != null && itemType.violation.length != 0) {
                             $.each(itemType.violation, function (j, itemVio) {
+                                var description, substractGrade, violationId;
+                                if (itemVio.description == null) {
+                                    description = "-";
+                                } else {
+                                    description = itemVio.description;
+                                }
+                                if (itemVio.substractGrade == null) {
+                                    substractGrade = "-";
+                                } else {
+                                    substractGrade = itemVio.substractGrade;
+                                }
+                                if (itemVio.violationId == null) {
+                                    violationId = "-";
+                                } else {
+                                    violationId = itemVio.violationId;
+                                }
                                 $(typeId).append(`
                                 <tr>
                                     <th style="width: 5%"></th>
-                                    <td>` + itemVio.description + `</td>
-                                    <td>` + itemVio.substractGrade + `</td>
+                                    <td>` + description + `</td>
+                                    <td>` + substractGrade + `</td>
                                     <td><span>
-                                            <a href="editViolation" title="Sửa" class="mx-2 bt-table-edit-vio" id="${itemVio.violationId}">
+                                            <a href="editViolation" title="Sửa" class="mx-2 bt-table-edit-vio" id="` + violationId + `">
                                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                             </a>
-                                            <a href="#" title="Xóa" class="mx-2">
+                                            <a href="" title="Xóa" data-target="" data-toggle="modal" class="mx-2 bt-table-delete-vio" id="` + violationId + `">
                                                 <i class="fa fa-trash" aria-hidden="true"></i>
-                                            </a>
+                                            </a>                            
                                         </span></td>
                                 </tr>
                             `);
                             });
-                        }
-                        else{
+                        } else {
                             $(typeId).append(
                                 `<tr>
                                     <td colspan="4" class="userlist-result">Danh sách lỗi vi phạm trống.</td>
@@ -74,9 +114,10 @@ $(document).ready(function () {
                     });
                     getViolationTypeID();
                     getViolationID();
+                    deleteViolationType();
+                    deleteViolation();
                 }
-            }
-            else{
+            } else {
                 $('#violationList').append(`
                     
                 `);
@@ -94,12 +135,12 @@ $(document).ready(function () {
     });
 });
 
+//drop the violation item
 function toggleClick() {
     $(".panel-heading").on('click', function () {
         $(this).find(".fa-chevron-down").toggleClass("up");
     })
-
-}
+};
 
 /*Edit violation type by ID*/
 function getViolationTypeID() {
@@ -108,7 +149,7 @@ function getViolationTypeID() {
         typeId = $(this).prop('id');
         localStorage.setItem("violationTypeID", typeId);
     });
-}
+};
 
 /*Edit violation by ID*/
 function getViolationID() {
@@ -117,4 +158,121 @@ function getViolationID() {
         violationId = $(this).prop('id');
         localStorage.setItem("violationId", violationId);
     });
-}
+};
+
+/*Delete violation type by ID*/
+function deleteViolationType() {
+    var deleteTypeId = $('.bt-table-type-delete');
+    $(deleteTypeId).on('click', function (e) {
+        deleteTypeId = $(this).prop('id');
+        var model = {
+            typeId: deleteTypeId,
+        }
+        e.preventDefault();
+        $("#deleteModal .modal-body").html("");
+        $('#deleteModal .modal-body').append(`
+                <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+                <h5>Bạn có chắc muốn <b>XÓA</b> nội quy này không?</h5>
+        `);
+        $('#deleteModal').addClass('fade');
+        $('.bt-table-type-delete').attr('data-target', '#deleteModal');
+        $('#deleteViolation').on('click', function (e) {
+            $.ajax({
+                url: '/api/admin/deleteviolationtype',
+                type: 'POST',
+                data: JSON.stringify(model),
+                beforeSend: function () {
+                    $('body').addClass("loading")
+                },
+                complete: function () {
+                    $('body').removeClass("loading")
+                },
+                success: function (data) {
+                    var messageCode = data.messageCode;
+                    var message = data.message;
+                    if (messageCode == 0) {
+                        $("#deleteSuccess .modal-body").html("");
+                        $('#deleteSuccess .modal-body').append(`
+                            <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
+                            <h5 id="message-delete">Xóa thành công nội quy.</h5>
+                        `);
+                    } else {
+                        $("#deleteSuccess .modal-body").html("");
+                        $('#deleteSuccess .modal-body').append(`
+                            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+                            <h5>` + message + `</h5>
+                        `);
+                    }
+                },
+                failure: function (errMsg) {
+                    $("#deleteSuccess .modal-body").html("");
+                    $('#deleteSuccess .modal-body').append(`
+                        <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+                        <h5>` + errMsg + `</h5>
+                    `);
+                },
+                dataType: "json",
+                contentType: "application/json"
+            });
+        });
+    });
+};
+
+/*Delete violation by ID*/
+function deleteViolation() {
+    var deleteId = $('.bt-table-delete-vio');
+    $(deleteId).on('click', function (e) {
+        deleteId = $(this).prop('id');
+        var model = {
+            violationId: deleteId,
+        }
+        e.preventDefault();
+        $("#deleteModal .modal-body").html("");
+        $('#deleteModal .modal-body').append(`
+                <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+                <h5>Bạn có chắc muốn <b>XÓA</b> vi phạm này không?</h5>
+        `);
+        $('#deleteModal').addClass('fade');
+        $('.bt-table-delete-vio').attr('data-target', '#deleteModal');
+        $('#deleteViolation').on('click', function (e) {
+            $.ajax({
+                url: '/api/admin/deleteviolation',
+                type: 'POST',
+                data: JSON.stringify(model),
+                beforeSend: function () {
+                    $('body').addClass("loading")
+                },
+                complete: function () {
+                    $('body').removeClass("loading")
+                },
+                success: function (data) {
+                    var messageCode = data.messageCode;
+                    var message = data.message;
+                    if (messageCode == 0) {
+                        $("#deleteSuccess .modal-body").html("");
+                        $('#deleteSuccess .modal-body').append(`
+                            <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
+                            <h5 id="message-delete">Xóa thành công nội quy.</h5>
+                        `);
+                    } else {
+                        $("#deleteSuccess .modal-body").html("");
+                        $('#deleteSuccess .modal-body').append(`
+                            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+                            <h5>` + message + `</h5>
+                        `);
+                    }
+                },
+                failure: function (errMsg) {
+                    $("#deleteSuccess .modal-body").html("");
+                    $('#deleteSuccess .modal-body').append(`
+                        <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+                        <h5>` + errMsg + `</h5>
+                    `);
+                },
+                dataType: "json",
+                contentType: "application/json"
+            });
+        });
+    });
+};
+

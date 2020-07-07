@@ -32,27 +32,11 @@
             </div>
             <div class="input-info">
                 <label for="totalGrade">Điểm</label>
-                <input class="basic-slide" id="totalGrade" type="text" value=""/>
+                <input class="basic-slide" id="totalGrade" type="number" value=""/>
             </div>
             <div class="error violation-err"></div>
             <div class="text-center">
                 <button type="button" class="btn btn-customer" id="editInfo" data-target="" data-toggle="modal">CHỈNH SỬA</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Confirm edit Modal HTML -->
-<div id="confirmEditModal" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body text-center">
-                <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                <h5 id="message-confirm"></h5>
-            </div>
-            <div class="modal-footer">
-                <input type="submit" class="btn btn-danger" data-toggle="modal" id="editModal" value="CÓ">
-                <input type="button" class="btn btn-primary" id="closeModal" value="KHÔNG" data-dismiss="modal">
             </div>
         </div>
     </div>
@@ -67,7 +51,7 @@
                 <h5>Thông tin sửa thành công!</h5>
             </div>
             <div class="modal-footer">
-                <a type="button" class="btn btn-primary" th:href="@{editViolationType}">ĐÓNG</a>
+                <a type="button" class="btn btn-primary" th:href="@{violationList}">ĐÓNG</a>
             </div>
         </div>
     </div>

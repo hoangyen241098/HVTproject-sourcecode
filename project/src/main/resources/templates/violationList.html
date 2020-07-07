@@ -189,36 +189,6 @@
                                 </a>
                             </span></td>
                     </tr>
-                    <tr>
-                        <th style="width: 5%"></th>
-                        <td>
-                            Mỗi ĐVTN không hát quốc ca, tập trung muộn
-                        </td>
-                        <td>0.2</td>
-                        <td><span>
-                                <a href="#" title="Sửa" class="mx-2">
-                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                </a>
-                                <a href="#" title="Xóa" class="mx-2">
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                </a>
-                            </span></td>
-                    </tr>
-                    <tr>
-                        <th style="width: 5%"></th>
-                        <td>
-                            Mở cửa lớp muộn
-                        </td>
-                        <td>1</td>
-                        <td><span>
-                                <a href="#" title="Sửa" class="mx-2">
-                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                </a>
-                                <a href="#" title="Xóa" class="mx-2">
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                </a>
-                            </span></td>
-                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -230,7 +200,7 @@
 
 <!-- Delete Modal HTML -->
 <div id="deleteModal" class="modal fade">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body text-center">
                 <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
@@ -238,7 +208,7 @@
             </div>
             <div class="modal-footer">
                 <input type="submit" class="btn btn-danger" data-toggle="modal" data-target="#deleteSuccess"
-                       id="deleteAccount" data-dismiss="modal" value="CÓ">
+                       id="deleteViolation" value="CÓ" data-dismiss="modal">
                 <input type="button" class="btn btn-primary" data-dismiss="modal" value="KHÔNG">
             </div>
         </div>
@@ -247,7 +217,7 @@
 
 <!--    Modal Delete Success-->
 <div class="modal fade" tabindex="-1" role="dialog" id="deleteSuccess">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-body text-center">
                 <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>

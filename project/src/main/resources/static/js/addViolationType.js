@@ -2,17 +2,19 @@ $("#submit").click(function (e) {
     var name = $('#description').val().trim();
     var totalGrade = $('#totalGrade').val().trim();
 
-    if(name == ""){
+    if (name == "") {
         $('.addViolationType-err').text("Hãy nhập mô tả nội quy!");
         return false;
-    }
-    if (totalGrade == "" || Number.isInteger(totalGrade)) {
+    } else if (totalGrade == "") {
         $('.addViolationType-err').text("Hãy nhập điểm cho nội quy!");
         return false;
+    } else if (totalGrade <= 0) {
+        $('.addViolationType-err').text("Hãy nhập điểm nội quy lớn hơn 0!");
+        return false;
     }
-    var model ={
-        name : name,
-        totalGrade : totalGrade
+    var model = {
+        name: name,
+        totalGrade: totalGrade
     };
     e.preventDefault();
     $.ajax({

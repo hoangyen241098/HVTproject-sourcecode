@@ -5,7 +5,7 @@ $(document).ready(function () {
         typeId: violationTypeID
     }
     if (violationTypeID == null) {
-        $('.violation-err').append(`Hãy chọn vi phạm cần chỉnh sửa ở trang quản lý vi phạm.`);
+        $('.violation-err').append(`Hãy chọn nội quy cần chỉnh sửa <a href="violationList">TẠI ĐÂY</a>.`);
         $("#editInfo").prop('disabled', true);
     } else {
         $("#editInfo").prop('disabled', false);
@@ -20,13 +20,15 @@ $(document).ready(function () {
                 $('body').removeClass("loading")
             },
             success: function (data) {
-                if (data.messageDTO.messageCode == 0) {
+                var messageCode = data.messageDTO.messageCode;
+                var message = data.messageDTO.message;
+                if (messageCode == 0) {
                     oldName = data.name;
                     oldTotalGrade = data.totlaGrade;
                     $('#description').attr('value', oldName);
                     $('#totalGrade').attr('value', oldTotalGrade);
                 } else {
-                $('.violation-err').text(message);
+                    $('.violation-err').text(message);
                 }
             },
             failure: function (errMsg) {
@@ -52,21 +54,11 @@ $("#editInfo").click(function (e) {
         $('.violation-err').text("Hãy thay đổi thông tin!");
         return false;
     } else {
-        $('.violation-err').text("");
-        $("#confirmEditModal .modal-body").html("");
-        $('#confirmEditModal .modal-body').append(`
-                <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                <h5>Bạn có chắc muốn <b>CẬP NHẬT</b> thông tin của nội quy này không?</h5>
-        `);
-        $('#confirmEditModal').addClass('fade');
-        $('#editInfo').attr('data-target', '#confirmEditModal');
-        $("#editModal").click(function (e) {
-            $('#confirmEditModal').addClass('hide');
-            editViolationType(e);
-        });
+        editViolationType(e);
     }
 });
 
+//edit violation type using typeid
 function editViolationType(e){
     var model ={
         typeId : violationTypeID,
