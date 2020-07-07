@@ -31,12 +31,12 @@
                 <input class="basic-slide" id="description" type="text" value=""/>
             </div>
             <div class="input-info">
-                <label for="substractGrade">Điểm trừ</label>
-                <input class="basic-slide" id="substractGrade" type="text" value=""/>
+                <label for="totalGrade">Điểm</label>
+                <input class="basic-slide" id="totalGrade" type="text" value=""/>
             </div>
             <div class="error violation-err"></div>
             <div class="text-center">
-                <button type="button" class="btn btn-customer" id="editInfo">CHỈNH SỬA</button>
+                <button type="button" class="btn btn-customer" id="editInfo" data-target="" data-toggle="modal">CHỈNH SỬA</button>
             </div>
         </div>
     </div>
@@ -51,8 +51,8 @@
                 <h5 id="message-confirm"></h5>
             </div>
             <div class="modal-footer">
-                <input type="submit" class="btn btn-danger" data-toggle="modal" data-target="#editInfoSuccess" data-dismiss="modal" value="CÓ">
-                <input type="button" class="btn btn-primary" id="closeModal" value="KHÔNG">
+                <input type="submit" class="btn btn-danger" data-toggle="modal" id="editModal" value="CÓ">
+                <input type="button" class="btn btn-primary" id="closeModal" value="KHÔNG" data-dismiss="modal">
             </div>
         </div>
     </div>
