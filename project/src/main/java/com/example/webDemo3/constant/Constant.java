@@ -136,6 +136,20 @@ public class Constant {
             new MessageDTO(1,"Ngày bắt đầu của năm học hiện tại phải nhỏ hơn ngày hôm nay.");
     public static final MessageDTO LIST_DAY_EMPTY =
             new MessageDTO(1,"Không có danh sách ngày.");
+    public static final MessageDTO VIOLATION_ENTERING_TIME_NULL =
+            new MessageDTO(1,"Không có kết quả.");
+    public static final MessageDTO DELETE_ENTERING_TIME_EMPTY =
+            new MessageDTO(1,"Hãy chọn thời gian thực thi để xóa.");
+    public static final MessageDTO ENTERING_TIME_EMPTY =
+            new MessageDTO(1,"Thời gian thực thi này không tồn tại.");
+    public static final MessageDTO ROLE_ID_NULL =
+            new MessageDTO(1,"Hãy chọn role.");
+    public static final MessageDTO DAY_NOT_EXIST =
+            new MessageDTO(1,"Không có ngày thỏa mãn.");
+    public static final MessageDTO START_TIME_EMPTY =
+            new MessageDTO(1,"Hãy chọn thời gian bắt đầu.");
+    public static final MessageDTO END_TIME_EMPTY =
+            new MessageDTO(1,"Hãy chọn thời gian kết thúc.");
     /**
      * Success message
      */
@@ -193,5 +207,9 @@ public class Constant {
     //Success delete violation type
     public static final MessageDTO DELETE_VIOLATION_TYPE_SUCCESS =
             new MessageDTO(0,"Loại lỗi đã bị xóa!");
+
+    //Success delete entering time
+    public static final MessageDTO DELETE_VIOLATION_ENTERING_TIME_SUCCESS =
+            new MessageDTO(0,"Xóa thành công!");
 
 }
