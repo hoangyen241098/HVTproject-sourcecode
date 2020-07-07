@@ -25,9 +25,9 @@ public class SchoolYear {
     @Column(name = "TO_DATE")
     private Date toDate;
 
-    @Column(name = "YEAR_FROM")
+    @Column(name = "FROM_YEAR")
     private Integer fromYear;
 
-    @Column(name = "YEAR_TO")
+    @Column(name = "TO_YEAR")
     private Integer toYear;
 }
