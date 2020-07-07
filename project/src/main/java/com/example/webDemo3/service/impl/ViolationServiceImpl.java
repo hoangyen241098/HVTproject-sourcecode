@@ -43,7 +43,7 @@ public class ViolationServiceImpl implements ViolationService {
         MessageDTO messageDTO = new MessageDTO();
 
         try{
-            violationTypeList = violationTypeRepository.selectAllViolationTypeActive();
+            violationTypeList = getListViolationType();
 
             //check violationTypeList empty or not
             if(violationTypeList.size() == 0){
@@ -99,7 +99,7 @@ public class ViolationServiceImpl implements ViolationService {
         MessageDTO messageDTO = new MessageDTO();
         Integer violationId = null;
         try{
-            violationTypeList = violationTypeRepository.selectAllViolationTypeActive();
+            violationTypeList = getListViolationType();
 
             //check violationTypeList empty or not
             if(violationTypeList.size() == 0){
@@ -182,7 +182,7 @@ public class ViolationServiceImpl implements ViolationService {
 
             //check description empty or not
             description = editViolationRequestDto.getDescription().trim();
-            if(description == null){
+            if(description.isEmpty()){
                 messageDTO = Constant.VIOLATION_DESCIPTION_EMPTY;
                 return  messageDTO;
             }
@@ -237,7 +237,7 @@ public class ViolationServiceImpl implements ViolationService {
 
             //check description empty or not
             description = violationRequestDto.getDescription().trim();
-            if(description == null){
+            if(description.isEmpty()){
                 messageDTO = Constant.VIOLATION_DESCIPTION_EMPTY;
                 return  messageDTO;
             }
@@ -483,5 +483,50 @@ public class ViolationServiceImpl implements ViolationService {
             return  messageDTO;
         }
         return  messageDTO;
+    }
+
+    /**
+     * lamnt98
+     * 06/07
+     * get all violation type
+     * @param
+     * @return ListViolationTypeResponseDto
+     */
+    @Override
+    public ListViolationTypeResponseDto getAllViolationType() {
+        ListViolationTypeResponseDto list = new ListViolationTypeResponseDto();
+        List<ViolationType> violationTypeList = null;
+        MessageDTO message = new MessageDTO();
+        try{
+            violationTypeList = getListViolationType();
+            //check violationTypeList empty or not
+            if(violationTypeList.size() == 0){
+                message = Constant.VIOLATION_TYPE_EMPTY;
+                list.setMessage(message);
+                return  list;
+            }
+            list.setViolationTypeList(violationTypeList);
+            message = Constant.SUCCESS;
+            list.setMessage(message);
+        }catch (Exception e){
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            list.setMessage(message);
+            return  list;
+        }
+        return list;
+    }
+
+    /**
+     * lamnt98
+     * 06/07
+     * function get all violation type
+     * @param
+     * @return List<ViolationType>
+     */
+    private List<ViolationType> getListViolationType() {
+        List<ViolationType> violationTypeList = null;
+        violationTypeList = violationTypeRepository.selectAllViolationTypeActive();
+        return violationTypeList;
     }
 }
