@@ -134,6 +134,8 @@ public class Constant {
             new MessageDTO(1,"Ngày kết thúc đã nằm trong một năm học khác.");
     public static final MessageDTO FROMDATE_GREATER_CURRENTDATE =
             new MessageDTO(1,"Ngày bắt đầu của năm học hiện tại phải nhỏ hơn ngày hôm nay.");
+    public static final MessageDTO LIST_DAY_EMPTY =
+            new MessageDTO(1,"Không có danh sách ngày.");
     /**
      * Success message
      */
