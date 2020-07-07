@@ -21,9 +21,15 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * lamnt98
+ * 07/07
+ */
 @Service
 public class EnteringTimeServiceImpl implements EnteringTimeService {
     @Autowired
@@ -35,6 +41,13 @@ public class EnteringTimeServiceImpl implements EnteringTimeService {
     @Autowired
     private RoleRepository roleRepository;
 
+    /**
+     * lamnt98
+     * 07/07
+     * get All Day
+     * @param
+     * @return ListDayResponseDto
+     */
     @Override
     public ListDayResponseDto getAllDay() {
         ListDayResponseDto listDayResponseDto = new ListDayResponseDto();
@@ -59,6 +72,13 @@ public class EnteringTimeServiceImpl implements EnteringTimeService {
         return  listDayResponseDto;
     }
 
+    /**
+     * lamnt98
+     * 07/07
+     * delete violation entering time
+     * @param deleteEnteringTime
+     * @return MessageDTO
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {ServiceException.class})
     public MessageDTO deleteEnteringTime(DeleteEnteringTimeRequestDto deleteEnteringTime) {
@@ -90,6 +110,13 @@ public class EnteringTimeServiceImpl implements EnteringTimeService {
         return message;
     }
 
+    /**
+     * lamnt98
+     * 07/07
+     * get list violation entering time
+     * @param
+     * @return ListEnteringTimeResponseDto
+     */
     @Override
     public ListEnteringTimeResponseDto getListEnteringTime() {
         ListEnteringTimeResponseDto enteringTimeResponseDto = new ListEnteringTimeResponseDto();
@@ -118,8 +145,8 @@ public class EnteringTimeServiceImpl implements EnteringTimeService {
                 violationEnteringTimeId = violationEnteringTime.getViolationEnteringTimeId();
                 roleName = roleRepository.findByRoleId(violationEnteringTime.getRoleId()).getRoleName();
                 dayName = dayRepository.findByDayId(violationEnteringTime.getDayId()).getDayName();
-                startTime = changeTimeToSrtingFormat(violationEnteringTime.getStartTime());
-                endTime = changeTimeToSrtingFormat(violationEnteringTime.getEndTime());
+                startTime = changeTimeToStringFormat(violationEnteringTime.getStartTime());
+                endTime = changeTimeToStringFormat(violationEnteringTime.getEndTime());
 
                 violationEnteringTimeResponseDto.setViolationEnteringTimeId(violationEnteringTimeId);
                 violationEnteringTimeResponseDto.setRoleName(roleName);
@@ -147,14 +174,22 @@ public class EnteringTimeServiceImpl implements EnteringTimeService {
         return  enteringTimeResponseDto;
     }
 
+    /**
+     * lamnt98
+     * 07/07
+     * add list violation entering time
+     * @param addVioEnTimeRequestDto
+     * @return MessageDTO
+     */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {ServiceException.class})
     public MessageDTO addEnteringTime(AddVioEnTimeRequestDto addVioEnTimeRequestDto) {
         MessageDTO message = new MessageDTO();
         Role role;
         Integer roleId;
         List<Integer> listDayId;
-        long startTime;
-        long endTime;
+        Time startTime;
+        Time endTime;
         boolean checkListDay = true;
         try{
             roleId = addVioEnTimeRequestDto.getRoleId();
@@ -189,25 +224,30 @@ public class EnteringTimeServiceImpl implements EnteringTimeService {
                 message = Constant.DAY_NOT_EXIST;
                 return message;
             }
-            startTime = changeStringToTimeFormat(addVioEnTimeRequestDto.getStartTime());
-            if(String.valueOf(startTime).trim().isEmpty()){
+
+            //check start time empty or not
+            if(addVioEnTimeRequestDto.getStartTime().trim().isEmpty()){
                 message = Constant.START_TIME_EMPTY;
+                return message;
+            }
+            startTime = changeStringToTimeFormat(addVioEnTimeRequestDto.getStartTime());
+
+            //check end time empty or not
+            if(addVioEnTimeRequestDto.getEndTime().trim().isEmpty()){
+                message = Constant.END_TIME_EMPTY;
                 return message;
             }
             endTime = changeStringToTimeFormat(addVioEnTimeRequestDto.getEndTime());
 
-            if(String.valueOf(endTime).trim().isEmpty()){
-                message = Constant.END_TIME_EMPTY;
-                return message;
-            }
             for(int i = 0; i < listDayId.size(); i++){
                 ViolationEnteringTime enteringTime = new ViolationEnteringTime();
                 enteringTime.setRoleId(roleId);
                 enteringTime.setDayId(listDayId.get(i));
-                //enteringTime.setStartTime(startTime);
-                //enteringTime.setEndTime(endTime);
+                enteringTime.setStartTime(startTime);
+                enteringTime.setEndTime(endTime);
+                enteringTimeRepository.save(enteringTime);
             }
-
+            message = Constant.ADD_VIOLATION_ENTERING_TIME_SUCCESS;
         }catch (Exception e){
             message.setMessageCode(1);
             message.setMessage(e.toString());
@@ -216,26 +256,42 @@ public class EnteringTimeServiceImpl implements EnteringTimeService {
         return message;
     }
 
-    public String changeTimeToSrtingFormat(Time time){
+    /**
+     * lamnt98
+     * 07/07
+     * change Time to String
+     * @param time
+     * @return String
+     */
+    public String changeTimeToStringFormat(Time time){
         String newTime = time.toString();
         String endTime = "";
         String[] split = newTime.split(":");
         //check array split empty or not
         if(split.length != 0){
             char[] cArray = split[0].toCharArray();
+            //check format of HH
             if(cArray[0] == '0'){
                 endTime = String.valueOf(cArray[1]) + "h";
             }else{
                 endTime = split[0] + "h";
             }
+            //check mm exist or not
             if(!split[1].equals("00")){
                 endTime += split[1];
             }
         }
         return  endTime;
     }
-    public long changeStringToTimeFormat(String string){
-        return java.sql.Time.parse(string);
+    /**
+     * lamnt98
+     * 07/07
+     * change String to Time
+     * @param time
+     * @return Time
+     */
+    public Time changeStringToTimeFormat(String time){
+        return  java.sql.Time.valueOf(time);
     }
 
 }

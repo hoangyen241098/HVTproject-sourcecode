@@ -212,4 +212,8 @@ public class Constant {
     public static final MessageDTO DELETE_VIOLATION_ENTERING_TIME_SUCCESS =
             new MessageDTO(0,"Xóa thành công!");
 
+    //Success add violation type
+    public static final MessageDTO ADD_VIOLATION_ENTERING_TIME_SUCCESS =
+            new MessageDTO(0,"Thêm thời gian trực tuần thành công!");
+
 }

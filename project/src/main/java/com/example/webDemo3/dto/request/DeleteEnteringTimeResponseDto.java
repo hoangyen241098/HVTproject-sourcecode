@@ -5,6 +5,10 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * lamnt98
+ * 07/07
+ */
 @Data
 public class DeleteEnteringTimeResponseDto {
     private List<Integer> listEnteringTime;

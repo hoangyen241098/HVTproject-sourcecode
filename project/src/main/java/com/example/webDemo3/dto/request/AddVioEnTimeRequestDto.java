@@ -4,6 +4,10 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * lamnt98
+ * 07/07
+ */
 @Data
 public class AddVioEnTimeRequestDto {
     private  Integer roleId;
