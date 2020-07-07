@@ -1,10 +1,10 @@
 package com.example.webDemo3.service;
 
-import com.example.webDemo3.dto.ListVioAndTypeResponseDto;
-import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.dto.ViewViolationResponseDto;
-import com.example.webDemo3.dto.ViewViolationTypeResponseDto;
+import com.example.webDemo3.dto.*;
 import com.example.webDemo3.dto.request.*;
+import com.example.webDemo3.entity.ViolationType;
+
+import java.util.List;
 
 /**
  * lamnt98
@@ -22,4 +22,6 @@ public interface ViolationService {
     public MessageDTO editViolationType(EditViolationTypeRequestDto violationTypeRequestDto);
     public MessageDTO addViolationType(AddViolationTypeRequestDto violationRequestDto);
     public MessageDTO deleteViolationType(DeleteViolationTypeRequestDto violationRequestDto);
+
+    public ListViolationTypeResponseDto getAllViolationType();
 }

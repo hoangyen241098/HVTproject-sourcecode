@@ -1,9 +1,6 @@
 package com.example.webDemo3.controller;
 
-import com.example.webDemo3.dto.ListVioAndTypeResponseDto;
-import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.dto.ViewViolationResponseDto;
-import com.example.webDemo3.dto.ViewViolationTypeResponseDto;
+import com.example.webDemo3.dto.*;
 import com.example.webDemo3.dto.request.*;
 import com.example.webDemo3.service.ViolationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -138,4 +135,18 @@ public class ViolationController {
     {
         return violationService.deleteViolationType(model);
     }
+
+    /**
+     * lamnt98
+     * 06/07
+     * catch request from client to get all violation type
+     * @param
+     * @return ListViolationTypeResponseDto
+     */
+    @PostMapping("/getlistviolationtype")
+    public ListViolationTypeResponseDto getListViolationType()
+    {
+        return violationService.getAllViolationType();
+    }
+
 }
