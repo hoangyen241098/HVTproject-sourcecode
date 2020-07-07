@@ -34,8 +34,8 @@
                         <input type="text" class="form-control" id="description" placeholder="Mô tả vi phạm">
                     </div>
                     <div class="form-group text-left">
-                        <label for="substractGrade">Điểm trừ <span class="text-red">*</span></label>
-                        <input type="number" class="form-control" id="substractGrade" placeholder="1">
+                        <label for="totalGrade">Điểm trừ <span class="text-red">*</span></label>
+                        <input type="number" class="form-control" id="totalGrade" placeholder="1">
                     </div>
                     <div class="error addViolationType-err text-left"></div>
                     <input type="button" name="submit" id="submit" class="submit action-button" value="TẠO"/>
@@ -49,9 +49,11 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body text-center">
+                <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
+                <h5>Đã thêm nội quy thành công!</h5>
             </div>
             <div class="modal-footer">
-                <input type="button" id="closeDialog" class="btn btn-primary" value="ĐÓNG"/>
+                <a type="button" id="closeDialog" class="btn btn-primary" value="ĐÓNG" th:href="@{violationList}">ĐÓNG</a>
             </div>
         </div>
     </div>
