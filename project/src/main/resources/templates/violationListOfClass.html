@@ -70,7 +70,7 @@
                 </div>
                 <div class="violation-details">
                     <div class="violation-name">Đi lại lộn xộn</div>
-                    <p class="violation-note">A và B đi lại lộn xộn trong lớp</p>
+                    <p class="violation-note my-0">A và B đi lại lộn xộn trong lớp</p>
                 </div>
                 <div class="violation-substract-grade">0.2</div>
                 <div class="violation-quantity">
@@ -112,16 +112,24 @@
                         <th>Tổng điểm trừ</th>
                         </thead>
                         <tbody>
-                        <td>Đi lại lộn xộn, làm việc riêng, ăn quà</td>
-                        <td class="substract">0.2</td>
-                        <td>
-                            <div class="quantity d-flex">
-                                <a role="button" class="btn-decrease"><i class="fa fa-minus" aria-hidden="true"></i></a>
-                                <input class="quantity-input" type="number" value="0" min="0">
-                                <a role="button" class="btn-increase"><i class="fa fa-plus" aria-hidden="true"></i></a>
-                            </div>
-                        </td>
-                        <td class="total"></td>
+                        <tr>
+                            <td>Đi lại lộn xộn, làm việc riêng, ăn quà</td>
+                            <td class="substract">0.2</td>
+                            <td>
+                                <div class="quantity d-flex">
+                                    <a role="button" class="btn-decrease"><i class="fa fa-minus" aria-hidden="true"></i></a>
+                                    <input class="quantity-input" type="number" value="0" min="0">
+                                    <a role="button" class="btn-increase"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                                </div>
+                            </td>
+                            <td class="total"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <input type="text" class="form-control text-red" id="violation"
+                                       placeholder="Ghi chú lỗi...">
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                     <div class="search-line ml-3">

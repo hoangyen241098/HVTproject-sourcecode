@@ -300,7 +300,7 @@ body.loading .modal-loading {
     font-size: 18px;
 }
 
-.form-group input[type=text], .form-group input[type=password] {
+.login-form .form-group input[type=text], .form-group input[type=password] {
     width: 100%;
     display: block;
     border: none;
@@ -310,7 +310,7 @@ body.loading .modal-loading {
     background: transparent;
 }
 
-.form-group input[type=text]:focus, .form-group input[type=password]:focus {
+.login-form .form-group input[type=text]:focus, .form-group input[type=password]:focus {
     border-bottom: 1px solid #222;
 }
 
@@ -1068,6 +1068,7 @@ fieldset .note {
     margin-bottom: 12px;
     color: #888;
     font-size: 1.1rem;
+    padding: 0 20px;
 }
 
 .violation-date {
@@ -1089,10 +1090,17 @@ fieldset .note {
 
 .violation-description {
     display: flex;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
 }
 
 .violation-name {
     font-weight: 500;
+}
+
+.totals {
+    margin-top: 30px;
 }
 
 .totals .totals-item {
@@ -1136,7 +1144,7 @@ fieldset .note {
 
     .violation-details {
         width: 100%;
-        margin-top: 10px;
+        margin: 10px 0;
     }
 
     .violation-substract-grade, .violation-quantity {
@@ -1169,7 +1177,7 @@ fieldset .note {
     .violation-action {
         position: absolute;
         top: 40%;
-        right: 0;
+        right: 20px;
         width: auto;
     }
 }
@@ -1199,6 +1207,75 @@ fieldset .note {
     font-weight: 500;
 }
 
-.font-500{
+.font-500 {
     font-weight: 500;
+}
+
+/*Responsive table max-width:650px*/
+@media screen and (max-width: 650px) {
+    .table-responsive-customer {
+        display: block;
+    }
+
+    .table-responsive-customer thead {
+        display: none;
+    }
+
+    .table-responsive-customer tbody {
+        display: block;
+    }
+
+    .table-responsive-customer tbody tr {
+        display: block;
+        position: relative;
+        border-top: 1px solid rgb(227, 227, 227);
+    }
+
+    .table-responsive-customer td:nth-of-type(1) {
+        position: absolute;
+        top: .75rem;
+        border: none;
+    }
+
+    .table-responsive-customer td:nth-of-type(2) {
+        display: block;
+        margin-left: 70px;
+        border: none;
+
+    }
+
+    .table-responsive-customer td:nth-of-type(2) label {
+        font-weight: 500;
+    }
+
+    .table-responsive-customer td:nth-of-type(3) {
+        margin-left: 75px;
+    }
+
+    .table-responsive-customer td:nth-of-type(3),
+    .table-responsive-customer td:nth-of-type(4) {
+        display: inline-block;
+        border: none;
+    }
+
+    .table-responsive-customer td:nth-of-type(3):before {
+        content: 'Điểm trừ: ';
+        font-weight: 500;
+    }
+
+    .table-responsive-customer td:nth-of-type(5):before {
+        content: 'Tổng điểm trừ: ';
+        font-weight: 500;
+    }
+
+    .table-responsive-customer td:nth-of-type(5) {
+        display: block;
+        margin-left: 75px;
+        border: none;
+    }
+
+    .saveResult {
+        text-align: center;
+    }
+
 }
