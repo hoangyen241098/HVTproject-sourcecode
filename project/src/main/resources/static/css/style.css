@@ -662,14 +662,14 @@ fieldset .note {
 
 /*inputs*/
 #msform input[type="text"], #msform input[type="password"], #msform textarea {
-    padding: 15px;
+    /*padding: 15px;*/
     border: 1px solid #ced4da;
     border-radius: .25rem;
-    margin-bottom: 10px;
-    width: 100%;
-    box-sizing: border-box;
+    /*margin-bottom: 10px;*/
+    /*width: 100%;*/
+    /*box-sizing: border-box;*/
     color: #2C3E50;
-    font-size: 13px;
+    /*font-size: 13px;*/
 }
 
 #msform input:disabled, #msform textarea:disabled {
@@ -874,10 +874,6 @@ fieldset .note {
 
 .input-info .label-customer {
     padding: 30px 15px;
-}
-
-.userInfo-err {
-    margin-left: 20px;
 }
 
 .info-des .btn {

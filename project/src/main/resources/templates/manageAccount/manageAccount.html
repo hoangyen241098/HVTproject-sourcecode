@@ -13,13 +13,9 @@
     <script th:src="@{/js/popper.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <!--Font-Awesome-->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"
-          type="text/css"/>
-    <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
-    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto|Varela+Round'>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"/>
     <link th:href="@{/css/style.css}" rel="stylesheet"/>
     <script type="text/javascript" th:src="@{/js/functions.js}"></script>
-
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
@@ -133,7 +129,7 @@
                 <h5 id="message-delete"></h5>
             </div>
             <div class="modal-footer">
-                <a type="button" class="btn btn-primary" th:href="@{manageAccount}">ĐÓNG</a>
+                <a type="button" class="btn btn-primary" th:href="@{}">ĐÓNG</a>
             </div>
         </div>
     </div>
@@ -176,7 +172,7 @@
 
 <!--    Modal Reset Password Success-->
 <div class="modal fade" tabindex="-1" role="dialog" id="resetSuccess">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-body text-center">
                 <img class="mb-3 mt-3 img-success hide" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
@@ -191,6 +187,6 @@
 </div>
 <div class="modal-loading"></div>
 <div th:replace="fragments/footer :: footer"></div>
-<script type="text/javascript" th:src="@{/js/manageAccount.js}"></script>
+<script type="text/javascript" th:src="@{/js/manageAccount/manageAccount.js}"></script>
 </body>
 </html>

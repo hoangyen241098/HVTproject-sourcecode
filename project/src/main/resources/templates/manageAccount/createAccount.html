@@ -14,8 +14,6 @@
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <!--Font-Awesome-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"/>
-    <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
-    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto|Varela+Round'>
     <link th:href="@{/css/style.css}" rel="stylesheet"/>
     <script type="text/javascript" th:src="@{/js/functions.js}"></script>
 </head>
@@ -90,9 +88,10 @@
     </div>
     <!-- /.MultiStep Form -->
 </div>
+
 <!--    Modal Create Success-->
 <div class="modal" tabindex="-1" role="dialog" id="createSuccess">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-body text-center">
                 <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
@@ -109,5 +108,5 @@
 <div class="modal-loading"></div>
 </body>
 
-<script type="text/javascript" th:src="@{/js/createAccount.js}"></script>
+<script type="text/javascript" th:src="@{/js/manageAccount/createAccount.js}"></script>
 </html>

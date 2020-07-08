@@ -6,15 +6,26 @@ var inforSearch = {
     pageNumber: 0
 }
 var list = [];
-
+$('tbody').append(`
+            <tr>
+                <td colspan="7" class="userlist-result">Danh sách trống.</td>
+            </tr>`);
 /*Load role list*/
 $.ajax({
     url: '/api/admin/rolelist',
     type: 'POST',
     success: function (data) {
-        $.each(data.listRole, function (i, item) {
-            $('#role-name').append(`<option value="` + item.roleId + `">` + item.roleName + `</option>`);
-        });
+        // if (data.listRole != 0) {
+        //     $.each(data.listRole, function (i, item) {
+        //         $('#role-name').append(`<option value="` + item.roleId + `">` + item.roleName + `</option>`);
+        //     });
+        // } else {
+        //     $('tbody').html('');
+            $('tbody').append(`
+            <tr>
+                <td colspan="7" class="userlist-result">Danh sách trống.</td>
+            </tr>`);
+        // }
     },
     failure: function (errMsg) {
         console.log(errMsg);

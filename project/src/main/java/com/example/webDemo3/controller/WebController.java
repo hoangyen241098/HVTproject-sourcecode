@@ -27,37 +27,32 @@ public class WebController {
     /*Module 1: Quản lý tài khoản*/
     @GetMapping("/forgotPassword")
     public String forgotPassword(Model model) {
-        return "forgotPassword";
+        return "manageAccount/forgotPassword";
     }
 
     @GetMapping("/login")
     public String login(Model model) {
-        return "login";
+        return "manageAccount/login";
     }
 
     @GetMapping("/changePassword")
     public String changePassword(Model model) {
-        return "changePassword";
-    }
-
-    @GetMapping("/resetPassword")
-    public String resetPassword(Model model) {
-        return "resetPassword";
+        return "manageAccount/changePassword";
     }
 
     @GetMapping("/manageAccount")
     public String manageAccount(Model model) {
-        return "manageAccount";
+        return "manageAccount/manageAccount";
     }
 
     @GetMapping("/createAccount")
     public String createAccount(Model model) {
-        return "createAccount";
+        return "manageAccount/createAccount";
     }
 
     @GetMapping("/userInformation")
     public String userInformation(Model model) {
-        return "userInformation";
+        return "manageAccount/userInformation";
     }
 
     /*Module 2: Quản lý giáo viên*/
