@@ -150,6 +150,8 @@ public class Constant {
             new MessageDTO(1,"Hãy chọn thời gian bắt đầu.");
     public static final MessageDTO END_TIME_EMPTY =
             new MessageDTO(1,"Hãy chọn thời gian kết thúc.");
+    public static final MessageDTO CLASS_RED_STAR_EMPTY =
+            new MessageDTO(1,"Không có kết quả.");
     /**
      * Success message
      */
