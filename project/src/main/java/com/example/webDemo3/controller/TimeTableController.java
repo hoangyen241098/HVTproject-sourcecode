@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Date;
+
 // actor: yenvb - update timetable
 @Controller
 public class TimeTableController {
@@ -21,13 +23,13 @@ public class TimeTableController {
     @Autowired
     private AddTimeTableService addTimeTableService;
 
-    @Autowired
-    private TimeTableService viewTimTaClassService;
+//    @Autowired
+//    private TimeTableService viewTimTaClassService;
 
     @GetMapping("/manageTimetable")
     public String index(Model model) {
-        ListYearAndWeekResponseDto list = viewTimTaClassService.getListYearAndListWeek();
-        model.addAttribute("listWeek",list.getListWeek());
+//        ListYearAndWeekResponseDto list = viewTimTaClassService.getListYearAndListWeek();
+//        model.addAttribute("listWeek",list.getListWeek());
         return "manageTimetable";
     }
 
@@ -44,7 +46,8 @@ public class TimeTableController {
             System.out.println(e);
         }
         if(workbook != null){
-            message = addTimeTableService.addTimetable(workbook,2);
+            Date date = Date.valueOf("2020-01-01");
+            message = addTimeTableService.addTimetable(workbook,date);
         }
         model.addAttribute("message",message.getMessage());
     }
