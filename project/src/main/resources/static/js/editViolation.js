@@ -30,7 +30,7 @@ $(document).ready(function () {
                         $('#violationTypeName').append(`<option value="` + item.typeId + `">` + item.name + `</option>`);
                     });
 
-                    $('#description').attr('value', oldDescription);
+                    $('#description').text(oldDescription);
                     $('#substractGrade').attr('value', oldSubstractGrade);
                     $("#violationTypeName").val(oldTypeId);
                 } else {
