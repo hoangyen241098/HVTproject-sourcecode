@@ -248,6 +248,9 @@ function loadWeek() {
 
 function toggleClick() {
     $(".panel-heading").on('click', function () {
-        $(this).find(".fa-chevron-down").toggleClass("up");
+        $(this).find(".fa-chevron-down").addClass("up");
+    })
+    $(".panel-heading.collapsed").on('click', function () {
+        $(this).find(".fa-chevron-down").removeClass("up");
     })
 }

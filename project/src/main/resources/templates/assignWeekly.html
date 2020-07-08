@@ -31,7 +31,8 @@
             <div class="search">
                 <div class="col-xl-4 d-inline-block">
                     <div class="search-line">
-                        <span>Phân công từ ngày</span>
+                        <span>Ngày</span>
+<!--                        <input type="date" id="fromDate" class="searchable">-->
                         <select class="combobox searchable" id="fromDate">
                             <option value="0" selected="selected">06/07/2020</option>
                             <option value="1">13/07/2020</option>
@@ -42,15 +43,17 @@
                     <div class="search-line">
                         <span>Lớp</span>
                         <select class="combobox searchable" id="classList">
-                            <option value="0" selected="selected">10 Tin</option>
-                            <option value="1">10 Toán</option>
+                            <option value="0" selected="selected">Tất cả</option>
+                            <option value="1">10 Tin</option>
+                            <option value="2">10 Toán</option>
                         </select>
                     </div>
                     <div class="search-line">
                         <span>Sao đỏ</span>
                         <select class="combobox searchable" id="redStarList">
-                            <option value="0" selected="selected">saodo11tin1</option>
-                            <option value="1">saodo11tin2</option>
+                            <option value="0" selected="selected">Tất cả</option>
+                            <option value="1">saodo11tin1</option>
+                            <option value="2">saodo11tin2</option>
                         </select>
                     </div>
                 </div>
@@ -87,7 +90,7 @@
             <thead class="text-center">
             <tr>
                 <th style="width: 50%">Lớp</th>
-                <th>Sap đỏ trực tuần</th>
+                <th>Sao đỏ trực tuần</th>
             </tr>
             </thead>
             <tbody class="text-center">
