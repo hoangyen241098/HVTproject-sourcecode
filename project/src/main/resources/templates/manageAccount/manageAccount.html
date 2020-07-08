@@ -102,11 +102,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form>
-                <div class="modal-header">
-                    <h4 class="modal-title">Xóa tài khoản</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                </div>
-                <div class="modal-body">
+                <div class="modal-body text-center">
 
                 </div>
                 <div class="modal-footer">
@@ -129,7 +125,7 @@
                 <h5 id="message-delete"></h5>
             </div>
             <div class="modal-footer">
-                <a type="button" class="btn btn-primary" th:href="@{}">ĐÓNG</a>
+                <a type="button" class="btn btn-primary" href="manageAccount">ĐÓNG</a>
             </div>
         </div>
     </div>
@@ -144,21 +140,8 @@
                     <h4 class="modal-title">Đặt lại mật khẩu</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <div class="form-group-input">
-                            <label class="input-text" for="new-password"><i class="fa fa-lock"></i></label>
-                            <input type="password" name="new-password" id="new-password" placeholder="Mật khẩu mới"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="form-group-input">
-                            <label class="input-text" for="confirm-password"><i class="fa fa-lock"></i></label>
-                            <input type="password" name="confirm-password" id="confirm-password"
-                                   placeholder="Xác nhận mật khẩu mới"/>
-                        </div>
-                    </div>
-                    <div class="error resetPass-err"></div>
+                <div class="modal-body text-center">
+
                 </div>
                 <div class="modal-footer">
                     <input type="submit" class="btn btn-danger" data-toggle="modal" data-target="#resetSuccess"
@@ -185,8 +168,10 @@
         </div>
     </div>
 </div>
+
 <div class="modal-loading"></div>
 <div th:replace="fragments/footer :: footer"></div>
-<script type="text/javascript" th:src="@{/js/manageAccount/manageAccount.js}"></script>
+
 </body>
+<script type="text/javascript" th:src="@{/js/manageAccount/manageAccount.js}"></script>
 </html>

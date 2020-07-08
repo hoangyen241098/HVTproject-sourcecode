@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>.::Thêm thời gian chấm::.</title>
+    <title>.::Thêm giáo viên::.</title>
     <link th:href="@{/img/logo.png}" rel="shortcut icon" type="image/x-icon"/>
 
     <!-- jQuery library -->
@@ -25,45 +25,43 @@
     <div class="row">
         <div class="col-md-6 col-md-offset-3 mx-auto">
             <form id="msform">
-                <h2 class="fs-title">Thêm thời gian chấm</h2>
-                <h3 class="fs-subtitle">Điền thông tin vào các trường để thêm thời gian mới</h3>
+                <h2 class="fs-title">Thêm giáo viên</h2>
+                <h3 class="fs-subtitle">Điền thông tin vào các trường để thêm giáo viên mới</h3>
                 <fieldset>
                     <p class="note">(<span class="text-red">*</span>) Bắt buộc </p>
                     <div class="form-group text-left">
-                        <label for="roleName">Chức vụ <span class="text-red">*</span></label>
-                        <select class="form-control" id="roleName">
-                        </select>
+                        <label for="fullName">Họ và tên</label>
+                        <input type="text" class="form-control" id="fullName" placeholder="Nguyễn văn A">
                     </div>
                     <div class="form-group text-left">
-                        <label for="timeToStart">Thời gian bắt đầu <span class="text-red">*</span></label>
-                        <input type="time" class="form-control" id="timeToStart" placeholder="07:00">
+                        <label for="identifier">Tên định danh <span class="text-red">*</span></label>
+                        <input type="text" class="form-control" id="identifier" placeholder="annv3">
                     </div>
                     <div class="form-group text-left">
-                        <label for="timeToEnd">Thời gian kết thúc <span class="text-red">*</span></label>
-                        <input type="time" class="form-control" id="timeToEnd" placeholder="07:30">
+                        <label for="phone">SĐT</label>
+                        <input type="text" class="form-control" id="phone" placeholder="0123 456 789">
                     </div>
-                    <div class="form-group text-left" id="allDay">
+                    <div class="form-group text-left">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="anv@gmail.com">
                     </div>
-                    <div class="error createTime-err text-left"></div>
-                    <input type="button" id="submit" data-toggle="modal" data-target="#createSuccess"
-                           class="btn btn-customer" value="TẠO"/>
+                    <div class="error createTeacher-err text-left"></div>
+                    <input type="button" name="submit" id="submit" class="submit action-button" value="TẠO"/>
                 </fieldset>
             </form>
         </div>
     </div>
 </div>
-
 <!--    Modal Create Success-->
-<div class="modal fade" tabindex="-1" role="dialog" id="createSuccess">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal" tabindex="-1" role="dialog" id="createSuccess">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body text-center">
                 <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
-                <img class="mb-3 mt-3 hide" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                <h5 id="message-createSuccess">Thêm thời gian chấm thành công!</h5>
+                <h5>Thêm giáo viên thành công!</h5>
             </div>
             <div class="modal-footer">
-                <input type="button" id="closeDialog" data-dismiss="modal" class="btn btn-primary" value="ĐÓNG"/>
+                <a type="button" class="btn btn-primary" th:href="@{createTeacher}">ĐÓNG</a>
             </div>
         </div>
     </div>
@@ -73,5 +71,5 @@
 <div class="modal-loading"></div>
 </body>
 
-<script type="text/javascript" th:src="@{/js/manageViolationEnteringTime/createViolationEnteringTime.js}"></script>
+<script type="text/javascript" th:src="@{/js/manageTeacher/createTeacher.js}"></script>
 </html>

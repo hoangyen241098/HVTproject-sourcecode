@@ -2,7 +2,6 @@ package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.ListYearAndWeekResponseDto;
 import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.dto.request.ListWeekRequestDto;
 import com.example.webDemo3.service.AddTimeTableService;
 import com.example.webDemo3.service.TimeTableService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>.::Thêm thời gian chấm::.</title>
+    <title>.::Chỉnh sửa thông tin lỗi vi phạm::.</title>
     <link th:href="@{/img/logo.png}" rel="shortcut icon" type="image/x-icon"/>
 
     <!-- jQuery library -->
@@ -25,45 +25,41 @@
     <div class="row">
         <div class="col-md-6 col-md-offset-3 mx-auto">
             <form id="msform">
-                <h2 class="fs-title">Thêm thời gian chấm</h2>
-                <h3 class="fs-subtitle">Điền thông tin vào các trường để thêm thời gian mới</h3>
+                <h2 class="fs-title">Thông tin lỗi vi phạm</h2>
                 <fieldset>
                     <p class="note">(<span class="text-red">*</span>) Bắt buộc </p>
                     <div class="form-group text-left">
-                        <label for="roleName">Chức vụ <span class="text-red">*</span></label>
-                        <select class="form-control" id="roleName">
+                        <label for="violationTypeName">Nội quy <span class="text-red">*</span></label>
+                        <select class="form-control" id="violationTypeName">
+                            <option value="0" selected>-- Chọn nội quy ---</option>
                         </select>
                     </div>
                     <div class="form-group text-left">
-                        <label for="timeToStart">Thời gian bắt đầu <span class="text-red">*</span></label>
-                        <input type="time" class="form-control" id="timeToStart" placeholder="07:00">
+                        <label for="substractGrade">Điểm trừ <span class="text-red">*</span></label>
+                        <input type="number" class="form-control" id="substractGrade" value="">
                     </div>
                     <div class="form-group text-left">
-                        <label for="timeToEnd">Thời gian kết thúc <span class="text-red">*</span></label>
-                        <input type="time" class="form-control" id="timeToEnd" placeholder="07:30">
+                        <label for="description">Mô tả vi phạm <span class="text-red">*</span></label>
+                        <textarea class="form-control" id="description" rows="3" value=""></textarea>
                     </div>
-                    <div class="form-group text-left" id="allDay">
-                    </div>
-                    <div class="error createTime-err text-left"></div>
-                    <input type="button" id="submit" data-toggle="modal" data-target="#createSuccess"
-                           class="btn btn-customer" value="TẠO"/>
+                    <div class="error violation-err text-left"></div>
+                    <button type="button" class="btn btn-customer" id="editInfo">CHỈNH SỬA</button>
                 </fieldset>
             </form>
         </div>
     </div>
 </div>
 
-<!--    Modal Create Success-->
-<div class="modal fade" tabindex="-1" role="dialog" id="createSuccess">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+<!--    Modal Edit Information Success-->
+<div class="modal" tabindex="-1" role="dialog" id="editInfoSuccess">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body text-center">
                 <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
-                <img class="mb-3 mt-3 hide" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                <h5 id="message-createSuccess">Thêm thời gian chấm thành công!</h5>
+                <h5>Thông tin sửa thành công!</h5>
             </div>
             <div class="modal-footer">
-                <input type="button" id="closeDialog" data-dismiss="modal" class="btn btn-primary" value="ĐÓNG"/>
+                <a type="button" class="btn btn-primary" th:href="@{violationList}">ĐÓNG</a>
             </div>
         </div>
     </div>
@@ -73,5 +69,5 @@
 <div class="modal-loading"></div>
 </body>
 
-<script type="text/javascript" th:src="@{/js/manageViolationEnteringTime/createViolationEnteringTime.js}"></script>
+<script type="text/javascript" th:src="@{/js/manageViolation/editViolation.js}"></script>
 </html>

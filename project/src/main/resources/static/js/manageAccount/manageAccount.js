@@ -6,29 +6,30 @@ var inforSearch = {
     pageNumber: 0
 }
 var list = [];
-$('tbody').append(`
-            <tr>
-                <td colspan="7" class="userlist-result">Danh sách trống.</td>
-            </tr>`);
+
 /*Load role list*/
 $.ajax({
     url: '/api/admin/rolelist',
     type: 'POST',
     success: function (data) {
-        // if (data.listRole != 0) {
-        //     $.each(data.listRole, function (i, item) {
-        //         $('#role-name').append(`<option value="` + item.roleId + `">` + item.roleName + `</option>`);
-        //     });
-        // } else {
-        //     $('tbody').html('');
+        if (data.listRole != 0) {
+            $.each(data.listRole, function (i, item) {
+                $('#role-name').append(`<option value="` + item.roleId + `">` + item.roleName + `</option>`);
+            });
+        } else {
+            $('tbody').html('');
             $('tbody').append(`
             <tr>
                 <td colspan="7" class="userlist-result">Danh sách trống.</td>
             </tr>`);
-        // }
+        }
     },
     failure: function (errMsg) {
-        console.log(errMsg);
+        $('tbody').html('');
+        $('tbody').append(`
+            <tr>
+                <td colspan="7" class="userlist-result">` + errMsg + `</td>
+            </tr>`);
     },
     dataType: "json",
     contentType: "application/json"
@@ -254,17 +255,26 @@ function checkUser() {
     var userErr = localStorage.getItem("username");
     if (jQuery.inArray(userErr, list) != -1) {
         $("#deleteAccountModal .modal-body").html("");
-        $('#deleteAccountModal .modal-body').append(`<h5>Bạn không thể xoá tài khoản <b class="error">` + userErr + `</b></h5>`);
+        $('#deleteAccountModal .modal-body').append(`
+            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+            <h5>Bạn không thể xoá tài khoản <b class="error">` + userErr + `</b></h5>
+        `);
         $('#deleteAccountModal .modal-footer .btn-danger').addClass('hide');
         $('#deleteAccountModal .modal-footer .btn-primary').attr('value', 'ĐÓNG');
     } else if (list.length == 0) {
         $("#deleteAccountModal .modal-body").html("");
-        $('#deleteAccountModal .modal-body').append(`<h5>Hãy chọn tài khoản mà bạn muốn xóa</h5>`);
+        $('#deleteAccountModal .modal-body').append(`
+            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+            <h5>Hãy chọn tài khoản mà bạn muốn xóa</h5>`
+        );
         $('#deleteAccountModal .modal-footer .btn-danger').addClass('hide');
         $('#deleteAccountModal .modal-footer .btn-primary').attr('value', 'ĐÓNG');
     } else {
         $("#deleteAccountModal .modal-body").html("");
-        $('#deleteAccountModal .modal-body').append(`<h5>Bạn có chắc muốn <b>XÓA</b> tài khoản này không?</h5>`);
+        $('#deleteAccountModal .modal-body').append(`
+            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+            <h5>Bạn có chắc muốn <b>XÓA</b> tài khoản này không?</h5>
+        `);
         $('#deleteAccountModal .modal-footer .btn-danger').removeClass('hide');
         $('#deleteAccountModal .modal-footer .btn-primary').attr('value', 'KHÔNG');
     }
@@ -275,23 +285,22 @@ function checkResetPassword() {
     if (list.length == 0) {
         $("#resetPasswordModal .modal-body").html("");
         $('#resetPasswordModal .modal-body .form-group').addClass('hide');
-        $('#resetPasswordModal .modal-body').append(`<h5>Hãy chọn tài khoản mà bạn muốn đặt lại mật khẩu</h5>`);
+        $('#resetPasswordModal .modal-body').append(`
+            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+            <h5>Hãy chọn tài khoản mà bạn muốn đặt lại mật khẩu</h5>
+        `);
         $('#resetPasswordModal .modal-footer .btn-danger').addClass('hide');
         $('#resetPasswordModal .modal-footer .btn-primary').attr('value', 'ĐÓNG');
     } else {
         $("#resetPasswordModal .modal-body").html("");
         $('#resetPasswordModal .modal-body').append(`
-        <div class="form-group">
-            <div class="form-group-input">
-                <label class="input-text" for="new-password"><i class="fa fa-lock"></i></label>
-                <input type="password" name="new-password" id="new-password" placeholder="Mật khẩu mới"/>
-            </div>
+        <div class="form-group text-left">
+            <label for="new-password">Mật khẩu mới <span class="text-red">*</span></label>
+            <input type="password" class="form-control" id="new-password" required>
         </div>
-        <div class="form-group">
-             <div class="form-group-input">
-                 <label class="input-text" for="confirm-password"><i class="fa fa-lock"></i></label>
-                 <input type="password" name="confirm-password" id="confirm-password" placeholder="Xác nhận mật khẩu mới"/>
-             </div>
+        <div class="form-group text-left">
+            <label for="confirm-password">Xác nhận mật khẩu mới <span class="text-red">*</span></label>
+            <input type="password" class="form-control" id="confirm-password" required>
         </div>
         <div class="error resetPass-err"></div>
         `);
