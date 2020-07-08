@@ -843,7 +843,7 @@ fieldset .note {
 
 .basic-slide {
     display: inline-block;
-    padding: 10px 0 10px 15px;
+    padding: 10px 10px 10px 15px;
     font-weight: 400;
     border: 1px solid #4267b2;
     width: 250px;
@@ -1099,25 +1099,25 @@ fieldset .note {
     font-weight: 500;
 }
 
-.totals {
+.totals-footer {
     margin-top: 30px;
 }
 
-.totals .totals-item {
+.totals-footer .totals-item {
     float: right;
     clear: both;
     width: 100%;
     margin-bottom: 10px;
 }
 
-.totals .totals-item label {
+.totals-footer .totals-item label {
     float: left;
     width: 79%;
     text-align: right;
     font-weight: 500;
 }
 
-.totals .totals-item .totals-value {
+.totals-footer .totals-item .totals-value {
     float: right;
     width: 21%;
     text-align: right;
