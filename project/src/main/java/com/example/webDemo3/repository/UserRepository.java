@@ -26,4 +26,6 @@ public interface UserRepository extends JpaRepository<User,String>, PagingAndSor
     Page<User> searchUserByUsername(@Param("username") String username, Pageable paging);
 
     List<User> findAllByClassSchoolClassId(Integer classId);
+
+    List<User> findAllByRoleRoleId(Integer roleId);
 }
