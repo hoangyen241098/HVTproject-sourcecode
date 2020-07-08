@@ -38,12 +38,9 @@
                 <button><i class="fa fa-chevron-down rotate"></i></button>
             </div>
             <div class="panel-collapse collapse in" id="collapseOne">
-                <table class="table">
+                <table class="table table-responsive-customer">
                     <thead>
-                    <th> <span class="custom-checkbox">
-                        <input type="checkbox" id="selectAll">
-                        <label for="selectAll"></label>
-                    </span></th>
+                    <th></th>
                     <th>Vi phạm</th>
                     <th>Điểm trừ</th>
                     <th>Số lượng</th>
@@ -60,7 +57,8 @@
                         <td>
                             <div class="form-group text-left">
                                 <label for="violation1">Đi lại lộn xộn, làm việc riêng, ăn quà</label>
-                                <input type="text" class="form-control" id="violation1" placeholder="Ghi chú...">
+                                <input type="text" class="form-control text-red" id="violation1"
+                                       placeholder="Ghi chú...">
                             </div>
                         </td>
                         <td class="substract">0.2</td>
@@ -83,7 +81,8 @@
                         <td>
                             <div class="form-group text-left">
                                 <label for="violation2">Đi lại lộn xộn, làm việc riêng, ăn quà</label>
-                                <input type="text" class="form-control" id="violation2" placeholder="Ghi chú...">
+                                <input type="text" class="form-control text-red" id="violation2"
+                                       placeholder="Ghi chú...">
                             </div>
                         </td>
                         <td class="substract">0.2</td>
@@ -106,7 +105,8 @@
                         <td>
                             <div class="form-group text-left">
                                 <label for="violation3">Đi lại lộn xộn, làm việc riêng, ăn quà</label>
-                                <input type="text" class="form-control" id="violation3" placeholder="Ghi chú...">
+                                <input type="text" class="form-control text-red" id="violation3"
+                                       placeholder="Ghi chú...">
                             </div>
                         </td>
                         <td class="substract">0.2</td>
@@ -149,7 +149,10 @@
                         <th>Tổng điểm trừ</th>
                         </thead>
                         <tbody>
-                        <td>Đi lại lộn xộn, làm việc riêng, ăn quà</td>
+                        <td>
+                            <p class="mb-0">Đi lại lộn xộn, làm việc riêng, ăn quà</p>
+                            <small class="text-red">A đi lại lộn xộn trong lớp</small>
+                        </td>
                         <td>0.2</td>
                         <td>2</td>
                         <td>0.40</td>

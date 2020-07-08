@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>.::Thêm thời gian chấm::.</title>
+    <link th:href="@{/img/logo.png}" rel="shortcut icon" type="image/x-icon"/>
+
+    <!-- jQuery library -->
+    <script th:src="@{/js/jquery-3.5.1.min.js}"></script>
+
+    <!--Bootstrap 4-->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <!--Font-Awesome-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"/>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <script type="text/javascript" th:src="@{/js/functions.js}"></script>
+</head>
+
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 mx-auto">
+            <form id="msform">
+                <h2 class="fs-title">Thêm thời gian chấm</h2>
+                <h3 class="fs-subtitle">Điền thông tin vào các trường để thêm thời gian mới</h3>
+                <fieldset>
+                    <p class="note">(<span class="text-red">*</span>) Bắt buộc </p>
+                    <div class="form-group text-left">
+                        <label for="roleName">Chức vụ <span class="text-red">*</span></label>
+                        <select class="form-control" id="roleName">
+                            <option value="0" selected>Tất cả</option>
+                            <option value="1">Sao đỏ</option>
+                            <option value="2">Lớp trưởng</option>
+                            <option value="3">Nhóm tổng hợp điểm</option>
+                        </select>
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="timeToStart">Thời gian bắt đầu <span class="text-red">*</span></label>
+                        <input type="time" class="form-control" id="timeToStart" value="07:00">
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="timeToEnd">Thời gian kết thúc <span class="text-red">*</span></label>
+                        <input type="time" class="form-control" id="timeToEnd" value="07:30">
+                    </div>
+                    <div class="form-group text-left">
+                        <h6>Các ngày áp dụng <span class="text-red">*</span></h6>
+                        <div class="form-check text-left">
+                            <span class="custom-checkbox">
+                                <input type="checkbox" name="options" id="1">
+                                <label for="1">Thứ 2</label>
+                            </span>
+                        </div>
+                        <div class="form-check text-left">
+                            <span class="custom-checkbox">
+                                <input type="checkbox" name="options" id="2">
+                                <label for="2">Thứ 3</label>
+                            </span>
+                        </div>
+                        <div class="form-check text-left">
+                            <span class="custom-checkbox">
+                                <input type="checkbox" name="options" id="3">
+                                <label for="3">Thứ 4</label>
+                            </span>
+                        </div>
+                        <div class="form-check text-left">
+                            <span class="custom-checkbox">
+                                <input type="checkbox" name="options" id="4">
+                                <label for="4">Thứ 5</label>
+                            </span>
+                        </div>
+                        <div class="form-check text-left">
+                            <span class="custom-checkbox">
+                                <input type="checkbox" name="options" id="5">
+                                <label for="5">Thứ 6</label>
+                            </span>
+                        </div>
+                        <div class="form-check text-left">
+                            <span class="custom-checkbox">
+                                <input type="checkbox" name="options" id="6">
+                                <label for="6">Thứ 7</label>
+                            </span>
+                        </div>
+                        <div class="form-check text-left">
+                            <span class="custom-checkbox">
+                                <input type="checkbox" name="options" id="7">
+                                <label for="7">Chủ nhật</label>
+                            </span>
+                        </div>
+
+                    </div>
+                    <div class="error createTime-err text-left"></div>
+                    <input type="button" id="submit" data-toggle="modal" data-target="#createSuccess"
+                           class="btn btn-customer" value="TẠO"/>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+<!--    Modal Create Success-->
+<div class="modal fade" tabindex="-1" role="dialog" id="createSuccess">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
+                <img class="mb-3 mt-3 hide" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+                <h5 id="message-createSuccess">Thêm thời gian chấm thành công!</h5>
+            </div>
+            <div class="modal-footer">
+                <input type="button" id="closeDialog" data-dismiss="modal" class="btn btn-primary" value="ĐÓNG"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+<div class="modal-loading"></div>
+</body>
+
+<script type="text/javascript" th:src="@{/js/manageViolationEnteringTime/createViolationEnteringTime.js}"></script>
+</html>

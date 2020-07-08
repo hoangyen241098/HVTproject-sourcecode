@@ -26,9 +26,9 @@ $.ajax({
                 $('#year').html("")
                 $.each(data.listYear, function (i, item) {
                     if (item.yearID == data.yearIdCurrent) {
-                        $('#year').append(`<option value="` + item.yearID + `" selected>` + item.year + `</option>`);
+                        $('#year').append(`<option value="` + item.yearID + `" selected>` + item.fromYear + ` - ` + item.toYear + `</option>`);
                     } else {
-                        $('#year').append(`<option value="` + item.yearID + `">` + item.year + `</option>`);
+                        $('#year').append(`<option value="` + item.yearID + `">` + item.fromYear + ` - ` + item.toYear + `</option>`);
                     }
                 });
                 yearId = $('#year option:selected').val();

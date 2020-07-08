@@ -175,4 +175,41 @@ public class WebController {
     public String addNewViolation(Model model) {
         return "addNewViolation";
     }
+
+    /*Module 8: Quản lý thời gian*/
+    @GetMapping("/manageViolationEnteringTime")
+    public String manageViolationEnteringTime(Model model) {
+        return "manageViolationEnteringTime/manageViolationEnteringTime";
+    }
+
+    @GetMapping("/createViolationEnteringTime")
+    public String createViolationEnteringTime(Model model) {
+        return "manageViolationEnteringTime/createViolationEnteringTime";
+    }
+
+    @GetMapping("/editViolationEnteringTime")
+    public String editViolationEnteringTime(Model model) {
+        return "manageViolationEnteringTime/editViolationEnteringTime";
+    }
+
+    /*Module 9: Quản lý xếp hạng*/
+    @GetMapping("/rankByWeek")
+    public String rankByWeek(Model model) {
+        return "manageSchoolRank/rankByWeek";
+    }
+
+    @GetMapping("/rankByMonth")
+    public String rankByMonth(Model model) {
+        return "manageSchoolRank/rankByMonth";
+    }
+
+    @GetMapping("/rankBySemester")
+    public String rankBySemester(Model model) {
+        return "manageSchoolRank/rankBySemester";
+    }
+
+    @GetMapping("/rankByYear")
+    public String rankByYear(Model model) {
+        return "manageSchoolRank/rankByYear";
+    }
 }
