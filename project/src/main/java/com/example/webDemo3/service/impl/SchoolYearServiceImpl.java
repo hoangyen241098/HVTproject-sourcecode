@@ -215,8 +215,8 @@ public class SchoolYearServiceImpl implements SchoolYearService {
         }
 
         Date dateCurrent = new Date(System.currentTimeMillis());
-        SchoolYear schoolCurrent = schoolYearRepository.findById(schoolYearId).orElse(null);
-        if(schoolCurrent!=null){
+        SchoolYear schoolCurrent = schoolYearRepository.findSchoolYearsByDate(dateCurrent);
+        if(schoolCurrent!=null && schoolCurrent.getYearID() == schoolYearId){
             if(fromDate.after(dateCurrent)){
                 message = Constant.FROMDATE_GREATER_CURRENTDATE;
                 return message;

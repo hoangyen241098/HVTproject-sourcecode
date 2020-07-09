@@ -14,8 +14,6 @@
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <!--Font-Awesome-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"/>
-    <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
-    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto|Varela+Round'>
     <link th:href="@{/css/style.css}" rel="stylesheet"/>
     <script type="text/javascript" th:src="@{/js/functions.js}"></script>
 </head>
@@ -36,21 +34,20 @@
                         <input type="text" class="form-control" id="giftedClassName" placeholder="Toán">
                     </div>
                     <div class="error giftedClassName-err text-left"></div>
-                    <input type="button" name="submit" id="submit" class="submit action-button" value="TẠO"/>
+                    <input type="button" data-toggle="modal" data-target="#createSuccess" id="submit"
+                           class="submit action-button" value="TẠO"/>
                 </fieldset>
             </form>
         </div>
     </div>
 </div>
 <!--    Modal Create Success-->
-<div class="modal" tabindex="-1" role="dialog" id="createSuccess">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" tabindex="-1" role="dialog" id="createSuccess">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-body text-center">
             </div>
             <div class="modal-footer">
-                <a type="button" class="btn btn-customer" th:href="@{createClass}">TẠO LỚP</a>
-                <a type="button" class="btn btn-primary" th:href="@{createGifftedClass}">ĐÓNG</a>
             </div>
         </div>
     </div>

@@ -1,3 +1,4 @@
+var oldFullName, oldIdentifier, oldPhone, oldEmail;
 $(document).ready(function () {
     var teacherId = localStorage.getItem("teacherId");
     $('.teacherInfo-err').text("");
@@ -20,10 +21,14 @@ $(document).ready(function () {
                 $('body').removeClass("loading")
             },
             success: function (data) {
-                $('#fullName').attr('value', data.fullName);
-                $('#identifier').attr('value', data.teacherIdentifier);
-                $('#phone').attr('value', data.phone);
-                $('#email').attr('value', data.email);
+                oldFullName = data.fullName;
+                oldIdentifier = data.teacherIdentifier;
+                oldPhone = data.phone;
+                oldEmail = data.email;
+                $('#fullName').attr('value', oldFullName);
+                $('#identifier').attr('value', oldIdentifier);
+                $('#phone').attr('value', oldPhone);
+                $('#email').attr('value', oldEmail);
             },
             failure: function (errMsg) {
                 $('.teacherInfo-err').text(errMsg);
@@ -43,7 +48,11 @@ $("#editInfo").click(function (e) {
     var email = $('#email').val().trim();
 
     $('.teacherInfo-err').text("");
-    if (fullName == "") {
+    if (fullName == oldFullName && identifier == oldIdentifier &&
+        phone == oldPhone && email == oldEmail) {
+        $('.teacherInfo-err').text("Hãy thay đổi thông tin.");
+        return false;
+    } else if (fullName == "") {
         $('.teacherInfo-err').text("Hãy điền họ và tên.");
         return false;
     } else if (identifier == "") {
@@ -81,8 +90,12 @@ $("#editInfo").click(function (e) {
                 var messageCode = data.messageCode;
                 var message = data.message;
                 if (messageCode == 0) {
-                    $('#editInfoSuccess').css('display', 'block');
-                    localStorage.removeItem("teacherId");
+                    $('#editInfoSuccess .modal-body').html('');
+                    $('#editInfoSuccess .modal-body').append(`
+                        <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
+                        <h5>Thông tin sửa thành công!</h5>
+                    `);
+                    $('.teacherInfo-err').text("");
                 } else {
                     $('.teacherInfo-err').text(message);
                 }
