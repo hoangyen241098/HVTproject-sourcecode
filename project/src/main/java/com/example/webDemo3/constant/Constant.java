@@ -152,6 +152,8 @@ public class Constant {
             new MessageDTO(1,"Hãy chọn thời gian kết thúc.");
     public static final MessageDTO CLASS_RED_STAR_EMPTY =
             new MessageDTO(1,"Không có kết quả.");
+    public static final MessageDTO SCHOOLYEAR_EMPTY =
+            new MessageDTO(1,"Không tồn tại năm học này.");
     /**
      * Success message
      */
