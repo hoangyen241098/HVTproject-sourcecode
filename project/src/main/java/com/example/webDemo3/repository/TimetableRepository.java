@@ -6,26 +6,26 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.util.List;
+
 
 @Repository
 public interface TimetableRepository extends JpaRepository<TimeTable,Long> {
 
-//    @Query(value = "select MAX(t.weekApply) from TimeTable t where t.weekApply <= :weekApply and t.classId = :classId")
-//    Integer getBiggestClosetApplyWeek(@Param("weekApply") Integer weekApply,@Param("classId") Integer classId);
-//
-//    @Query(value = "select t from TimeTable t where t.weekApply = :weekApply and t.classId = :classId and (t.isAfternoon = 0 or t.isAfternoon is null)")
-//    List<TimeTable> getMorningTimeTable(@Param("weekApply") Integer weekApply, @Param("classId") Integer classId);
-//
-//    @Query(value = "select t from TimeTable t where t.weekApply = :weekApply and t.classId = :classId and t.isAfternoon = 1")
-//    List<TimeTable> getAfternoonTimeTable(@Param("weekApply") Integer weekApply, @Param("classId") Integer classId);
-//
-//    @Query(value = "select MAX(t.weekApply) from TimeTable t where t.weekApply <= :weekApply and t.teacherId = :teacherId")
-//    Integer getBiggestClosetApplyWeekTeacher(@Param("weekApply") Integer weekApply,@Param("teacherId") Integer teacherId);
-//
-//    @Query(value = "select t from TimeTable t where t.weekApply = :weekApply and t.teacherId = :teacherId and (t.isAfternoon = 0 or t.isAfternoon is null)")
-//    List<TimeTable> getTeacherMorningTimeTable(@Param("weekApply") Integer weekApply, @Param("teacherId") Integer teacherId);
-//
-//    @Query(value = "select t from TimeTable t where t.weekApply = :weekApply and t.teacherId = :teacherId and t.isAfternoon = 1")
-//    List<TimeTable> getTeacherAfternoonTimeTable(@Param("weekApply") Integer weekApply, @Param("teacherId") Integer teacherId);
+
+    @Query(value = "select distinct t.applyDate from TimeTable t order by t.applyDate desc")
+    List<Date> getAllDate();
+
+     @Query(value = "select t from TimeTable t where t.applyDate = :applyDate and t.classId = :classId and (t.isAfternoon = 0 or t.isAfternoon is null) and t.isAdditional = :isAdditional")
+     List<TimeTable> getMorningClassTimeTable(@Param("applyDate") Date applyDate, @Param("classId") Integer classId, @Param("isAdditional") Integer isAdditional);
+
+    @Query(value = "select t from TimeTable t where t.applyDate = :applyDate and t.classId = :classId and t.isAfternoon = 1 and t.isAdditional = :isAdditional")
+    List<TimeTable> getAfternoonClassTimeTable(@Param("applyDate") Date applyDate, @Param("classId") Integer classId, @Param("isAdditional") Integer isAdditional);
+
+    @Query(value = "select t from TimeTable t where t.applyDate = :applyDate and t.teacherId = :teacherId and (t.isAfternoon = 0 or t.isAfternoon is null)")
+    List<TimeTable> getMorningTeacherTimeTable(@Param("applyDate") Date applyDate, @Param("teacherId") Integer teacherId);
+
+    @Query(value = "select t from TimeTable t where t.applyDate = :applyDate and t.teacherId = :teacherId and t.isAfternoon = 1")
+    List<TimeTable> getAfternoonTeacherTimeTable(@Param("applyDate") Date applyDate, @Param("teacherId") Integer teacherId);
 }
