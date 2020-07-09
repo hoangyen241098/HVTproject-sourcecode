@@ -1,10 +1,12 @@
 package com.example.webDemo3.controller;
 
+import com.example.webDemo3.dto.DetailSchoolYearResponseDto;
 import com.example.webDemo3.dto.ListYearAndClassResponseDto;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.SchoolYearTableResponseDto;
 import com.example.webDemo3.dto.request.AddSchoolYearRequestDto;
 import com.example.webDemo3.dto.request.DelSchoolYearRequestDto;
+import com.example.webDemo3.dto.request.DetailSchoolYearRequestDto;
 import com.example.webDemo3.dto.request.EditSchoolYearRequestDto;
 import com.example.webDemo3.service.SchoolYearService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,5 +74,18 @@ public class SchoolYearController {
     public MessageDTO editSchoolYear(@RequestBody EditSchoolYearRequestDto model)
     {
         return schoolYearService.editSchoolYear(model);
+    }
+
+    /**
+     * kimpt142
+     * 09/07
+     * catch request to get information of school year
+     * @param model include schoolYearId
+     * @return MessageDTO and infor
+     */
+    @PostMapping("/getschoolyear")
+    public DetailSchoolYearResponseDto getDetailSchoolYearById(@RequestBody DetailSchoolYearRequestDto model)
+    {
+        return schoolYearService.getDetailSchoolYearById(model);
     }
 }
