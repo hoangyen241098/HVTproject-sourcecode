@@ -2,7 +2,6 @@ package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.*;
 import com.example.webDemo3.dto.request.ClassTimeTableRequestDto;
-import com.example.webDemo3.dto.request.ListWeekRequestDto;
 import com.example.webDemo3.dto.request.TeacherTimeTableRequestDto;
 import com.example.webDemo3.service.TimeTableService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,27 +21,53 @@ public class TimeTableApiController {
 
     /**
      * lamnt98
-     * 01/07
-     * catch request from client to find class timetable by weekId and classId
-     * @param classTimeTableRequestDto
-     * @return TimeTableResponseDto
+     * 09/07
+     * catch request from client to view class timetable by currentDate and classId default
+     * @param
+     * @return ViewClassTimeTableResponseDto
      */
-    @PostMapping("/classtimetable")
-    public TimeTableResponseDto getClassTimeTable(@RequestBody ClassTimeTableRequestDto classTimeTableRequestDto)
+    @PostMapping("/viewclasstimetable")
+    public ViewClassTimeTableResponseDto viewClassTimeTable()
     {
-        return viewTimTaClassService.getClassTimeTable(classTimeTableRequestDto);
+        return viewTimTaClassService.viewClassTimeTable();
     }
 
     /**
      * lamnt98
-     * 02/07
-     * catch request from client to find tacher timetable by weekId and teacherId
-     * @param teacherTimeTableRequestDto
-     * @return TimeTableResponseDto
+     * 09/07
+     * catch request from client to view teacher timetable by currentDate and teacherId default
+     * @param
+     * @return ViewTeacherTimeTableReponseDto
      */
-    @PostMapping("/teachertimetable")
-    public TimeTableResponseDto getTeacherTimeTable(@RequestBody TeacherTimeTableRequestDto teacherTimeTableRequestDto)
+    @PostMapping("/viewteachertimetable")
+    public ViewTeacherTimeTableReponseDto getTeacherTimeTable()
     {
-        return viewTimTaClassService.getTeacherTimeTable(teacherTimeTableRequestDto);
+        return viewTimTaClassService.viewTeacherTimeTable();
+    }
+
+    /**
+     * lamnt98
+     * 09/07
+     * catch request from client to search class timetable by currentDate and classId
+     * @param module
+     * @return SearchTimeTableResponseDto
+     */
+    @PostMapping("/searchclasstimetable")
+    public SearchTimeTableResponseDto searchClassTimeTable(@RequestBody ClassTimeTableRequestDto module)
+    {
+        return viewTimTaClassService.searchClassTimeTable(module);
+    }
+
+    /**
+     * lamnt98
+     * 09/07
+     * catch request from client to search teacher timetable by currentDate and teacherId
+     * @param module
+     * @return SearchTimeTableResponseDto
+     */
+    @PostMapping("/searchteachertimetable")
+    public SearchTimeTableResponseDto searchTeacherTimeTable(@RequestBody TeacherTimeTableRequestDto module)
+    {
+        return viewTimTaClassService.searchTeacherTimeTable(module);
     }
 }
