@@ -27,153 +27,148 @@ public class WebController {
     /*Module 1: Quản lý tài khoản*/
     @GetMapping("/forgotPassword")
     public String forgotPassword(Model model) {
-        return "forgotPassword";
+        return "manageAccount/forgotPassword";
     }
 
     @GetMapping("/login")
     public String login(Model model) {
-        return "login";
+        return "manageAccount/login";
     }
 
     @GetMapping("/changePassword")
     public String changePassword(Model model) {
-        return "changePassword";
-    }
-
-    @GetMapping("/resetPassword")
-    public String resetPassword(Model model) {
-        return "resetPassword";
+        return "manageAccount/changePassword";
     }
 
     @GetMapping("/manageAccount")
     public String manageAccount(Model model) {
-        return "manageAccount";
+        return "manageAccount/manageAccount";
     }
 
     @GetMapping("/createAccount")
     public String createAccount(Model model) {
-        return "createAccount";
+        return "manageAccount/createAccount";
     }
 
     @GetMapping("/userInformation")
     public String userInformation(Model model) {
-        return "userInformation";
+        return "manageAccount/userInformation";
     }
 
     /*Module 2: Quản lý giáo viên*/
     @GetMapping("/manageTeacher")
     public String manageTeacher(Model model) {
-        return "manageTeacher";
+        return "manageTeacher/manageTeacher";
     }
 
     @GetMapping("/createTeacher")
     public String createTeacher(Model model) {
-        return "createTeacher";
+        return "manageTeacher/createTeacher";
     }
 
     @GetMapping("/teacherInformation")
     public String teacherInformation(Model model) {
-        return "teacherInformation";
+        return "manageTeacher/teacherInformation";
     }
 
     /*Module 3: Quản lý lớp*/
     @GetMapping("/manageClass")
     public String manageClass(Model model) {
-        return "manageClass";
+        return "manageClass/manageClass";
     }
 
     @GetMapping("/createClass")
     public String createClass(Model model) {
-        return "createClass";
+        return "manageClass/createClass";
     }
 
     @GetMapping("/editClass")
     public String editClass(Model model) {
-        return "editClass";
+        return "manageClass/editClass";
     }
 
     @GetMapping("/createGifftedClass")
     public String createGifftedClass(Model model) {
-        return "createGifftedClass";
+        return "manageClass/createGifftedClass";
     }
 
     @GetMapping("/deleteGifftedClass")
     public String deleteGifftedClass(Model model) {
-        return "deleteGifftedClass";
+        return "manageClass/deleteGifftedClass";
     }
 
     /*Module 4: Thời khóa biểu*/
     @GetMapping("/timetableClass")
     public String timetableClass(Model model) {
-        return "timetableClass";
+        return "timetable/timetableClass";
     }
 
     @GetMapping("/timetableTeacher")
     public String timetableTeacher(Model model) {
-        return "timetableTeacher";
+        return "timetable/timetableTeacher";
     }
 
     /*Module 5: Quản lý lỗi*/
     @GetMapping("/violationList")
     public String violationList(Model model) {
-        return "violationList";
+        return "manageViolation/violationList";
     }
 
     @GetMapping("/editViolation")
     public String editViolation(Model model) {
-        return "editViolation";
+        return "manageViolation/editViolation";
     }
 
     @GetMapping("/addViolation")
     public String addViolation(Model model) {
-        return "addViolation";
+        return "manageViolation/addViolation";
     }
 
     @GetMapping("/editViolationType")
     public String editViolationType(Model model) {
-        return "editViolationType";
+        return "manageViolation/editViolationType";
     }
 
     @GetMapping("/addViolationType")
     public String addViolationType(Model model) {
-        return "addViolationType";
+        return "manageViolation/addViolationType";
     }
 
     /*Module 6: Quản lý năm học*/
     @GetMapping("/schoolYearList")
     public String schoolYearList(Model model) {
-        return "schoolYearList";
+        return "schoolYear/schoolYearList";
     }
 
     @GetMapping("/addSchoolYear")
     public String addSchoolYear(Model model) {
-        return "addSchoolYear";
+        return "schoolYear/addSchoolYear";
     }
 
     @GetMapping("/editSchoolYear")
     public String editSchoolYear(Model model) {
-        return "editSchoolYear";
+        return "schoolYear/editSchoolYear";
     }
 
     /*Module 7: Trực tuần*/
-    @GetMapping("/assignWeekly")
+    @GetMapping("/assignEmulation")
     public String assignWeekly(Model model) {
-        return "assignWeekly";
+        return "manageEmulation/assignEmulation";
     }
 
     @GetMapping("/gradingToEmulation")
     public String gradingToEmulation(Model model) {
-        return "gradingToEmulation";
+        return "manageEmulation/gradingToEmulation";
     }
 
     @GetMapping("/violationListOfClass")
     public String violationListOfClass(Model model) {
-        return "violationListOfClass";
+        return "manageEmulation/violationListOfClass";
     }
 
     @GetMapping("/addNewViolation")
     public String addNewViolation(Model model) {
-        return "addNewViolation";
+        return "manageEmulation/addNewViolation";
     }
 
     /*Module 8: Quản lý thời gian*/
@@ -185,11 +180,6 @@ public class WebController {
     @GetMapping("/createViolationEnteringTime")
     public String createViolationEnteringTime(Model model) {
         return "manageViolationEnteringTime/createViolationEnteringTime";
-    }
-
-    @GetMapping("/editViolationEnteringTime")
-    public String editViolationEnteringTime(Model model) {
-        return "manageViolationEnteringTime/editViolationEnteringTime";
     }
 
     /*Module 9: Quản lý xếp hạng*/

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>.::Đăng nhập::.</title>
+    <link th:href="@{/img/logo.png}" rel="shortcut icon" type="image/x-icon"/>
+
+    <!-- jQuery library -->
+    <script th:src="@{/js/jquery-3.5.1.min.js}"></script>
+
+    <!--Bootstrap 4-->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <!--Font-Awesome-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"
+          type="text/css"/>
+
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <script type="text/javascript" th:src="@{/js/functions.js}"></script>
+</head>
+
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 mx-auto">
+            <form id="msform">
+                <img src="https://img.icons8.com/clouds/130/000000/school.png"/>
+                <h2 class="fs-title">Đăng nhập</h2>
+                <h3 class="fs-subtitle">Vui lòng điền vào các trường sau để đăng nhập</h3>
+                <fieldset>
+                    <p class="note">(<span class="text-red">*</span>) Bắt buộc </p>
+                    <div class="form-group text-left">
+                        <label for="username">Tên đăng nhập <span class="text-red">*</span></label>
+                        <input type="text" class="form-control" id="username" required>
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="password">Mật khẩu <span class="text-red">*</span></label>
+                        <input type="password" class="form-control" id="password" required>
+                    </div>
+                    <div class="error login-err text-left"></div>
+                    <input type="button" name="signin" id="signin" class="form-submit" value="ĐĂNG NHẬP"/>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+<!--    <div class="signin-form col-xl-4 col-md-auto">-->
+<!--        <div class="login-form-title">-->
+<!--            <img src="https://img.icons8.com/clouds/130/000000/school.png"/>-->
+<!--            <h3 class="form-title">Đăng nhập</h3>-->
+<!--            <p class="form-title-description">Vui lòng điền vào các trường sau để đăng nhập</p>-->
+<!--        </div>-->
+<!--        <form method="POST" class="login-form" id="login-form">-->
+<!--            <div class="form-group">-->
+<!--                <div class="form-group-input">-->
+<!--                    <label class="input-text"><i class="fa fa-user"></i></label>-->
+<!--                    <input type="text" id="username" name="username" placeholder="Tên đăng nhập" required/>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="form-group">-->
+<!--                <div class="form-group-input">-->
+<!--                    <label class="input-text"><i class="fa fa-lock"></i></label>-->
+<!--                    <input type="password" id="password" name="password" placeholder="Mật khẩu" required/>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="error login-err"></div>-->
+<!--            <div class="form-group form-button">-->
+<!--                <input type="button" name="signin" id="signin" class="form-submit" value="ĐĂNG NHẬP"/>-->
+<!--            </div>-->
+<!--            <div class="form-group text-center">-->
+<!--                <a th:href="@{forgotPassword}">Quên mật khẩu?</a>-->
+<!--            </div>-->
+<!--        </form>-->
+<!--    </div>-->
+</div>
+
+<!--    Modal Login Success-->
+<div class="modal" tabindex="-1" role="dialog" id="loginSuccess">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
+                <h5>Đăng nhập thành công!</h5>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-primary" th:href="@{/}">XÁC NHẬN</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+<div class="modal-loading"></div>
+</body>
+<script type="text/javascript" th:src="@{/js/manageAccount/login.js}"></script>
+</html>

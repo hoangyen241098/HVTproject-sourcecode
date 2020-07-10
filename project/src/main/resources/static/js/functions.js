@@ -254,3 +254,13 @@ function toggleClick() {
         $(this).find(".fa-chevron-down").removeClass("up");
     })
 }
+
+/*Set limited date in year*/
+function limitedDate() {
+    var year = $('#fromYear').val();
+    $('#toYear').val(parseInt(year) + 1);
+    $('#fromDate').attr('min', year + '-01-01');
+    $('#fromDate').attr('max', year + '-12-31');
+    $('#toDate').attr('min', $('#fromDate').val());
+    $('#toDate').attr('max', (parseInt(year) + 1) + '-12-31');
+}
