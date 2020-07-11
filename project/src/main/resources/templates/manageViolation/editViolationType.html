@@ -20,31 +20,34 @@
 
 <body>
 <div th:replace="fragments/header :: header"></div>
-
 <div class="container">
-    <div class="col-xl-6 col-md-auto mx-auto veen">
-        <h1>Thông tin nội quy</h1>
-        <hr>
-        <div class="info-des col-xl-10 mx-auto">
-            <div class="input-info">
-                <label for="description">Mô tả nội quy</label>
-                <input class="basic-slide" id="description" type="text" value=""/>
-            </div>
-            <div class="input-info">
-                <label for="totalGrade">Điểm</label>
-                <input class="basic-slide" id="totalGrade" type="number" value=""/>
-            </div>
-            <div class="error violation-err"></div>
-            <div class="text-center">
-                <button type="button" class="btn btn-customer" id="editInfo" data-target="" data-toggle="modal">CHỈNH SỬA</button>
-            </div>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 mx-auto">
+            <form id="msform">
+                <h2 class="fs-title">Thông tin nội quy</h2>
+                <fieldset>
+                    <p class="note">(<span class="text-red">*</span>) Bắt buộc </p>
+                    <div class="form-group text-left">
+                        <label for="description">Mô tả nội quy <span class="text-red">*</span></label>
+                        <input type="text" class="form-control" id="description">
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="totalGrade">Điểm <span class="text-red">*</span></label>
+                        <input type="number" class="form-control" id="totalGrade">
+                    </div>
+                    <div class="error violation-err text-left"></div>
+                    <button type="button" class="btn btn-customer" id="editInfo" data-target="" data-toggle="modal">
+                        CHỈNH SỬA
+                    </button>
+                </fieldset>
+            </form>
         </div>
     </div>
 </div>
 
 <!--    Modal Edit Information Success-->
 <div class="modal" tabindex="-1" role="dialog" id="editInfoSuccess">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-body text-center">
                 <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
