@@ -29,7 +29,7 @@ public class TimeTableController {
     public String index(Model model) {
 //        ListYearAndWeekResponseDto list = viewTimTaClassService.getListYearAndListWeek();
 //        model.addAttribute("listWeek",list.getListWeek());
-        return "manageTimetable";
+        return "timetable/manageTimetable";
     }
 
     @PostMapping("/manageTimetable")

@@ -22,47 +22,45 @@
 
 <body>
 <div th:replace="fragments/header :: header"></div>
-
 <div class="container">
-    <div class="col-xl-6 col-md-auto mx-auto veen">
-        <h1>Thông tin giáo viên</h1>
-        <hr>
-        <div class="info-des col-xl-10 mx-auto">
-            <div class="input-info">
-                <label for="fullName">Họ và tên</label>
-                <input class="basic-slide" id="fullName" type="text" value="" />
-            </div>
-            <div class="input-info">
-                <label for="identifier">Tên định danh</label>
-                <input class="basic-slide" id="identifier" type="text" value="" />
-            </div>
-            <div class="input-info">
-                <label for="phone">SĐT</label>
-                <input class="basic-slide" id="phone" type="text" value="" />
-            </div>
-            <div class="input-info">
-                <label for="email">Email</label>
-                <input class="basic-slide" id="email" type="text" value="" />
-            </div>
-            <div class="input-info ml-3 text-left">
-                <div class="error teacherInfo-err"></div></div>
-            <div class="text-center">
-                <button type="button" class="btn btn-customer" id="editInfo">CHỈNH SỬA</button>
-            </div>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 mx-auto">
+            <form id="msform">
+                <h2 class="fs-title">Thông tin giáo viên</h2>
+                <fieldset>
+                    <p class="note">(<span class="text-red">*</span>) Bắt buộc </p>
+                    <div class="form-group text-left">
+                        <label for="fullName">Họ và tên</label>
+                        <input type="text" class="form-control" id="fullName">
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="identifier">Tên định danh <span class="text-red">*</span></label>
+                        <input type="text" class="form-control" id="identifier">
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="phone">SĐT</label>
+                        <input type="text" class="form-control" id="phone">
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email">
+                    </div>
+                    <div class="error teacherInfo-err text-left"></div>
+                    <input type="button" data-toggle="modal" data-target="#editInfoSuccess" id="editInfo" class="btn btn-customer" value="CHỈNH SỬA"/>
+                </fieldset>
+            </form>
         </div>
     </div>
 </div>
 
 <!--    Modal Edit Information Success-->
-<div class="modal" tabindex="-1" role="dialog" id="editInfoSuccess">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" tabindex="-1" role="dialog" id="editInfoSuccess">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-body text-center">
-                <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
-                <h5>Thông tin sửa thành công!</h5>
             </div>
             <div class="modal-footer">
-                <a type="button" class="btn btn-primary" th:href="@{manageTeacher.html}">ĐÓNG</a>
+                <a type="button" class="btn btn-primary" th:href="@{manageTeacher}">ĐÓNG</a>
             </div>
         </div>
     </div>

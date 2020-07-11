@@ -69,7 +69,7 @@ function deleteGifted(e) {
                 $("#deleteSuccess .modal-body").html("");
                 $('#deleteSuccess .modal-body').append(`
                     <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                    <h5>`+message+`</h5>
+                    <h5>` + message + `</h5>
                 `);
                 $("#deleteSuccess .modal-footer input").removeClass('hide');
                 $("#deleteSuccess .modal-footer a").addClass('hide');

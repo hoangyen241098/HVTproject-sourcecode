@@ -1,6 +1,6 @@
 var schoolYearId, oldFromYear, oldFromDate, oldToDate;
 $(document).ready(function () {
-    schoolYearId = sessionStorage.getItem("schoolId")
+    schoolYearId = sessionStorage.getItem("schoolYearId")
     var info = {
         schoolYearId: schoolYearId
     }
@@ -9,38 +9,38 @@ $(document).ready(function () {
         $("#editInfo").prop('disabled', true);
     } else {
         $("#editInfo").prop('disabled', false);
-//         $.ajax({
-//             url: '/api/admin/getschoolyear',
-//             type: 'POST',
-//             data: JSON.stringify(info),
-//             beforeSend: function () {
-//                 $('body').addClass("loading")
-//             },
-//             complete: function () {
-//                 $('body').removeClass("loading")
-//             },
-//             success: function (data) {
-//                 var messageCode = data.messageDTO.messageCode;
-//                 var message = data.messageDTO.message;
-//                 if (messageCode == 0) {
-//                     oldFromYear = data.schoolYear.fromYear;
-//                     oldToYear = data.schoolYear.toYear;
-//                     oldFromDate = data.schoolYear.fromDate;
-//                     oldToDate = data.schoolYear.toDate;
-//                     $('#fromYear').val(oldFromYear);
-//                     $('#toYear').val(oldToYear);
-//                     $('#fromDate').val(oldFromDate);
-//                     $("#toDate").val(oldToDate);
-//                 } else {
-//                     $('#editSchoolYear-err').text(message);
-//                 }
-//             },
-//             failure: function (errMsg) {
-//                 $('#editSchoolYear-err').text(errMsg);
-//             },
-//             dataType: "json",
-//             contentType: "application/json"
-//         });
+        $.ajax({
+            url: '/api/admin/getschoolyear',
+            type: 'POST',
+            data: JSON.stringify(info),
+            beforeSend: function () {
+                $('body').addClass("loading")
+            },
+            complete: function () {
+                $('body').removeClass("loading")
+            },
+            success: function (data) {
+                var messageCode = data.message.messageCode;
+                var message = data.message.message;
+                if (messageCode == 0) {
+                    oldFromYear = data.fromYear;
+                    oldToYear = data.toYear;
+                    oldFromDate = data.fromDate;
+                    oldToDate = data.toDate;
+                    $('#fromYear').val(oldFromYear);
+                    $('#toYear').val(oldToYear);
+                    $('#fromDate').val(oldFromDate);
+                    $("#toDate").val(oldToDate);
+                } else {
+                    $('#editSchoolYear-err').text(message);
+                }
+            },
+            failure: function (errMsg) {
+                $('#editSchoolYear-err').text(errMsg);
+            },
+            dataType: "json",
+            contentType: "application/json"
+        });
     }
 });
 
@@ -74,9 +74,10 @@ $("#editInfo").click(function (e) {
             fromYear: fromYear,
             toYear: toYear
         }
+        console.log(JSON.stringify(newInfo))
         e.preventDefault();
         $.ajax({
-            url: '/api/admin/addschoolyear',
+            url: '/api/admin/editschoolyear',
             type: 'POST',
             data: JSON.stringify(newInfo),
             beforeSend: function () {
@@ -89,8 +90,7 @@ $("#editInfo").click(function (e) {
                 var messageCode = data.messageCode;
                 var message = data.message;
                 if (messageCode == 0) {
-                    $('#editInfo').attr('data-target', '#editInfoSuccess')
-                    $('.violation-err').text("");
+                    $('.editSchoolYear-err').text("");
                 } else {
                     $('.editSchoolYear-err').text(message);
                 }

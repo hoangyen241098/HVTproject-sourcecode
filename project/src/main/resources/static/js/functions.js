@@ -20,6 +20,21 @@ $(document).ready(function () {
     $("#logout").click(function () {
         localStorage.clear();
     })
+
+    $('#adminMenu').on('click', function () {
+        $('.mega-menu.show').not($(this).find('.mega-menu')).removeClass('show');
+        $('.dropdown-menu.show').removeClass('show');
+        $('.nav-link .fa').not($(this).find('.fa')).removeClass('up');
+        $(this).find('.mega-menu').toggleClass('show');
+        $(this).find('.fa').toggleClass('up');
+    })
+    $('.dropdown').on('click', function () {
+        $('.mega-menu.show').removeClass('show');
+        $('.dropdown-menu.show').not($(this).find('.dropdown-menu')).removeClass('show');
+        $('.nav-link .fa').not($(this).find('.fa')).removeClass('up');
+        $(this).find('.dropdown-menu').toggleClass('show');
+        $(this).find('.fa').toggleClass('up');
+    });
 });
 
 /*Loading page*/
