@@ -22,27 +22,27 @@ public class TimeTableApiController {
     /**
      * lamnt98
      * 09/07
-     * catch request from client to view class timetable by currentDate and classId default
+     * catch request from client to get list class and applyDate, currentId, classId
      * @param
-     * @return ViewClassTimeTableResponseDto
+     * @return ListApplyDateAndClassResponseDto
      */
-    @PostMapping("/viewclasstimetable")
-    public ViewClassTimeTableResponseDto viewClassTimeTable()
+    @PostMapping("/getapplydateandclass")
+    public ListApplyDateAndClassResponseDto getListClassAndApplyDate()
     {
-        return viewTimTaClassService.viewClassTimeTable();
+        return viewTimTaClassService.getApplyDateAndClassList();
     }
 
     /**
      * lamnt98
      * 09/07
-     * catch request from client to view teacher timetable by currentDate and teacherId default
+     * catch request from client to get list teacher and applyDate, currentId, teacherId
      * @param
-     * @return ViewTeacherTimeTableReponseDto
+     * @return ListApplyDateandTeacherResponseDto
      */
-    @PostMapping("/viewteachertimetable")
-    public ViewTeacherTimeTableReponseDto getTeacherTimeTable()
+    @PostMapping("/getapplydateandteacher")
+    public ListApplyDateandTeacherResponseDto getListTeacherAndApplyDate()
     {
-        return viewTimTaClassService.viewTeacherTimeTable();
+        return viewTimTaClassService.getApplyDateAndTeacherList();
     }
 
     /**
