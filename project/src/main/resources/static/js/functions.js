@@ -20,6 +20,21 @@ $(document).ready(function () {
     $("#logout").click(function () {
         localStorage.clear();
     })
+
+    $('#adminMenu').on('click', function () {
+        $('.mega-menu.show').not($(this).find('.mega-menu')).removeClass('show');
+        $('.dropdown-menu.show').removeClass('show');
+        $('.nav-link .fa').not($(this).find('.fa')).removeClass('up');
+        $(this).find('.mega-menu').toggleClass('show');
+        $(this).find('.fa').toggleClass('up');
+    })
+    $('.dropdown').on('click', function () {
+        $('.mega-menu.show').removeClass('show');
+        $('.dropdown-menu.show').not($(this).find('.dropdown-menu')).removeClass('show');
+        $('.nav-link .fa').not($(this).find('.fa')).removeClass('up');
+        $(this).find('.dropdown-menu').toggleClass('show');
+        $(this).find('.fa').toggleClass('up');
+    });
 });
 
 /*Loading page*/
@@ -253,4 +268,14 @@ function toggleClick() {
     $(".panel-heading.collapsed").on('click', function () {
         $(this).find(".fa-chevron-down").removeClass("up");
     })
+}
+
+/*Set limited date in year*/
+function limitedDate() {
+    var year = $('#fromYear').val();
+    $('#toYear').val(parseInt(year) + 1);
+    $('#fromDate').attr('min', year + '-01-01');
+    $('#fromDate').attr('max', year + '-12-31');
+    $('#toDate').attr('min', $('#fromDate').val());
+    $('#toDate').attr('max', (parseInt(year) + 1) + '-12-31');
 }

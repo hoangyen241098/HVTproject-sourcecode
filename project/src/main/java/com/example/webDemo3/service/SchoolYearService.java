@@ -1,9 +1,11 @@
 package com.example.webDemo3.service;
 
+import com.example.webDemo3.dto.DetailSchoolYearResponseDto;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.SchoolYearTableResponseDto;
 import com.example.webDemo3.dto.request.AddSchoolYearRequestDto;
 import com.example.webDemo3.dto.request.DelSchoolYearRequestDto;
+import com.example.webDemo3.dto.request.DetailSchoolYearRequestDto;
 import com.example.webDemo3.dto.request.EditSchoolYearRequestDto;
 
 /*
@@ -14,4 +16,5 @@ public interface SchoolYearService {
     MessageDTO deleteSchoolYearById(DelSchoolYearRequestDto model);
     MessageDTO addchoolYear(AddSchoolYearRequestDto model);
     MessageDTO editSchoolYear(EditSchoolYearRequestDto model);
+    DetailSchoolYearResponseDto getDetailSchoolYearById(DetailSchoolYearRequestDto model);
 }

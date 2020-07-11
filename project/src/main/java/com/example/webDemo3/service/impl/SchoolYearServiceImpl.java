@@ -1,11 +1,13 @@
 package com.example.webDemo3.service.impl;
 
 import com.example.webDemo3.constant.Constant;
+import com.example.webDemo3.dto.DetailSchoolYearResponseDto;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.SchoolYearResponseDto;
 import com.example.webDemo3.dto.SchoolYearTableResponseDto;
 import com.example.webDemo3.dto.request.AddSchoolYearRequestDto;
 import com.example.webDemo3.dto.request.DelSchoolYearRequestDto;
+import com.example.webDemo3.dto.request.DetailSchoolYearRequestDto;
 import com.example.webDemo3.dto.request.EditSchoolYearRequestDto;
 import com.example.webDemo3.entity.SchoolYear;
 import com.example.webDemo3.repository.SchoolYearRepository;
@@ -47,6 +49,7 @@ public class SchoolYearServiceImpl implements SchoolYearService {
         try {
             for (SchoolYear item : schoolYearList) {
                 SchoolYearResponseDto yearResponseDto = new SchoolYearResponseDto();
+                yearResponseDto.setSchoolYearId(item.getYearID());
                 yearResponseDto.setYearName(item.getFromYear().toString() + "-" + item.getToYear().toString());
                 yearResponseDto.setFromDate(item.getFromDate());
                 yearResponseDto.setToDate(item.getToDate());
@@ -212,8 +215,8 @@ public class SchoolYearServiceImpl implements SchoolYearService {
         }
 
         Date dateCurrent = new Date(System.currentTimeMillis());
-        SchoolYear schoolCurrent = schoolYearRepository.findById(schoolYearId).orElse(null);
-        if(schoolCurrent!=null){
+        SchoolYear schoolCurrent = schoolYearRepository.findSchoolYearsByDate(dateCurrent);
+        if(schoolCurrent!=null && schoolCurrent.getYearID() == schoolYearId){
             if(fromDate.after(dateCurrent)){
                 message = Constant.FROMDATE_GREATER_CURRENTDATE;
                 return message;
@@ -249,5 +252,42 @@ public class SchoolYearServiceImpl implements SchoolYearService {
 
         message = Constant.SUCCESS;
         return message;
+    }
+
+    /**
+     * kimpt142
+     * 09/07
+     * find school year information by id
+     * @param model include yearid
+     * @return information of school year and message
+     */
+    @Override
+    public DetailSchoolYearResponseDto getDetailSchoolYearById(DetailSchoolYearRequestDto model) {
+        DetailSchoolYearResponseDto responseDto = new DetailSchoolYearResponseDto();
+        MessageDTO message = new MessageDTO();
+        Integer schoolYearId = model.getSchoolYearId();
+        SchoolYear schoolYear = new SchoolYear();
+
+        if(schoolYearId == null){
+            message = Constant.SCHOOLYEARID_EMPTY;
+            responseDto.setMessage(message);
+            return responseDto;
+        }
+
+        schoolYear = schoolYearRepository.findById(schoolYearId).orElse(null);
+
+        if(schoolYear == null){
+            message = Constant.SCHOOLYEAR_EMPTY;
+            responseDto.setMessage(message);
+            return responseDto;
+        }
+
+        responseDto.setFromYear(schoolYear.getFromYear());
+        responseDto.setToYear(schoolYear.getToYear());
+        responseDto.setFromDate(schoolYear.getFromDate());
+        responseDto.setToDate(schoolYear.getToDate());
+        message = Constant.SUCCESS;
+        responseDto.setMessage(message);
+        return responseDto;
     }
 }

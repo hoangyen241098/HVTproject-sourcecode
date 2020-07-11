@@ -27,8 +27,8 @@
             <h2>Thời gian thực thi chấm điểm</h2>
         </div>
         <div class="table-title-2">
-            <div class="col-sm-6 d-flex justify-content-end align-items-center">
-                <a href="#deleteModal" class="btn btn-success" data-toggle="modal">
+            <div class="col-sm-12 d-flex justify-content-end align-items-center">
+                <a href="#deleteModal" class="btn btn-success" data-toggle="modal" onclick="checkSelect()">
                     <span>Xóa</span>
                 </a>
                 <a th:href="@{createViolationEnteringTime}" class="btn btn-success">
@@ -52,90 +52,6 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>
-                    <span class="custom-checkbox">
-                        <input type="checkbox" name="options" id="1">
-                        <label for="1"></label>
-                    </span>
-                </td>
-                <td><span>Sao đỏ</span></td>
-                <td><span>Thứ 2</span></td>
-                <td><span>7:00</span></td>
-                <td><span>7:30</span></td>
-            </tr>
-            <tr>
-                <td>
-                    <span class="custom-checkbox">
-                        <input type="checkbox" name="options" id="2">
-                        <label for="2"></label>
-                    </span>
-                </td>
-                <td><span>Sao đỏ</span></td>
-                <td><span>Thứ 3</span></td>
-                <td><span>7:00</span></td>
-                <td><span>7:30</span></td>
-            </tr>
-            <tr>
-                <td>
-                    <span class="custom-checkbox">
-                        <input type="checkbox" name="options" id="3">
-                        <label for="3"></label>
-                    </span>
-                </td>
-                <td><span>Sao đỏ</span></td>
-                <td><span>Thứ 4</span></td>
-                <td><span>7:00</span></td>
-                <td><span>7:30</span></td>
-            </tr>
-            <tr>
-                <td>
-                    <span class="custom-checkbox">
-                        <input type="checkbox" name="options" id="4">
-                        <label for="4"></label>
-                    </span>
-                </td>
-                <td><span>Sao đỏ</span></td>
-                <td><span>Thứ 5</span></td>
-                <td><span>7:00</span></td>
-                <td><span>7:30</span></td>
-            </tr>
-            <tr>
-                <td>
-                    <span class="custom-checkbox">
-                        <input type="checkbox" name="options" id="5">
-                        <label for="5"></label>
-                    </span>
-                </td>
-                <td><span>Sao đỏ</span></td>
-                <td><span>Thứ 6</span></td>
-                <td><span>7:00</span></td>
-                <td><span>7:30</span></td>
-            </tr>
-            <tr>
-                <td>
-                    <span class="custom-checkbox">
-                        <input type="checkbox" name="options" id="6">
-                        <label for="6"></label>
-                    </span>
-                </td>
-                <td><span>Sao đỏ</span></td>
-                <td><span>Thứ 7</span></td>
-                <td><span>7:00</span></td>
-                <td><span>7:30</span></td>
-            </tr>
-            <tr>
-                <td>
-                    <span class="custom-checkbox">
-                        <input type="checkbox" name="options" id="7">
-                        <label for="7"></label>
-                    </span>
-                </td>
-                <td><span>Nhóm tổng hợp điểm</span></td>
-                <td><span>Thứ 6</span></td>
-                <td><span>17:00</span></td>
-                <td><span>19:00</span></td>
-            </tr>
             </tbody>
         </table>
         <div class="table-paging">
@@ -148,12 +64,10 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body text-center">
-                <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                <h5 id="message-deleteModal">Bạn có muốn <b>XÓA</b> thời gian chấm này không?</h5>
             </div>
             <div class="modal-footer">
                 <input type="submit" class="btn btn-danger" data-toggle="modal" data-target="#deleteSuccess"
-                       data-dismiss="modal" value="CÓ">
+                       id="deleteTime" data-dismiss="modal" value="CÓ">
                 <input type="button" class="btn btn-primary" data-dismiss="modal" value="KHÔNG">
             </div>
         </div>
@@ -165,8 +79,6 @@
     <div class="modal-dialog  modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-body text-center">
-                <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
-                <h5 id="message-deleteSuccess">Xóa thời gian chấm thành công!</h5>
             </div>
             <div class="modal-footer">
                 <a type="button" class="btn btn-primary" th:href="@{manageViolationEnteringTime}">ĐÓNG</a>
