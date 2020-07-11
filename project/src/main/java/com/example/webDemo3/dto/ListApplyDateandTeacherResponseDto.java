@@ -7,17 +7,11 @@ import lombok.Data;
 import java.sql.Date;
 import java.util.List;
 
-/**
- * lamnt98
- * 03/07
- */
 @Data
-public class ViewClassTimeTableResponseDto {
+public class ListApplyDateandTeacherResponseDto {
     private Date currentDate;
-    private Integer classId;
+    private Integer teacherId;
     private List<Date> appyDateList;
-    private List<Class> classList;
-    private List<List<MorInforTimeTableDto>> morningTimeTableList;
-    private List<List<AfterInforTimeTableDto>> afternoonTimeTableTableList;
+    private List<Teacher> teacherList;
     private MessageDTO message;
 }

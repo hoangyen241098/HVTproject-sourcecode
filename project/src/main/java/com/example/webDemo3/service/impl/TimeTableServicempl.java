@@ -35,77 +35,47 @@ public class TimeTableServicempl implements TimeTableService {
     /**
      * lamnt98
      * 01/07
-     * view timetable of class by currentDate and classId default
+     * Get applyDate list, class list, currentId, classId
      * @param
-     * @return ViewClassTimeTableResponseDto
+     * @return ListApplyDateAndClassResponseDto
      */
     @Override
-    public ViewClassTimeTableResponseDto viewClassTimeTable() {
-        ViewClassTimeTableResponseDto timeTabel = new ViewClassTimeTableResponseDto();
-        List<List<MorInforTimeTableDto>> morningTimeTableList = new ArrayList<>();
-        List<List<AfterInforTimeTableDto>> afternoonTimeTableTableList = new ArrayList<>();
+    public ListApplyDateAndClassResponseDto getApplyDateAndClassList() {
+        ListApplyDateAndClassResponseDto timeTabel = new ListApplyDateAndClassResponseDto();
         MessageDTO messageDTO = new MessageDTO();
         Date currentDate = null;
         Integer classId = null;
         List<Date> appyDateList;
-        List<TimeTable> morningTimeTable = null;
-        List<TimeTable> afternoonTimeTable = null;
         List<Class> classList = null;
 
         try {
             appyDateList = timetableRepository.getAllDate();
 
-            if(appyDateList.size() != 0){
-                currentDate = appyDateList.get(0);
-                timeTabel.setCurrentDate(currentDate);
+            //check dateList empty or not
+            if(appyDateList.size() == 0){
+                messageDTO = Constant.LIST_DATE_EMPTY;
+                timeTabel.setMessage(messageDTO);
+                return timeTabel;
             }
+
+            currentDate = appyDateList.get(0);
+            timeTabel.setCurrentDate(currentDate);
 
             timeTabel.setAppyDateList(appyDateList);
 
             classList = classRepository.findAll();
 
-            //check classId null or not and classList empty or not
-            if(classList.size() != 0){
-                classId = classList.get(0).getClassId();
-                timeTabel.setClassId(classId);
+            //check classList empty or not
+            if(classList.size() == 0){
+                messageDTO = Constant.LIST_CLASS_EMPTY;
+                timeTabel.setMessage(messageDTO);
+                return timeTabel;
             }
 
             timeTabel.setClassList(classList);
+            classId = classList.get(0).getClassId();
+            timeTabel.setClassId(classId);
 
-
-
-            //check class exists or not
-            if(classRepository.findByClassId(classId) == null){
-                messageDTO = Constant.CLASS_NOT_EXIST;
-                timeTabel.setMessage(messageDTO);
-                return  timeTabel;
-            }
-
-            for(int i = 0; i < 4; i++){
-                morningTimeTable = timetableRepository.getMorningClassTimeTable(currentDate,classId,i);
-                afternoonTimeTable = timetableRepository.getAfternoonClassTimeTable(currentDate,classId,i);
-
-                if(morningTimeTable.size() == 0 && afternoonTimeTable.size() == 0 ){
-                    break;
-                }
-
-                if(morningTimeTable.size() != 0){
-                    morningTimeTableList.add(changeMorningTimeTable(morningTimeTable));
-                }
-
-                if(afternoonTimeTable.size() != 0){
-                    afternoonTimeTableTableList.add(changeAfternoonTimeTable(afternoonTimeTable));
-                }
-            }
-
-            if(morningTimeTableList.size() == 0 && afternoonTimeTableTableList.size() == 0 ){
-                messageDTO = Constant.TIMETABLE_NULL;
-                timeTabel.setMessage(messageDTO);
-                return  timeTabel;
-            }
-
-            timeTabel.setMorningTimeTableList(morningTimeTableList);
-            timeTabel.setAfternoonTimeTableTableList(afternoonTimeTableTableList);
             messageDTO = Constant.SUCCESS;
             timeTabel.setMessage(messageDTO);
         }catch (Exception e){
@@ -120,30 +90,31 @@ public class TimeTableServicempl implements TimeTableService {
     /**
      * lamnt98
      * 07/09
-     * view timetable of teacher by currentDate and teacherId default
+     * Get applyDate list, teacher list, currentId, teacherId
      * @param
-     * @return ViewTeacherTimeTableReponseDto
+     * @return ListApplyDateandTeacherResponseDto
      */
     @Override
-    public ViewTeacherTimeTableReponseDto viewTeacherTimeTable() {
-        ViewTeacherTimeTableReponseDto timeTabel = new ViewTeacherTimeTableReponseDto();
-        List<List<MorInforTimeTableDto>> morningTimeTableList = new ArrayList<>();
-        List<List<AfterInforTimeTableDto>> afternoonTimeTableTableList = new ArrayList<>();
+    public ListApplyDateandTeacherResponseDto getApplyDateAndTeacherList() {
+        ListApplyDateandTeacherResponseDto timeTabel = new ListApplyDateandTeacherResponseDto();
         MessageDTO messageDTO = new MessageDTO();
         Date currentDate = null;
         Integer teacherId = null;
         List<Date> appyDateList;
-        List<TimeTable> morningTimeTable = null;
-        List<TimeTable> afternoonTimeTable = null;
         List<Teacher> teacherList = null;
         Teacher teacher = null;
 
         try {
             appyDateList = timetableRepository.getAllDate();
 
-            if(appyDateList.size() != 0){
-                    currentDate = appyDateList.get(0);
+            //check dateList empty or not
+            if(appyDateList.size() == 0){
+                messageDTO = Constant.LIST_DATE_EMPTY;
+                timeTabel.setMessage(messageDTO);
+                return timeTabel;
             }
+
+            currentDate = appyDateList.get(0);
             timeTabel.setCurrentDate(currentDate);
 
             teacherList = teacherRepository.findAll();
@@ -152,10 +123,14 @@ public class TimeTableServicempl implements TimeTableService {
             timeTabel.setTeacherList(teacherList);
 
             //check teacher list empty
-            if(teacherList.size() != 0){
-                teacherId = teacherList.get(0).getTeacherId();
-                timeTabel.setTeacherId(teacherId);
+            if(teacherList.size() == 0){
+                messageDTO = Constant.TEACHERLIST_NULL;
+                timeTabel.setMessage(messageDTO);
+                return timeTabel;
             }
+
+            teacherId = teacherList.get(0).getTeacherId();
+            timeTabel.setTeacherId(teacherId);
 
             teacher = teacherRepository.findById(teacherId).orElse(null);
             //check teacher exists or not
@@ -165,26 +140,6 @@ public class TimeTableServicempl implements TimeTableService {
                 return  timeTabel;
             }
 
-
-            morningTimeTable = timetableRepository.getMorningTeacherTimeTable(currentDate,teacherId);
-            afternoonTimeTable = timetableRepository.getAfternoonTeacherTimeTable(currentDate,teacherId);
-
-            if(morningTimeTable.size() != 0){
-                morningTimeTableList.add(changeMorningTimeTable(morningTimeTable));
-            }
-
-            if(afternoonTimeTable.size() != 0){
-                afternoonTimeTableTableList.add(changeAfternoonTimeTable(afternoonTimeTable));
-            }
-
-            if(morningTimeTableList.size() == 0 && afternoonTimeTableTableList.size() == 0 ){
-                messageDTO = Constant.TIMETABLE_NULL;
-                timeTabel.setMessage(messageDTO);
-                return  timeTabel;
-            }
-
-            timeTabel.setMorningTimeTableList(morningTimeTableList);
-            timeTabel.setAfternoonTimeTableTableList(afternoonTimeTableTableList);
             messageDTO = Constant.SUCCESS;
             timeTabel.setMessage(messageDTO);
         }catch (Exception e){

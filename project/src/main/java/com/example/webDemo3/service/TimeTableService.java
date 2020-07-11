@@ -7,9 +7,9 @@ import com.example.webDemo3.dto.request.TeacherTimeTableRequestDto;
 public interface TimeTableService {
 
 
-    public ViewClassTimeTableResponseDto viewClassTimeTable();
+    public ListApplyDateAndClassResponseDto getApplyDateAndClassList();
 
-    public ViewTeacherTimeTableReponseDto viewTeacherTimeTable();
+    public ListApplyDateandTeacherResponseDto getApplyDateAndTeacherList();
 
     public SearchTimeTableResponseDto searchClassTimeTable(ClassTimeTableRequestDto classTimeTable);
 

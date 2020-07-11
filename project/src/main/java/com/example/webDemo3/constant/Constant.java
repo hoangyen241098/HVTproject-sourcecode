@@ -154,6 +154,10 @@ public class Constant {
             new MessageDTO(1,"Không có kết quả.");
     public static final MessageDTO SCHOOLYEAR_EMPTY =
             new MessageDTO(1,"Không tồn tại năm học này.");
+    public static final MessageDTO LIST_DATE_EMPTY =
+            new MessageDTO(1,"Danh sách ngày trống.");
+    public static final MessageDTO LIST_CLASS_EMPTY =
+            new MessageDTO(1,"Danh sách lớp trống.");
     /**
      * Success message
      */
