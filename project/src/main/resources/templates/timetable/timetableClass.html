@@ -13,7 +13,7 @@
     <script th:src="@{/js/popper.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <!--Select2-->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet"/>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
     <!--Font-Awesome-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"/>
@@ -27,19 +27,14 @@
         <div class="table-title">
             <h2>Thời khóa biểu của lớp</h2>
             <div class="search">
-                <div class="col-xl-4 d-inline-block">
+                <div class="col-xl-5 d-inline-block">
                     <div class="search-line">
-                        <span>Năm học</span>
-                        <select class="combobox searchable" id="year" onchange="changeSelected()">
-                        </select>
-                    </div>
-                    <div class="search-line combo-box-week">
-                        <span>Tuần</span>
-                        <select class="combobox searchable" id="week">
+                        <span>Ngày áp dụng</span>
+                        <select class="combobox searchable" id="appyDateList">
                         </select>
                     </div>
                 </div>
-                <div class="col-xl-2 d-inline-block"></div>
+                <div class="col-xl-1 d-inline-block"></div>
                 <div class="col-xl-4 d-inline-block">
                     <div class="search-line">
                         <span>Lớp</span>
@@ -153,6 +148,110 @@
             </tr>
             </tbody>
         </table>
+        <div class="hide" id="timetablePlus">
+            <h4 class="mt-5">Thời khóa biểu bổ sung</h4>
+            <table class="timetable table-bordered" id="timetable">
+                <thead>
+                <tr class="timtable-title">
+                    <th colspan="2" style="width: 15%">Buổi</th>
+                    <th style="width: 10%">Tiết</th>
+                    <th>Thứ 2</th>
+                    <th>Thứ 3</th>
+                    <th>Thứ 4</th>
+                    <th>Thứ 5</th>
+                    <th>Thứ 6</th>
+                    <th>Thứ 7</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="morning">
+                    <td rowspan="5" colspan="2" class="session"><p>SÁNG</p></td>
+                    <td class="slot">1</td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                </tr>
+                <tr class="morning">
+                    <td class="slot">2</td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                </tr>
+                <tr class="morning">
+                    <td class="slot">3</td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                </tr>
+                <tr class="morning">
+                    <td class="slot">4</td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                </tr>
+                <tr class="morning">
+                    <td class="slot">5</td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                </tr>
+                <tr class="afternoon">
+                    <td rowspan="4" class="session"><p>CHIỀU</p></td>
+                    <td rowspan="2" class="week">(Tuần chẵn)</td>
+                    <td class="slot">1</td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                </tr>
+                <tr class="afternoon">
+                    <td class="slot">2</td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                </tr>
+                <tr class="afternoon isOdd">
+                    <td rowspan="2" class="week">(Tuần lẻ)</td>
+                    <td class="slot">1</td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                </tr>
+                <tr class="afternoon isOdd">
+                    <td class="slot">2</td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
         <table class="table-err table-bordered hide">
         </table>
     </div>

@@ -1,14 +1,15 @@
 var infoSearch = {
-    weekId,
+    applyDate,
     classId
 }
-var yearId, weekId, classId, weekIdCurrent;
+var classId, applyDate;
 $(document).ready(function () {
     $("#class").select2();
 });
+
 /*Load years and list*/
 $.ajax({
-    url: '/api/timetable/listyearandclass',
+    url: '/api/timetable/viewclasstimetable',
     type: 'POST',
     beforeSend: function () {
         $('body').addClass("loading")
@@ -17,21 +18,22 @@ $.ajax({
         $('body').removeClass("loading")
     },
     success: function (data) {
-        if (data.messageDTO.messageCode == 0) {
-            weekIdCurrent = data.weekIdCurrent;
-            if (data.listYear == null) {
-                $('#year').html(`<option>Không có năm học nào.</option>`);
+        var messageCode = data.message.messageCode;
+        var message = data.message.message;
+        if (messageCode == 0) {
+            applyDate = data.currentDate;
+            if (data.appyDateList == null) {
+                $('#appyDateList').html(`<option>Không có ngày áp dụng nào.</option>`);
             } else {
-                $('#year').html("");
-                $.each(data.listYear, function (i, item) {
-                    if (item.yearID == data.yearIdCurrent) {
-                        $('#year').append(`<option value="` + item.yearID + `" selected>` + item.fromYear + ` - ` + item.toYear + `</option>`);
+                $('#appyDateList').html("");
+                $.each(data.appyDateList, function (i, item) {
+                    if (item == data.currentDate) {
+                        $('#appyDateList').append(`<option value="` + item + `" selected>` + convertDate(item) + `</option>`);
                     } else {
-                        $('#year').append(`<option value="` + item.yearID + `">` + item.fromYear + ` - ` + item.toYear + `</option>`);
+                        $('#appyDateList').append(`<option value="` + item + `">` + convertDate(item) + `</option>`);
                     }
                 });
-                yearId = $('#year option:selected').val();
-                loadWeek();
+                applyDate = $('#appyDateList option:selected').val();
             }
             if (data.classList == null) {
                 $('#class').html(`<option value="">Không có lớp nào.</option>`);
@@ -45,12 +47,16 @@ $.ajax({
                 classId = $('#class option:selected').val();
             }
             infoSearch = {
-                weekId: weekIdCurrent,
-                classId: classId
+                applyDate: applyDate,
+                classId: 30
             }
             loadTimetable();
         } else {
-            console.log(data.messageDTO.message);
+            $('.timetable').addClass('hide');
+            $('.table-err').removeClass('hide');
+            $('.table-err').html(
+                ` <tr><td colspan="8" class="userlist-result">` + message + `</td> </tr> `
+            )
         }
     },
     failure: function (errMsg) {
@@ -63,7 +69,7 @@ $.ajax({
 /*Load timetable*/
 function loadTimetable() {
     $.ajax({
-        url: '/api/timetable/classtimetable',
+        url: '/api/timetable/searchclasstimetable',
         type: 'POST',
         data: JSON.stringify(infoSearch),
         beforeSend: function () {
@@ -75,74 +81,53 @@ function loadTimetable() {
         success: function (data) {
             $('.timetable').removeClass('hide');
             $('.table-err').addClass('hide');
-            var messageCode = data.messageDTO.messageCode;
-            var message = data.messageDTO.message;
+            var messageCode = data.message.messageCode;
+            var message = data.message.message;
 
             if (messageCode == 0) {
                 $('.timetable').removeClass('hide');
                 $('.table-err').addClass('hide');
-                var morning = data.morningTimeTable;
-                var afternoon = data.afternoonTimeTable;
-                if (morning == null) {
-                    $('.morning .data').html('');
+                var afternoon, morning;
+                if (data.afternoonTimeTableTableList.length > 1 ||
+                    data.morningTimeTableList.length > 1) {
+                    $('#timetablePlus').removeClass('hide');
                 } else {
-                    for (var i = 0; i < morning.length; i++) {
-                        var slot = morning[i].slotId;
-                        var dayId = morning[i].dayId;
-                        var subject = morning[i].subject;
-                        var teacher = morning[i].teacherIdentifier;
-                        if (teacher == null) {
-                            teacher = "";
-                        }
-                        if (slot == 1) {
-                            $('tbody').find('tr').eq(slot - 1).find('td').eq(dayId + 1).html(
-                                `<div class="subject">` + subject + `</div>
-                            <div class="teacher">` + teacher + `</div>`
-                            )
+                    $('#timetablePlus').addClass('hide');
+                }
+                if (data.morningTimeTableList.length <= 1) {
+                    morning = data.morningTimeTableList[0];
+                    if (morning == null) {
+                        $('.morning .data').html('');
+                    } else {
+                        morningTimetable('tbody', morning);
+                    }
+                } else {
+                    for (var i = 0; i < data.morningTimeTableList.length; i++) {
+                        $('#timetablePlus').find('tr.afternoon').addClass('hide');
+                        morning = data.morningTimeTableList[i];
+                        if (i == 0) {
+                            morningTimetable('tbody', morning);
                         } else {
-                            $('tbody').find('tr').eq(slot - 1).find('td').eq(dayId).html(
-                                `<div class="subject">` + subject + `</div>
-                            <div class="teacher">` + teacher + `</div>`
-                            )
+                            morningTimetable('#timetablePlus tbody', morning);
                         }
                     }
                 }
-                if (afternoon == null) {
-                    $('.afternoon .data').html('');
+                if (data.afternoonTimeTableTableList.length <= 1) {
+                    $('#timetablePlus').addClass('hide');
+                    afternoon = data.afternoonTimeTableTableList[0];
+                    if (afternoon == null) {
+                        $('.afternoon .data').html('');
+                    } else {
+                        afternoonTimetable('tbody', afternoon);
+                    }
                 } else {
-                    for (var i = 0; i < afternoon.length; i++) {
-                        var slot = afternoon[i].slotId;
-                        var dayId = afternoon[i].dayId;
-                        var subject = afternoon[i].subject;
-                        var teacher = afternoon[i].teacherIdentifier;
-                        var isOddWeek = afternoon[i].isOddWeek;
-                        if (teacher == null) {
-                            teacher = "";
-                        }
-                        if (isOddWeek == 0 || isOddWeek == null) {
-                            if (slot == 1) {
-                                $('tbody').find('tr').eq(slot + 4).find('td').eq(dayId + 2).html(
-                                    `<div class="subject">` + subject + `</div>
-                            <div class="teacher">` + teacher + `</div>`
-                                )
-                            } else {
-                                $('tbody').find('tr').eq(slot + 4).find('td').eq(dayId).html(
-                                    `<div class="subject">` + subject + `</div>
-                            <div class="teacher">` + teacher + `</div>`
-                                )
-                            }
+                    for (var i = 0; i < data.afternoonTimeTableTableList.length; i++) {
+                        $('#timetablePlus').find('tr.morning').addClass('hide');
+                        afternoon = data.afternoonTimeTableTableList[i];
+                        if (i == 0) {
+                            afternoonTimetable('tbody', afternoon);
                         } else {
-                            if (slot == 1) {
-                                $('tbody').find('tr').eq(slot + 6).find('td').eq(dayId + 1).html(
-                                    `<div class="subject">` + subject + `</div>
-                            <div class="teacher">` + teacher + `</div>`
-                                )
-                            } else {
-                                $('tbody').find('tr').eq(slot + 6).find('td').eq(dayId).html(
-                                    `<div class="subject">` + subject + `</div>
-                            <div class="teacher">` + teacher + `</div>`
-                                )
-                            }
+                            afternoonTimetable('#timetablePlus .timetable tbody', afternoon);
                         }
                     }
                 }
@@ -166,21 +151,78 @@ function loadTimetable() {
     });
 }
 
-function changeSelected() {
-    yearId = $('#year option:selected').val();
-    loadWeek();
-    weekId = $('#week option:selected').val();
-}
-
 /*Search timetable for Class*/
 $('#search').click(function (e) {
-    weekId = $('#week option:selected').val();
+    applyDate = $('#appyDateList option:selected').val();
     classId = $('#class option:selected').val();
     infoSearch = {
-        weekId: weekId,
+        applyDate: applyDate,
         classId: classId,
     }
     console.log(JSON.stringify(infoSearch));
     $('tbody .data').html('');
     loadTimetable();
 })
+
+/*Add timetable morning*/
+function morningTimetable(pos, morning) {
+    for (var i = 0; i < morning.length; i++) {
+        var slot = morning[i].slotId;
+        var dayId = morning[i].dayId;
+        var subject = morning[i].subject;
+        var teacher = morning[i].teacherIdentifier;
+        if (teacher == null) {
+            teacher = "";
+        }
+        if (slot == 1) {
+            $(pos).find('tr').eq(slot - 1).find('td').eq(dayId + 1).html(
+                `<div class="subject">` + subject + `</div>
+                            <div class="teacher">` + teacher + `</div>`
+            )
+        } else {
+            $(pos).find('tr').eq(slot - 1).find('td').eq(dayId).html(
+                `<div class="subject">` + subject + `</div>
+                            <div class="teacher">` + teacher + `</div>`
+            )
+        }
+    }
+}
+
+/*Add timetable afternoon*/
+function afternoonTimetable(pos, afternoon) {
+    for (var i = 0; i < afternoon.length; i++) {
+        var slot = afternoon[i].slotId;
+        var dayId = afternoon[i].dayId;
+        var subject = afternoon[i].subject;
+        var teacher = afternoon[i].teacherIdentifier;
+        var isOddWeek = afternoon[i].isOddWeek;
+        if (teacher == null) {
+            teacher = "";
+        }
+        if (isOddWeek == 0 || isOddWeek == null) {
+            if (slot == 1) {
+                $(pos).find('tr').eq(slot + 4).find('td').eq(dayId + 2).html(
+                    `<div class="subject">` + subject + `</div>
+                            <div class="teacher">` + teacher + `</div>`
+                )
+            } else {
+                $(pos).find('tr').eq(slot + 4).find('td').eq(dayId).html(
+                    `<div class="subject">` + subject + `</div>
+                            <div class="teacher">` + teacher + `</div>`
+                )
+            }
+        } else {
+            if (slot == 1) {
+                $(pos).find('tr').eq(slot + 6).find('td').eq(dayId + 1).html(
+                    `<div class="subject">` + subject + `</div>
+                            <div class="teacher">` + teacher + `</div>`
+                )
+            } else {
+                $(pos).find('tr').eq(slot + 6).find('td').eq(dayId).html(
+                    `<div class="subject">` + subject + `</div>
+                            <div class="teacher">` + teacher + `</div>`
+                )
+            }
+        }
+    }
+}
