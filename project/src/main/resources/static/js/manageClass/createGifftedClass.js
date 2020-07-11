@@ -1,14 +1,13 @@
 var giftedClassName;
 
-//click button summit to create gifted class name
+// click button summit to create gifted class name
 $("#submit").click(function (e) {
 
     giftedClassName = $('#giftedClassName').val().trim();
-    if(giftedClassName == ""){
+    if (giftedClassName == "") {
         $('.giftedClassName-err').text("Hãy nhập tên hệ chuyên !");
         return false;
-    }
-    else {
+    } else {
         var addGiftedClass = {
             giftedClassName: giftedClassName
         }
@@ -28,19 +27,38 @@ $("#submit").click(function (e) {
                 var message = data.message;
                 if (messageCode == 0) {
                     $("#createSuccess .modal-body").html("");
-                    $("#createSuccess .modal-body").append(
-                        `
+                    $("#createSuccess .modal-body").append(`
                         <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
                         <h5>Tạo hệ chuyên thành công!</h5>
-                        `)
-                    $('#createSuccess').css('display', 'block');
+                    `)
+                    $('#createSuccess .modal-footer').html('');
+                    $('#createSuccess .modal-footer').append(`
+                        <a type="button" class="btn btn-customer" href="createClass">TẠO LỚP</a>
+                        <a type="button" class="btn btn-primary" href="createGifftedClass">ĐÓNG</a>
+                    `);
                     $('.giftedClassName-err').text("");
                 } else {
-                    $('.giftedClassName-err').text(message);
+                    $("#createSuccess .modal-body").html("");
+                    $("#createSuccess .modal-body").append(`
+                        <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+                        <h5>` + message + `</h5>
+                    `);
+                    $('#createSuccess .modal-footer').html('');
+                    $('#createSuccess .modal-footer').append(`
+                        <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG"/>
+                    `);
                 }
             },
             failure: function (errMsg) {
-                $('.giftedClassName-err').text(errMsg);
+                $("#createSuccess .modal-body").html("");
+                $("#createSuccess .modal-body").append(`
+                    <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+                    <h5>` + errMsg + `</h5>
+                `);
+                $('#createSuccess .modal-footer').html('');
+                $('#createSuccess .modal-footer').append(`
+                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG"/>
+                `);
             },
             dataType: "json",
             contentType: "application/json"
