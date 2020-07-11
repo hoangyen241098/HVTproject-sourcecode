@@ -49,9 +49,11 @@ a:hover {
 .navbar-toggler i {
     font-size: 30px;
 }
+
 .nav-item:last-child {
     margin: 0 20px;
 }
+
 .dropdown-menu {
     display: block;
     opacity: 0;
@@ -188,6 +190,16 @@ a:hover {
     }
 }
 
+.barex {
+    font-size: 30px !important;
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 8px 16px;
+    text-align: center;
+    cursor: pointer;
+}
+
 .mega-menu {
     background-color: #4267b2;
     margin-top: 28px;
@@ -203,6 +215,7 @@ a:hover {
     left: 10%;
     transform: translateY(20%);
     transition: all .5s;
+    z-index: 1000;
 }
 
 
@@ -235,20 +248,18 @@ a:hover {
     padding: 0;
 }
 
-.stander li {
-    padding-left: 20px;
-}
-
 ul.stander li a {
     padding: 3px 0px;
+    padding-left: 20px;
     color: #fefefe;
     text-decoration: none;
 }
 
-ul.stander li a:hover, ul.stander li a:visited {
+ul.stander li a:hover, ul.stander li.active {
     color: #fefefe;
     font-weight: 500;
     cursor: pointer;
+    background: #7a96ca;
 }
 
 .mega-menu:before, .mega-menu:after {
@@ -269,13 +280,15 @@ ul.stander li a:hover, ul.stander li a:visited {
     .nav-link {
         text-align: left;
     }
-    .mega-menu{
+
+    .mega-menu {
         display: none;
         padding: 0;
         width: 100%;
         margin-top: 0;
     }
-    .mega-menu.show{
+
+    .mega-menu.show {
         position: static;
     }
 }
@@ -554,6 +567,10 @@ tr.selected {
 .table-paging input.table-paging__page_cur:hover {
     cursor: default;
     text-decoration: none;
+}
+
+#prevPage, #nextPage {
+    min-width: 80px;
 }
 
 #prevPage:disabled, #nextPage:disabled {
