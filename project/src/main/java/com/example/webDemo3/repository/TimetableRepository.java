@@ -13,6 +13,8 @@ import java.util.List;
 @Repository
 public interface TimetableRepository extends JpaRepository<TimeTable,Long> {
 
+    @Query(value = "select distinct t.applyDate from TimeTable t where t.applyDate = :date ")
+    Date getAllByApplyDate(@Param("date") Date date);
 
     @Query(value = "select distinct t.applyDate from TimeTable t order by t.applyDate desc")
     List<Date> getAllDate();
