@@ -1,15 +1,15 @@
 var infoSearch = {
-    weekId,
+    applyDate,
     teacherId
 }
-var yearId, weekId, teacherId, weekIdCurrent;
+var applyDate, teacherId;
 
 $(document).ready(function () {
     $("#teacher").select2();
 });
 /*Load years and list*/
 $.ajax({
-    url: '/api/timetable/listyearandteacher',
+    url: '/api/timetable/getapplydateandteacher',
     type: 'POST',
     beforeSend: function () {
         $('body').addClass("loading")
@@ -18,21 +18,21 @@ $.ajax({
         $('body').removeClass("loading")
     },
     success: function (data) {
-        if (data.messageDTO.messageCode == 0) {
-            weekIdCurrent = data.weekIdCurrent;
-            if (data.listYear == null) {
-                $('#year').html(`<option value="">Không có năm học nào</option>`);
+        var messageCode = data.message.messageCode;
+        var message = data.message.message;
+        if (messageCode == 0) {
+            if (data.appyDateList == null) {
+                $('#appyDateList').html(`<option>Không có ngày áp dụng nào.</option>`);
             } else {
-                $('#year').html("")
-                $.each(data.listYear, function (i, item) {
-                    if (item.yearID == data.yearIdCurrent) {
-                        $('#year').append(`<option value="` + item.yearID + `" selected>` + item.fromYear + ` - ` + item.toYear + `</option>`);
+                $('#appyDateList').html("");
+                $.each(data.appyDateList, function (i, item) {
+                    if (item == data.currentDate) {
+                        $('#appyDateList').append(`<option value="` + item + `" selected>` + convertDate(item) + `</option>`);
                     } else {
-                        $('#year').append(`<option value="` + item.yearID + `">` + item.fromYear + ` - ` + item.toYear + `</option>`);
+                        $('#appyDateList').append(`<option value="` + item + `">` + convertDate(item) + `</option>`);
                     }
                 });
-                yearId = $('#year option:selected').val();
-                loadWeek();
+                applyDate = $('#appyDateList option:selected').val();
             }
             if (data.teacherList == null) {
                 $('#teacher').html(`<option value="">Không có giáo viên nào</option>`);
@@ -44,16 +44,24 @@ $.ajax({
                 teacherId = $('#teacher option:selected').val();
             }
             infoSearch = {
-                weekId: weekIdCurrent,
+                applyDate: applyDate,
                 teacherId: teacherId
             }
             loadTimetable();
         } else {
-            console.log(data.messageDTO.message);
+            $('.timetable').addClass('hide');
+            $('.table-err').removeClass('hide');
+            $('.table-err').html(
+                ` <tr><td colspan="8" class="userlist-result">` + message + `</td> </tr> `
+            )
         }
     },
     failure: function (errMsg) {
-        console.log(errMsg);
+        $('.timetable').addClass('hide');
+        $('.table-err').removeClass('hide');
+        $('.table-err').html(
+            ` <tr><td colspan="8" class="userlist-result">` + errMsg + `</td> </tr> `
+        )
     },
     dataType: "json",
     contentType: "application/json"
@@ -64,7 +72,7 @@ loadTimetable();
 /*Load timetable*/
 function loadTimetable() {
     $.ajax({
-        url: '/api/timetable/teachertimetable',
+        url: '/api/timetable/searchteachertimetable',
         type: 'POST',
         data: JSON.stringify(infoSearch),
         beforeSend: function () {
@@ -76,14 +84,14 @@ function loadTimetable() {
         success: function (data) {
             $('.timetable').removeClass('hide');
             $('.table-err').addClass('hide');
-            var messageCode = data.messageDTO.messageCode;
-            var message = data.messageDTO.message;
+            var messageCode = data.message.messageCode;
+            var message = data.message.message;
 
             if (messageCode == 0) {
                 $('.timetable').removeClass('hide');
                 $('.table-err').addClass('hide');
-                var morning = data.morningTimeTable;
-                var afternoon = data.afternoonTimeTable;
+                var morning = data.morningTimeTableList[0];
+                var afternoon = data.afternoonTimeTableTableList[0];
                 if (morning == null) {
                     $('.morning .data').html('');
                 } else {
@@ -168,18 +176,12 @@ function loadTimetable() {
     });
 }
 
-function changeSelected() {
-    yearId = $('#year option:selected').val();
-    loadWeek();
-    weekId = $('#week option:selected').val();
-}
-
 /*Search timetable for Teacher*/
 $('#search').click(function (e) {
-    weekId = $('#week option:selected').val();
+    applyDate = $('#appyDateList option:selected').val();
     teacherId = $('#teacher option:selected').val();
     infoSearch = {
-        weekId: weekId,
+        applyDate: applyDate,
         teacherId: teacherId,
     }
     console.log(JSON.stringify(infoSearch));
