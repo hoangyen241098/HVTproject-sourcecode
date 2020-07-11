@@ -9,7 +9,7 @@ $(document).ready(function () {
 
 /*Load years and list*/
 $.ajax({
-    url: '/api/timetable/viewclasstimetable',
+    url: '/api/timetable/getapplydateandclass',
     type: 'POST',
     beforeSend: function () {
         $('body').addClass("loading")
@@ -48,7 +48,7 @@ $.ajax({
             }
             infoSearch = {
                 applyDate: applyDate,
-                classId: 30
+                classId: classId
             }
             loadTimetable();
         } else {
@@ -91,6 +91,16 @@ function loadTimetable() {
                 if (data.afternoonTimeTableTableList.length > 1 ||
                     data.morningTimeTableList.length > 1) {
                     $('#timetablePlus').removeClass('hide');
+                    var count;
+                    if (data.afternoonTimeTableTableList.length > data.morningTimeTableList.length) {
+                        count = data.afternoonTimeTableTableList.length;
+                    } else {
+                        count = data.morningTimeTableList.length;
+                    }
+                    $('#timetablePlus').html(`<h4 class="mt-5">Thời khóa biểu bổ sung</h4>`);
+                    for (var i = 1; i < count; i++) {
+                        addTimetable(i);
+                    }
                 } else {
                     $('#timetablePlus').addClass('hide');
                 }
@@ -103,12 +113,12 @@ function loadTimetable() {
                     }
                 } else {
                     for (var i = 0; i < data.morningTimeTableList.length; i++) {
-                        $('#timetablePlus').find('tr.afternoon').addClass('hide');
+                        var idTimetable = "#timetable" + i + " tbody";
                         morning = data.morningTimeTableList[i];
                         if (i == 0) {
                             morningTimetable('tbody', morning);
                         } else {
-                            morningTimetable('#timetablePlus tbody', morning);
+                            morningTimetable(idTimetable, morning);
                         }
                     }
                 }
@@ -122,12 +132,12 @@ function loadTimetable() {
                     }
                 } else {
                     for (var i = 0; i < data.afternoonTimeTableTableList.length; i++) {
-                        $('#timetablePlus').find('tr.morning').addClass('hide');
+                        var idTimetable = "#timetable" + i + " tbody";
                         afternoon = data.afternoonTimeTableTableList[i];
                         if (i == 0) {
                             afternoonTimetable('tbody', afternoon);
                         } else {
-                            afternoonTimetable('#timetablePlus .timetable tbody', afternoon);
+                            afternoonTimetable(idTimetable, afternoon);
                         }
                     }
                 }
@@ -225,4 +235,110 @@ function afternoonTimetable(pos, afternoon) {
             }
         }
     }
+}
+
+function addTimetable(id) {
+    $('#timetablePlus').append(`
+    <table class="timetable table-bordered" id="timetable` + id + `">
+                <thead>
+                <tr class="timtable-title">
+                    <th colspan="2" style="width: 15%">Buổi</th>
+                    <th style="width: 10%">Tiết</th>
+                    <th>Thứ 2</th>
+                    <th>Thứ 3</th>
+                    <th>Thứ 4</th>
+                    <th>Thứ 5</th>
+                    <th>Thứ 6</th>
+                    <th>Thứ 7</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="morning">
+                    <td rowspan="5" colspan="2" class="session"><p>SÁNG</p></td>
+                    <td class="slot">1</td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                </tr>
+                <tr class="morning">
+                    <td class="slot">2</td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                </tr>
+                <tr class="morning">
+                    <td class="slot">3</td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                </tr>
+                <tr class="morning">
+                    <td class="slot">4</td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                </tr>
+                <tr class="morning">
+                    <td class="slot">5</td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                </tr>
+                <tr class="afternoon">
+                    <td rowspan="4" class="session"><p>CHIỀU</p></td>
+                    <td rowspan="2" class="week">(Tuần chẵn)</td>
+                    <td class="slot">1</td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                </tr>
+                <tr class="afternoon">
+                    <td class="slot">2</td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                </tr>
+                <tr class="afternoon isOdd">
+                    <td rowspan="2" class="week">(Tuần lẻ)</td>
+                    <td class="slot">1</td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                </tr>
+                <tr class="afternoon isOdd">
+                    <td class="slot">2</td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                    <td class="data"></td>
+                </tr>
+                </tbody>
+            </table>
+    `)
 }
