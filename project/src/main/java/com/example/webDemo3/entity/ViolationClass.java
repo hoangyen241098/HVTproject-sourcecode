@@ -6,9 +6,6 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.sql.Date;
 
-/**
- * lamnt98 - 27/06
- */
 @Entity
 @Data
 @Table(name = "VIOLATION_CLASSES")
@@ -16,14 +13,25 @@ public class ViolationClass {
 
     @Id
     @Column(name = "VIOLATION_CLASS_ID")
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "CLASS_ID")
     private Integer classId;
+//    @ManyToOne
+//    @JoinColumn(name = "CLASS_ID")
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    private Class classSchool;
 
-    @Column(name = "VIOLATION_ID")
-    private Integer violatinId;
+    //        @Column(name = "VIOLATION_ID")
+//    private Integer violationId;
+    @ManyToOne
+    @JoinColumn(name = "VIOLATION_ID")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Violation violation;
+
 
     @Column(name = "QUANTITY")
     private Integer quantity;
@@ -40,10 +48,20 @@ public class ViolationClass {
     @Column(name = "WEEK_ID")
     private Integer weekId;
 
-    @Column(name = "YEAR_ID")
-    private Integer yearId;
+    //    @Column(name = "YEAR_ID")
+//    private Integer yearId;
+    @ManyToOne
+    @JoinColumn(name = "YEAR_ID")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private SchoolYear year;
 
-    @Column(name = "DAY_ID")
-    private Integer dayId;
+    //    @Column(name = "DAY_ID")
+//    private Integer dayId;
+    @ManyToOne
+    @JoinColumn(name = "DAY_ID")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Day day;
 
 }

@@ -27,9 +27,20 @@ public class ViolationHistoryServiceImpl implements ViolationHistoryService {
         List<ViolationClass> violationClassList = new ArrayList<>();
         List<Class> classList = classRepository.findByGifted(model.getGiftedId());
         for (int i = 0; i < classList.size(); i++) {
-            int classID = classList.get(i).getClassId();
+            Class classSchool = classList.get(i);
+            if (classSchool == null) break;
+            int fromYear = model.getFromYear();;
+            if(classSchool.getGrade() == 11){
+                fromYear = model.getFromYear()+1;
+            }
+            else if(classSchool.getGrade() == 12){
+                fromYear = model.getFromYear()+2;
+            }
+            List<ViolationClass> subList =violationClassRepository.findHistoryOfClass(classSchool.getClassId(),fromYear,
+                    model.getFromDate(),model.getToDate());
+            violationClassList.addAll(subList);
         }
-        violationClassList = violationClassRepository.findAll();
+        //violationClassList = violationClassRepository.findAll();
         return violationClassList;
     }
 
