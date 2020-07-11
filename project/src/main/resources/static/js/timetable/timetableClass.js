@@ -100,6 +100,16 @@ function loadTimetable() {
                     $('#timetablePlus').html(`<h4 class="mt-5">Thời khóa biểu bổ sung</h4>`);
                     for (var i = 1; i < count; i++) {
                         addTimetable(i);
+                        var idAfternoon = "#timetable" + i + " .afternoon";
+                        var idMorning = "#timetable" + i + " .morning";
+                        if (data.afternoonTimeTableTableList[i] == null) {
+                            $(idMorning).removeClass('hide');
+                            $(idAfternoon).addClass('hide');
+                        }
+                        if (data.morningTimeTableList[i] == null) {
+                            $(idMorning).addClass('hide');
+                            $(idAfternoon).removeClass('hide');
+                        }
                     }
                 } else {
                     $('#timetablePlus').addClass('hide');
