@@ -3,8 +3,11 @@ package com.example.webDemo3.ControllerTest;
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.controller.AdminController;
 import com.example.webDemo3.dto.MessageDTO;
+import com.example.webDemo3.dto.RoleListResponseDTO;
+import com.example.webDemo3.dto.SearchUserResponseDto;
 import com.example.webDemo3.dto.request.AddAccResquestDTO;
 import com.example.webDemo3.dto.request.DeleteAccountRequestDto;
+import com.example.webDemo3.dto.request.SearchUserRequestDto;
 import com.example.webDemo3.service.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,15 +27,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
- * lamnt98
- * 12/07
+/*
+kimpt142 - 12/07
  */
 @RunWith(SpringRunner.class)
 @WebMvcTest(AdminController.class)
-public class AdminController2Test {
+public class AdminControllerTest {
+
     @Autowired
-    private MockMvc mvc;
+    private MockMvc mockMvc;
 
     @MockBean
     private AddAccountService addAccountService;
@@ -55,6 +58,68 @@ public class AdminController2Test {
     @MockBean
     private GenerateAccountService generateAccountService;
 
+    @Test
+    public void testResetPassWord() throws Exception {
+
+        MessageDTO messageDTO = Constant.SUCCESS;
+
+        String[] userNameList = {"user1", "user2"};
+        String passWord = "hehe";
+
+        String content = "{\"userNameList\": [\"user1\", \"user2\"],\"passWord\" : \"hehe\"}";
+        given(resetPassService.resetMultiplePassword(userNameList, passWord)).willReturn(messageDTO);
+
+        mockMvc.perform(post("/api/admin/resetpassword").content(content)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect( jsonPath("$.messageCode", is(0)));
+    }
+
+    /**
+     * kimpt142 - 12/07
+     * Test search user by multiple condition
+     */
+    @Test
+    public void testSearchUser() throws Exception {
+        SearchUserRequestDto requestDto = new SearchUserRequestDto();
+        requestDto.setPageNumber(0);
+        requestDto.setUserName("user2");
+        requestDto.setOrderBy(1);
+        requestDto.setSortBy(0);
+        requestDto.setRoleId(1);
+
+        SearchUserResponseDto responseDto = new SearchUserResponseDto();
+        MessageDTO messageDTO = Constant.SUCCESS;
+        responseDto.setMessage(messageDTO);
+
+        String content = "{\"userName\" : \"user2\",\"roleId\" : \"1\",\"sortBy\": \"0\",\"orderBy\" : \"1\",\"pageNumber\" : \"0\"}";
+        given(searchUserService.searchUser(requestDto)).willReturn(responseDto);
+
+        mockMvc.perform(post("/api/admin/userlist").content(content)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect( jsonPath("$.message.messageCode", is(0)));
+    }
+
+    /**
+     * kimpt142 - 12/07
+     * Test search user by multiple condition
+     */
+    @Test
+    public void testGetRoleList() throws Exception {
+
+        RoleListResponseDTO responseDto = new RoleListResponseDTO();
+        MessageDTO messageDTO = Constant.SUCCESS;
+        responseDto.setMessage(messageDTO);
+
+        given(roleService.getAllRole()).willReturn(responseDto);
+
+        mockMvc.perform(post("/api/admin/rolelist")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect( jsonPath("$.message.messageCode", is(0)));
+    }
+
     /**
      * Test add account controller
      * @throws Exception
@@ -76,7 +141,7 @@ public class AdminController2Test {
         String content = "{\"userName\":\"user1234\",\"passWord\":\"123\",\"fullName\":\"\",\"roleId\":\"1\",\"phone\":\"\",\"email\":\"\",\"classId\":\"1\"}";
         given(addAccountService.addAccount(requestDto)).willReturn(message);
 
-        mvc.perform(post("/api/admin/createaccount").content(content)
+        mockMvc.perform(post("/api/admin/createaccount").content(content)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect( jsonPath("$.messageCode", is(0)));
@@ -100,7 +165,7 @@ public class AdminController2Test {
         String content = "{\"listUser\": [\"user1\",\"user3\"]}";
         given(deleteAccountService.deleteAccount(requestDto)).willReturn(message);
 
-        mvc.perform(post("/api/admin/deleteaccount").content(content)
+        mockMvc.perform(post("/api/admin/deleteaccount").content(content)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect( jsonPath("$.messageCode", is(0)));

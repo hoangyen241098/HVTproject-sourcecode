@@ -91,20 +91,4 @@ public class DeleteAccountServiceTest {
 
         Assert.assertEquals(message, deleteAccountService.deleteAccount(requestDto));
     }
-
-
-/*    @Test//(expected = ServiceException.class)
-    public void testException() {
-        MessageDTO message = new MessageDTO();
-        message.setMessageCode(1);
-
-
-        DeleteAccountRequestDto requestDto = new DeleteAccountRequestDto();
-        List<String> listUser = new ArrayList<>();
-        listUser.add("user2");
-        listUser.add("user3");
-        requestDto.setListUser(listUser);
-
-        Assert.assertEquals(message, deleteAccountService.deleteAccount(requestDto));
-    }*/
 }

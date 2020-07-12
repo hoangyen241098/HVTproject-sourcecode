@@ -20,9 +20,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.web.servlet.FlashMap;
+
 import static org.hamcrest.CoreMatchers.is;
 
 import static org.mockito.BDDMockito.given;
@@ -68,8 +71,8 @@ public class UserControllerTest {
         given(loginService.checkLoginUser(loginRequestDto)).willReturn(loginResponseDto);
 
         mvc.perform(post("/api/user/login").content(content)
-                .contentType(MediaType.APPLICATION_JSON))// Thực hiện GET REQUEST
-                .andExpect(status().isOk()) // Mong muốn Server trả về status 200
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
                 .andExpect( jsonPath("$.message.messageCode", is(0)));
     }
 
@@ -96,8 +99,8 @@ public class UserControllerTest {
         given(viewPerInfoService.getUserInformation(requestDto)).willReturn(responseDto);
 
         mvc.perform(post("/api/user/viewinformation").content(content)
-                .contentType(MediaType.APPLICATION_JSON))// Thực hiện GET REQUEST
-                .andExpect(status().isOk()) // Mong muốn Server trả về status 200
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
                 .andExpect( jsonPath("$.message.messageCode", is(0)));
     }
 
@@ -119,10 +122,22 @@ public class UserControllerTest {
         given(changePasswordService.checkChangePasswordUser(requestDto)).willReturn(message);
 
         mvc.perform(post("/api/user/changepassword").content(content)
-                .contentType(MediaType.APPLICATION_JSON))// Thực hiện GET REQUEST
-                .andExpect(status().isOk()) // Mong muốn Server trả về status 200
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
                 .andExpect( jsonPath("$.messageCode", is(0)));
     }
+    @Test
+    public void testLogoutSuccess() throws Exception {
+
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("username", "user1");
+
+        mvc.perform(post("/api/user/logout").session(session)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect( jsonPath("$.messageCode", is(0)));
+    }
+
 
     /**
      * Test edit personal information controller
@@ -143,8 +158,17 @@ public class UserControllerTest {
         given(editPerInforService.editUserInformation(requestDto)).willReturn(message);
 
         mvc.perform(post("/api/user/editinformation").content(content)
-                .contentType(MediaType.APPLICATION_JSON))// Thực hiện GET REQUEST
-                .andExpect(status().isOk()) // Mong muốn Server trả về status 200
-                .andExpect( jsonPath("$.messageCode", is(0)));
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.messageCode", is(0)));
+    }
+    @Test
+    public void testLogoutFail() throws Exception {
+
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("username", null);
+        mvc.perform(post("/api/user/logout").session(session)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }

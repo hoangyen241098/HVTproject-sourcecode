@@ -14,4 +14,5 @@ public class AfterInforTimeTableDto {
     private Integer dayId;
     private String subject;
     private Integer isOddWeek;
+    private Integer isAdditional;
 }

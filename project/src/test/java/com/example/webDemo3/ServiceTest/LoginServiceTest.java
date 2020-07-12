@@ -19,24 +19,24 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-
+/*
+kimpt142 - 12/07
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class LoginServiceTest {
     @MockBean
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private LoginService loginService;
 
+    /**
+     * kimpt142 - 12/07
+     * create mockup for user repository
+     */
     @Before
-    public void setUp() {
+    public void setUpUserRepository() {
         User user1 = new User();
         user1.setUsername("user1");
         user1.setPassword("123");
@@ -51,6 +51,10 @@ public class LoginServiceTest {
         Mockito.when(userRepository.findUserByUsername("user2")).thenReturn(user2);
     }
 
+    /**
+     * kimpt142 - 12/07
+     * test login successfully
+     */
     @Test
     public void testLoginSuccess() {
         LoginResponseDto responseDto = new LoginResponseDto();
@@ -66,6 +70,10 @@ public class LoginServiceTest {
         Assert.assertEquals(responseDto, loginService.checkLoginUser(requestDto));
     }
 
+    /**
+     * kimpt142 - 12/07
+     * test login fail when account is inactive
+     */
     @Test
     public void testLoginInactiveFail() {
         LoginResponseDto responseDto = new LoginResponseDto();
@@ -81,6 +89,10 @@ public class LoginServiceTest {
         Assert.assertEquals(responseDto, loginService.checkLoginUser(requestDto));
     }
 
+    /**
+     * kimpt142 - 12/07
+     * test login fail when input wrong password
+     */
     @Test
     public void testLoginWrongPass() {
         LoginResponseDto responseDto = new LoginResponseDto();
@@ -96,6 +108,10 @@ public class LoginServiceTest {
         Assert.assertEquals(responseDto, loginService.checkLoginUser(requestDto));
     }
 
+    /**
+     * kimpt142 - 12/07
+     * test login fail when username not exist
+     */
     @Test
     public void testLoginUserNotExist() {
         LoginResponseDto responseDto = new LoginResponseDto();

@@ -154,6 +154,10 @@ public class Constant {
             new MessageDTO(1,"Không có kết quả.");
     public static final MessageDTO SCHOOLYEAR_EMPTY =
             new MessageDTO(1,"Không tồn tại năm học này.");
+    public static final MessageDTO LIST_DATE_EMPTY =
+            new MessageDTO(1,"Danh sách ngày trống.");
+    public static final MessageDTO LIST_CLASS_EMPTY =
+            new MessageDTO(1,"Danh sách lớp trống.");
     /**
      * Success message
      */
@@ -219,5 +223,9 @@ public class Constant {
     //Success add violation type
     public static final MessageDTO ADD_VIOLATION_ENTERING_TIME_SUCCESS =
             new MessageDTO(0,"Thêm thời gian trực tuần thành công!");
+
+    //dulicate date update timetable
+    public static final MessageDTO CONFIRM_UPDATE_TIMTABLE=
+            new MessageDTO(2,"ngày áp dụng này đã tồn tại bạn có muốn ghi đè không");
 
 }

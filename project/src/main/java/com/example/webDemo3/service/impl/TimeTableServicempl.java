@@ -3,7 +3,6 @@ package com.example.webDemo3.service.impl;
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.*;
 import com.example.webDemo3.dto.request.ClassTimeTableRequestDto;
-import com.example.webDemo3.dto.request.ListWeekRequestDto;
 import com.example.webDemo3.dto.request.TeacherTimeTableRequestDto;
 import com.example.webDemo3.entity.*;
 import com.example.webDemo3.entity.Class;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +23,6 @@ import java.util.List;
 public class TimeTableServicempl implements TimeTableService {
 
     @Autowired
-    private SchoolYearRepository schoolYear;
-
-    @Autowired
     private ClassRepository classRepository;
 
     @Autowired
@@ -36,363 +31,278 @@ public class TimeTableServicempl implements TimeTableService {
     @Autowired
     private TeacherRepository teacherRepository;
 
-    @Autowired
-    private TimeTableWeekRepository timeTableWeekRepository;
 
     /**
      * lamnt98
      * 01/07
-     * list year, week and find yearIdCurrent, weekIdCurrent
+     * Get applyDate list, class list, currentId, classId
      * @param
-     * @return ListYearAndClassResponseDto
+     * @return ListApplyDateAndClassResponseDto
      */
     @Override
-    public ListYearAndClassResponseDto getListYearAndClass() {
-        ListYearAndClassResponseDto list = new ListYearAndClassResponseDto();
-        ListYearAndWeekResponseDto listYearAndWeek = new ListYearAndWeekResponseDto();
-        List<Class> classList = null;
+    public ListApplyDateAndClassResponseDto getApplyDateAndClassList() {
+        ListApplyDateAndClassResponseDto timeTabel = new ListApplyDateAndClassResponseDto();
         MessageDTO messageDTO = new MessageDTO();
+        Date currentDate = null;
+        Integer classId = null;
+        List<Date> appyDateList;
+        List<Class> classList = null;
 
         try {
-            listYearAndWeek = getListYearAndListWeek();
+            appyDateList = timetableRepository.getAllDate();
 
-            //check listYear empty or not
-            if(listYearAndWeek.getListYear().size() != 0){
-                list.setListYear(listYearAndWeek.getListYear());
+            //check dateList empty or not
+            if(appyDateList.size() == 0){
+                messageDTO = Constant.LIST_DATE_EMPTY;
+                timeTabel.setMessage(messageDTO);
+                return timeTabel;
             }
 
-            //check yearIdCurrent empty or not
-            if(listYearAndWeek.getYearIdCurrent() != null){
-                list.setYearIdCurrent(listYearAndWeek.getYearIdCurrent());
-            }
+            currentDate = appyDateList.get(0);
+            timeTabel.setCurrentDate(currentDate);
 
-            //check listWeek empty or not
-            if(listYearAndWeek.getListWeek().size() != 0){
-                list.setListWeek(listYearAndWeek.getListWeek());
-            }
-
-            //check weekIdCurrent empty or not
-            if(listYearAndWeek.getWeekIdCurrent() != null){
-                list.setWeekIdCurrent(listYearAndWeek.getWeekIdCurrent());
-            }
+            timeTabel.setAppyDateList(appyDateList);
 
             classList = classRepository.findAll();
+
             //check classList empty or not
-            if(classList.size() != 0){
-                list.setClassList(classList);
+            if(classList.size() == 0){
+                messageDTO = Constant.LIST_CLASS_EMPTY;
+                timeTabel.setMessage(messageDTO);
+                return timeTabel;
             }
+
+            timeTabel.setClassList(classList);
+            classId = classList.get(0).getClassId();
+            timeTabel.setClassId(classId);
+
             messageDTO = Constant.SUCCESS;
-            list.setMessageDTO(messageDTO);
+            timeTabel.setMessage(messageDTO);
         }catch (Exception e){
             messageDTO.setMessageCode(1);
             messageDTO.setMessage(e.toString());
-            list.setMessageDTO(messageDTO);
-            return list;
+            timeTabel.setMessage(messageDTO);
+            return  timeTabel;
         }
-
-        return list;
+        return timeTabel;
     }
 
     /**
      * lamnt98
-     * 01/07
-     * find list week by yearIdCurrent
-     * @param listWeekRequestDto
-     * @return ListWeekResponseDto
+     * 07/09
+     * Get applyDate list, teacher list, currentId, teacherId
+     * @param
+     * @return ListApplyDateandTeacherResponseDto
      */
     @Override
-    public ListWeekResponseDto getListWeekByYearId(ListWeekRequestDto listWeekRequestDto) {
-        Integer yearIdCurrent = listWeekRequestDto.getYearIdCurrent();
-        ListWeekResponseDto listWeekResponseDto = new ListWeekResponseDto();
-        List<TimeTableWeek> listWeek;
+    public ListApplyDateandTeacherResponseDto getApplyDateAndTeacherList() {
+        ListApplyDateandTeacherResponseDto timeTabel = new ListApplyDateandTeacherResponseDto();
         MessageDTO messageDTO = new MessageDTO();
+        Date currentDate = null;
+        Integer teacherId = null;
+        List<Date> appyDateList;
+        List<Teacher> teacherList = null;
+        Teacher teacher = null;
 
         try {
-            //check yearIdCurrent null or not
-            if (yearIdCurrent == null) {
-                messageDTO = Constant.YEAR_ID_NULL;
-                listWeekResponseDto.setMessageDTO(messageDTO);
-                return listWeekResponseDto;
+            appyDateList = timetableRepository.getAllDate();
+
+            //check dateList empty or not
+            if(appyDateList.size() == 0){
+                messageDTO = Constant.LIST_DATE_EMPTY;
+                timeTabel.setMessage(messageDTO);
+                return timeTabel;
             }
 
-            listWeek = timeTableWeekRepository.findByYearIdANdSortByFromDate(yearIdCurrent);
+            currentDate = appyDateList.get(0);
+            timeTabel.setCurrentDate(currentDate);
 
-            //check listWeek null or not
-            if (listWeek.size() == 0) {
-                messageDTO = Constant.LIST_WEEK_NULL;
-                listWeekResponseDto.setMessageDTO(messageDTO);
-                return listWeekResponseDto;
+            teacherList = teacherRepository.findAll();
+
+            timeTabel.setAppyDateList(appyDateList);
+            timeTabel.setTeacherList(teacherList);
+
+            //check teacher list empty
+            if(teacherList.size() == 0){
+                messageDTO = Constant.TEACHERLIST_NULL;
+                timeTabel.setMessage(messageDTO);
+                return timeTabel;
             }
-            listWeekResponseDto.setListWeek(listWeek);
-            messageDTO = Constant.SUCCESS;
-            listWeekResponseDto.setMessageDTO(messageDTO);
-        }catch (Exception e){
-            messageDTO.setMessageCode(1);
-            messageDTO.setMessage(e.toString());
-            listWeekResponseDto.setMessageDTO(messageDTO);
-            return listWeekResponseDto;
-        }
-        return listWeekResponseDto;
-    }
 
-    /**
-     * lamnt98
-     * 01/07
-     * find timetable of class by weekId and classId
-     * @param classTimeTable
-     * @return TimeTableResponseDto
-     */
-    @Override
-    public TimeTableResponseDto getClassTimeTable(ClassTimeTableRequestDto classTimeTable) {
-        TimeTableResponseDto timeTabel = new TimeTableResponseDto();
-        List<TimeTable> morningTimeTable;
-        List<TimeTable> afternoonTimeTable;
-        MessageDTO messageDTO = new MessageDTO();
-        Integer weekId;
-        Integer classId;
-        Integer biggetClosetApplyWeek;
+            teacherId = teacherList.get(0).getTeacherId();
+            timeTabel.setTeacherId(teacherId);
 
-        try {
-            weekId = classTimeTable.getWeekId();
-
-            //check weekId null or not
-            if(weekId == null){
-                messageDTO = Constant.WEEK_ID_NULL;
-                timeTabel.setMessageDTO(messageDTO);
+            teacher = teacherRepository.findById(teacherId).orElse(null);
+            //check teacher exists or not
+            if( teacher== null){
+                messageDTO = Constant.TEACHER_NOT_EXIT;
+                timeTabel.setMessage(messageDTO);
                 return  timeTabel;
             }
 
-            classId = classTimeTable.getClassId();
+            messageDTO = Constant.SUCCESS;
+            timeTabel.setMessage(messageDTO);
+        }catch (Exception e){
+            messageDTO.setMessageCode(1);
+            messageDTO.setMessage(e.toString());
+            timeTabel.setMessage(messageDTO);
+            return  timeTabel;
+        }
+        return timeTabel;
+    }
+
+    /**
+     * lamnt98
+     * 01/07
+     * search timetable of class by currentDate and classId
+     * @param classTimeTable
+     * @return SearchTimeTableResponseDto
+     */
+    @Override
+    public SearchTimeTableResponseDto searchClassTimeTable(ClassTimeTableRequestDto classTimeTable) {
+        SearchTimeTableResponseDto timeTabel = new SearchTimeTableResponseDto();
+        List<List<MorInforTimeTableDto>> morningTimeTableList = new ArrayList<>();
+        List<List<AfterInforTimeTableDto>> afternoonTimeTableTableList = new ArrayList<>();
+        MessageDTO messageDTO = new MessageDTO();
+        Date currentDate = classTimeTable.getApplyDate();
+        Integer classId = classTimeTable.getClassId();
+        List<TimeTable> morningTimeTable = null;
+        List<TimeTable> afternoonTimeTable = null;
+
+
+        try {
+            //check currentDate null or not
+            if(currentDate == null){
+                messageDTO = Constant.FROMDATE_EMPTY;
+                timeTabel.setMessage(messageDTO);
+                return timeTabel;
+            }
 
             //check classId null or not
             if(classId == null){
                 messageDTO = Constant.CLASS_ID_NULL;
-                timeTabel.setMessageDTO(messageDTO);
+                timeTabel.setMessage(messageDTO);
+                return timeTabel;
+            }
+            //check class exists or not
+            if(classRepository.findByClassId(classId) == null){
+                messageDTO = Constant.CLASS_NOT_EXIST;
+                timeTabel.setMessage(messageDTO);
                 return  timeTabel;
             }
 
-            biggetClosetApplyWeek = timetableRepository.getBiggestClosetApplyWeek(weekId,classId);
-            //check biggestClosetApplyWeek
-            if(biggetClosetApplyWeek == null){
+            for(int i = 0; i < 4; i++){
+                morningTimeTable = timetableRepository.getMorningClassTimeTable(currentDate,classId,i);
+                afternoonTimeTable = timetableRepository.getAfternoonClassTimeTable(currentDate,classId,i);
+
+                if(morningTimeTable.size() == 0 && afternoonTimeTable.size() == 0 ){
+                    break;
+                }
+
+                if(morningTimeTable.size() != 0){
+                    morningTimeTableList.add(changeMorningTimeTable(morningTimeTable));
+                }
+
+                if(afternoonTimeTable.size() != 0){
+                    afternoonTimeTableTableList.add(changeAfternoonTimeTable(afternoonTimeTable));
+                }
+            }
+
+            //check timetable empty or not
+            if(morningTimeTableList.size() == 0 && afternoonTimeTableTableList.size() == 0 ){
                 messageDTO = Constant.TIMETABLE_NULL;
-                timeTabel.setMessageDTO(messageDTO);
+                timeTabel.setMessage(messageDTO);
                 return  timeTabel;
             }
 
-            morningTimeTable = timetableRepository.getMorningTimeTable(biggetClosetApplyWeek,classId);
-            afternoonTimeTable = timetableRepository.getAfternoonTimeTable(biggetClosetApplyWeek,classId);
-
-            //check morningTimeTable empty or not
-            if(morningTimeTable.size() != 0){
-                timeTabel.setMorningTimeTable(changeMorningTimeTable(morningTimeTable));
-            }
-
-            //check afternoonTimeTable empty or not
-            if(afternoonTimeTable.size() != 0){
-                timeTabel.setAfternoonTimeTable(changeAfternoonTimeTable(afternoonTimeTable));
-            }
-            //check timetable exist or not
-            if(morningTimeTable.size() == 0 && afternoonTimeTable.size() == 0){
-                messageDTO = Constant.TIMETABLE_NULL;
-                timeTabel.setMessageDTO(messageDTO);
-                return  timeTabel;
-            }
-
-
+            timeTabel.setMorningTimeTableList(morningTimeTableList);
+            timeTabel.setAfternoonTimeTableTableList(afternoonTimeTableTableList);
             messageDTO = Constant.SUCCESS;
-            timeTabel.setMessageDTO(messageDTO);
+            timeTabel.setMessage(messageDTO);
         }catch (Exception e){
             messageDTO.setMessageCode(1);
             messageDTO.setMessage(e.toString());
-            timeTabel.setMessageDTO(messageDTO);
+            timeTabel.setMessage(messageDTO);
             return  timeTabel;
         }
         return timeTabel;
-    }
-
-    /**
-     * lamnt98
-     * 02/07
-     * list year, week, class and find yearIdCurrent, weekIdCurrent
-     * @param
-     * @return ListYearAndTeacherResponseDto
-     */
-    @Override
-    public ListYearAndTeacherResponseDto getListYearAndTeacher() {
-        ListYearAndTeacherResponseDto list = new ListYearAndTeacherResponseDto();
-        ListYearAndWeekResponseDto listYearAndWeek = new ListYearAndWeekResponseDto();
-        List<Teacher> teacherList = null;
-        MessageDTO messageDTO = new MessageDTO();
-
-        try {
-            listYearAndWeek = getListYearAndListWeek();
-
-            //cehck listYear empty or not
-            if(listYearAndWeek.getListYear().size() != 0){
-                list.setListYear(listYearAndWeek.getListYear());
-            }
-
-            //check yearIdCurrent empty or not
-            if(listYearAndWeek.getYearIdCurrent() != null){
-                list.setYearIdCurrent(listYearAndWeek.getYearIdCurrent());
-            }
-
-            //check listWeek empty or not
-            if(listYearAndWeek.getListWeek().size() != 0){
-                list.setListWeek(listYearAndWeek.getListWeek());
-            }
-
-            //check weekIdCurrent empty or not
-            if(listYearAndWeek.getWeekIdCurrent() != null){
-                list.setWeekIdCurrent(listYearAndWeek.getWeekIdCurrent());
-            }
-
-            teacherList = teacherRepository.findAll();
-
-            //check classList null or not
-            if (teacherList.size() != 0) {
-                list.setTeacherList(teacherList);
-            }
-            messageDTO = Constant.SUCCESS;
-            list.setMessageDTO(messageDTO);
-
-        }catch (Exception e){
-            messageDTO.setMessageCode(1);
-            messageDTO.setMessage(e.toString());
-            list.setMessageDTO(messageDTO);
-            return  list;
-        }
-        return  list;
     }
 
     /**
      * lamnt98
      * 01/07
-     * find timetable of teacher by weekId and teacherId
+     * search timetable of teacher by currentDate and teacherId
      * @param teacherTimeTable
-     * @return TimeTableResponseDto
+     * @return SearchTimeTableResponseDto
      */
     @Override
-    public TimeTableResponseDto getTeacherTimeTable(TeacherTimeTableRequestDto teacherTimeTable) {
-        TimeTableResponseDto timeTabel = new TimeTableResponseDto();
-        List<TimeTable> morningTimeTable;
-        List<TimeTable> afternoonTimeTable;
+    public SearchTimeTableResponseDto searchTeacherTimeTable(TeacherTimeTableRequestDto teacherTimeTable) {
+        SearchTimeTableResponseDto timeTabel = new SearchTimeTableResponseDto();
+        List<List<MorInforTimeTableDto>> morningTimeTableList = new ArrayList<>();
+        List<List<AfterInforTimeTableDto>> afternoonTimeTableTableList = new ArrayList<>();
         MessageDTO messageDTO = new MessageDTO();
-        Integer weekId;
-        Integer teacherId;
-        Integer biggetClosetApplyWeek;
+        Date currentDate = teacherTimeTable.getApplyDate();
+        Integer teacherId = teacherTimeTable.getTeacherId();
+        List<TimeTable> morningTimeTable = null;
+        List<TimeTable> afternoonTimeTable = null;
+        Teacher teacher = null;
 
         try {
-            weekId = teacherTimeTable.getWeekId();
 
-            //check weekId null or not
-            if(weekId == null){
-                messageDTO = Constant.WEEK_ID_NULL;
-                timeTabel.setMessageDTO(messageDTO);
-                return  timeTabel;
+            //check currentDate null or not
+            if(currentDate == null){
+                messageDTO = Constant.FROMDATE_EMPTY;
+                timeTabel.setMessage(messageDTO);
+                return timeTabel;
             }
-
-            teacherId = teacherTimeTable.getTeacherId();
 
             //check classId null or not
             if(teacherId == null){
                 messageDTO = Constant.TEACHER_ID_NULL;
-                timeTabel.setMessageDTO(messageDTO);
+                timeTabel.setMessage(messageDTO);
+                return timeTabel;
+            }
+
+            teacher = teacherRepository.findById(teacherId).orElse(null);
+            //check teacher exists or not
+            if( teacher== null){
+                messageDTO = Constant.TEACHER_NOT_EXIT;
+                timeTabel.setMessage(messageDTO);
                 return  timeTabel;
             }
 
-            biggetClosetApplyWeek = timetableRepository.getBiggestClosetApplyWeekTeacher(weekId,teacherId);
-            //check biggestClosetApplyWeek
-            if(biggetClosetApplyWeek == null){
-                messageDTO = Constant.TIMETABLE_NULL;
-                timeTabel.setMessageDTO(messageDTO);
-                return  timeTabel;
-            }
 
-            morningTimeTable = timetableRepository.getTeacherMorningTimeTable(biggetClosetApplyWeek,teacherId);
-            afternoonTimeTable = timetableRepository.getTeacherAfternoonTimeTable(biggetClosetApplyWeek,teacherId);
+            morningTimeTable = timetableRepository.getMorningTeacherTimeTable(currentDate,teacherId);
+            afternoonTimeTable = timetableRepository.getAfternoonTeacherTimeTable(currentDate,teacherId);
 
-            //cehck morningTimeTable empty or not
+            //check morningTimeTable empty or not
             if(morningTimeTable.size() != 0){
-                timeTabel.setMorningTimeTable(changeMorningTimeTable(morningTimeTable));
+                morningTimeTableList.add(changeMorningTimeTable(morningTimeTable));
             }
 
             //check afternoonTimeTable empty or not
             if(afternoonTimeTable.size() != 0){
-                timeTabel.setAfternoonTimeTable(changeAfternoonTimeTable(afternoonTimeTable));
+                afternoonTimeTableTableList.add(changeAfternoonTimeTable(afternoonTimeTable));
             }
-            //check timetable exist or not
-            if(morningTimeTable.size() == 0 && afternoonTimeTable.size() == 0){
+
+            //check timetable emty or not
+            if(morningTimeTableList.size() == 0 && afternoonTimeTableTableList.size() == 0 ){
                 messageDTO = Constant.TIMETABLE_NULL;
-                timeTabel.setMessageDTO(messageDTO);
+                timeTabel.setMessage(messageDTO);
                 return  timeTabel;
             }
 
+            timeTabel.setMorningTimeTableList(morningTimeTableList);
+            timeTabel.setAfternoonTimeTableTableList(afternoonTimeTableTableList);
             messageDTO = Constant.SUCCESS;
-            timeTabel.setMessageDTO(messageDTO);
+            timeTabel.setMessage(messageDTO);
         }catch (Exception e){
             messageDTO.setMessageCode(1);
             messageDTO.setMessage(e.toString());
-            timeTabel.setMessageDTO(messageDTO);
+            timeTabel.setMessage(messageDTO);
             return  timeTabel;
         }
         return timeTabel;
-    }
-
-    /**
-     * lamnt98
-     * 03/07
-     * get List year , week and yearIdCurrent, weekIdCurrent
-     * @param
-     * @return ListYearAndWeekResponseDto
-     */
-    @Override
-    public ListYearAndWeekResponseDto getListYearAndListWeek(){
-        ListYearAndWeekResponseDto list = new ListYearAndWeekResponseDto();
-        List<SchoolYear> listYear = null;
-        List<TimeTableWeek> listWeek = null;
-        Integer yearIdCurrent = null;
-        Integer weekIdCurrent = null;
-        Date date = Date.valueOf(LocalDate.now());
-
-        listYear = schoolYear.findAllSortByFromDate();
-        if(listYear.size() != 0){
-            list.setListYear(listYear);
-            for (int i = 0; i < listYear.size(); i++) {
-                SchoolYear schoolYear = listYear.get(i);
-                //find yearIdCurrent
-                if (date.compareTo(schoolYear.getFromDate()) > 0 && date.compareTo(schoolYear.getToDate()) < 0) {
-                    yearIdCurrent = schoolYear.getYearID();
-                }
-            }
-            //check yearIdCurrent null or not
-            if (yearIdCurrent == null && listYear.size() != 0) {
-                yearIdCurrent = listYear.get(0).getYearID();
-            }
-            list.setYearIdCurrent(yearIdCurrent);
-        }
-
-        listWeek = timeTableWeekRepository.findByYearIdANdSortByFromDate(yearIdCurrent);
-
-        //check listWeek null or not
-        if (listWeek.size() != 0) {
-            list.setListWeek(listWeek);
-            for (int i = 0; i < listWeek.size(); i++) {
-                TimeTableWeek timeTableWeek = listWeek.get(i);
-                //find weekIdCurrent
-                if (date.compareTo(timeTableWeek.getFromDate()) > 0 && date.compareTo(timeTableWeek.getToDate()) < 0) {
-                    weekIdCurrent = timeTableWeek.getTimeTableWeekId();
-                    break;
-                }
-            }
-
-            //check weekIdCurrent null or not
-            if (weekIdCurrent == null) {
-                weekIdCurrent = listWeek.get(0).getTimeTableWeekId();
-            }
-            list.setWeekIdCurrent(weekIdCurrent);
-        }
-        return  list;
     }
 
     /**
@@ -431,6 +341,7 @@ public class TimeTableServicempl implements TimeTableService {
             morInforTimeTable.setSlotId(timeTable.getSlot());
             morInforTimeTable.setDayId(timeTable.getDayId());
             morInforTimeTable.setSubject(timeTable.getSubject());
+            morInforTimeTable.setIsAdditional(timeTable.getIsAdditional());
 
             listMorning.add(morInforTimeTable);
         }
@@ -474,6 +385,7 @@ public class TimeTableServicempl implements TimeTableService {
             afternoonTimeTable.setDayId(timeTable.getDayId());
             afternoonTimeTable.setSubject(timeTable.getSubject());
             afternoonTimeTable.setIsOddWeek(timeTable.getIsOddWeek());
+            afternoonTimeTable.setIsAdditional(timeTable.getIsAdditional());
             listAfternoon.add(afternoonTimeTable);
         }
         return  listAfternoon;
