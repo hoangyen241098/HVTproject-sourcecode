@@ -13,4 +13,5 @@ public class MorInforTimeTableDto {
     private Integer slotId;
     private Integer dayId;
     private String subject;
+    private Integer isAdditional;
 }
