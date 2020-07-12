@@ -8,6 +8,7 @@ import com.example.webDemo3.entity.Role;
 import com.example.webDemo3.entity.User;
 import com.example.webDemo3.repository.UserRepository;
 import com.example.webDemo3.service.LoginService;
+import com.example.webDemo3.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
