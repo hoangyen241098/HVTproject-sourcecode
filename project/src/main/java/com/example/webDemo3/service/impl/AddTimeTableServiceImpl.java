@@ -32,9 +32,23 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
     private ClassRepository classRepository;
 
     @Override
+    public Boolean checkDateDuplicate(Date applyDate){
+        Date date = timetableRepository.getAllByApplyDate(applyDate);
+        if(date == null){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
+    @Override
     @Transactional
     public MessageDTO addTimetable(HSSFWorkbook workbook, Date applyDate) {
         MessageDTO message = new MessageDTO();
+        if(checkDateDuplicate(applyDate)){
+            timetableRepository.deleteByApplyDate(applyDate);
+        }
         HSSFSheet worksheetMorning = workbook.getSheet("TKB Sang") ;//.getSheetAt(0);
         HSSFSheet worksheetAfternoon = workbook.getSheet("TKB Chiều");
         if(worksheetMorning == null){

@@ -224,4 +224,8 @@ public class Constant {
     public static final MessageDTO ADD_VIOLATION_ENTERING_TIME_SUCCESS =
             new MessageDTO(0,"Thêm thời gian trực tuần thành công!");
 
+    //dulicate date update timetable
+    public static final MessageDTO CONFIRM_UPDATE_TIMTABLE=
+            new MessageDTO(2,"ngày áp dụng này đã tồn tại bạn có muốn ghi đè không");
+
 }
