@@ -38,7 +38,7 @@ public class AdminController {
      * @return MessageDTO with (1,success) if success
      */
     @PostMapping("/createaccount")
-    public MessageDTO login(@RequestBody AddAccResquestDTO model)
+    public MessageDTO createAccount(@RequestBody AddAccResquestDTO model)
     {
         return addAccountService.addAccount(model);
     }
@@ -51,7 +51,7 @@ public class AdminController {
      * @return
      */
     @PostMapping("/deleteaccount")
-    public MessageDTO login(@RequestBody DeleteAccountRequestDto model)
+    public MessageDTO deleteAccount(@RequestBody DeleteAccountRequestDto model)
     {
         return deleteAccountService.deleteAccount(model);
     }
@@ -65,7 +65,7 @@ public class AdminController {
      * @return MessageDTO with (1,success) if success
      */
     @PostMapping("/resetpassword")
-    public MessageDTO login(@RequestBody ResetPassRequestDTO model)
+    public MessageDTO resetPassword(@RequestBody ResetPassRequestDTO model)
     {
         return resetPassService.resetMultiplePassword(model.getUserNameList(), model.getPassWord());
     }
