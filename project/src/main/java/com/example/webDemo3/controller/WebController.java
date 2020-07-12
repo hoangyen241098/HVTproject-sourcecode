@@ -176,6 +176,15 @@ public class WebController {
         return "manageEmulation/addNewViolation";
     }
 
+    @GetMapping("/viewRequest")
+    public String viewRequest(Model model) {
+        return "manageEmulation/viewRequest";
+    }
+    @GetMapping("/history")
+    public String history(Model model) {
+        return "manageEmulation/history";
+    }
+
     /*Module 8: Quản lý thời gian*/
     @GetMapping("/manageViolationEnteringTime")
     public String manageViolationEnteringTime(Model model) {
