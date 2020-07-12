@@ -1,8 +1,22 @@
 var date;
+$('#submit').on('click', function () {
+    date = $('#date-input').val();
+    var form = $('#inputFile')[0].files[0];
+    console.log(form);
+    console.log(date);
+    if (date.trim() == "") {
+        $('.input-err').text("Hãy điền ngày áp dụng.");
+        return false;
+    } else if (form == undefined) {
+        $('.input-err').text("Hãy chọn tệp gửi lên.");
+        return false;
+    } else {
+        return true;
+    }
+})
 $("#timetableform").submit(function (e) {
     //gửi date lên, nếu messagecode =0 hoạc confirm có thì gửi data lên
     e.preventDefault(); // avoid to execute the actual submit of the form.
-    date = $('#date-input').val();
     var input = {
         date: date,
     }
@@ -14,16 +28,7 @@ $("#timetableform").submit(function (e) {
             console.log(data);
             if (data.messageCode == 1) {
                 //chỗ này hiện dialog lỗi
-                $('#overrideTimetableModal').modal('show');
-                $('#overrideTimetableModal .modal-body').html('');
-                $('#overrideTimetableModal .modal-body').append(`
-                <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                <h5>` + data.message + `</h5>
-                `);
-                $('#overrideTimetableModal .modal-footer').html('');
-                $('#overrideTimetableModal .modal-footer').append(`
-                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
-                `);
+                dialogErr('#overrideTimetableModal', data.message);
                 console.log(data.message);
             } else if (data.messageCode == 2) {
                 //gọi dialog confirm có muốn ghi đè không nếu có thì gọi update();
@@ -32,47 +37,40 @@ $("#timetableform").submit(function (e) {
                 $('#overrideTimetableModal .modal-body').append(`
                 <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
                 <h5>Ngày áp dụng của Thời khóa biểu đã tồn tại.</h5>
-                <h5>Thời khóa biểu này sẽ bị ghi đè lên thời khóa biểu trước đó.</h5>
+                <h6>Thời khóa biểu này sẽ bị ghi đè lên thời khóa biểu trước đó.</h6>
                 <h5>Bạn có muốn ghi đè không?</h5>
                 `);
                 $('#overrideTimetableModal .modal-footer').html('');
                 $('#overrideTimetableModal .modal-footer').append(`
-                    <input type="submit" class="btn btn-danger" data-toggle="modal"
-                           id="overrideTimetable" data-dismiss="modal" value="CÓ">
+                    <input type="button" class="btn btn-danger" data-dismiss="modal" id="overrideTimetable" value="CÓ">
                     <input type="button" class="btn btn-primary" data-dismiss="modal" value="KHÔNG">
                 `);
                 console.log(data.message);
-                $('#overrideTimetable').on('click', function () {
-                    console.log('update')
-                    update();
-                })
+                overrideTimetable();
             } else {
+                $('.input-err').text("");
                 update();
             }
         },
         failure: function (errMsg) {
-            $('#overrideTimetableModal').modal('show');
-            $('#overrideTimetableModal .modal-body').html('');
-            $('#overrideTimetableModal .modal-body').append(`
-                <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                <h5>` + errMsg + `</h5>
-            `);
-            $('#overrideTimetableModal .modal-footer').html('');
-            $('#overrideTimetableModal .modal-footer').append(`
-                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
-            `);
+            dialogErr('#overrideTimetableModal', errMsg);
         },
         dataType: 'JSON',
         contentType: "application/json"
     });
-
 });
+
+function overrideTimetable() {
+    $('#overrideTimetable').click(function () {
+        $('.input-err').text("");
+        $('body').addClass("loading");
+        setTimeout(update, 1000);
+    })
+}
 
 function update() {
     var form = $('#timetableform');
-    // var url = form.attr('action');
     var formData = new FormData(form[0]);
-    console.log(formData)
     $.ajax({
         type: "POST",
         //url: "manageTimetable",
@@ -91,35 +89,31 @@ function update() {
                 $('#overrideSuccess .modal-footer').html('');
                 $('#overrideSuccess .modal-footer').append(`
                     <a type="button" class="btn btn-primary" href="manageTimetable">ĐÓNG</a>
-                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
                 `);
             } else {
-                $('#overrideSuccess').modal('show');
-                $('#overrideSuccess .modal-body').html('');
-                $('#overrideSuccess .modal-body').append(`
-                    <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                    <h5>` + data.message + `</h5>
-                `);
-                $('#overrideSuccess .modal-footer').html('');
-                $('#overrideSuccess .modal-footer').append(`
-                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
-                `);
+                dialogErr('#overrideSuccess', data.message);
             }
         },
         failure: function (errMsg) {
-            $('#overrideSuccess').modal('show');
-            $('#overrideSuccess .modal-body').html('');
-            $('#overrideSuccess .modal-body').append(`
-                <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                <h5>` + errMsg + `</h5>
-            `);
-            $('#overrideSuccess .modal-footer').html('');
-            $('#overrideSuccess .modal-footer').append(`
-                <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
-            `);
+            dialogErr('#overrideSuccess', errMsg);
         },
         cache: false,
         contentType: false,
         processData: false,
     });
+}
+
+function dialogErr(model, mess) {
+    var modalBody = model + " .modal-body";
+    var modalFooter = model + " .modal-footer";
+    $(model).modal('show');
+    $(modalBody).html('');
+    $(modalBody).append(`
+        <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+        <h5>` + mess + `</h5>
+    `);
+    $(modalFooter).html('');
+    $(modalFooter).append(`
+        <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
+    `);
 }
