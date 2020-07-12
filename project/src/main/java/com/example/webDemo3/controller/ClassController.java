@@ -1,8 +1,12 @@
 package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.*;
-import com.example.webDemo3.dto.request.*;
-import com.example.webDemo3.service.*;
+import com.example.webDemo3.dto.manageClassResponseDto.AddClassResponseDto;
+import com.example.webDemo3.dto.manageClassResponseDto.ClassInforResponseDto;
+import com.example.webDemo3.dto.manageClassResponseDto.ClassTableResponseDto;
+import com.example.webDemo3.dto.manageClassResponseDto.GiftedClassResponseDto;
+import com.example.webDemo3.dto.request.manageClassRequestDto.*;
+import com.example.webDemo3.service.manageClassService.ClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

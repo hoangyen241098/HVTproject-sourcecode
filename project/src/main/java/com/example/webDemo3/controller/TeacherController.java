@@ -1,10 +1,10 @@
 package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.dto.ViewTeaInforResponseDto;
-import com.example.webDemo3.dto.ViewTeaListResponseDto;
-import com.example.webDemo3.dto.request.*;
-import com.example.webDemo3.service.TeacherService;
+import com.example.webDemo3.dto.manageTeacherResponseDto.ViewTeaInforResponseDto;
+import com.example.webDemo3.dto.manageTeacherResponseDto.ViewTeaListResponseDto;
+import com.example.webDemo3.dto.request.manageTeacherRequestDto.*;
+import com.example.webDemo3.service.manageTeacherService.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
