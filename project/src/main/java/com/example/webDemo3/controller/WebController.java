@@ -108,6 +108,11 @@ public class WebController {
         return "timetable/timetableTeacher";
     }
 
+    @GetMapping("manageTimetable")
+    public String updateTimetable(Model model) {
+        return "timetable/manageTimetable";
+    }
+
     /*Module 5: Quản lý lỗi*/
     @GetMapping("/violationList")
     public String violationList(Model model) {

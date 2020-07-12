@@ -1,14 +1,19 @@
 package com.example.webDemo3.controller;
 
+import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.*;
+import com.example.webDemo3.dto.request.CheckDateRequestDto;
 import com.example.webDemo3.dto.request.ClassTimeTableRequestDto;
 import com.example.webDemo3.dto.request.TeacherTimeTableRequestDto;
+import com.example.webDemo3.service.AddTimeTableService;
 import com.example.webDemo3.service.TimeTableService;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.sql.Date;
 
 @RestController
 @RequestMapping("/api/timetable")
@@ -17,7 +22,41 @@ public class TimeTableApiController {
     @Autowired
     private TimeTableService viewTimTaClassService;
 
+    @Autowired
+    private AddTimeTableService addTimeTableService;
 
+    @PostMapping("/update")
+    public MessageDTO mapReapExcelDatatoDB(@RequestParam("file") MultipartFile reapExcelDataFile,
+                                     @RequestParam("date") Date date, Model model)
+    {
+        MessageDTO message = new MessageDTO();
+        HSSFWorkbook workbook = null;
+        try {
+            workbook = new HSSFWorkbook(reapExcelDataFile.getInputStream());
+        }catch (Exception e){
+            message.setMessageCode(1);
+            message.setMessage("không đúng định dạng file");
+            System.out.println(e);
+        }
+        if(workbook != null){
+            //Date date = Date.valueOf("2020-01-01");
+            message = addTimeTableService.addTimetable(workbook,date);
+        }
+        return message;
+    }
+
+    @PostMapping("/checkDate")
+    public MessageDTO checkDulicate(@RequestBody CheckDateRequestDto data)
+    {
+        MessageDTO message = new MessageDTO();
+        if (addTimeTableService.checkDateDuplicate(data.getDate())){
+            message = Constant.CONFIRM_UPDATE_TIMTABLE;
+        }
+        else {
+            message.setMessageCode(0);
+        }
+        return message;
+    }
 
     /**
      * lamnt98

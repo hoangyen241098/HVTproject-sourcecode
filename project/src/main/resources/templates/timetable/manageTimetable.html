@@ -27,7 +27,7 @@
                 <h2 class="fs-title">Quản lý thời khóa biểu</h2>
                 <h3 class="fs-subtitle">Cập nhật thời kháo biểu khi có sự thay đổi</h3>
                 <fieldset>
-                    <form th:action="@{/manageTimetable}" method="post" enctype="multipart/form-data" class="form">
+                    <form id="timetableform" th:action="@{manageTimetable}" method="post" enctype="multipart/form-data" class="form">
                         <p class="note">(<span class="text-red">*</span>) Bắt buộc </p>
                         <div class="form-group row text-left">
                             <label for="date-input" class="col-4 col-form-label">Ngày áp dụng <span
@@ -43,10 +43,10 @@
                             <small id="fileHelp" class="form-text text-muted">Hỗ trợ định dạng XLSX, XLS.</small>
                         </div>
                         <div class="error input-err text-left">
-<!--                            <span th:text="${message}"></span>-->
+<!--                            <span th:text="${message}">aaaaaaaaaaaaa</span>-->
                         </div>
                         <!--                        <input th:type="submit" class="btn btn-customer" value="THAY ĐỔI THỜI KHÓA BIỂU" data-toggle="modal" data-target="#overrideTimetableModal"/>-->
-                        <input th:type="submit" class="btn btn-customer" value="THAY ĐỔI THỜI KHÓA BIỂU"/>
+                        <input th:type="submit" id="submit" class="btn btn-customer" value="THAY ĐỔI THỜI KHÓA BIỂU"/>
                     </form>
                 </fieldset>
             </div>
