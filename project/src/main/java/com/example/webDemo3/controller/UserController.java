@@ -1,10 +1,16 @@
 package com.example.webDemo3.controller;
 
-import com.example.webDemo3.dto.LoginResponseDto;
+import com.example.webDemo3.dto.manageAccountResponseDto.LoginResponseDto;
 import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.dto.ViewPerInforResponseDto;
-import com.example.webDemo3.dto.request.*;
-import com.example.webDemo3.service.*;
+import com.example.webDemo3.dto.manageAccountResponseDto.ViewPerInforResponseDto;
+import com.example.webDemo3.dto.request.manageAccountRequestDto.ChangePasswordRequestDto;
+import com.example.webDemo3.dto.request.manageAccountRequestDto.EditPerInforRequestDto;
+import com.example.webDemo3.dto.request.manageAccountRequestDto.LoginRequestDto;
+import com.example.webDemo3.dto.request.manageAccountRequestDto.ViewPerInforRequestDto;
+import com.example.webDemo3.service.manageAccountService.ChangePasswordService;
+import com.example.webDemo3.service.manageAccountService.EditPerInforService;
+import com.example.webDemo3.service.manageAccountService.LoginService;
+import com.example.webDemo3.service.manageAccountService.ViewPerInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
