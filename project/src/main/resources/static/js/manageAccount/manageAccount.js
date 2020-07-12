@@ -118,8 +118,8 @@ function search() {
                     }
                     $('tbody').append(
                         `<tr class="` + selected + `">
-                <td>
-                    <span class="custom-checkbox ">
+                <td class="text-center">
+                    <span class="custom-checkbox">
                         <input id="` + item.username + `"type="checkbox" name="options" value="` + item.username + `" ` + checked + `>
                         <label for="` + item.username + `"></label>
                     </span>
