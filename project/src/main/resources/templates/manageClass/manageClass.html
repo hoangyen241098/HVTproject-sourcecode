@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>.::Quản lý lớp::.</title>
+    <link th:href="@{/img/logo.png}" rel="shortcut icon" type="image/x-icon"/>
+
+    <!-- jQuery library -->
+    <script th:src="@{/js/jquery-3.5.1.min.js}"></script>
+
+    <!--Bootstrap 4-->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <!--Font-Awesome-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"/>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <script type="text/javascript" th:src="@{/js/functions.js}"></script>
+
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<div class="container">
+    <div class="table-wrapper">
+        <div class="table-title">
+            <h2>Danh sách lớp</h2>
+            <div class="search">
+                <div class="col-xl-5 d-inline-block">
+                    <div class="search-line" id="searchByIdentifier">
+                        <span>Tên định danh</span>
+                        <input type="text" placeholder="Tên định danh">
+                    </div>
+                    <div class="search-line">
+                        <span>Khối</span>
+                        <select class="combobox searchable" id="searchByGrade">
+                            <option value="0" selected="selected">Tất cả</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                    </div>
+                    <div class="search-line">
+                        <span>Trạng thái</span>
+                        <select class="combobox searchable" id="status">
+                            <option value="" selected="selected">Tất cả</option>
+                            <option value="0">Hoạt động</option>
+                            <option value="1">Khóa</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="col-xl-1 d-inline-block"></div>
+                <div class="col-xl-4 d-inline-block">
+                    <div class="search-line">
+                        <span>Sắp xếp theo</span>
+                        <select class="combobox searchable" id="orderBy">
+                            <option value="0" selected="selected">Tên định danh</option>
+                            <option value="1">Khối</option>
+                        </select>
+                    </div>
+                    <div class="search-line">
+                        <span>Thứ tự</span>
+                        <select class="combobox searchable" id="sortBy">
+                            <option value="0">Giảm dần</option>
+                            <option value="1" selected="selected">Tăng dần</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="d-inline-block ml-2">
+                    <button class="btn btn-search" id="search">Tìm kiếm</button>
+                </div>
+            </div>
+        </div>
+        <div class="table-title-2">
+            <div class="col-sm-12 d-flex justify-content-end align-items-center">
+                <a th:href="@{createClass}" class="btn btn-success">
+                    <span>Thêm lớp</span>
+                </a>
+            </div>
+        </div>
+        <div class="table-title-2">
+            <div class="col-sm-6 table-title-note">
+                <b>Chú thích: </b>
+                <span class="status-active"><i class="fa fa-circle" aria-hidden="true"></i></span> Hoạt động |
+                <span class="status-deactive"><i class="fa fa-circle" aria-hidden="true"></i></span> Khóa
+            </div>
+        </div>
+        <table class="table table-hover">
+            <thead>
+            <tr class="align-items-center">
+                <th>STT</th>
+                <th>Khối</th>
+                <th>Hệ chuyên</th>
+                <th>Tên định danh</th>
+                <th>Trạng thái</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <div class="table-paging">
+        </div>
+    </div>
+</div>
+<div class="modal-loading"></div>
+<div th:replace="fragments/footer :: footer"></div>
+<script type="text/javascript" th:src="@{/js/manageClass/manageClass.js}"></script>
+</body>
+</html>
