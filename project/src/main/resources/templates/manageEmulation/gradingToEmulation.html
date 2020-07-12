@@ -26,6 +26,23 @@
     <div class="table-wrapper">
         <div class="table-title">
             <h2>Chấm điểm thi đua</h2>
+            <div class="search">
+                <div class="col-xl-4 d-inline-block">
+                    <div class="search-line">
+                        <span>Lớp</span>
+                        <select class="combobox searchable" id="classList">
+                        </select>
+                    </div>
+                    <div class="search-line" id="datetime">
+                        <span>Ngày</span>
+                        <input type="date">
+                    </div>
+                </div>
+                <div class="col-xl-6 d-inline-block"></div>
+                <div class="d-inline-block ml-2">
+                    <button class="btn btn-search" id="search">Tìm kiếm</button>
+                </div>
+            </div>
         </div>
         <div class="panel panel-default">
             <div class="panel-heading mt-3" data-toggle="collapse" data-target="#collapseOne" onclick="toggleClick()">

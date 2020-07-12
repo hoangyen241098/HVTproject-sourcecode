@@ -159,12 +159,18 @@ function checkTeacher() {
     $('#deleteTeacherModal .modal-body').html("");
     if (list.length == 0) {
         $("#deleteTeacherModal .modal-body").html("");
-        $('#deleteTeacherModal .modal-body').append(`<h5>Hãy chọn giáo viên mà bạn muốn xóa</h5>`);
+        $('#deleteTeacherModal .modal-body').append(`
+            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+            <h5>Hãy chọn giáo viên mà bạn muốn xóa</h5>
+        `);
         $('#deleteTeacherModal .modal-footer .btn-danger').addClass('hide');
         $('#deleteTeacherModal .modal-footer .btn-primary').attr('value', 'ĐÓNG');
     } else {
         $("#deleteTeacherModal .modal-body").html("");
-        $('#deleteTeacherModal .modal-body').append(`<h5>Bạn có chắc muốn <b>XÓA</b> giáo viên này không?</h5>`);
+        $('#deleteTeacherModal .modal-body').append(`
+            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+            <h5>Bạn có chắc muốn <b>XÓA</b> giáo viên này không?</h5>
+        `);
         $('#deleteTeacherModal .modal-footer .btn-danger').removeClass('hide');
         $('#deleteTeacherModal .modal-footer .btn-primary').attr('value', 'KHÔNG');
     }
