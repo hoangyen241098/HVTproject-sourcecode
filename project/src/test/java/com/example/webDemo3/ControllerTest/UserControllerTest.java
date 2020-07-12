@@ -16,9 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.web.servlet.FlashMap;
+
 import static org.hamcrest.CoreMatchers.is;
 
 import static org.mockito.BDDMockito.given;
@@ -67,5 +70,27 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))// Thực hiện GET REQUEST
                 .andExpect(status().isOk()) // Mong muốn Server trả về status 200
                 .andExpect( jsonPath("$.message.messageCode", is(0)));
+    }
+
+    @Test
+    public void testLogoutSuccess() throws Exception {
+
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("username", "user1");
+
+        mvc.perform(post("/api/user/logout").session(session)
+                .contentType(MediaType.APPLICATION_JSON))// Thực hiện GET REQUEST
+                .andExpect(status().isOk()) // Mong muốn Server trả về status 200
+                .andExpect( jsonPath("$.messageCode", is(0)));
+    }
+
+    @Test
+    public void testLogoutFail() throws Exception {
+
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("username", null);
+        mvc.perform(post("/api/user/logout").session(session)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }
