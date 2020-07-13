@@ -18,7 +18,6 @@
     <!--Font-Awesome-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"/>
     <link th:href="@{/css/style.css}" rel="stylesheet"/>
-    <link th:href="@{/css/viewRequest.css}" rel="stylesheet"/>
     <script type="text/javascript" th:src="@{/js/functions.js}"></script>
 
 </head>
@@ -27,25 +26,35 @@
 <div class="container">
     <div class="table-wrapper">
         <div class="table-title">
-            <h2>Xem yêu cầu thay dổi</h2>
+            <h2>Xem yêu cầu thay đổi</h2>
             <div class="search">
                 <div class="col-xl-4 d-inline-block">
                     <div class="search-line">
-                        <span>Trạng thái</span>
-                        <select class="combobox searchable" id="status">
-                            <option value="0" selected>Chưa duyệt</option>
-                            <option value="1">Chấp nhận</option>
-                            <option value="2">Từ chối</option>
+                        <span>Loại yêu cầu</span>
+                        <select class="combobox searchable" id="requestType">
+                            <option value="0" selected>Tất cả</option>
+                            <option value="1">Thêm mới</option>
+                            <option value="2">Sửa đổi</option>
                         </select>
                     </div>
                     <div class="search-line">
-                        <span>Lớp</span>
-                        <select class="combobox searchable" id="classList">
+                        <span>Trạng thái</span>
+                        <select class="combobox searchable" id="status">
+                            <option value="0" selected>Tất cả</option>
+                            <option value="1">Chưa duyệt</option>
+                            <option value="2">Chấp nhận</option>
+                            <option value="3">Từ chối</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-xl-2 d-inline-block"></div>
                 <div class="col-xl-4 d-inline-block">
+                    <div class="search-line">
+                        <span>Lớp</span>
+                        <select class="combobox searchable" id="classList">
+                            <option value="0" selected>Tất cả</option>
+                        </select>
+                    </div>
                     <div class="search-line">
                         <span>Ngày</span>
                         <input type="date" class="searchable" id="inputDate">
@@ -57,30 +66,35 @@
             </div>
         </div>
         <div class="panel panel-default">
-            <div class="column-labels justify-content-between mt-3">
-                <label class="violation-date">Ngày</label>
-                <label class="violation-class">Lớp</label>
-                <label class="violation-details">Mô tả lỗi</label>
-                <label class="violation-author">Người yêu cầu thay đổi</label>
-                <label class="violation-status">Trạng thái</label>
-                <label class="violation-btn"></label>
-            </div>
-            <div class="panel-heading mt-3 violation-description mb-0" data-toggle="collapse" data-target="#collapseOne"
+            <div class="panel-heading mt-3 mb-0" data-toggle="collapse" data-target="#collapseOne"
                  onclick="toggleClick()">
-
-                <div class="violation-date">
-                    <span>Thứ 2 - 07/06/2020</span>
+                <div class="w-100">
+                    <div class="violation-date violationTypeName">
+                        <span>Thứ 2 - 07/06/2020</span>
+                    </div>
+                    <div class="violation-class violationTypeName">
+                        <span class="font-500">Lớp: </span>
+                        <span>10H</span>
+                    </div>
+                    <div class="violation-details violationTypeName">
+                        <span class="font-500">Mô tả lỗi: </span>
+                        <span>Đi lại lộn xộn.</span>
+                    </div>
+                    <div class="violation-author violationTypeName">
+                        <span class="font-500">Người yêu cầu thay đổi: </span>
+                        <span>codo11T1</span>
+                    </div>
+                    <div class="violation-status violationTypeName">
+                        <span class="font-500">Trạng thái: </span>
+                        <span>Chưa duyệt</span>
+                    </div>
+                    <div class="violation-request violationTypeName">
+                        <span class="font-500">Loại yêu cầu: </span>
+                        <span>Thêm mới</span>
+                    </div>
                 </div>
-                <div class="violation-class">10H</div>
-                <div class="violation-details">
-                    <div class="violation-name">Đi lại lộn xộn</div>
-                    <p class="violation-note my-0">A và B đi lại lộn xộn trong lớp</p>
-                </div>
-                <div class="violation-author">codo11T1</div>
-                <div class="violation-status">Chưa duyệt</div>
                 <button class="violation-btn"><i class="fa fa-chevron-down rotate"></i></button>
             </div>
-
             <div class="panel-collapse collapse in" id="collapseOne">
                 <div class="modal-body text-center mx-auto">
                     <div class="panel-body">
@@ -121,7 +135,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
