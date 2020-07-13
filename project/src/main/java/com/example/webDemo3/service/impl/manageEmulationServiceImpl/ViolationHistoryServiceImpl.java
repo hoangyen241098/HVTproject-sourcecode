@@ -1,12 +1,11 @@
-package com.example.webDemo3.service.impl;
+package com.example.webDemo3.service.impl.manageEmulationServiceImpl;
 
-import com.example.webDemo3.dto.request.ViolationHistoryResquestDTO;
+import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViolationHistoryResquestDTO;
 import com.example.webDemo3.entity.Class;
-import com.example.webDemo3.entity.Violation;
 import com.example.webDemo3.entity.ViolationClass;
 import com.example.webDemo3.repository.ClassRepository;
 import com.example.webDemo3.repository.ViolationClassRepository;
-import com.example.webDemo3.service.ViolationHistoryService;
+import com.example.webDemo3.service.manageEmulationService.ViolationHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

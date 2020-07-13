@@ -1,8 +1,8 @@
 package com.example.webDemo3.controller;
 
-import com.example.webDemo3.dto.request.ViolationHistoryResquestDTO;
+import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViolationHistoryResquestDTO;
 import com.example.webDemo3.entity.ViolationClass;
-import com.example.webDemo3.service.ViolationHistoryService;
+import com.example.webDemo3.service.manageEmulationService.ViolationHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
