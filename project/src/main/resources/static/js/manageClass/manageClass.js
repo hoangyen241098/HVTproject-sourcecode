@@ -7,12 +7,13 @@ var inforSearch = {
     status: "",
     pageNumber: 0
 }
+
 search();
 /*Search button*/
 $("#search").click(function () {
     var grade, classIdentifier, sortBy, orderBy, status;
     classIdentifier = $('#searchByIdentifier input').val().trim();
-    if ($('#searchByGrade option:selected').val() == null|| $('#searchByGrade option:selected').val() == "0") {
+    if ($('#searchByGrade option:selected').val() == null || $('#searchByGrade option:selected').val() == "0") {
         grade = "";
     } else {
         grade = $('#searchByGrade option:selected').val();
@@ -43,6 +44,7 @@ $("#search").click(function () {
     $('tbody').html("");
     $('.table-paging').html("");
     search();
+
 });
 
 /*Load class list*/
@@ -60,7 +62,7 @@ function search() {
         success: function (data) {
             if (data.message.messageCode == 0) {
                 var totalPages = data.classList.totalPages;
-                var id = 0 + inforSearch.pageNumber*10;
+                var id = 0 + inforSearch.pageNumber * 10;
                 paging(inforSearch, totalPages);
                 if (data.classList != null) {
                     $.each(data.classList.content, function (i, item) {

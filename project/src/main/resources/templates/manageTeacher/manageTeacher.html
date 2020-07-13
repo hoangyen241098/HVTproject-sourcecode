@@ -13,10 +13,7 @@
     <script th:src="@{/js/popper.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <!--Font-Awesome-->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"
-          type="text/css"/>
-    <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
-    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto|Varela+Round'>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"/>
     <link th:href="@{/css/style.css}" rel="stylesheet"/>
     <script type="text/javascript" th:src="@{/js/functions.js}"></script>
 
@@ -55,19 +52,19 @@
                 </a>
             </div>
         </div>
-        <table class="table table-hover">
-            <thead>
+        <table class="table table-bordered">
+            <thead class="thead-light text-center">
             <tr class="align-items-center">
-                <th>
+                <th style="width: 6%">
                     <span class="custom-checkbox">
                         <input type="checkbox" id="selectAll">
                         <label for="selectAll"></label>
                     </span>
                 </th>
-                <th>Giáo viên</th>
-                <th>Tên định danh</th>
-                <th>SĐT</th>
-                <th>Email</th>
+                <th style="width: 20%">Giáo viên</th>
+                <th style="width: 20%">Tên định danh</th>
+                <th style="width: 15%">SĐT</th>
+                <th style="width: 25%">Email</th>
                 <th></th>
             </tr>
             </thead>

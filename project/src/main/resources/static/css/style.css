@@ -58,8 +58,6 @@ a:hover {
     display: block;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(20%);
-    transition: all .5s;
     border: none;
     color: #ffffff;
     background-color: #4267b2;
@@ -69,7 +67,6 @@ a:hover {
 .dropdown-menu.show {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0%);
 }
 
 .dropdown-item:hover {
@@ -213,8 +210,6 @@ a:hover {
     font-family: inherit;
     width: 80%;
     left: 10%;
-    transform: translateY(20%);
-    transition: all .5s;
     z-index: 1000;
 }
 
@@ -222,7 +217,6 @@ a:hover {
 .mega-menu.show {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0%);
 }
 
 .mega-title {
