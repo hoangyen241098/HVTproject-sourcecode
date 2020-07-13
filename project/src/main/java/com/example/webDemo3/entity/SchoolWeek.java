@@ -32,12 +32,4 @@ public class SchoolWeek {
     @Column(name = "TO_DATE")
     private Date toDate;
 
-    @Column(name = "YEAR_ID")
-    private Integer yearID;
-
-/*    @ManyToOne
-    @JoinColumn(name = "YEAR_ID")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private SchoolYear schoolYear;*/
 }
