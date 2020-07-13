@@ -24,20 +24,4 @@ public interface ViolationClassRepository extends JpaRepository<ViolationClass, 
                                             @Param("fromDate") Date fromDate,
                                             @Param("toDate")Date toDate);
 
-//    List<ViolationClass> findAll
-
-//    @Query(value = "select distinct t.applyDate from TimeTable t order by t.applyDate desc")
-//    List<Date> getAllDate();
-//
-//     @Query(value = "select t from TimeTable t where t.applyDate = :applyDate and t.classId = :classId and (t.isAfternoon = 0 or t.isAfternoon is null) and t.isAdditional = :isAdditional")
-//     List<TimeTable> getMorningClassTimeTable(@Param("applyDate") Date applyDate, @Param("classId") Integer classId, @Param("isAdditional") Integer isAdditional);
-//
-//    @Query(value = "select t from TimeTable t where t.applyDate = :applyDate and t.classId = :classId and t.isAfternoon = 1 and t.isAdditional = :isAdditional")
-//    List<TimeTable> getAfternoonClassTimeTable(@Param("applyDate") Date applyDate, @Param("classId") Integer classId, @Param("isAdditional") Integer isAdditional);
-//
-//    @Query(value = "select t from TimeTable t where t.applyDate = :applyDate and t.teacherId = :teacherId and (t.isAfternoon = 0 or t.isAfternoon is null)")
-//    List<TimeTable> getMorningTeacherTimeTable(@Param("applyDate") Date applyDate, @Param("teacherId") Integer teacherId);
-//
-//    @Query(value = "select t from TimeTable t where t.applyDate = :applyDate and t.teacherId = :teacherId and t.isAfternoon = 1")
-//    List<TimeTable> getAfternoonTeacherTimeTable(@Param("applyDate") Date applyDate, @Param("teacherId") Integer teacherId);
 }
