@@ -8,8 +8,11 @@
     text-align: center;
 }
 
-.panel-heading .violation-details {
-    width: 38%;
+.violation-details {
+    width: 35%;
+}
+.violation-btn{
+    width: 5%;
 }
 
 @media screen and (max-width: 650px) {

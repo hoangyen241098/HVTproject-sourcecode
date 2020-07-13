@@ -60,9 +60,10 @@
             <div class="column-labels justify-content-between mt-3">
                 <label class="violation-date">Ngày</label>
                 <label class="violation-class">Lớp</label>
-                <label class="violation-status">Trạng thái</label>
-                <label class="violation-author">Người yêu cầu thay đổi</label>
                 <label class="violation-details">Mô tả lỗi</label>
+                <label class="violation-author">Người yêu cầu thay đổi</label>
+                <label class="violation-status">Trạng thái</label>
+                <label class="violation-btn"></label>
             </div>
             <div class="panel-heading mt-3 violation-description mb-0" data-toggle="collapse" data-target="#collapseOne"
                  onclick="toggleClick()">
@@ -71,13 +72,13 @@
                     <span>Thứ 2 - 07/06/2020</span>
                 </div>
                 <div class="violation-class">10H</div>
-                <div class="violation-status">Chưa duyệt</div>
-                <div class="violation-author">codo11T1</div>
                 <div class="violation-details">
                     <div class="violation-name">Đi lại lộn xộn</div>
                     <p class="violation-note my-0">A và B đi lại lộn xộn trong lớp</p>
                 </div>
-                <button><i class="fa fa-chevron-down rotate"></i></button>
+                <div class="violation-author">codo11T1</div>
+                <div class="violation-status">Chưa duyệt</div>
+                <button class="violation-btn"><i class="fa fa-chevron-down rotate"></i></button>
             </div>
 
             <div class="panel-collapse collapse in" id="collapseOne">
@@ -90,7 +91,7 @@
                             </div>
                             <div class="note">
                                 <span class="title">Ghi chú: </span>
-                                <span class="info ml-4">A đi lại lộn xộn</span>
+                                <span class="info ml-4">A và B đi lại lộn xộn trong lớp</span>
                             </div>
                             <div class="reason-change">
                                 <span class="title">Lý do thay đổi: </span>
