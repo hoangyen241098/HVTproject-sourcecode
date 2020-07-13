@@ -1,14 +1,13 @@
 package com.example.webDemo3.controller;
 
-import com.example.webDemo3.dto.DetailSchoolYearResponseDto;
-import com.example.webDemo3.dto.ListYearAndClassResponseDto;
+import com.example.webDemo3.dto.manageSchoolYearResponseDto.DetailSchoolYearResponseDto;
 import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.dto.SchoolYearTableResponseDto;
-import com.example.webDemo3.dto.request.AddSchoolYearRequestDto;
-import com.example.webDemo3.dto.request.DelSchoolYearRequestDto;
-import com.example.webDemo3.dto.request.DetailSchoolYearRequestDto;
-import com.example.webDemo3.dto.request.EditSchoolYearRequestDto;
-import com.example.webDemo3.service.SchoolYearService;
+import com.example.webDemo3.dto.manageSchoolYearResponseDto.SchoolYearTableResponseDto;
+import com.example.webDemo3.dto.request.manageSchoolYearRequestDto.AddSchoolYearRequestDto;
+import com.example.webDemo3.dto.request.manageSchoolYearRequestDto.DelSchoolYearRequestDto;
+import com.example.webDemo3.dto.request.manageSchoolYearRequestDto.DetailSchoolYearRequestDto;
+import com.example.webDemo3.dto.request.manageSchoolYearRequestDto.EditSchoolYearRequestDto;
+import com.example.webDemo3.service.manageSchoolYearService.SchoolYearService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

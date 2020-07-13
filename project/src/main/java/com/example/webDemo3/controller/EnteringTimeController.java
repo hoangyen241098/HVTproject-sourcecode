@@ -1,11 +1,11 @@
 package com.example.webDemo3.controller;
 
-import com.example.webDemo3.dto.ListDayResponseDto;
-import com.example.webDemo3.dto.ListEnteringTimeResponseDto;
+import com.example.webDemo3.dto.manageEnteringViolationResponseDto.ListDayResponseDto;
+import com.example.webDemo3.dto.manageEnteringViolationResponseDto.ListEnteringTimeResponseDto;
 import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.dto.request.AddVioEnTimeRequestDto;
-import com.example.webDemo3.dto.request.DeleteEnteringTimeRequestDto;
-import com.example.webDemo3.service.EnteringTimeService;
+import com.example.webDemo3.dto.request.manageEnteringViolationRequestDto.AddVioEnTimeRequestDto;
+import com.example.webDemo3.dto.request.manageEnteringViolationRequestDto.DeleteEnteringTimeRequestDto;
+import com.example.webDemo3.service.manageEnteringTimeService.EnteringTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

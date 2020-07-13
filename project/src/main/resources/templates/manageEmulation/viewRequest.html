@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>.::Xem yêu cầu tạo mới::.</title>
+    <title>.::Xem yêu cầu thay đổi::.</title>
     <link th:href="@{/img/logo.png}" rel="shortcut icon" type="image/x-icon"/>
 
     <!-- jQuery library -->
@@ -18,6 +18,7 @@
     <!--Font-Awesome-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"/>
     <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link th:href="@{/css/viewRequest.css}" rel="stylesheet"/>
     <script type="text/javascript" th:src="@{/js/functions.js}"></script>
 
 </head>
@@ -26,7 +27,7 @@
 <div class="container">
     <div class="table-wrapper">
         <div class="table-title">
-            <h2>Yêu cầu tạo mới</h2>
+            <h2>Xem yêu cầu thay dổi</h2>
             <div class="search">
                 <div class="col-xl-4 d-inline-block">
                     <div class="search-line">
@@ -56,18 +57,26 @@
             </div>
         </div>
         <div class="panel panel-default">
+            <div class="column-labels justify-content-between mt-3">
+                <label class="violation-date">Ngày</label>
+                <label class="violation-class">Lớp</label>
+                <label class="violation-status">Trạng thái</label>
+                <label class="violation-author">Người yêu cầu thay đổi</label>
+                <label class="violation-details">Mô tả lỗi</label>
+            </div>
             <div class="panel-heading mt-3 violation-description mb-0" data-toggle="collapse" data-target="#collapseOne"
                  onclick="toggleClick()">
+
                 <div class="violation-date">
                     <span>Thứ 2 - 07/06/2020</span>
                 </div>
+                <div class="violation-class">10H</div>
+                <div class="violation-status">Chưa duyệt</div>
+                <div class="violation-author">codo11T1</div>
                 <div class="violation-details">
                     <div class="violation-name">Đi lại lộn xộn</div>
                     <p class="violation-note my-0">A và B đi lại lộn xộn trong lớp</p>
                 </div>
-                <div class="violation-substract-grade">0.2</div>
-                <div class="violation-quantity text-red">1</div>
-                <div class="violation-total text-red">0.2</div>
                 <button><i class="fa fa-chevron-down rotate"></i></button>
             </div>
 
@@ -111,6 +120,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>

@@ -1,8 +1,8 @@
 package com.example.webDemo3.controller;
 
-import com.example.webDemo3.dto.ViewAssignTaskResponseDto;
-import com.example.webDemo3.dto.request.ViewAssignTaskRequestDto;
-import com.example.webDemo3.service.TaskService;
+import com.example.webDemo3.dto.manageAssignTaskResponseDto.ViewAssignTaskResponseDto;
+import com.example.webDemo3.dto.request.manageAssignTaskRequestDto.ViewAssignTaskRequestDto;
+import com.example.webDemo3.service.manageAssignTaskService.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

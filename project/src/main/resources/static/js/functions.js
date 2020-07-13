@@ -214,7 +214,7 @@ function prevPage() {
 /*Convert string to form date*/
 function convertDate(str) {
     str = str.split("-");
-    str = str[2].concat("-" + str[1]);
+    str = str[2].concat(" - " + str[1] + " - " + str[0]);
     return str;
 }
 

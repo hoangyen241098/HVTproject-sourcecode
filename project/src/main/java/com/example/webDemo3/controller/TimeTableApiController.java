@@ -1,14 +1,22 @@
 package com.example.webDemo3.controller;
 
+import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.*;
-import com.example.webDemo3.dto.request.ClassTimeTableRequestDto;
-import com.example.webDemo3.dto.request.TeacherTimeTableRequestDto;
-import com.example.webDemo3.service.TimeTableService;
+import com.example.webDemo3.dto.manageTimeTableResponseDto.ListApplyDateAndClassResponseDto;
+import com.example.webDemo3.dto.manageTimeTableResponseDto.ListApplyDateandTeacherResponseDto;
+import com.example.webDemo3.dto.manageTimeTableResponseDto.SearchTimeTableResponseDto;
+import com.example.webDemo3.dto.request.manageTimeTableRequestDto.CheckDateRequestDto;
+import com.example.webDemo3.dto.request.manageTimeTableRequestDto.ClassTimeTableRequestDto;
+import com.example.webDemo3.dto.request.manageTimeTableRequestDto.TeacherTimeTableRequestDto;
+import com.example.webDemo3.service.manageTimeTableService.AddTimeTableService;
+import com.example.webDemo3.service.manageTimeTableService.TimeTableService;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.sql.Date;
 
 @RestController
 @RequestMapping("/api/timetable")
@@ -17,32 +25,66 @@ public class TimeTableApiController {
     @Autowired
     private TimeTableService viewTimTaClassService;
 
+    @Autowired
+    private AddTimeTableService addTimeTableService;
 
-
-    /**
-     * lamnt98
-     * 09/07
-     * catch request from client to view class timetable by currentDate and classId default
-     * @param
-     * @return ViewClassTimeTableResponseDto
-     */
-    @PostMapping("/viewclasstimetable")
-    public ViewClassTimeTableResponseDto viewClassTimeTable()
+    @PostMapping("/update")
+    public MessageDTO mapReapExcelDatatoDB(@RequestParam("file") MultipartFile reapExcelDataFile,
+                                     @RequestParam("date") Date date, Model model)
     {
-        return viewTimTaClassService.viewClassTimeTable();
+        MessageDTO message = new MessageDTO();
+        HSSFWorkbook workbook = null;
+        try {
+            workbook = new HSSFWorkbook(reapExcelDataFile.getInputStream());
+        }catch (Exception e){
+            message.setMessageCode(1);
+            message.setMessage("không đúng định dạng file");
+            System.out.println(e);
+        }
+        if(workbook != null){
+            //Date date = Date.valueOf("2020-01-01");
+            message = addTimeTableService.addTimetable(workbook,date);
+        }
+        return message;
+    }
+
+    @PostMapping("/checkDate")
+    public MessageDTO checkDulicate(@RequestBody CheckDateRequestDto data)
+    {
+        MessageDTO message = new MessageDTO();
+        if (addTimeTableService.checkDateDuplicate(data.getDate())){
+            message = Constant.CONFIRM_UPDATE_TIMTABLE;
+        }
+        else {
+            message.setMessageCode(0);
+        }
+        return message;
     }
 
     /**
      * lamnt98
      * 09/07
-     * catch request from client to view teacher timetable by currentDate and teacherId default
+     * catch request from client to get list class and applyDate, currentId, classId
      * @param
-     * @return ViewTeacherTimeTableReponseDto
+     * @return ListApplyDateAndClassResponseDto
      */
-    @PostMapping("/viewteachertimetable")
-    public ViewTeacherTimeTableReponseDto getTeacherTimeTable()
+    @PostMapping("/getapplydateandclass")
+    public ListApplyDateAndClassResponseDto getListClassAndApplyDate()
     {
-        return viewTimTaClassService.viewTeacherTimeTable();
+        return viewTimTaClassService.getApplyDateAndClassList();
+    }
+
+    /**
+     * lamnt98
+     * 09/07
+     * catch request from client to get list teacher and applyDate, currentId, teacherId
+     * @param
+     * @return ListApplyDateandTeacherResponseDto
+     */
+    @PostMapping("/getapplydateandteacher")
+    public ListApplyDateandTeacherResponseDto getListTeacherAndApplyDate()
+    {
+        return viewTimTaClassService.getApplyDateAndTeacherList();
     }
 
     /**
