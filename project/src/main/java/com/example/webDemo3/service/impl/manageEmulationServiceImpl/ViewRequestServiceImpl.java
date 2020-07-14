@@ -43,7 +43,6 @@ public class ViewRequestServiceImpl implements ViewRequestService {
     @Override
     public ViewRequestResponseDto viewRequest(ViewRequestDto viewRequest) {
         ViewRequestResponseDto viewRequestResponseDto = new ViewRequestResponseDto();
-
         return viewRequestResponseDto;
     }
 
