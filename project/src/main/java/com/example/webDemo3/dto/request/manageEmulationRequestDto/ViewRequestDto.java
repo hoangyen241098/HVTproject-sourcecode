@@ -10,6 +10,5 @@ public class ViewRequestDto {
     private Integer classId;
     private Integer status;
     private Date createDate;
-    private String creatBy;
     private Integer pageNumber;
 }

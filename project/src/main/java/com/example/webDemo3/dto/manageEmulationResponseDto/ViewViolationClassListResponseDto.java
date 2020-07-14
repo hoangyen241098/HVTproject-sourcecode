@@ -6,8 +6,8 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class ViewRequestResponseDto {
+public class ViewViolationClassListResponseDto {
 
-    List<ViewViolationClassResponseDto> viewViolationClassList;
+    List<ViolationClassResponseDto> viewViolationClassList;
     private MessageDTO message;
 }

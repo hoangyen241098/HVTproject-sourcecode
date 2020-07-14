@@ -3,9 +3,12 @@ package com.example.webDemo3.controller;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ListStarClassDateResponseDto;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViewAssignTaskResponseDto;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViewGradingEmulationResponseDto;
+import com.example.webDemo3.dto.manageEmulationResponseDto.ViewViolationClassListResponseDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewAssignTaskRequestDto;
+import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewRequestDto;
 import com.example.webDemo3.service.manageEmulationService.TaskService;
 import com.example.webDemo3.service.manageEmulationService.GradingEmulationService;
+import com.example.webDemo3.service.manageEmulationService.ViewRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +28,9 @@ public class EmulationController {
     @Autowired
     private TaskService taskService;
 
+    @Autowired
+    private ViewRequestService viewRequestService;
+
     @PostMapping("/liststarclassdate")
     public ListStarClassDateResponseDto getListStarClassDate()
     {
@@ -35,6 +41,12 @@ public class EmulationController {
     public ViewAssignTaskResponseDto viewAssignTask(@RequestBody ViewAssignTaskRequestDto model)
     {
         return taskService.viewTask(model);
+    }
+
+    @PostMapping("/viewrequest")
+    public ViewViolationClassListResponseDto viewRequest(@RequestBody ViewRequestDto model)
+    {
+        return viewRequestService.viewRequest(model);
     }
 
     /**

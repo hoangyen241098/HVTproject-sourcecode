@@ -5,7 +5,7 @@ import lombok.Data;
 import java.sql.Date;
 
 @Data
-public class ViewViolationClassRequestResponseDto {
+public class ViolationClassRequestResponseDto {
     private Integer requestId;
     private Date changeDate;
     private String creatBy;

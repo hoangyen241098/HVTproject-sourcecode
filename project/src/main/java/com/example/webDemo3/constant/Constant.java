@@ -160,6 +160,8 @@ public class Constant {
             new MessageDTO(1,"Danh sách lớp trống.");
     public static final MessageDTO LIST_REDSTAR_EMPTY =
             new MessageDTO(1,"Danh sách sao đỏ trống.");
+    public static final MessageDTO VIEW_CHANGE_REQUEST_NULL =
+            new MessageDTO(1,"Không có kết quả.");
     /**
      * Success message
      */

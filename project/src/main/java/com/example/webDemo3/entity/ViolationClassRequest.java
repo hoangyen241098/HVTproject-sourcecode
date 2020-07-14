@@ -1,23 +1,28 @@
 package com.example.webDemo3.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
 @Data
-@Table(name = "VIOLATION CLASS_REQUETS")
+@Table(name = "VIOLATION CLASS_REQUESTS")
 public class ViolationClassRequest {
     @Id
     @Column(name = "REQUEST_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer requestId;
 
-    @Column(name = "VIOLATION_CLASS_ID")
-    private Integer violationClassId;
+    @ManyToOne
+    @JoinColumn(name = "VIOLATION_CLASS_ID")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private ViolationClass violationClass;
 
-    @Column(name = "CREAT_BY")
+    @Column(name = "CREATE_BY")
     private String creatBy;
 
     @Column(name = "QUANTITY_NEW")
@@ -30,6 +35,6 @@ public class ViolationClassRequest {
     private String reason;
 
     @Column(name = "STATUS_CHANGE")
-    private String statusChange;
+    private Integer statusChange;
 
 }
