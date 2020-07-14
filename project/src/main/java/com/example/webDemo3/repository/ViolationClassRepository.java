@@ -1,6 +1,7 @@
 package com.example.webDemo3.repository;
 
 import com.example.webDemo3.entity.ViolationClass;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,4 +25,12 @@ public interface ViolationClassRepository extends JpaRepository<ViolationClass, 
                                             @Param("fromDate") Date fromDate,
                                             @Param("toDate")Date toDate);
 
+    //@Query(value = "select v from ViolationClass v where v.classId = :classId and v.status = :status ")
+    //Page<ViolationClass> findByClassIdAndStatus(@Param("classId") Integer classId,@Param("status")  Integer status);
+
+    @Query(value="select vc from ViolationClass vc where vc.classId = :classId and vc.date = :date and vc.weekId <> 0")
+    List<ViolationClass> findViolationClassRankedByClassId(@Param("classId")Integer classId, @Param("date")Date date);
+
+    @Query(value="select vc from ViolationClass vc where vc.classId = :classId and vc.date = :date and vc.violation.violationId = :violationId")
+    ViolationClass findVioClassByClassIdAndViolationId(@Param("classId")Integer classId, @Param("date")Date date,  @Param("violationId")Integer violationId);
 }

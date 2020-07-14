@@ -1,9 +1,17 @@
 package com.example.webDemo3.controller;
 
+import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageClassResponseDto.ClassTableResponseDto;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViewGradingEmulationResponseDto;
 import com.example.webDemo3.dto.request.manageClassRequestDto.ClassTableRequestDto;
+import com.example.webDemo3.dto.request.manageEmulationRequestDto.AddViolationForClassRequestDto;
+import com.example.webDemo3.dto.manageEmulationResponseDto.ListStarClassDateResponseDto;
+import com.example.webDemo3.dto.manageEmulationResponseDto.ViewAssignTaskResponseDto;
+import com.example.webDemo3.dto.manageEmulationResponseDto.ViewGradingEmulationResponseDto;
+import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewAssignTaskRequestDto;
+import com.example.webDemo3.service.manageEmulationService.TaskService;
 import com.example.webDemo3.service.manageEmulationService.GradingEmulationService;
+import com.example.webDemo3.service.manageEmulationService.ValidateEmulationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +28,21 @@ public class EmulationController {
     @Autowired
     private GradingEmulationService gradingEmulationService;
 
+    @Autowired
+    private TaskService taskService;
+
+    @PostMapping("/liststarclassdate")
+    public ListStarClassDateResponseDto getListStarClassDate()
+    {
+        return taskService.listStarClassDate();
+    }
+
+    @PostMapping("/viewassigntask")
+    public ViewAssignTaskResponseDto viewAssignTask(@RequestBody ViewAssignTaskRequestDto model)
+    {
+        return taskService.viewTask(model);
+    }
+
     /**
      * kimpt142
      * 14/07
@@ -32,5 +55,11 @@ public class EmulationController {
         ViewGradingEmulationResponseDto responseDto = new ViewGradingEmulationResponseDto();
         responseDto = gradingEmulationService.getClassAndViolationList();
         return responseDto;
+    }
+
+    @PostMapping("/addgrademulation")
+    public MessageDTO addViolationForClass(@RequestBody AddViolationForClassRequestDto model)
+    {
+        return gradingEmulationService.addViolationForClass(model);
     }
 }
