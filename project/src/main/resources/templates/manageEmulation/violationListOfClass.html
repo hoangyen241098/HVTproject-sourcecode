@@ -55,39 +55,33 @@
             </div>
         </div>
         <div class="violation-by-date">
-            <div class="column-labels">
-                <label class="violation-date">Ngày</label>
-                <label class="violation-details">Mô tả lỗi</label>
-                <label class="violation-substract-grade">Điểm trừ</label>
-                <label class="violation-quantity">Số lần</label>
-                <label class="violation-total">Tổng điểm trừ</label>
-                <label class="violation-action"></label>
-            </div>
-
             <div class="violation-description">
                 <div class="violation-date">
                     <span>Thứ 2 - 07/06/2020</span>
                 </div>
                 <div class="violation-details">
-                    <div class="violation-name">Đi lại lộn xộn</div>
-                    <p class="violation-note my-0">A và B đi lại lộn xộn trong lớp</p>
+                    <div class="violation-name">
+                        <span class="font-500">Mô tả lỗi: </span>
+                        <span>Đổ rác xuống sàn khi thùng rác của Cty MTĐT chưa đầy hoặc đổ rác từ thùng rác của lớp vào thùng rác thanh niên.</span>
+                    </div>
+                    <p class="violation-note my-0">
+                        <span class="font-500">Ghi chú: </span>
+                        <span>A và B đi lại lộn xộn trong lớp</span></p>
                 </div>
-                <div class="violation-substract-grade">0.2</div>
+                <div class="violation-substract-grade">
+                    <span class="font-500">Điểm trừ: </span>
+                    <span>0.2</span>
+                </div>
                 <div class="violation-quantity">
+                    <span class="font-500">Số lần: </span>
                     <span>2</span>
                 </div>
                 <div class="violation-total">
+                    <span class="font-500">Tổng điểm trừ: </span>
                     <span>0.4</span>
                 </div>
                 <div class="violation-action">
                     <a class="btn btn-danger" href="#editModal" data-toggle="modal">CHỈNH SỬA</a>
-                </div>
-            </div>
-
-            <div class="totals-footer">
-                <div class="totals-item">
-                    <label>Tổng điểm trừ</label>
-                    <div class="totals-value" id="cart-subtotal">0.4</div>
                 </div>
             </div>
         </div>
@@ -105,35 +99,40 @@
                 </div>
                 <div class="modal-body">
                     <p class="font-500">Thứ 2 - 07/06/2020 - Lớp 10 Tin</p>
-                    <table class="table">
-                        <thead>
-                        <th>Mô tả lỗi</th>
-                        <th>Điểm trừ</th>
-                        <th>Số lần</th>
-                        <th>Tổng điểm trừ</th>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Đi lại lộn xộn, làm việc riêng, ăn quà</td>
-                            <td class="substract">0.2</td>
-                            <td>
-                                <div class="quantity d-flex">
+                    <div class="ml-3">
+                        <p class="mb-1">
+                            <span class="font-500">Mô tả lỗi: </span>
+                            <span>Đi lại lộn xộn, làm việc riêng, ăn quà</span>
+                        </p>
+                        <p class="mb-1">
+                            <span class="font-500">Ghi chú: </span>
+                            <span class="text-red">A và B đi lại lộn xộn trong lớp</span>
+                        </p>
+                    </div>
+                    <div class="ml-3">
+                        <p class="mb-1">
+                            <span class="font-500">Điểm trừ: </span>
+                            <span class="substract">0.2</span>
+                        </p>
+                    </div>
+                    <div class="ml-3">
+                        <p class="mb-1 d-flex align-items-center">
+                            <span class="font-500">Số lần: </span>
+                            <span class="quantity d-flex ml-3">
                                     <a role="button" class="btn-decrease"><i class="fa fa-minus" aria-hidden="true"></i></a>
                                     <input class="quantity-input" type="number" value="0" min="0">
                                     <a role="button" class="btn-increase"><i class="fa fa-plus" aria-hidden="true"></i></a>
-                                </div>
-                            </td>
-                            <td class="total"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="4">
-                                <span class="font-500">Ghi chú: </span><span class="text-red">A và B đi lại lộn xộn trong lớp</span>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <div class="form-group ml-3">
-                        <label for="reason">Lý do: </label>
+                                </span>
+                        </p>
+                    </div>
+                    <div class="ml-3">
+                        <p class="mb-1">
+                            <span class="font-500">Tổng điểm trừ: </span>
+                            <span class="total">0.4</span>
+                        </p>
+                    </div>
+                    <div class="form-group mx-3">
+                        <label class="font-500" for="reason">Lý do: </label>
                         <textarea type="text" class="form-control" id="reason" placeholder="Lý do.."></textarea>
                     </div>
                 </div>

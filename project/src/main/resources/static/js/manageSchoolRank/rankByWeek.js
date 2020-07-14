@@ -21,7 +21,8 @@ $(document).ready(function () {
             "lengthMenu": [ 30 ],
             "bLengthChange": false,
             "bFilter": false,
-            "bInfo": false
+            "bInfo": false,
+            "paging": false
         }
     );
 });
