@@ -5,6 +5,11 @@ import com.example.webDemo3.dto.manageClassResponseDto.ClassTableResponseDto;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViewGradingEmulationResponseDto;
 import com.example.webDemo3.dto.request.manageClassRequestDto.ClassTableRequestDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.AddViolationForClassRequestDto;
+import com.example.webDemo3.dto.manageEmulationResponseDto.ListStarClassDateResponseDto;
+import com.example.webDemo3.dto.manageEmulationResponseDto.ViewAssignTaskResponseDto;
+import com.example.webDemo3.dto.manageEmulationResponseDto.ViewGradingEmulationResponseDto;
+import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewAssignTaskRequestDto;
+import com.example.webDemo3.service.manageEmulationService.TaskService;
 import com.example.webDemo3.service.manageEmulationService.GradingEmulationService;
 import com.example.webDemo3.service.manageEmulationService.ValidateEmulationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +27,21 @@ public class EmulationController {
 
     @Autowired
     private GradingEmulationService gradingEmulationService;
+
+    @Autowired
+    private TaskService taskService;
+
+    @PostMapping("/liststarclassdate")
+    public ListStarClassDateResponseDto getListStarClassDate()
+    {
+        return taskService.listStarClassDate();
+    }
+
+    @PostMapping("/viewassigntask")
+    public ViewAssignTaskResponseDto viewAssignTask(@RequestBody ViewAssignTaskRequestDto model)
+    {
+        return taskService.viewTask(model);
+    }
 
     /**
      * kimpt142

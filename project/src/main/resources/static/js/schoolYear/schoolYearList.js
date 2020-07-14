@@ -54,6 +54,13 @@ $.ajax({
                         </tr>
                     `);
                 });
+                $('#tableSchoolYear').DataTable({
+                    lengthMenu: [30],
+                    bLengthChange: false,
+                    bFilter: false,
+                    bInfo: false,
+                    paging: false,
+                });
                 getSchoolYearId();
                 deleteYear();
             }

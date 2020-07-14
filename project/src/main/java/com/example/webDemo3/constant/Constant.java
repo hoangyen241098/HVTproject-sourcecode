@@ -143,7 +143,7 @@ public class Constant {
     public static final MessageDTO ENTERING_TIME_EMPTY =
             new MessageDTO(1,"Thời gian thực thi này không tồn tại.");
     public static final MessageDTO ROLE_ID_NULL =
-            new MessageDTO(1,"Hãy chọn role.");
+            new MessageDTO(1,"Hãy chọn chức vụ.");
     public static final MessageDTO DAY_NOT_EXIST =
             new MessageDTO(1,"Không có ngày thỏa mãn.");
     public static final MessageDTO START_TIME_EMPTY =
@@ -160,6 +160,8 @@ public class Constant {
             new MessageDTO(1,"Danh sách lớp trống.");
     public static final MessageDTO DATE_EMPTY =
             new MessageDTO(1,"Hãy lựa chọn ngày.");
+    public static final MessageDTO LIST_REDSTAR_EMPTY =
+            new MessageDTO(1,"Danh sách sao đỏ trống.");
     /**
      * Success message
      */

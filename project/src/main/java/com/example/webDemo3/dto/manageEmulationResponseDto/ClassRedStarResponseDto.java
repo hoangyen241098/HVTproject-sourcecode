@@ -1,4 +1,4 @@
-package com.example.webDemo3.dto.manageAssignTaskResponseDto;
+package com.example.webDemo3.dto.manageEmulationResponseDto;
 
 import lombok.Data;
 
