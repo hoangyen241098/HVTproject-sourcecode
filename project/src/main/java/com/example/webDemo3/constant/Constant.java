@@ -158,6 +158,8 @@ public class Constant {
             new MessageDTO(1,"Danh sách ngày trống.");
     public static final MessageDTO LIST_CLASS_EMPTY =
             new MessageDTO(1,"Danh sách lớp trống.");
+    public static final MessageDTO DATE_EMPTY =
+            new MessageDTO(1,"Hãy lựa chọn ngày.");
     /**
      * Success message
      */
