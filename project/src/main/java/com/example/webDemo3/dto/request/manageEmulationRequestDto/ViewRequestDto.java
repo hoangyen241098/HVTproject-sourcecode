@@ -4,6 +4,11 @@ import lombok.Data;
 
 import java.sql.Date;
 
+/**
+ * lamnt98
+ * 14/07
+ * Request of view change request
+ */
 @Data
 public class ViewRequestDto {
     private Integer typeRequest;

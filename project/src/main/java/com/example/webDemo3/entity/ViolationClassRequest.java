@@ -7,9 +7,13 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.sql.Date;
 
+/**
+ * lamnt98
+ * 14/07
+ */
 @Entity
 @Data
-@Table(name = "VIOLATION CLASS_REQUESTS")
+@Table(name = "VIOLATION_CLASS_REQUESTS")
 public class ViolationClassRequest {
     @Id
     @Column(name = "REQUEST_ID")

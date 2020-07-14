@@ -10,10 +10,12 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 
+/**
+ * lamnt98
+ * 14/07
+ */
 @Repository
 public interface ViolationClassRequestRepository extends JpaRepository<ViolationClassRequest, Integer> {
-    //@Query(value = "select v from ViolationClassRequest v where v.classId = :classId and v.status = :status")
-    //Page<ViolationClass> findByClassIdAndStatus(@Param("classId") Integer classId, @Param("status") Integer status, Pageable paging);
     @Query(value = "select v from ViolationClassRequest v " +
             "where (v.violationClass.classId = :classId or :classId is NULL ) " +
             "and (v.dateChange = :creatDate or :creatDate is NULL) " +
@@ -23,21 +25,13 @@ public interface ViolationClassRequestRepository extends JpaRepository<Violation
                                                                 @Param("status") Integer status,
                                                                 Pageable paging);
 
-/*    @Query(value = "select v from ViolationClassRequest v " +
-            "where (v.violationClass.classId = :classId or :classId is NULL )" +
-            "and (v.dateChange = :creatDate or :creatDate is null)")
-    Page<ViolationClassRequest> findViolationClassRequestByCondition(@Param("classId")Integer classId,
-                                                                @Param("creatDate") Date creatDate,
-                                                                Pageable paging);*/
-/*
+
     @Query(value = "select v from ViolationClassRequest v " +
             "where (v.violationClass.classId = :classId or :classId is NULL )" +
             "and (v.dateChange = :creatDate or :creatDate is null )")
     Page<ViolationClassRequest> findViolationClassRequestByCondition(@Param("classId") Integer classId,
                                                        @Param("creatDate") Date creatDate,
-                                                       Pageable paging);*/
+                                                       Pageable paging);
 
-    @Query(value = "select t from ViolationClassRequest t where t.dateChange = :creatDate ")
-    Page<ViolationClassRequest> findViolationClassRequestByCondition(@Param("creatDate") Date creatDate, Pageable paging);
 
 }

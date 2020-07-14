@@ -5,6 +5,11 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * lamnt98
+ * 14/07
+ * Response list for view change request
+ */
 @Data
 public class ViewViolationClassListResponseDto {
 

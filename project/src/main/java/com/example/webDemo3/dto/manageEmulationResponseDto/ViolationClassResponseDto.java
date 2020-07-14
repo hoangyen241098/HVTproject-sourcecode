@@ -6,10 +6,22 @@ import lombok.Data;
 
 import java.sql.Date;
 
+/**
+ * lamnt98
+ * 14/07
+ */
 @Data
 public class ViolationClassResponseDto {
 
-    private ViolationClass violationClass;
-    private ViolationClassRequest violationClassRequest;
+    private Long violationClassId;
+    private Integer classId;
+    private String note;
+    private Integer quantity;
+    private String dayName;
+    private String description;
+    private Date createDate;
+
+    private ViolationClassRequestResponseDto violationClassRequest;
     private Integer typeRequest;
+
 }

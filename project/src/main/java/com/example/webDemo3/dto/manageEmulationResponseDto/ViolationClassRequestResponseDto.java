@@ -4,9 +4,14 @@ import lombok.Data;
 
 import java.sql.Date;
 
+/**
+ * lamnt98
+ * 14/07
+ */
 @Data
 public class ViolationClassRequestResponseDto {
     private Integer requestId;
+    private Long violationClassId;
     private Date changeDate;
     private String creatBy;
     private Integer status;

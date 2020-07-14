@@ -9,6 +9,7 @@ import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewAssignTask
 import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.entity.ClassRedStar;
 import com.example.webDemo3.entity.User;
+import com.example.webDemo3.entity.ViolationClassRequest;
 import com.example.webDemo3.repository.ClassRedStarRepository;
 import com.example.webDemo3.repository.ClassRepository;
 import com.example.webDemo3.repository.UserRepository;
@@ -24,6 +25,11 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * lamnt98
+ * 14/07
+ * View assign task
+ */
 @Service
 public class TaskServiceImpl implements TaskService {
     @Autowired
@@ -182,5 +188,7 @@ public class TaskServiceImpl implements TaskService {
         }
         return list;
     }
+
+
 
 }

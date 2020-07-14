@@ -11,6 +11,7 @@ import com.example.webDemo3.dto.manageEmulationResponseDto.ViewGradingEmulationR
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViewViolationClassListResponseDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewAssignTaskRequestDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewRequestDto;
+import com.example.webDemo3.entity.ViolationClassRequest;
 import com.example.webDemo3.service.manageEmulationService.TaskService;
 import com.example.webDemo3.service.manageEmulationService.GradingEmulationService;
 import com.example.webDemo3.service.manageEmulationService.ViewRequestService;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /*
 kimpt142 - 14/07
@@ -37,18 +40,36 @@ public class EmulationController {
     @Autowired
     private ViewRequestService viewRequestService;
 
+    /**
+     * lamnt98
+     * 14/07
+     * catch request to get list star, class and date
+     * @return ListStarClassDateResponseDto
+     */
     @PostMapping("/liststarclassdate")
     public ListStarClassDateResponseDto getListStarClassDate()
     {
         return taskService.listStarClassDate();
     }
 
+    /**
+     * lamnt98
+     * 14/07
+     * catch request to get list assign task
+     * @return ViewAssignTaskResponseDto
+     */
     @PostMapping("/viewassigntask")
     public ViewAssignTaskResponseDto viewAssignTask(@RequestBody ViewAssignTaskRequestDto model)
     {
         return taskService.viewTask(model);
     }
 
+    /**
+     * lamnt98
+     * 14/07
+     * catch request to get list request change
+     * @return ViewViolationClassListResponseDto
+     */
     @PostMapping("/viewrequest")
     public ViewViolationClassListResponseDto viewRequest(@RequestBody ViewRequestDto model)
     {

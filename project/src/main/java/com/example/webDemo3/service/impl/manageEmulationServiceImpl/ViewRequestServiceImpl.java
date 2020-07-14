@@ -9,10 +9,8 @@ import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewRequestDto
 import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.entity.ViolationClass;
 import com.example.webDemo3.entity.ViolationClassRequest;
-import com.example.webDemo3.repository.ClassRepository;
-import com.example.webDemo3.repository.ViolationClassRepository;
-import com.example.webDemo3.repository.ViolationClassRequestRepository;
-import com.example.webDemo3.repository.ViolationRepository;
+import com.example.webDemo3.repository.*;
+import com.example.webDemo3.service.manageEmulationService.ValidateEmulationService;
 import com.example.webDemo3.service.manageEmulationService.ViewRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,8 +22,19 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * lamnt98
+ * 14/07
+ * Search request of change
+ */
 @Service
 public class ViewRequestServiceImpl implements ViewRequestService {
+
+    @Autowired
+    private ValidateEmulationService validateEmulationService;
+
+    @Autowired
+    private DayRepository dayRepository;
 
     @Autowired
     private ViolationRepository violationRepository;
@@ -41,7 +50,7 @@ public class ViewRequestServiceImpl implements ViewRequestService {
 
     @Override
     public ViewViolationClassListResponseDto viewRequest(ViewRequestDto viewRequest) {
-        ViewViolationClassListResponseDto viewRequestResponseDto = new ViewViolationClassListResponseDto();
+        ViewViolationClassListResponseDto responseDto = new ViewViolationClassListResponseDto();
         ViolationClassResponseDto violationClass = new ViolationClassResponseDto();
         List<ViolationClassResponseDto> viewViolationClassList = new ArrayList<>();
         ViolationClassRequestResponseDto violationClassRequest = new ViolationClassRequestResponseDto();
@@ -67,71 +76,98 @@ public class ViewRequestServiceImpl implements ViewRequestService {
                 //check class exists or not
                 if (newClass == null) {
                     message = Constant.CLASS_NOT_EXIST;
-                    viewRequestResponseDto.setMessage(message);
-                    return viewRequestResponseDto;
+                    responseDto.setMessage(message);
+                    return responseDto;
                 }
             }
 
             paging = PageRequest.of(pageNumber, pageSize);
 
-            //Luôn truyền date và status
-
+            //check typeRequest == 0
             if (typeRequest == 0) {
                 pagedResultRequest = getListPageViolationClassRequestWithCondition(createDate, status, classId, paging);
+
+                //check pagedResultRequest null or not
                 if(pagedResultRequest != null){
+                    //Run to change from ViolationClassEntity và ViolationClassRequest to Dto
                     for(ViolationClassRequest newViolatinClassRequest : pagedResultRequest){
-                        violationClass.setViolationClassRequest(newViolatinClassRequest);
+                        violationClassRequest = changeViolationClassRequestFromEntityToDto(newViolatinClassRequest);
+
+                        ViolationClass violationClass1 = violationClassRepository.findById(violationClassRequest.getViolationClassId()).orElse(null);
+                        violationClass = changeViolationClassFromEntityToDto(violationClass1);
+                        violationClass.setViolationClassRequest(violationClassRequest);
+                        violationClass.setTypeRequest(typeRequest);
                         viewViolationClassList.add(violationClass);
                     }
-                    viewRequestResponseDto.setViewViolationClassList(viewViolationClassList);
+                    responseDto.setViewViolationClassList(viewViolationClassList);
                 }
             }
 
+            //check typeRequest == 1
             if (typeRequest == 1) {
                 pagedResult = getListPageViolationClassWithCondition(createDate, status, classId, paging);
+
+                //check pagedResult null or not
                 if(pagedResult != null){
+                    //Run to change from ViolationClassEntity to Dto
                     for(ViolationClass newViolationClass: pagedResult){
-                        violationClass.setViolationClass(newViolationClass);
+                        violationClass = changeViolationClassFromEntityToDto(newViolationClass);
+                        violationClass.setTypeRequest(typeRequest);
                         viewViolationClassList.add(violationClass);
                     }
-                    viewRequestResponseDto.setViewViolationClassList(viewViolationClassList);
+                    responseDto.setViewViolationClassList(viewViolationClassList);
                 }
             }
 
+            //check typeRequest == 2
             if (typeRequest == 2) {
                 pagedResultRequest = getListPageViolationClassRequestWithCondition(createDate, status, classId, paging);
                 pagedResult = getListPageViolationClassWithCondition(createDate, status, classId, paging);
 
+                //check pagedResultRequest null or not
                 if(pagedResultRequest != null){
+                    //Run to change from ViolationClassEntity và ViolationClassRequest to Dto
                     for(ViolationClassRequest newViolatinClassRequest : pagedResultRequest){
-                        violationClass.setViolationClassRequest(newViolatinClassRequest);
+                        violationClassRequest = changeViolationClassRequestFromEntityToDto(newViolatinClassRequest);
+
+                        ViolationClass violationClass1 = violationClassRepository.findById(violationClassRequest.getViolationClassId()).orElse(null);
+                        violationClass = changeViolationClassFromEntityToDto(violationClass1);
+                        violationClass.setViolationClassRequest(violationClassRequest);
+                        violationClass.setTypeRequest(typeRequest);
                         viewViolationClassList.add(violationClass);
+                        violationClass.setTypeRequest(0);
                     }
                 }
 
+                //check pagedResult null or not
                 if(pagedResult != null){
+                    //Run to change from ViolationClassEntity to Dto
                     for(ViolationClass newViolationClass: pagedResult){
-                        violationClass.setViolationClass(newViolationClass);
+                        violationClass = changeViolationClassFromEntityToDto(newViolationClass);
+                        violationClass.setTypeRequest(typeRequest);
                         viewViolationClassList.add(violationClass);
+                        violationClass.setTypeRequest(1);
                     }
                 }
-                viewRequestResponseDto.setViewViolationClassList(viewViolationClassList);
+
+                responseDto.setViewViolationClassList(viewViolationClassList);
             }
 
-            if(viewRequestResponseDto.getViewViolationClassList().size() == 0){
+            //check response empty or not
+            if(responseDto.getViewViolationClassList().size() == 0){
                 message = Constant.VIEW_CHANGE_REQUEST_NULL;
-                viewRequestResponseDto.setMessage(message);
-                return  viewRequestResponseDto;
+                responseDto.setMessage(message);
+                return  responseDto;
             }
 
             message = Constant.SUCCESS;
-            viewRequestResponseDto.setMessage(message);
+            responseDto.setMessage(message);
         } catch (Exception e) {
             message.setMessageCode(1);
             message.setMessage(e.toString());
-            viewRequestResponseDto.setMessage(message);
+            responseDto.setMessage(message);
         }
-        return viewRequestResponseDto;
+        return responseDto;
     }
 
     public Page<ViolationClass> getListPageViolationClassWithCondition(Date createDate, Integer status, Integer classId, Pageable paging) {
@@ -143,11 +179,11 @@ public class ViewRequestServiceImpl implements ViewRequestService {
                     break;
                 }
                 case 1: {
-                    pagedResult = violationClassRepository.findViolationClassByConditionAndStatus(classId, createDate, 0, paging);
+                    pagedResult = violationClassRepository.findViolationClassByConditionAndStatus(classId, createDate, 1, paging);
                     break;
                 }
                 case 2: {
-                    pagedResult = violationClassRepository.findViolationClassByConditionAndStatus(classId, createDate, 1, paging);
+                    pagedResult = violationClassRepository.findViolationClassByConditionAndStatus(classId, createDate, 0, paging);
                     break;
                 }
                 default: {
@@ -179,7 +215,7 @@ public class ViewRequestServiceImpl implements ViewRequestService {
                 }
                 default: {
                     //pagedResultRequest = violationClassRequestRepository.findViolationClassRequestByCondition(classId, createDate, paging);
-                    pagedResultRequest = violationClassRequestRepository.findViolationClassRequestByCondition(createDate, paging);
+                    pagedResultRequest = violationClassRequestRepository.findViolationClassRequestByCondition(classId,createDate, paging);
 
                 }
             }
@@ -189,6 +225,38 @@ public class ViewRequestServiceImpl implements ViewRequestService {
 
         return null;
     }
+
+    public ViolationClassResponseDto changeViolationClassFromEntityToDto(ViolationClass violationClass){
+        ViolationClassResponseDto responseDto = new ViolationClassResponseDto();
+
+        responseDto.setViolationClassId(violationClass.getId());
+        responseDto.setClassId(violationClass.getClassId());
+        responseDto.setNote(violationClass.getNote());
+        responseDto.setQuantity(violationClass.getQuantity());
+        responseDto.setDescription(violationClass.getViolation().getDescription());
+        responseDto.setCreateDate(violationClass.getDate());
+
+        Integer dayId = validateEmulationService.getDayIdByDate(violationClass.getDate());
+        String dayName = dayRepository.findByDayId(dayId).getDayName();
+        responseDto.setDayName(dayName);
+
+        return responseDto;
+    }
+
+    public ViolationClassRequestResponseDto changeViolationClassRequestFromEntityToDto(ViolationClassRequest violationClassRequest){
+        ViolationClassRequestResponseDto responseDto = new ViolationClassRequestResponseDto();
+
+        responseDto.setRequestId(violationClassRequest.getRequestId());
+        responseDto.setViolationClassId(violationClassRequest.getViolationClass().getId());
+        responseDto.setChangeDate(violationClassRequest.getDateChange());
+        responseDto.setCreatBy(violationClassRequest.getCreatBy());
+        responseDto.setStatus(violationClassRequest.getStatusChange());
+        responseDto.setReason(violationClassRequest.getReason());
+        responseDto.setQuantityNew(violationClassRequest.getQuantityNew());
+
+        return responseDto;
+    }
+
 
 }
 
