@@ -7,4 +7,5 @@ import lombok.Data;
 public class LoginResponseDto {
     private MessageDTO message;
     private Integer roleid;
+    private Integer currentYearId;
 }
