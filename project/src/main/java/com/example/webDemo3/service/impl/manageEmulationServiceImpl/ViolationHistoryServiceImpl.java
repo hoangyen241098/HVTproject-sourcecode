@@ -1,5 +1,7 @@
 package com.example.webDemo3.service.impl.manageEmulationServiceImpl;
 
+import com.example.webDemo3.constant.Constant;
+import com.example.webDemo3.dto.manageEmulationResponseDto.ViewViolationClassHistoryResponseDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViolationHistoryResquestDTO;
 import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.entity.ViolationClass;
@@ -22,7 +24,8 @@ public class ViolationHistoryServiceImpl implements ViolationHistoryService {
     private ViolationClassRepository violationClassRepository;
 
     @Override
-    public List<ViolationClass> getHistoryViolationOfClas(ViolationHistoryResquestDTO model) {
+    public ViewViolationClassHistoryResponseDto getHistoryViolationOfClas(ViolationHistoryResquestDTO model) {
+        ViewViolationClassHistoryResponseDto output = new ViewViolationClassHistoryResponseDto();
         List<ViolationClass> violationClassList = new ArrayList<>();
         List<Class> classList = classRepository.findByGifted(model.getGiftedId());
         for (int i = 0; i < classList.size(); i++) {
@@ -39,8 +42,9 @@ public class ViolationHistoryServiceImpl implements ViolationHistoryService {
                     model.getFromDate(),model.getToDate());
             violationClassList.addAll(subList);
         }
-        //violationClassList = violationClassRepository.findAll();
-        return violationClassList;
+        output.setViolationClassList(violationClassList);
+        output.setMessage(Constant.SUCCESS);
+        return output;
     }
 
 }
