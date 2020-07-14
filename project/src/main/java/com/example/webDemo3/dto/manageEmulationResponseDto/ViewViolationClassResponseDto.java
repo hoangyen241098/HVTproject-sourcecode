@@ -1,12 +1,13 @@
 package com.example.webDemo3.dto.manageEmulationResponseDto;
 
+import com.example.webDemo3.entity.ViolationClassRequest;
 import lombok.Data;
 
 import java.sql.Date;
 
 @Data
 public class ViewViolationClassResponseDto {
-    private Integer violationClassId;
+    private Long violationClassId;
     private Integer classId;
     private String note;
     private Integer quantity;
@@ -14,6 +15,6 @@ public class ViewViolationClassResponseDto {
     private String description;
     private Date createDate;
 
-    private ViewViolationClassRequestResponseDto viewViolationClassRequestResponseDto;
+    private ViolationClassRequest violationClassRequest;
     private Integer typeRequest;
 }
