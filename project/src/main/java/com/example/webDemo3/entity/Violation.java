@@ -28,4 +28,12 @@ public class Violation {
 
     @Column(name = "STATUS")
     private Integer status;
+
+    public Violation() {
+    }
+
+    public Violation(Integer violationId){
+        this.violationId = violationId;
+    }
+
 }

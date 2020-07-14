@@ -18,4 +18,11 @@ public class Day {
 
     @Column(name = "DAY_NAME")
     private String dayName;
+
+    public Day() {
+    }
+
+    public Day(Integer dayId) {
+        this.dayId = dayId;
+    }
 }

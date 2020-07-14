@@ -28,4 +28,9 @@ public interface ViolationClassRepository extends JpaRepository<ViolationClass, 
     //@Query(value = "select v from ViolationClass v where v.classId = :classId and v.status = :status ")
     //Page<ViolationClass> findByClassIdAndStatus(@Param("classId") Integer classId,@Param("status")  Integer status);
 
+    @Query(value="select vc from ViolationClass vc where vc.classId = :classId and vc.date = :date and vc.weekId <> 0")
+    List<ViolationClass> findViolationClassRankedByClassId(@Param("classId")Integer classId, @Param("date")Date date);
+
+    @Query(value="select vc from ViolationClass vc where vc.classId = :classId and vc.date = :date and vc.violation.violationId = :violationId")
+    ViolationClass findVioClassByClassIdAndViolationId(@Param("classId")Integer classId, @Param("date")Date date,  @Param("violationId")Integer violationId);
 }

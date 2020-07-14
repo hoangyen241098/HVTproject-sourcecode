@@ -51,4 +51,7 @@ public interface ClassRedStarRepository extends JpaRepository<ClassRedStar, Clas
 
     @Query(value = "select c from ClassRedStar c where c.classId = :classId and c.classRedStarId.FROM_DATE = :fromDate and c.classRedStarId.RED_STAR = :redStar")
     Page<ClassRedStar> findByClassIdAndClassRedStarId_FROM_DATEAndClassRedStarId_RED_STAR(@Param("classId") Integer classId,@Param("fromDate") Date fromDate, @Param("redStar") String redStar,  Pageable paging);
+
+    @Query(value = "select MAX(c.classRedStarId.FROM_DATE) from ClassRedStar c where c.classRedStarId.FROM_DATE <= :fromDate and c.classId = :classId and c.classRedStarId.RED_STAR <> :username")
+    Date getBiggestClosetDateClassIdAndDifferRedStar(@Param("fromDate") Date fromDate, @Param("classId") Integer classId, @Param("username") String username);
 }
