@@ -4,17 +4,24 @@ import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.manageAccountResponseDto.LoginResponseDto;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.request.manageAccountRequestDto.LoginRequestDto;
+import com.example.webDemo3.entity.SchoolYear;
 import com.example.webDemo3.entity.User;
+import com.example.webDemo3.repository.SchoolYearRepository;
 import com.example.webDemo3.repository.UserRepository;
 import com.example.webDemo3.service.manageAccountService.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.sql.Date;
 
 @Service
 public class LoginServiceImpl implements LoginService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private SchoolYearRepository schoolYearRepository;
 
     /**
      * kimpt142
@@ -57,6 +64,11 @@ public class LoginServiceImpl implements LoginService {
         else{
             message = Constant.SUCCESS;
             loginDto.setRoleid(user.getRole().getRoleId());
+            Date dateCurrent = new Date(System.currentTimeMillis());
+            SchoolYear schoolCurrent = schoolYearRepository.findSchoolYearsByDate(dateCurrent);
+            if(schoolCurrent != null) {
+                loginDto.setCurrentYearId(schoolCurrent.getYearID());
+            }
         }
 
         loginDto.setMessage(message);
