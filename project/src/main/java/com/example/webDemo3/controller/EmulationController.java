@@ -58,7 +58,7 @@ public class EmulationController {
     }
 
     @PostMapping("/addgrademulation")
-    public MessageDTO add(@RequestBody AddViolationForClassRequestDto model)
+    public MessageDTO addViolationForClass(@RequestBody AddViolationForClassRequestDto model)
     {
         return gradingEmulationService.addViolationForClass(model);
     }
