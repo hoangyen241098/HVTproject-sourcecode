@@ -2,6 +2,7 @@ package com.example.webDemo3.repository;
 
 import com.example.webDemo3.entity.ViolationClass;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,12 +19,11 @@ public interface ViolationClassRepository extends JpaRepository<ViolationClass, 
             "where v.classId = :classId " +
             "and v.year.fromYear = :fromYear " +
             "and v.date >= :fromDate " +
-            "and v.date <= :toDate " +
-            "order by v.date desc")
+            "and v.date <= :toDate " )
     List<ViolationClass> findHistoryOfClass(@Param("classId")Integer classId,
                                             @Param("fromYear")Integer fromYear,
                                             @Param("fromDate") Date fromDate,
-                                            @Param("toDate")Date toDate);
+                                            @Param("toDate")Date toDate, Sort sort);
 
     //@Query(value = "select v from ViolationClass v where v.classId = :classId and v.status = :status ")
     //Page<ViolationClass> findByClassIdAndStatus(@Param("classId") Integer classId,@Param("status")  Integer status);

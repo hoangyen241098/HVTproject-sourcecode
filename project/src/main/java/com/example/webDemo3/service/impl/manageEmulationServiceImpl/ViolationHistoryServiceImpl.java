@@ -9,6 +9,7 @@ import com.example.webDemo3.repository.ClassRepository;
 import com.example.webDemo3.repository.ViolationClassRepository;
 import com.example.webDemo3.service.manageEmulationService.ViolationHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -39,7 +40,8 @@ public class ViolationHistoryServiceImpl implements ViolationHistoryService {
                 fromYear = model.getFromYear()+2;
             }
             List<ViolationClass> subList =violationClassRepository.findHistoryOfClass(classSchool.getClassId(),fromYear,
-                    model.getFromDate(),model.getToDate());
+                    model.getFromDate(),model.getToDate(),
+                    Sort.by(Sort.Direction.DESC,"date"));
             violationClassList.addAll(subList);
         }
         output.setViolationClassList(violationClassList);
