@@ -65,4 +65,9 @@ public interface ViolationClassRepository extends JpaRepository<ViolationClass, 
                                                        @Param("creatDate")Date creatDate,
                                                        Pageable paging);
 
+    @Query(value="select vc from ViolationClass vc where vc.classId = :classId and vc.date = :date and vc.weekId <> 0")
+    List<ViolationClass> findViolationClassRankedByClassId(@Param("classId")Integer classId, @Param("date")Date date);
+
+    @Query(value="select vc from ViolationClass vc where vc.classId = :classId and vc.date = :date and vc.violation.violationId = :violationId")
+    ViolationClass findVioClassByClassIdAndViolationId(@Param("classId")Integer classId, @Param("date")Date date,  @Param("violationId")Integer violationId);
 }

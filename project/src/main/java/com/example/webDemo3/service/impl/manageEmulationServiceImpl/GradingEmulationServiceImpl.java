@@ -2,16 +2,25 @@ package com.example.webDemo3.service.impl.manageEmulationServiceImpl;
 
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.dto.manageClassResponseDto.ClassListResponseDto;
 import com.example.webDemo3.dto.manageClassResponseDto.ClassResponseDto;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViewGradingEmulationResponseDto;
 import com.example.webDemo3.dto.manageViolationResponseDto.ViolationTypeResponseDto;
+import com.example.webDemo3.dto.request.manageEmulationRequestDto.AddViolationForClassRequestDto;
+import com.example.webDemo3.dto.request.manageEmulationRequestDto.SubViolationForClassRequestDto;
+import com.example.webDemo3.entity.Day;
+import com.example.webDemo3.entity.SchoolYear;
+import com.example.webDemo3.entity.Violation;
+import com.example.webDemo3.entity.ViolationClass;
+import com.example.webDemo3.repository.SchoolYearRepository;
+import com.example.webDemo3.repository.ViolationClassRepository;
 import com.example.webDemo3.service.manageClassService.ClassService;
 import com.example.webDemo3.service.manageEmulationService.GradingEmulationService;
+import com.example.webDemo3.service.manageEmulationService.ValidateEmulationService;
 import com.example.webDemo3.service.manageViolationService.ViolationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /*
@@ -25,6 +34,15 @@ public class GradingEmulationServiceImpl implements GradingEmulationService {
 
     @Autowired
     private ViolationService violationService;
+
+    @Autowired
+    SchoolYearRepository schoolYearRepository;
+
+    @Autowired
+    private ValidateEmulationService validateEmulationService;
+
+    @Autowired
+    private ViolationClassRepository violationClassRepository;
 
     /**
      * kimpt142
@@ -56,5 +74,101 @@ public class GradingEmulationServiceImpl implements GradingEmulationService {
         responseDto.setVioTypeAndVioList(vioTypeAndVioList);
         responseDto.setMessage(Constant.SUCCESS);
         return responseDto;
+    }
+
+    /**
+     * kimpt142
+     * 14/07
+     * add new grade emulation for class (insert into violation class)
+     * @param model include information class, violation and date
+     * @return message
+     */
+    @Override
+    public MessageDTO addViolationForClass(AddViolationForClassRequestDto model) {
+
+        MessageDTO message = new MessageDTO();
+        String username = model.getUsername();
+        Integer classId = model.getClassId();
+        Date date = model.getDate();
+        Integer yearId = model.getYearId();
+        Integer weekId = 0;
+        Integer status;
+        List<SubViolationForClassRequestDto> violationList = model.getViolationList();
+
+        if(username.equalsIgnoreCase("")){
+            message = Constant.USER_NOT_EXIT;
+            return message;
+        }
+
+        if(classId == null){
+            message = Constant.CLASS_EMPTY;
+            return message;
+        }
+
+        if(date == null){
+            message = Constant.DATE_EMPTY;
+            return message;
+        }
+
+        if(yearId == null){
+            Date dateCurrent = new Date(System.currentTimeMillis());
+            SchoolYear schoolCurrent = schoolYearRepository.findSchoolYearsByDate(dateCurrent);
+            if(schoolCurrent != null) {
+                yearId = schoolCurrent.getYearID();
+            }
+        }
+
+        if(violationList == null || violationList.size() == 0){
+            message = Constant.VIOLATION_ID_NULL;
+            return message;
+        }
+
+        Date dateCurrent = new Date(System.currentTimeMillis());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if(sdf.format(date).equals(sdf.format(dateCurrent))){
+            status = 1;
+        }
+        else if(date.compareTo(dateCurrent) < 0){
+            status = 2;
+        }
+        else{
+            message = Constant.OVERDATE_EMULATE;
+            return message;
+        }
+
+        if(!validateEmulationService.checkRoleForEmulate(classId,username, date)){
+            message = Constant.EMULATE_FAIL;
+            return message;
+        }
+
+        if(validateEmulationService.checkRankedDate(classId, date)){
+            message = Constant.DATE_RANKED;
+            return message;
+        }
+
+        Integer dayId = validateEmulationService.getDayIdByDate(date);
+
+        try {
+            for(SubViolationForClassRequestDto item : violationList) {
+                ViolationClass violationClass = new ViolationClass();
+                violationClass.setClassId(classId);
+                violationClass.setDate(date);
+                violationClass.setViolation(new Violation(item.getViolationId()));
+                violationClass.setQuantity(item.getQuantity());
+                violationClass.setNote(item.getNote());
+                violationClass.setWeekId(weekId);
+                violationClass.setYear(new SchoolYear(yearId));
+                violationClass.setDay(new Day(dayId));
+                violationClass.setStatus(status);
+                violationClassRepository.save(violationClass);
+            }
+        }catch (Exception e){
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            return message;
+        }
+
+        message = Constant.SUCCESS;
+        return message;
     }
 }

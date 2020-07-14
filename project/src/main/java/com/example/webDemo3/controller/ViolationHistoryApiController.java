@@ -1,7 +1,7 @@
 package com.example.webDemo3.controller;
 
+import com.example.webDemo3.dto.manageEmulationResponseDto.ViewViolationClassHistoryResponseDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViolationHistoryResquestDTO;
-import com.example.webDemo3.entity.ViolationClass;
 import com.example.webDemo3.service.manageEmulationService.ViolationHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,9 +19,8 @@ public class ViolationHistoryApiController {
     private ViolationHistoryService violationHistoryService;
 
     @PostMapping("/view")
-    public List<ViolationClass> deleteGiftedClass(@RequestBody ViolationHistoryResquestDTO model)
+    public ViewViolationClassHistoryResponseDto viewViolationClassHistory(@RequestBody ViolationHistoryResquestDTO model)
     {
-
         return violationHistoryService.getHistoryViolationOfClas(model);
     }
 }
