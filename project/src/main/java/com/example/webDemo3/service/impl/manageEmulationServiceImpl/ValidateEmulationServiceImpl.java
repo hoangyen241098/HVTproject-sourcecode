@@ -1,13 +1,11 @@
 package com.example.webDemo3.service.impl.manageEmulationServiceImpl;
 
-import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.entity.ViolationClass;
 import com.example.webDemo3.repository.ClassRedStarRepository;
 import com.example.webDemo3.repository.ViolationClassRepository;
 import com.example.webDemo3.service.manageEmulationService.ValidateEmulationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.sql.Date;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
