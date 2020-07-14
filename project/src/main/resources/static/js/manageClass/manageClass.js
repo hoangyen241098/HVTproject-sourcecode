@@ -49,80 +49,87 @@ $("#search").click(function () {
 
 /*Load class list*/
 function search() {
-    $.ajax({
-        url: '/api/admin/classtable',
-        type: 'POST',
-        data: JSON.stringify(inforSearch),
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
-        success: function (data) {
-            if (data.message.messageCode == 0) {
-                var totalPages = data.classList.totalPages;
-                var id = 0 + inforSearch.pageNumber * 10;
-                paging(inforSearch, totalPages);
-                if (data.classList != null) {
-                    $.each(data.classList.content, function (i, item) {
-                        var grade, classIdentifier, status, giftedClassName;
-                        id += 1;
-                        if (item.grade == null) {
-                            grade = "";
-                        } else {
-                            grade = item.grade;
-                        }
-                        if (item.classIdentifier == null) {
-                            classIdentifier = "";
-                        } else {
-                            classIdentifier = item.classIdentifier;
-                        }
-                        if (item.status == null || item.status == 0) {
-                            status = `<span class="status-active"><i class="fa fa-circle" aria-hidden="true"></i></span>`;
-                        } else {
-                            status = `<span class="status-deactive"><i class="fa fa-circle" aria-hidden="true"></i></span>`;
-                        }
-                        if (item.giftedClass == null) {
-                            giftedClass = "";
-                        } else {
-                            giftedClassName = item.giftedClass.name;
-                        }
-                        $('tbody').append(
-                            `<tr>
-                                <td><span>` + id + `</span></td>
-                                <td><span id="grade">` + grade + `</span></td>
-                                <td><span id="giftedClassName">` + giftedClassName + `</span></td>
-                                <td><span id="classIdentifier">` + classIdentifier + `</span></td>
-                                <td><span id="status">` + status + `</span></td>
-                                <td><span class="bt-table-field"><a href="editClass" id="${item.classId}" class="bt-table-edit">
-                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></span></td>
-                            </tr>`
-                        );
-                    });
-                    getClassID();
-                    pagingClick();
-                }
-            } else {
+    $("#myTable").DataTable({
+        destroy: true,
+        searching: false,
+        bInfo: false,
+        paging: false,
+        ajax: {
+            url: "/api/admin/classtable",
+            type: "POST",
+            data: function (d) {
+                return JSON.stringify(inforSearch);
+            },
+            dataType: "json",
+            contentType: "application/json",
+            failure: function (errMsg) {
                 $('tbody').append(
                     `<tr>
-                        <td colspan="6" class="userlist-result">
-                            ` + data.message.message + `
-                        </td>
+                        <td colspan="6" class="userlist-result"> ` + errMsg + ` </td>
                     </tr>`
                 )
+            },
+            dataSrc: function (data) {
+                var dataSrc = null;
+                var messageCode = data.message.messageCode;
+                var message = data.message.message;
+                if (messageCode == 0) {
+                    var totalPages = data.classList.totalPages;
+                    paging(inforSearch, totalPages);
+                    if (data.classList != null) {
+                        dataSrc = data.classList.content;
+                    } else {
+
+                        return false;
+                    }
+                    pagingClick();
+                } else {
+                    $('tbody').append(
+                        `<tr>
+                            <td colspan="6" class="userlist-result"> ` + message + ` </td>
+                        </tr>`
+                    )
+                    return false;
+                }
+                return dataSrc;
             }
         },
-        failure: function (errMsg) {
-            $('tbody').append(
-                `<tr>
-                    <td colspan="6" class="userlist-result">` + errMsg + ` </td>
-                </tr>`
-            )
-        },
-        dataType: "json",
-        contentType: "application/json"
+        columns: [
+            {data: "grade"},
+            {data: "giftedClass.name"},
+            {data: "classIdentifier"},
+            {
+                data: "status",
+                sortable: false,
+                render: function (data, type, full, meta) {
+                    var status;
+                    if (data == null || data == 0) {
+                        status = `<span class="status-active"><i class="fa fa-circle" aria-hidden="true"></i></span>`;
+                    } else {
+                        status = `<span class="status-deactive"><i class="fa fa-circle" aria-hidden="true"></i></span>`;
+                    }
+                    return status;
+                }
+            },
+            {
+                data: "classId",
+                sortable: false,
+                render: function (data, type, full, meta) {
+                    var btn = `<span class="bt-table-field">
+                                    <a href="editClass" id="${data}" class="bt-table-edit">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    </a>
+                                </span>`
+                    getClassID();
+                    return btn;
+                }
+            }
+        ],
+        drawCallback: function (settings) {
+            settings.oLanguage.sEmptyTable = "Không có dữ liệu."
+        }
     });
+
 }
 
 /*Edit class information by ID*/
@@ -131,6 +138,5 @@ function getClassID() {
     $(classId).on('click', function (e) {
         classId = $(this).prop('id');
         localStorage.setItem("classId", classId);
-        console.log(localStorage.getItem("classId"));
     });
 }

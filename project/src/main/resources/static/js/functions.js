@@ -120,6 +120,7 @@ function pagingClick() {
         inforSearch.pageNumber = value;
         $('tbody').html("");
         $('.table-paging').html("");
+        console.log((JSON.stringify(inforSearch)))
         search();
     })
 }
