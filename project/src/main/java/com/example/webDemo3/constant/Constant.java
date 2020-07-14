@@ -162,6 +162,12 @@ public class Constant {
             new MessageDTO(1,"Hãy lựa chọn ngày.");
     public static final MessageDTO LIST_REDSTAR_EMPTY =
             new MessageDTO(1,"Danh sách sao đỏ trống.");
+    public static final MessageDTO EMULATE_FAIL =
+            new MessageDTO(1,"Bạn không có quyền thêm/chỉnh sửa với lớp này.");
+    public static final MessageDTO DATE_RANKED =
+            new MessageDTO(1,"Điểm thi đua của lớp vào ngày này đã được xếp hạng.");
+    public static final MessageDTO OVERDATE_EMULATE =
+            new MessageDTO(1,"Bạn không thể chấm điểm ngày ở tương lai.");
     /**
      * Success message
      */
