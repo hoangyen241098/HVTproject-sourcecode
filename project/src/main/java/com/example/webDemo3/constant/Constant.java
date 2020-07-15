@@ -162,6 +162,8 @@ public class Constant {
             new MessageDTO(1,"Hãy lựa chọn ngày.");
     public static final MessageDTO LIST_REDSTAR_EMPTY =
             new MessageDTO(1,"Danh sách sao đỏ trống.");
+    public static final MessageDTO VIEW_CHANGE_REQUEST_NULL =
+            new MessageDTO(1,"Không có kết quả.");
     public static final MessageDTO EMULATE_FAIL =
             new MessageDTO(1,"Bạn không có quyền thêm/chỉnh sửa với lớp này.");
     public static final MessageDTO DATE_RANKED =
