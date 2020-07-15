@@ -29,34 +29,33 @@
         <div class="table-title">
             <h2>Lịch sử</h2>
             <div class="search">
-                <div class="col-xl-4 d-inline-block">
-                    <div class="search-line">
-                        <span>Từ ngày</span>
-                        <input type="date" class="searchable" id="fromDate">
+                <div class="row justify-content-md-start">
+                    <div class="form-group col-xl-3 col-sm-12 text-left">
+                        <label>Từ ngày <span class="text-red">*</span></label>
+                        <input type="date" class="form-control" id="fromDate">
                     </div>
-                    <div class="search-line">
-                        <span>Đến ngày</span>
-                        <input type="date" class="searchable" id="toDate">
+                    <label class="col-md-1 text-center">-</label>
+                    <div class="form-group col-xl-3 col-sm-12 text-left">
+                        <label>Đến ngày <span class="text-red">*</span></label>
+                        <input type="date" class="form-control" id="toDate">
                     </div>
                 </div>
-                <div class="col-xl-2 d-inline-block"></div>
-                <div class="col-xl-4 d-inline-block">
-                    <div class="search-line">
-                        <span>Hệ chuyên</span>
-                        <select class="combobox searchable" id="gifftedClass">
-                            <option value="0" selected>Tất cả</option>
-                        </select>
+                <div class="row justify-content-md-start">
+                    <div class="form-group col-xl-3 col-sm-12 text-left">
+                        <label>Hệ chuyên <span class="text-red">*</span></label>
+                        <select class="form-control" id="gifftedClass"></select>
                     </div>
-                    <div class="search-line">
-                        <span>Khóa</span>
-                        <div class="col-md-8 d-flex justify-content-between align-items-center px-0">
-                            <input type="number" class="searchable col-md-5" id="fromYear">
-                            <span class="mx-2"> - </span>
-                            <input type="number" class="searchable col-md-5" id="toYear" disabled>
+                    <label class="col-md-1 text-center"></label>
+                    <div class="form-group col-xl-3 col-sm-12 text-left">
+                        <label>Khóa <span class="text-red">*</span></label>
+                        <div class="col-xl-12 d-flex justify-content-between align-items-center px-0">
+                            <input type="number" class="form-control col-md-5" id="fromYear">
+                            <span class="col-sm-1 text-center"> - </span>
+                            <input type="number" class="form-control col-md-5" id="toYear" disabled>
                         </div>
                     </div>
                 </div>
-                <div class="d-inline-block ml-2">
+                <div class="col-sm d-inline-block ml-2 text-right">
                     <button class="btn btn-search" id="search">Tìm kiếm</button>
                 </div>
             </div>

@@ -1,10 +1,11 @@
 $('#fromYear').change(function () {
     var fromYear = $(this).val();
-    $('#toYear').val(parseInt(fromYear) + 2);
+    $('#toYear').val(parseInt(fromYear) + 3);
 });
 $('#fromDate').val(moment().format('YYYY-MM-DD'));
 $('#toDate').val(moment().format('YYYY-MM-DD'));
-
+$('#fromYear').val(moment().year());
+$('#toYear').val(parseInt($('#fromYear').val()) + 3)
 var inforSearch = {
     fromDate: "2020-01-02",
     toDate: "2020-01-02",
@@ -55,8 +56,8 @@ $.ajax({
         var message = data.message.message;
         if (messageCode == 0) {
             if (data.giftedClassList != null) {
-                $("#gifftedClass").select2();
-                $("#gifftedClass").html(`<option value="0" selected>Tất cả</option>`);
+                // $("#gifftedClass").select2();
+                $("#gifftedClass").html("");
                 $.each(data.giftedClassList, function (i, item) {
                     $('#gifftedClass').append(
                         `<option value="` + item.giftedClassId + `">` + item.name + `</option>
@@ -95,7 +96,12 @@ function search() {
                 if (data.violationClassList.length != 0) {
                     $('#violationList').html("");
                     $.each(data.violationClassList, function (i, item) {
-                        var quantity, note;
+                        var quantity, note, day;
+                        if (item.day == null) {
+                            day = "";
+                        } else {
+                            day = item.day + " - ";
+                        }
                         if (item.quantity == null) {
                             quantity = 0;
                         } else {
@@ -109,7 +115,7 @@ function search() {
                         $('#violationList').append(
                             `<div class="violation-description my-2">
                                 <div class="violation-date">
-                                    <span>` + item.date + `</span>
+                                    <span>` + day +  convertDate(item.date) + `</span>
                                 </div>
                                 <div class="violation-details">
                                     <div class="violation-name">
