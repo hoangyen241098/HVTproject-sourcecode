@@ -1232,7 +1232,11 @@ fieldset .note {
 }
 
 /*Responsive table max-width:650px*/
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 700px) {
+    .panel-collapse table {
+        width: 100%;
+    }
+
     .table-responsive-customer {
         display: block;
     }

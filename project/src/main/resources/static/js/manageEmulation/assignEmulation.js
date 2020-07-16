@@ -120,7 +120,8 @@ function search() {
                 if (data.listAssignTask.length != 0) {
                     $('#myTable tbody').html("");
                         $('#myTable').DataTable({
-                            bFilter: false,
+                            destroy: true,
+                            searching: false,
                             bInfo: false,
                             paging: false,
                             data: data.listAssignTask,
