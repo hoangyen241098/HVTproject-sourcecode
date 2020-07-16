@@ -1,31 +1,33 @@
+var fromDate;
 var inforSearch = {
-    fromDate: "2020/07/06",
+    fromDate: "2020-10-11",
     orderBy: "1",
     sortBy: "0",
-    classId: "1",
+    classId: "",
     redStar: "",
     pageNumber: 0
-}
+};
 
 $("#search").click(function () {
-    fromDate = $('#fromDate').val();
-    if ($('#gifftedClass option:selected').val() == null || $('#gifftedClass option:selected').val() == "0") {
-        giftedId = "";
+    var classId, redStar;
+    fromDate = $('#fromDate option:selected').val();
+    if ($('#classList option:selected').val() == null || $('#classList option:selected').val() == "0") {
+        classId = "";
     } else {
-        giftedId = $('#gifftedClass option:selected').val();
+        classId = $('#classList option:selected').val();
     }
-    if ($('#fromYear').val() == null) {
-        fromYear = "";
+    if ($('#redStarList option:selected').val() == null || $('#redStarList option:selected').val() == "0") {
+        redStar = "";
     } else {
-        fromYear = $('#fromYear').val();
+        redStar = $('#redStarList option:selected').val();
     }
-    toYear = $('#toYear').val();
     inforSearch = {
         fromDate: fromDate,
-        toDate: toDate,
-        giftedId: giftedId,
-        fromYear: fromYear,
-        toYear: toYear
+        orderBy: "1",
+        sortBy: "0",
+        classId: classId,
+        redStar: redStar,
+        pageNumber: 0
     }
     $('#violationList').html("");
     search();
@@ -45,46 +47,53 @@ $.ajax({
     success: function (data) {
         var messageCode = data.message.messageCode;
         var message = data.message.message;
-        // if (messageCode == 0) {
-        if (data.listRedStar != null) {
-            $("#redStarList").select2();
-            $("#redStarList").html(`<option value="0" selected="selected">Tất cả</option>`);
-            $.each(data.listRedStar, function (i, item) {
-                $('#redStarList').append(
-                    `<option value="` + item.username + `">` + item.username + `</option>
+        if (messageCode == 0) {
+            if (data.listRedStar != null) {
+                $("#redStarList").select2();
+                $("#redStarList").html(`<option value="0" selected="selected">Tất cả</option>`);
+                $.each(data.listRedStar, function (i, item) {
+                    $('#redStarList').append(
+                        `<option value="` + item.username + `">` + item.username + `</option>
                     `);
-            });
-        } else {
-            $("#redStarList").html(`<option>Danh sách sao đỏ trống.</option>`);
-        }
-        if (data.listClass != null) {
-            $("#classList").select2();
-            $("#classList").html(`<option value="0" selected="selected">Tất cả</option>`);
-            $.each(data.listClass, function (i, item) {
-                $('#classList').append(
-                    `<option value="` + item.classId + `">` + item.classIdentifier + `</option>
+                });
+            } else {
+                $("#redStarList").html(`<option>Danh sách sao đỏ trống.</option>`);
+            }
+            if (data.listClass != null) {
+                $("#classList").select2();
+                $("#classList").html(`<option value="0" selected="selected">Tất cả</option>`);
+                $.each(data.listClass, function (i, item) {
+                    $('#classList').append(
+                        `<option value="` + item.classId + `">` + item.classIdentifier + `</option>
                 `);
-            });
-        } else {
-            $("#classList").html(`<option>Danh sách lớp trống.</option>`);
-        }
-        if (data.listDate != null) {
-            $("#fromDate").select2();
-            $("#fromDate").html(`<option value="0" selected="selected">Tất cả</option>`);
-            $.each(data.listDate, function (i, item) {
-                $('#fromDate').append(
-                    `<option value="` + item + `">` + item + `</option>
+                });
+            } else {
+                $("#classList").html(`<option>Danh sách lớp trống.</option>`);
+            }
+            if (data.listDate != null) {
+                $("#fromDate").select2();
+                $("#fromDate").html("");
+                $.each(data.listDate, function (i, item) {
+                    if (i == 0) {
+                        $('#fromDate').append(
+                            `<option value="` + item + `" selected="selected">` + item + `</option>
+                        `);
+                    } else {
+                        $('#fromDate').append(
+                            `<option value="` + item + `">` + item + `</option>
                     `);
-            });
+                    }
+                });
+            } else {
+                $("#fromDate").html(`<option>Danh sách ngày trống.</option>`);
+            }
+
         } else {
-            $("#fromDate").html(`<option>Danh sách ngày trống.</option>`);
+            $("#fromDate").html(`<option>` + message + `</option>`);
         }
-        // } else {
-        //     $("#gifftedClass").html(`<option>` + message + `</option>`);
-        // }
     },
     failure: function (errMsg) {
-        $("#gifftedClass").html(`<option>` + errMsg + `</option>`);
+        $("#fromDate").html(`<option>` + errMsg + `</option>`);
     },
     dataType: "json",
     contentType: "application/json"
@@ -93,6 +102,7 @@ search();
 
 /*Load data to list*/
 function search() {
+    console.log(JSON.stringify(inforSearch));
     $.ajax({
         url: '/api/emulation/viewassigntask',
         type: 'POST',
@@ -108,14 +118,17 @@ function search() {
             var message = data.message.message;
             if (messageCode == 0) {
                 if (data.listAssignTask.length != 0) {
-                    $.each(data.violationClassList, function (i, item) {
-                        $('#myTable tbody').append(
-                            `<tr>
-                                <td>` + item.classIdentifier + `</td>
-                                <td>` + item.redStar + `</td>
-                            </tr>`
-                        );
-                    });
+                    $('#myTable tbody').html("");
+                        $('#myTable').DataTable({
+                            bFilter: false,
+                            bInfo: false,
+                            paging: false,
+                            data: data.listAssignTask,
+                            columns: [
+                                {data: "classIdentifier"},
+                                {data: "redStar"},
+                            ]
+                        });
                 } else {
                     $('#myTable tbody').html(`<tr><td colspan="2" class="userlist-result">Danh sách trống.</td></tr>`);
                 }

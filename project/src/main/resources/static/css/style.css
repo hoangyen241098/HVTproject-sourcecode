@@ -1065,9 +1065,9 @@ fieldset .note {
     }
 }
 
-/*Conbobox search*/
+/*Combobox search*/
 .select2-container--default .select2-selection--single {
-    width: 220px;
+    width: 100%;
     color: #495057;
     border: 1px solid #ced4da;
     border-radius: .25rem;
