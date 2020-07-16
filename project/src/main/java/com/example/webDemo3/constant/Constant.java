@@ -172,6 +172,12 @@ public class Constant {
             new MessageDTO(1,"Bạn không thể chấm điểm ngày ở tương lai.");
     public static final MessageDTO VIOLATIONOFCLASS_EMPTY =
             new MessageDTO(1,"Danh sách lỗi của lớp đang trống.");
+    public static final MessageDTO VIOLATIONCLASSID_EMPTY =
+            new MessageDTO(1,"Hãy lựa chọn lỗi của lớp học.");
+    public static final MessageDTO REASON_EMPTY =
+            new MessageDTO(1,"Hãy nhập lý do của bạn.");
+    public static final MessageDTO QUANTITY_EMPTY =
+            new MessageDTO(1,"Hãy nhập số lượng mà bạn muốn.");
     /**
      * Success message
      */

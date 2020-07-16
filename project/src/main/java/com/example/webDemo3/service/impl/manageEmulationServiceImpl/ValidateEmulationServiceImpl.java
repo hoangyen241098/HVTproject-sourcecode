@@ -80,8 +80,8 @@ public class ValidateEmulationServiceImpl implements ValidateEmulationService {
      * @return yes if ranked, no if no ranked
      */
     @Override
-    public Boolean checkRankedDateByViolationId(Integer classId, Date date, Integer violationId) {
-        ViolationClass violationClass = violationClassRepository.findVioClassByClassIdAndViolationId(classId, date, violationId);
+    public Boolean checkRankedDateByViolationId(Long violationClassId) {
+        ViolationClass violationClass = violationClassRepository.findViolationClassByById(violationClassId);
         if(violationClass != null && violationClass.getWeekId() != 0){
             return true;
         }

@@ -2,16 +2,10 @@ package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageClassResponseDto.ClassTableResponseDto;
-import com.example.webDemo3.dto.manageEmulationResponseDto.ViewGradingEmulationResponseDto;
+import com.example.webDemo3.dto.manageEmulationResponseDto.*;
 import com.example.webDemo3.dto.request.manageClassRequestDto.ClassTableRequestDto;
-import com.example.webDemo3.dto.request.manageEmulationRequestDto.AddViolationForClassRequestDto;
-import com.example.webDemo3.dto.manageEmulationResponseDto.ListStarClassDateResponseDto;
-import com.example.webDemo3.dto.manageEmulationResponseDto.ViewAssignTaskResponseDto;
+import com.example.webDemo3.dto.request.manageEmulationRequestDto.*;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViewGradingEmulationResponseDto;
-import com.example.webDemo3.dto.manageEmulationResponseDto.ViewViolationClassListResponseDto;
-import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewAssignTaskRequestDto;
-import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewRequestDto;
-import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewViolationOfClassRequestDto;
 import com.example.webDemo3.entity.ViolationClassRequest;
 import com.example.webDemo3.service.manageEmulationService.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,5 +109,31 @@ public class EmulationController {
     public ViewViolationClassListResponseDto getViolationOfClass(@RequestBody ViewViolationOfClassRequestDto model)
     {
         return violationOfClassService.getViolationOfAClass(model);
+    }
+
+    /**
+     * kimpt142
+     * 16/07
+     * catch request to edit violation of a class
+     * @param model include information of class's violation
+     * @return message
+     */
+    @PostMapping("/requesteditviolation")
+    public MessageDTO editViolationOfClass(@RequestBody EditViolationOfClassRequestDto model)
+    {
+        return violationOfClassService.editViolationOfClass(model);
+    }
+
+    /**
+     * kimpt142
+     * 16/07
+     * get classId with username and apply date
+     * @param model include username and apply day
+     * @return message and classId
+     */
+    @PostMapping("/getClassIdOfRedStar")
+    public ClassOfRedStarResponseDto getClassIdByUserAndDate(@RequestBody ClassOfRedStarRequestDto model)
+    {
+        return gradingEmulationService.getClassIdByUserAndDate(model);
     }
 }

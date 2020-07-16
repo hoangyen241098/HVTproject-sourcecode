@@ -5,6 +5,7 @@ import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViewViolationClassListResponseDto;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViolationClassRequestResponseDto;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViolationClassResponseDto;
+import com.example.webDemo3.dto.request.manageEmulationRequestDto.EditViolationOfClassRequestDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewViolationOfClassRequestDto;
 import com.example.webDemo3.entity.ViolationClass;
 import com.example.webDemo3.entity.ViolationClassRequest;
@@ -137,6 +138,90 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
         responseDto.setMessage(message);
         responseDto.setViewViolationClassList(violationClassListDto);
         return responseDto;
+    }
+
+    @Override
+    public MessageDTO editViolationOfClass(EditViolationOfClassRequestDto model) {
+        MessageDTO message = new MessageDTO();
+
+        String username = model.getUsername();
+        Long violationClassId = model.getViolationClassId();
+        Integer newQuantity = model.getNewQuantity();
+        Date editDate = model.getEditDate();
+        Date createDate = model.getCreateDate();
+        String reason = model.getReason();
+        Integer roleId = model.getRoleId();
+        Integer classId = model.getClassId();
+
+        if(username.equalsIgnoreCase("")){
+            message = Constant.USER_NOT_EXIT;
+            return message;
+        }
+
+        if(violationClassId == null){
+            message = Constant.VIOLATIONCLASSID_EMPTY;
+            return message;
+        }
+
+        if(newQuantity == null){
+            message = Constant.QUANTITY_EMPTY;
+            return message;
+        }
+
+        if(editDate == null){
+            message = Constant.DATE_EMPTY;
+            return message;
+        }
+
+        if(reason.equalsIgnoreCase("")){
+            message = Constant.REASON_EMPTY;
+            return message;
+        }
+
+        if(roleId == null){
+            message = Constant.ROLE_NOT_EXIST;
+            return message;
+        }
+
+        if(classId == null){
+            message = Constant.CLASS_ID_NULL;
+            return message;
+        }
+
+        try {
+            if(!validateEmulationService.checkRankedDateByViolationId(violationClassId)) {
+                if (roleId == 1) {
+                    ViolationClass violationClass = violationClassRepository.findViolationClassByById(violationClassId);
+                    if (newQuantity == 0) {
+                        violationClass.setStatus(0);
+                        violationClassRepository.save(violationClass);
+                    } else {
+                        violationClass.setQuantity(newQuantity);
+                        violationClassRepository.save(violationClass);
+                    }
+                }
+
+                if (validateEmulationService.checkRoleForEmulate(classId, username, createDate) ||
+                        validateEmulationService.checkMonitorOfClass(classId, username)) {
+                    ViolationClassRequest violationClassRequest = new ViolationClassRequest();
+                    violationClassRequest.setDateChange(editDate);
+                    violationClassRequest.setStatusChange(0);
+                    violationClassRequest.setCreatBy(username);
+                    violationClassRequest.setReason(reason);
+                    violationClassRequest.setQuantityNew(newQuantity);
+                    violationClassRequest.setViolationClass(new ViolationClass(violationClassId));
+                    violationClassRequestRepository.save(violationClassRequest);
+                }
+            }
+        }
+        catch (Exception e){
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            return message;
+        }
+
+        message = Constant.SUCCESS;
+        return message;
     }
 
     /**
