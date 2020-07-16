@@ -50,19 +50,12 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
                 return message;
             }
 
-            //check requestId null or not
-            if(requestId == null){
-                message = Constant.TYPE_REQUEST_NULL;
-                return message;
-            }
-
-            //check violationClassId null or not
-            if(violationClassId == null){
-                message = Constant.VIOLATION_CLASS_ID_NULL;
-                return message;
-            }
-
             if(typeRequest == 1 ){
+                //check violationClassId null or not
+                if(violationClassId == null){
+                    message = Constant.VIOLATION_CLASS_ID_NULL;
+                    return message;
+                }
                 violationClass = violationClassRepository.findById(violationClassId).orElse(null);
                 //check violationClass null or not
                 if(violationClass == null){
@@ -75,6 +68,11 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
             }
 
             if(typeRequest == 0){
+                //check requestId null or not
+                if(requestId == null){
+                    message = Constant.REQUEST_ID_NULL;
+                    return message;
+                }
                 violationClassRequest = violationClassRequestRepository.findById(requestId).orElse(null);
                 //check violationClassRequest null or not
                 if(violationClassRequest == null){
@@ -117,20 +115,13 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
                 message = Constant.TYPE_REQUEST_NULL;
                 return message;
             }
-
-            //check requestId null or not
-            if(requestId == null){
-                message = Constant.TYPE_REQUEST_NULL;
-                return message;
-            }
-
-            //check violationClassId null or not
-            if(violationClassId == null){
-                message = Constant.VIOLATION_CLASS_ID_NULL;
-                return message;
-            }
-
+            
             if(typeRequest == 1 ){
+                //check violationClassId null or not
+                if(violationClassId == null){
+                    message = Constant.VIOLATION_CLASS_ID_NULL;
+                    return message;
+                }
                 violationClass = violationClassRepository.findById(violationClassId).orElse(null);
                 //check violationClass null or not
                 if(violationClass == null){
@@ -143,6 +134,12 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
             }
 
             if(typeRequest == 0){
+                //check requestId null or not
+                if(requestId == null){
+                    message = Constant.REQUEST_ID_NULL;
+                    return message;
+                }
+
                 violationClassRequest = violationClassRequestRepository.findById(requestId).orElse(null);
                 //check violationClassRequest null or not
                 if(violationClassRequest == null){

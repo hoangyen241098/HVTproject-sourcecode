@@ -20,7 +20,7 @@ public class ViolationClassResponseDto {
     private String dayName;
     private String description;
     private Date createDate;
-    private String creatBy;
+    private String createBy;
 
     private ViolationClassRequestResponseDto violationClassRequest;
     private Integer typeRequest;

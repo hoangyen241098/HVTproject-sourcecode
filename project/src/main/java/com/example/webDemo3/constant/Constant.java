@@ -174,12 +174,15 @@ public class Constant {
             new MessageDTO(1,"Hãy chọn loại yêu cầu.");
 
     public static final MessageDTO VIOLATION_CLASS_ID_NULL =
-            new MessageDTO(1,"Hãy chọn thông tin chấm điểm.");
+            new MessageDTO(1,"Hãy chọn yêu cầu thay đổi.");
     public static final MessageDTO VIOLATION_CLASS_NULL =
             new MessageDTO(1,"Thông tin chấm điểm không tồn tại.");
 
     public static final MessageDTO VIOLATIONOFCLASS_EMPTY =
             new MessageDTO(1,"Danh sách lỗi của lớp đang trống.");
+
+    public static final MessageDTO REQUEST_ID_NULL =
+            new MessageDTO(1,"Hãy chọn yêu cầu thay đổi.");
     /**
      * Success message
      */
