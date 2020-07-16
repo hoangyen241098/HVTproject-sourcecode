@@ -13,5 +13,6 @@ public class AddViolationForClassRequestDto {
     private Integer classId;
     private Date date;
     private Integer yearId;
+    private Integer roleId;
     private List<SubViolationForClassRequestDto> violationList;
 }

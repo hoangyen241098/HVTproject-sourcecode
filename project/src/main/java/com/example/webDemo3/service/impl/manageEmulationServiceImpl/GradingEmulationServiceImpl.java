@@ -3,14 +3,14 @@ package com.example.webDemo3.service.impl.manageEmulationServiceImpl;
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageClassResponseDto.ClassResponseDto;
+import com.example.webDemo3.dto.manageEmulationResponseDto.ClassOfRedStarResponseDto;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViewGradingEmulationResponseDto;
 import com.example.webDemo3.dto.manageViolationResponseDto.ViolationTypeResponseDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.AddViolationForClassRequestDto;
+import com.example.webDemo3.dto.request.manageEmulationRequestDto.ClassOfRedStarRequestDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.SubViolationForClassRequestDto;
-import com.example.webDemo3.entity.Day;
-import com.example.webDemo3.entity.SchoolYear;
-import com.example.webDemo3.entity.Violation;
-import com.example.webDemo3.entity.ViolationClass;
+import com.example.webDemo3.entity.*;
+import com.example.webDemo3.repository.ClassRedStarRepository;
 import com.example.webDemo3.repository.SchoolYearRepository;
 import com.example.webDemo3.repository.ViolationClassRepository;
 import com.example.webDemo3.service.manageClassService.ClassService;
@@ -43,6 +43,9 @@ public class GradingEmulationServiceImpl implements GradingEmulationService {
 
     @Autowired
     private ViolationClassRepository violationClassRepository;
+
+    @Autowired
+    private ClassRedStarRepository classRedStarRepository;
 
     /**
      * kimpt142
@@ -91,6 +94,7 @@ public class GradingEmulationServiceImpl implements GradingEmulationService {
         Integer classId = model.getClassId();
         Date date = model.getDate();
         Integer yearId = model.getYearId();
+        Integer roleId = model.getRoleId();
         Integer weekId = 0;
         Integer status;
         List<SubViolationForClassRequestDto> violationList = model.getViolationList();
@@ -107,6 +111,11 @@ public class GradingEmulationServiceImpl implements GradingEmulationService {
 
         if(date == null){
             message = Constant.DATE_EMPTY;
+            return message;
+        }
+
+        if(roleId == null){
+            message = Constant.ROLE_NOT_EXIST;
             return message;
         }
 
@@ -136,7 +145,7 @@ public class GradingEmulationServiceImpl implements GradingEmulationService {
             return message;
         }
 
-        if(!validateEmulationService.checkRoleForEmulate(classId,username, date)){
+        if(!validateEmulationService.checkRoleForEmulate(classId,username, date) && roleId != 1 && roleId != 5){
             message = Constant.EMULATE_FAIL;
             return message;
         }
@@ -170,5 +179,34 @@ public class GradingEmulationServiceImpl implements GradingEmulationService {
 
         message = Constant.SUCCESS;
         return message;
+    }
+
+    /**
+     * kimpt142
+     * 16/07
+     * get class is emulated by username and specific date
+     * @param model include username and date
+     * @return classId
+     */
+    @Override
+    public ClassOfRedStarResponseDto getClassIdByUserAndDate(ClassOfRedStarRequestDto model) {
+        ClassOfRedStarResponseDto responseDto = new ClassOfRedStarResponseDto();
+        MessageDTO message = new MessageDTO();
+
+        String username = model.getUsername();
+        Date applyDate = model.getApplyDate();
+        Date fromDateApply = classRedStarRepository.getBiggestClosetDateRedStar(applyDate, username);
+        ClassRedStar classRedStar = classRedStarRepository.findClassRedStarByDateAndRedStar(fromDateApply, username);
+
+        if(classRedStar == null){
+            message = Constant.CLASS_RED_STAR_EMPTY;
+            responseDto.setMessage(message);
+            return responseDto;
+        }
+        else{
+            responseDto.setCurrentClassId(classRedStar.getClassId());
+            responseDto.setMessage(Constant.SUCCESS);
+            return responseDto;
+        }
     }
 }
