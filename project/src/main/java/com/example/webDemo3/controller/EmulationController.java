@@ -1,12 +1,14 @@
 package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.dto.manageClassResponseDto.ClassTableResponseDto;
 import com.example.webDemo3.dto.manageEmulationResponseDto.*;
-import com.example.webDemo3.dto.request.manageClassRequestDto.ClassTableRequestDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.*;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViewGradingEmulationResponseDto;
-import com.example.webDemo3.entity.ViolationClassRequest;
+import com.example.webDemo3.dto.manageEmulationResponseDto.ViewViolationClassListResponseDto;
+import com.example.webDemo3.dto.request.manageEmulationRequestDto.ChangeRequestDto;
+import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewAssignTaskRequestDto;
+import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewRequestDto;
+import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewViolationOfClassRequestDto;
 import com.example.webDemo3.service.manageEmulationService.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +33,9 @@ public class EmulationController {
 
     @Autowired
     private ViewRequestService viewRequestService;
+
+    @Autowired
+    private ChangeRequestService changeRequestService;
 
     @Autowired
     private ViolationOfClassService violationOfClassService;
@@ -69,6 +74,30 @@ public class EmulationController {
     public ViewViolationClassListResponseDto viewRequest(@RequestBody ViewRequestDto model)
     {
         return viewRequestService.viewRequest(model);
+    }
+
+    /**
+     * lamnt98
+     * 16/07
+     * catch request to accept request change
+     * @return MessageDTO
+     */
+    @PostMapping("/acceptrequest")
+    public MessageDTO acceptRequest(@RequestBody ChangeRequestDto model)
+    {
+        return changeRequestService.acceptRequest(model);
+    }
+
+    /**
+     * lamnt98
+     * 16/07
+     * catch request to reject request change
+     * @return MessageDTO
+     */
+    @PostMapping("/rejectrequest")
+    public MessageDTO rejecttRequest(@RequestBody ChangeRequestDto model)
+    {
+        return changeRequestService.rejectRequest(model);
     }
 
     /**

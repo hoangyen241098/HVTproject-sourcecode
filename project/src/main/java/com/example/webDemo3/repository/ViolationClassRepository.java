@@ -26,11 +26,6 @@ public interface ViolationClassRepository extends JpaRepository<ViolationClass, 
                                             @Param("fromDate") Date fromDate,
                                             @Param("toDate")Date toDate);
 
-/*    @Query(value = "select v from ViolationClass v where v.classId = :classId")
-    Page<ViolationClass> findByClassId(@Param("classId") Integer classId, Pageable paging);
-
-    @Query(value = "select v from ViolationClass v where v.status = :status")
-    Page<ViolationClass> findByStatus(@Param("status") Integer status, Pageable paging);*/
 
     @Query(value = "select v from ViolationClass v " +
             "where (v.classId = :classId or :classId is NULL ) " +
@@ -40,23 +35,6 @@ public interface ViolationClassRepository extends JpaRepository<ViolationClass, 
                                                        @Param("creatDate")Date creatDate,
                                                        @Param("status") Integer status,
                                                        Pageable paging);
-/*    @Query(value = "select v from ViolationClass v " +
-            "where COALESCE(v.classId,'') = COALESCE(:classId,v.classId,:classIdNull) " +
-            "and COALESCE(v.date,'') = COALESCE(:creatDate,v.date,:createDateNull) ")
-    Page<ViolationClass> findViolationClassByCondition(@Param("classId")Integer classId,
-                                                                @Param("classIdNull")Integer classIdNull,
-                                                                @Param("creatDate")Date creatDate,
-                                                                @Param("createDateNull")Integer createDateNull,
-                                                                Pageable paging);*/
-
-/*
-    @Query(value = "select v from ViolationClass v " +
-            "where v.classId = coalesce(:classId,v.classId) " +
-            "and v.date = coalesce(:creatDate,v.date)")
-    Page<ViolationClass> findViolationClassByCondition(@Param("classId")Integer classId,
-                                                       @Param("creatDate")Date creatDate,
-                                                       Pageable paging);
-*/
 
     @Query(value = "select v from ViolationClass v " +
             "where (v.classId = :classId or :classId is NULL )" +
@@ -67,6 +45,12 @@ public interface ViolationClassRepository extends JpaRepository<ViolationClass, 
 
     @Query(value="select vc from ViolationClass vc where vc.classId = :classId and vc.date = :date and vc.weekId <> 0")
     List<ViolationClass> findViolationClassRankedByClassId(@Param("classId")Integer classId, @Param("date")Date date);
+
+    @Query(value="select vc from ViolationClass vc where vc.classId = :classId and vc.date = :date and vc.violation.violationId = :violationId")
+    ViolationClass findVioClassByClassIdAndViolationId(@Param("classId")Integer classId, @Param("date")Date date,  @Param("violationId")Integer violationId);
+
+    @Query(value="select vc from ViolationClass vc where vc.createBy = :creatBy and vc.date = :date and vc.status = :status")
+    ViolationClass findVioClassByCreaByDateAndStatus(@Param("creatBy")String creatBy, @Param("date")Date date,  @Param("status")Integer status);
 
     @Query(value="select vc from ViolationClass vc where vc.classId = :classId and vc.date = :date and vc.weekId = 0 and vc.status = 1")
     List<ViolationClass> findVioClassByClassIdAndAndDate(@Param("classId")Integer classId, @Param("date")Date date);
