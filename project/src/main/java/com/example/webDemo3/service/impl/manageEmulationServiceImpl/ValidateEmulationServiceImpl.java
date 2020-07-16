@@ -74,9 +74,7 @@ public class ValidateEmulationServiceImpl implements ValidateEmulationService {
 
     /**
      * check violation is ranked or not
-     * @param classId
-     * @param date
-     * @param violationId
+     * @param violationClassId
      * @return yes if ranked, no if no ranked
      */
     @Override
@@ -100,6 +98,13 @@ public class ValidateEmulationServiceImpl implements ValidateEmulationService {
         return day.getValue();
     }
 
+    /**
+     * kimpt142
+     * 14/07
+     * @param classId
+     * @param username
+     * @return true if username is monitor of class and false is not
+     */
     @Override
     public Boolean checkMonitorOfClass(Integer classId, String username) {
         User user = userRepository.findUserByUsername(username);

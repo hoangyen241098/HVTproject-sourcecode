@@ -140,6 +140,13 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
         return responseDto;
     }
 
+    /**
+     * kimpt142
+     * 16/07
+     * edit the violation of a class
+     * @param model include infor of violation class
+     * @return messagedto
+     */
     @Override
     public MessageDTO editViolationOfClass(EditViolationOfClassRequestDto model) {
         MessageDTO message = new MessageDTO();
