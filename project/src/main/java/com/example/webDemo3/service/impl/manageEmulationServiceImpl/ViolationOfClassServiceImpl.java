@@ -176,7 +176,7 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
         responseDto.setRequestId(violationClassRequest.getRequestId());
         responseDto.setViolationClassId(violationClassRequest.getViolationClass().getId());
         responseDto.setChangeDate(violationClassRequest.getDateChange());
-        responseDto.setCreatBy(violationClassRequest.getCreatBy());
+        responseDto.setCreateBy(violationClassRequest.getCreatBy());
         responseDto.setStatus(violationClassRequest.getStatusChange());
         responseDto.setReason(violationClassRequest.getReason());
         responseDto.setQuantityNew(violationClassRequest.getQuantityNew());

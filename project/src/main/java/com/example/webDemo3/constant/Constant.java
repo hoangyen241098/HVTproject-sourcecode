@@ -170,8 +170,19 @@ public class Constant {
             new MessageDTO(1,"Điểm thi đua của lớp vào ngày này đã được xếp hạng.");
     public static final MessageDTO OVERDATE_EMULATE =
             new MessageDTO(1,"Bạn không thể chấm điểm ngày ở tương lai.");
+    public static final MessageDTO TYPE_REQUEST_NULL =
+            new MessageDTO(1,"Hãy chọn loại yêu cầu.");
+
+    public static final MessageDTO VIOLATION_CLASS_ID_NULL =
+            new MessageDTO(1,"Hãy chọn yêu cầu thay đổi.");
+    public static final MessageDTO VIOLATION_CLASS_NULL =
+            new MessageDTO(1,"Thông tin chấm điểm không tồn tại.");
+
     public static final MessageDTO VIOLATIONOFCLASS_EMPTY =
             new MessageDTO(1,"Danh sách lỗi của lớp đang trống.");
+
+    public static final MessageDTO REQUEST_ID_NULL =
+            new MessageDTO(1,"Hãy chọn yêu cầu thay đổi.");
     /**
      * Success message
      */
@@ -241,5 +252,13 @@ public class Constant {
     //dulicate date update timetable
     public static final MessageDTO CONFIRM_UPDATE_TIMTABLE=
             new MessageDTO(2,"ngày áp dụng này đã tồn tại bạn có muốn ghi đè không");
+
+    //accept request emulation success
+    public static final MessageDTO ACCEPT_REQUEST_SUCCESS =
+            new MessageDTO(1,"Yêu cầu thay đổi được chấp nhận.");
+
+    //reject request emulation success
+    public static final MessageDTO REJECT_REQUEST_SUCCESS =
+            new MessageDTO(1,"Yêu cầu từ chối thành công.");
 
 }

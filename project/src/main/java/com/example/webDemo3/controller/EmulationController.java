@@ -9,6 +9,7 @@ import com.example.webDemo3.dto.manageEmulationResponseDto.ListStarClassDateResp
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViewAssignTaskResponseDto;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViewGradingEmulationResponseDto;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViewViolationClassListResponseDto;
+import com.example.webDemo3.dto.request.manageEmulationRequestDto.ChangeRequestDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewAssignTaskRequestDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewRequestDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewViolationOfClassRequestDto;
@@ -37,6 +38,9 @@ public class EmulationController {
 
     @Autowired
     private ViewRequestService viewRequestService;
+
+    @Autowired
+    private ChangeRequestService changeRequestService;
 
     @Autowired
     private ViolationOfClassService violationOfClassService;
@@ -75,6 +79,30 @@ public class EmulationController {
     public ViewViolationClassListResponseDto viewRequest(@RequestBody ViewRequestDto model)
     {
         return viewRequestService.viewRequest(model);
+    }
+
+    /**
+     * lamnt98
+     * 16/07
+     * catch request to accept request change
+     * @return MessageDTO
+     */
+    @PostMapping("/acceptrequest")
+    public MessageDTO acceptRequest(@RequestBody ChangeRequestDto model)
+    {
+        return changeRequestService.acceptRequest(model);
+    }
+
+    /**
+     * lamnt98
+     * 16/07
+     * catch request to reject request change
+     * @return MessageDTO
+     */
+    @PostMapping("/rejectrequest")
+    public MessageDTO rejecttRequest(@RequestBody ChangeRequestDto model)
+    {
+        return changeRequestService.rejectRequest(model);
     }
 
     /**

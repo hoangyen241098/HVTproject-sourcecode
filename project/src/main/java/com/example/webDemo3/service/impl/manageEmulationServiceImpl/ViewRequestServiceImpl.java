@@ -235,6 +235,7 @@ public class ViewRequestServiceImpl implements ViewRequestService {
         responseDto.setQuantity(violationClass.getQuantity());
         responseDto.setDescription(violationClass.getViolation().getDescription());
         responseDto.setCreateDate(violationClass.getDate());
+        responseDto.setCreateBy(violationClass.getCreateBy());
 
         Integer dayId = validateEmulationService.getDayIdByDate(violationClass.getDate());
         String dayName = dayRepository.findByDayId(dayId).getDayName();
@@ -249,7 +250,7 @@ public class ViewRequestServiceImpl implements ViewRequestService {
         responseDto.setRequestId(violationClassRequest.getRequestId());
         responseDto.setViolationClassId(violationClassRequest.getViolationClass().getId());
         responseDto.setChangeDate(violationClassRequest.getDateChange());
-        responseDto.setCreatBy(violationClassRequest.getCreatBy());
+        responseDto.setCreateBy(violationClassRequest.getCreatBy());
         responseDto.setStatus(violationClassRequest.getStatusChange());
         responseDto.setReason(violationClassRequest.getReason());
         responseDto.setQuantityNew(violationClassRequest.getQuantityNew());

@@ -13,7 +13,7 @@ public class ViolationClassRequestResponseDto {
     private Integer requestId;
     private Long violationClassId;
     private Date changeDate;
-    private String creatBy;
+    private String createBy;
     private Integer status;
     private String reason;
     private Integer quantityNew;
