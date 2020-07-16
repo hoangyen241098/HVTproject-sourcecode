@@ -1,7 +1,9 @@
 package com.example.webDemo3.service.impl.manageEmulationServiceImpl;
 
+import com.example.webDemo3.entity.User;
 import com.example.webDemo3.entity.ViolationClass;
 import com.example.webDemo3.repository.ClassRedStarRepository;
+import com.example.webDemo3.repository.UserRepository;
 import com.example.webDemo3.repository.ViolationClassRepository;
 import com.example.webDemo3.service.manageEmulationService.ValidateEmulationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ public class ValidateEmulationServiceImpl implements ValidateEmulationService {
 
     @Autowired
     private ViolationClassRepository violationClassRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * check role's user valid to emulate class
@@ -93,5 +98,15 @@ public class ValidateEmulationServiceImpl implements ValidateEmulationService {
         LocalDate localDate = date.toLocalDate();
         DayOfWeek day = localDate.getDayOfWeek();
         return day.getValue();
+    }
+
+    @Override
+    public Boolean checkMonitorOfClass(Integer classId, String username) {
+        User user = userRepository.findUserByUsername(username);
+        if(user != null && user.getClassSchool().getClassId() == classId && (user.getStatus() == null || user.getStatus() !=1))
+        {
+            return true;
+        }
+        return false;
     }
 }

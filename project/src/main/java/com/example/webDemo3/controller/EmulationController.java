@@ -11,11 +11,9 @@ import com.example.webDemo3.dto.manageEmulationResponseDto.ViewGradingEmulationR
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViewViolationClassListResponseDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewAssignTaskRequestDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewRequestDto;
+import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewViolationOfClassRequestDto;
 import com.example.webDemo3.entity.ViolationClassRequest;
-import com.example.webDemo3.service.manageEmulationService.TaskService;
-import com.example.webDemo3.service.manageEmulationService.GradingEmulationService;
-import com.example.webDemo3.service.manageEmulationService.ViewRequestService;
-import com.example.webDemo3.service.manageEmulationService.ValidateEmulationService;
+import com.example.webDemo3.service.manageEmulationService.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,6 +37,9 @@ public class EmulationController {
 
     @Autowired
     private ViewRequestService viewRequestService;
+
+    @Autowired
+    private ViolationOfClassService violationOfClassService;
 
     /**
      * lamnt98
@@ -90,9 +91,29 @@ public class EmulationController {
         return responseDto;
     }
 
+    /**
+     * kimpt142
+     * 14/07
+     * redstar add new emulation for a class
+     * @param model include vilolation of a class
+     * @return message
+     */
     @PostMapping("/addgrademulation")
     public MessageDTO addViolationForClass(@RequestBody AddViolationForClassRequestDto model)
     {
         return gradingEmulationService.addViolationForClass(model);
+    }
+
+    /**
+     * kimpt142
+     * 16/07
+     * view all vilation of a class in specific day
+     * @param model include classid, username, roleid and day
+     * @return message
+     */
+    @PostMapping("/viewviolationofclass")
+    public ViewViolationClassListResponseDto getViolationOfClass(@RequestBody ViewViolationOfClassRequestDto model)
+    {
+        return violationOfClassService.getViolationOfAClass(model);
     }
 }

@@ -33,5 +33,6 @@ public interface ViolationClassRequestRepository extends JpaRepository<Violation
                                                        @Param("creatDate") Date creatDate,
                                                        Pageable paging);
 
-
+    @Query(value = "select vr from ViolationClassRequest vr where vr.violationClass.id = :Id and vr.creatBy = :username and vr.statusChange = 0")
+    ViolationClassRequest findNewEditRequest(@Param("Id") Long Id, @Param("username") String username);
 }
