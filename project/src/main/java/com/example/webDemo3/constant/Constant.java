@@ -170,6 +170,8 @@ public class Constant {
             new MessageDTO(1,"Điểm thi đua của lớp vào ngày này đã được xếp hạng.");
     public static final MessageDTO OVERDATE_EMULATE =
             new MessageDTO(1,"Bạn không thể chấm điểm ngày ở tương lai.");
+    public static final MessageDTO VIOLATIONOFCLASS_EMPTY =
+            new MessageDTO(1,"Danh sách lỗi của lớp đang trống.");
     /**
      * Success message
      */
