@@ -12,6 +12,7 @@ import com.example.webDemo3.dto.manageEmulationResponseDto.ViewViolationClassLis
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ChangeRequestDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewAssignTaskRequestDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewRequestDto;
+import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewViolationOfClassRequestDto;
 import com.example.webDemo3.entity.ViolationClassRequest;
 import com.example.webDemo3.service.manageEmulationService.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,9 @@ public class EmulationController {
 
     @Autowired
     private ChangeRequestService changeRequestService;
+
+    @Autowired
+    private ViolationOfClassService violationOfClassService;
 
     /**
      * lamnt98
@@ -115,9 +119,29 @@ public class EmulationController {
         return responseDto;
     }
 
+    /**
+     * kimpt142
+     * 14/07
+     * redstar add new emulation for a class
+     * @param model include vilolation of a class
+     * @return message
+     */
     @PostMapping("/addgrademulation")
     public MessageDTO addViolationForClass(@RequestBody AddViolationForClassRequestDto model)
     {
         return gradingEmulationService.addViolationForClass(model);
+    }
+
+    /**
+     * kimpt142
+     * 16/07
+     * view all vilation of a class in specific day
+     * @param model include classid, username, roleid and day
+     * @return message
+     */
+    @PostMapping("/viewviolationofclass")
+    public ViewViolationClassListResponseDto getViolationOfClass(@RequestBody ViewViolationOfClassRequestDto model)
+    {
+        return violationOfClassService.getViolationOfAClass(model);
     }
 }

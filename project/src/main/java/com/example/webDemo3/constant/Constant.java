@@ -178,6 +178,8 @@ public class Constant {
     public static final MessageDTO VIOLATION_CLASS_NULL =
             new MessageDTO(1,"Thông tin chấm điểm không tồn tại.");
 
+    public static final MessageDTO VIOLATIONOFCLASS_EMPTY =
+            new MessageDTO(1,"Danh sách lỗi của lớp đang trống.");
     /**
      * Success message
      */

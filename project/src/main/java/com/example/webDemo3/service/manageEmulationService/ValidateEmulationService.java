@@ -10,4 +10,5 @@ public interface ValidateEmulationService {
     Boolean checkRankedDate(Integer classId,Date date);
     Boolean checkRankedDateByViolationId(Integer classId,Date date, Integer violationId);
     Integer getDayIdByDate(Date date);
+    Boolean checkMonitorOfClass(Integer classId, String username);
 }

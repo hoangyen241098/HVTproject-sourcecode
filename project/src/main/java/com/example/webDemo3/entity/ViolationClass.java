@@ -64,4 +64,9 @@ public class ViolationClass {
     @ToString.Exclude
     private Day day;
 
+    @Column(name = "CREATE_BY")
+    private String createBy;
+
+    @Column(name = "HISTORY")
+    private String history;
 }

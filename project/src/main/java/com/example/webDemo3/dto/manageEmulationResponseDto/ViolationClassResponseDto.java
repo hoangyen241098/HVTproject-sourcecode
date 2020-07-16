@@ -24,5 +24,5 @@ public class ViolationClassResponseDto {
 
     private ViolationClassRequestResponseDto violationClassRequest;
     private Integer typeRequest;
-
+    private Integer checkEdit;
 }
