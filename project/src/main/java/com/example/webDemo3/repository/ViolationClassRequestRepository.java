@@ -1,5 +1,6 @@
 package com.example.webDemo3.repository;
 
+import com.example.webDemo3.entity.ViolationClass;
 import com.example.webDemo3.entity.ViolationClassRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,5 +34,6 @@ public interface ViolationClassRequestRepository extends JpaRepository<Violation
                                                        @Param("creatDate") Date creatDate,
                                                        Pageable paging);
 
-
+    @Query(value="select vc from ViolationClassRequest vc where vc.creatBy = :creatBy and vc.dateChange = :dateChange and vc.statusChange = :statusChange")
+    ViolationClassRequest findVioClassRequestByCreaByDateAndStatus(@Param("creatBy")String creatBy, @Param("dateChange")Date dateChange, @Param("statusChange")Integer statusChange);
 }
