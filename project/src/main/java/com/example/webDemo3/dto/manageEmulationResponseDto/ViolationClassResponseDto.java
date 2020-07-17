@@ -15,6 +15,7 @@ public class ViolationClassResponseDto {
 
     private Long violationClassId;
     private Integer classId;
+    private String className;
     private String note;
     private Integer quantity;
     private String dayName;

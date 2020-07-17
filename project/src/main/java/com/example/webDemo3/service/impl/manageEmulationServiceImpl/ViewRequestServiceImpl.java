@@ -7,6 +7,7 @@ import com.example.webDemo3.dto.manageEmulationResponseDto.ViolationClassRequest
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViolationClassResponseDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewRequestDto;
 import com.example.webDemo3.entity.Class;
+import com.example.webDemo3.entity.Violation;
 import com.example.webDemo3.entity.ViolationClass;
 import com.example.webDemo3.entity.ViolationClassRequest;
 import com.example.webDemo3.repository.*;
@@ -228,15 +229,21 @@ public class ViewRequestServiceImpl implements ViewRequestService {
 
     public ViolationClassResponseDto changeViolationClassFromEntityToDto(ViolationClass violationClass){
         ViolationClassResponseDto responseDto = new ViolationClassResponseDto();
+        Class newClass = classRepository.findById(violationClass.getClassId()).orElse(null);
 
         responseDto.setViolationClassId(violationClass.getId());
-        responseDto.setClassId(violationClass.getClassId());
         responseDto.setNote(violationClass.getNote());
         responseDto.setQuantity(violationClass.getQuantity());
         responseDto.setDescription(violationClass.getViolation().getDescription());
         responseDto.setCreateDate(violationClass.getDate());
         responseDto.setCreateBy(violationClass.getCreateBy());
 
+        //check newClass exists or not
+        if(newClass != null){
+            responseDto.setClassId(newClass.getClassId());
+            responseDto.setClassName(newClass.getClassIdentifier());
+        }
+        
         Integer dayId = validateEmulationService.getDayIdByDate(violationClass.getDate());
         String dayName = dayRepository.findByDayId(dayId).getDayName();
         responseDto.setDayName(dayName);
@@ -246,6 +253,7 @@ public class ViewRequestServiceImpl implements ViewRequestService {
 
     public ViolationClassRequestResponseDto changeViolationClassRequestFromEntityToDto(ViolationClassRequest violationClassRequest){
         ViolationClassRequestResponseDto responseDto = new ViolationClassRequestResponseDto();
+        Violation violation = violationRepository.findById(violationClassRequest.getViolationClass().getClassId()).orElse(null);
 
         responseDto.setRequestId(violationClassRequest.getRequestId());
         responseDto.setViolationClassId(violationClassRequest.getViolationClass().getId());
@@ -254,6 +262,11 @@ public class ViewRequestServiceImpl implements ViewRequestService {
         responseDto.setStatus(violationClassRequest.getStatusChange());
         responseDto.setReason(violationClassRequest.getReason());
         responseDto.setQuantityNew(violationClassRequest.getQuantityNew());
+
+        //check violation null or not
+        if(violation != null){
+            responseDto.setSubstractGrade(violation.getSubstractGrade());
+        }
 
         return responseDto;
     }
