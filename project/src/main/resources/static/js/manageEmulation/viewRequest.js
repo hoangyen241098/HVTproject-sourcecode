@@ -106,8 +106,8 @@ function search() {
                             var substractGrade = item.violationClassRequest.substractGrade;
                             var quantity = item.quantity;
                             var quantityNew = item.violationClassRequest.quantityNew;
-                            var totals = parseFloat(substractGrade) * parseInt(quantity);
-                            var totalsNew = parseFloat(substractGrade) * parseInt(quantityNew);
+                            var totals = parseFloat(parseFloat(substractGrade) * parseInt(quantity)).toFixed(1);
+                            var totalsNew = parseFloat(parseFloat(substractGrade) * parseInt(quantityNew)).toFixed(1);
                             if (item.typeRequest == 0 || item.typeRequest == null) {
                                 typeRequest = "Sửa đổi";
                                 if (item.violationClassRequest.status == 0) {
