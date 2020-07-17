@@ -38,7 +38,7 @@
                 </div>
                 <div class="col-xl-2 d-inline-block"></div>
                 <div class="col-xl-4 d-inline-block">
-                    <div class="search-line" >
+                    <div class="search-line">
                         <span>Ngày</span>
                         <input type="date" class="searchable" id="datetime">
                     </div>
@@ -47,7 +47,7 @@
         </div>
         <div class="panel panel-default"></div>
         <div class="saveResult">
-            <a class="btn btn-customer" href="#confirmModal" data-toggle="modal">LƯU</a>
+            <input type="button" class="btn btn-customer" data-toggle="modal" id="saveGrading" value="LƯU"/>
         </div>
     </div>
 </div>
@@ -57,37 +57,16 @@
 <div id="confirmModal" class="modal fade">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form>
-                <div class="modal-header">
-                    <h4 class="modal-title">Xác nhận lưu</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-bordered">
-                        <thead class="bg-light text-center">
-                        <td>Mô tả lỗi</td>
-                        <td>Điểm trừ</td>
-                        <td>Số lần</td>
-                        <td>Tổng điểm trừ</td>
-                        </thead>
-                        <tbody>
-                        <td>
-                            <p class="mb-0">Đi lại lộn xộn, làm việc riêng, ăn quà</p>
-                            <small class="text-red">A đi lại lộn xộn trong lớp</small>
-                        </td>
-                        <td class="text-center">0.2</td>
-                        <td class="text-center">2</td>
-                        <td class="text-center">0.4</td>
-                        </tbody>
-                    </table>
-
-                </div>
-                <div class="modal-footer">
-                    <input type="submit" class="btn btn-danger" data-toggle="modal" data-target="#saveSuccess"
-                           data-dismiss="modal" value="XÁC NHẬN">
-                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="HỦY">
-                </div>
-            </form>
+            <div class="modal-header">
+                <h4 class="modal-title">Xác nhận lưu</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-danger" data-toggle="modal" data-target="#saveSuccess"
+                       id="confirm" data-dismiss="modal" value="XÁC NHẬN">
+                <input type="button" class="btn btn-primary" data-dismiss="modal" value="HỦY">
+            </div>
         </div>
     </div>
 </div>
@@ -96,10 +75,7 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="saveSuccess">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-body text-center">
-                <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
-                <h5 id="message-reset">Thông tin đã lưu thành công!</h5>
-            </div>
+            <div class="modal-body text-center"></div>
             <div class="modal-footer">
                 <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
             </div>
