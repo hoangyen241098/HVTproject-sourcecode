@@ -103,6 +103,11 @@ function search() {
                             var dataTarget = "collapse" + requestId;
                             var violationDate = item.dayName + " - " + convertDate(item.createDate);
                             var typeRequest, status;
+                            var substractGrade = item.violationClassRequest.substractGrade;
+                            var quantity = item.quantity;
+                            var quantityNew = item.violationClassRequest.quantityNew;
+                            var totals = parseFloat(substractGrade) * parseInt(quantity);
+                            var totalsNew = parseFloat(substractGrade) * parseInt(quantityNew);
                             if (item.typeRequest == 0 || item.typeRequest == null) {
                                 typeRequest = "Sửa đổi";
                                 if (item.violationClassRequest.status == 0) {
@@ -130,7 +135,7 @@ function search() {
                                         </div>
                                         <div class="violation-class violationTypeName">
                                             <span class="font-500">Lớp: </span>
-                                            <span>` + item.classId + `</span>
+                                            <span>` + item.className + `</span>
                                         </div>
                                         <div class="violation-details violationTypeName">
                                             <span class="font-500">Mô tả lỗi: </span>
@@ -172,15 +177,15 @@ function search() {
                                             <div class="d-inline-block">
                                                 <div class="substract-grade">
                                                     <span class="title">Điểm trừ: </span>
-                                                    <span class="info ml-4">0.2</span>
+                                                    <span class="info ml-4">` + substractGrade + `</span>
                                                 </div>
                                                 <div class="quantity">
                                                     <span class="title">Số lần: </span>
-                                                    <span class="info ml-4">` + item.quantity + ` -> <span class="text-red font-500">` + item.violationClassRequest.quantityNew + `</span></span>
+                                                    <span class="info ml-4">` + quantity + ` -> <span class="text-red font-500">` + quantityNew + `</span></span>
                                                 </div>
                                                 <div class="totals">
                                                     <span class="title">Tổng điểm trừ: </span>
-                                                    <span class="info ml-4">0.4 -> <span class="text-red font-500">0.2</span></span>
+                                                    <span class="info ml-4">` + totals + ` -> <span class="text-red font-500">` + totalsNew + `</span></span>
                                                 </div>
                                             </div>
                                             <div class="hide violationClassId">` + item.violationClassId + `</div>
