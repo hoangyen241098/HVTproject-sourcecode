@@ -61,8 +61,8 @@ $.ajax({
                             </table>
                         </div>
                     `);
+                    var dataTable = "#" + dataTarget + " tbody";
                     if (item.violation != null) {
-                        var dataTable = "#" + dataTarget + " tbody";
                         $(dataTable).html("");
                         $.each(item.violation, function (i, list) {
                             $(dataTable).append(`
@@ -90,7 +90,6 @@ $.ajax({
                                 <td class="total">0</td>
                             </tr>`);
                         });
-
                     } else {
                         $(dataTable).html(`<tr><td colspan="4" class="userlist-result">Danh sách lỗi vi phạm trống.</td></tr>`);
                     }
@@ -135,7 +134,7 @@ $('#saveGrading').on('click', function () {
             total = total.toFixed(1);
             var description;
             $('table tbody input[type="checkbox"]').each(function () {
-                if($(this).val() == violationList[i].violationId){
+                if ($(this).val() == violationList[i].violationId) {
                     description = $(this).closest('td').parent().find('.violation-des').text();
                 }
             });
@@ -197,60 +196,37 @@ $('#saveGrading').on('click', function () {
 
 /*Get value checkbox*/
 function getValueCheckbox() {
+    if (list.length == 0) {
+        violationList = [];
+    }
+    violationList = [];
     $('table tbody input[type="checkbox"]').each(function () {
-        if ($(this).is(':checked')) {
-            var quantity = $(this).closest('td').parent().find('.quantity-input').val();
-            if (quantity != "0") {
-                if (violationList.length > 0) {
-                    for (var i = 0; i < violationList.length; i++) {
-                        var ids = violationList.map(function (v) {
-                            return v.violationId;
-                        })
-                        if (jQuery.inArray($(this).val(), ids) == -1) {
-                            violationList.push({
-                                violationId: $(this).val(),
-                                quantity: quantity,
-                                substractGrade: $(this).closest('td').parent().find('.substract').text(),
-                                note: $(this).closest('td').parent().find('.violation-note').val()
-                            });
-                            return false;
-                        } else {
-                            objIndex = violationList.findIndex((obj => obj.violationId == $(this).val()));
-                            violationList[objIndex].quantity = quantity;
-                            violationList[objIndex].note = $(this).closest('td').parent().find('.violation-note').val();
-                            return false;
-                        }
-                    }
-                } else {
+        for (var i = 0; i < list.length; i++) {
+            if ($(this).val() == list[i]) {
+                var quantity = $(this).closest('td').parent().find('.quantity-input').val();
+                if (quantity != "0") {
                     violationList.push({
                         violationId: $(this).val(),
                         quantity: $(this).closest('td').parent().find('.quantity-input').val(),
                         substractGrade: $(this).closest('td').parent().find('.substract').text(),
                         note: $(this).closest('td').parent().find('.violation-note').val()
                     });
+                } else {
+                    var removeItem = $(this).val();
+                    violationList = $.grep(violationList, function (value) {
+                        return value.violationId != removeItem;
+                    });
                 }
-            } else {
-                console.log(quantity)
-                var removeItem = $(this).val();
-                violationList = $.grep(violationList, function (value) {
-                    return value.violationId != removeItem;
-                });
             }
-        } else {
-            var removeItem = $(this).val();
-            violationList = $.grep(violationList, function (value) {
-                return value.violationId != removeItem;
-            });
         }
-
     });
 };
 
 /*Set class for red star*/
 function getClass() {
     if (roleId == 3) {
-        $('#classList').prop('disabled', true);
         $('#datetime').prop('disabled', true);
+        $('#classList').prop('disabled', true);
         var request = {
             username: username,
             applyDate: $('#datetime').val()
@@ -269,13 +245,19 @@ function getClass() {
                 var messageCode = data.message.messageCode;
                 var message = data.message.message;
                 if (messageCode == 0) {
-                    $('#classList').val(data.currentClassId);
+                    var classID = data.currentClassId;
+                    if (classID != null) {
+                        $("#classList").select2().val(classID).trigger('change');
+                    }
+
                 } else {
-                    $('#classList').val(message);
+                    $("#classList option").remove();
+                    $("#classList").append(`<option selected>` + message + `</option>`);
                 }
             },
             failure: function (errMsg) {
-                $('#classList').val(errMsg);
+                $("#classList option").remove();
+                $("#classList").append(`<option selected>` + errMsg + `</option>`);
             },
             dataType: "json",
             contentType: "application/json"
