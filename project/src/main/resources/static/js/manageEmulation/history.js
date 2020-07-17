@@ -2,18 +2,20 @@ $('#fromYear').change(function () {
     var fromYear = $(this).val();
     $('#toYear').val(parseInt(fromYear) + 3);
 });
+/*Setup value */
 $('#fromDate').val(moment().format('YYYY-MM-DD'));
 $('#toDate').val(moment().format('YYYY-MM-DD'));
 $('#fromYear').val(moment().year());
 $('#toYear').val(parseInt($('#fromYear').val()) + 3)
 var inforSearch = {
-    fromDate: "2020-01-02",
-    toDate: "2020-01-02",
-    giftedId: "1",
-    fromYear: "2019",
-    toYear: "2021"
+    fromDate: $('#fromDate').val(),
+    toDate: $('#toDate').val(),
+    giftedId: $('#gifftedClass option:selected').val(),
+    fromYear: $('#fromYear').val(),
+    toYear: $('#toYear').val()
 }
 
+/*Search button*/
 $("#search").click(function () {
     var giftedId, fromYear, toYear;
     fromDate = $('#fromDate').val();
@@ -56,7 +58,7 @@ $.ajax({
         var message = data.message.message;
         if (messageCode == 0) {
             if (data.giftedClassList != null) {
-                // $("#gifftedClass").select2();
+                $("#gifftedClass").select2();
                 $("#gifftedClass").html("");
                 $.each(data.giftedClassList, function (i, item) {
                     $('#gifftedClass').append(
@@ -115,7 +117,7 @@ function search() {
                         $('#violationList').append(
                             `<div class="violation-description my-2">
                                 <div class="violation-date">
-                                    <span>` + day +  convertDate(item.date) + `</span>
+                                    <span>` + day + convertDate(item.date) + `</span>
                                 </div>
                                 <div class="violation-details">
                                     <div class="violation-name">

@@ -1,4 +1,10 @@
+/*Set value default*/
+var violationList = [];
+var list = [];
+var roleId = localStorage.getItem('roleID');
+var username = localStorage.getItem('username');
 $('#datetime').val(moment().format('YYYY-MM-DD'));
+
 /*Get data in page*/
 $.ajax({
     url: '/api/emulation/viewgradingemulation',
@@ -15,7 +21,7 @@ $.ajax({
         if (messageCode == 0) {
             if (data.classList != null) {
                 $("#classList").select2();
-                $("#classList").html(`<option value="0" selected>Tất cả</option>`);
+                $("#classList").html("");
                 $.each(data.classList, function (i, item) {
                     $('#classList').append(
                         `<option value="` + item.classID + `">` + item.className + `</option>
@@ -69,8 +75,8 @@ $.ajax({
                                 </td>
                                 <td>
                                     <div class="form-group text-left">
-                                        <label>` + list.description + `</label>
-                                        <input type="text" class="form-control text-red" placeholder="Ghi chú...">
+                                        <label class="violation-des">` + list.description + `</label>
+                                        <input type="text" class="form-control text-red violation-note" placeholder="Ghi chú...">
                                     </div>
                                 </td>
                                 <td class="substract">` + list.substractGrade + `</td>
@@ -81,59 +87,238 @@ $.ajax({
                                         <button class="btn-increase"><i class="fa fa-plus" aria-hidden="true"></i></button>
                                     </div>
                                 </td>
-                                <td class="total"></td>
+                                <td class="total">0</td>
                             </tr>`);
                         });
-                    } else {
 
+                    } else {
+                        $(dataTable).html(`<tr><td colspan="4" class="userlist-result">Danh sách lỗi vi phạm trống.</td></tr>`);
                     }
                 });
+                selectCheckbox();
+                getClass();
+                increaseBtn();
+                decreaseBtn();
             } else {
-                $("#classList").html(`<option>Không có lớp nào.</option>`);
+                $(".panel-default").html(`<h5>Không có lỗi vi phạm.</h5>`);
             }
         } else {
-            $("#gifftedClass").html(`<option>` + message + `</option>`);
+            $(".panel-default").html(`<h5>` + message + `</h5>`);
         }
     },
     failure: function (errMsg) {
-        $("#gifftedClass").html(`<option>` + errMsg + `</option>`);
+        $(".panel-default").html(`<h5>` + errMsg + `</h5>`);
     },
     dataType: "json",
     contentType: "application/json"
 });
 
-$('.btn-increase').on('click', function () {
-    var $qty = $(this).closest('div').find('.quantity-input');
-    var currentVal = parseInt($qty.val());
-    if (!isNaN(currentVal)) {
-        $qty.val(currentVal + 1);
+/*Save Grading*/
+$('#saveGrading').on('click', function () {
+    getValueCheckbox();
+    if (violationList.length != 0) {
+        $('#confirmModal').modal('show');
+        $('#confirmModal .modal-body').html('');
+        $('#confirmModal .modal-body').append(`
+            <table class="table table-bordered">
+                <thead class="bg-light text-center">
+                    <td>Mô tả lỗi</td>
+                    <td>Điểm trừ</td>
+                    <td>Số lần</td>
+                    <td>Tổng điểm trừ</td>
+                </thead>
+                <tbody></tbody>
+            </table>
+        `);
+        for (var i = 0; i < violationList.length; i++) {
+            var total = parseFloat(violationList[i].substractGrade) * parseInt(violationList[i].quantity);
+            total = total.toFixed(1);
+            var description;
+            $('table tbody input[type="checkbox"]').each(function () {
+                if($(this).val() == violationList[i].violationId){
+                    description = $(this).closest('td').parent().find('.violation-des').text();
+                }
+            });
+            $('#confirmModal .modal-body tbody').append(`
+            <tr>
+                <td>
+                    <p class="mb-0">` + description + `</p>
+                    <small class="text-red">` + violationList[i].note + `</small>
+                </td>
+                <td class="text-center">` + violationList[i].substractGrade + `</td>
+                <td class="text-center">` + violationList[i].quantity + `</td>
+                <td class="text-center">` + total + `</td>
+            </tr>                    
+            `);
+        }
+        $('#confirm').on('click', function () {
+            var infoSave = {
+                username: username,
+                classId: $('#classList option:selected').val(),
+                date: $('#datetime').val(),
+                roleId: roleId,
+                yearId: localStorage.getItem('currentYearId'),
+                violationList: violationList
+            }
+            console.log(JSON.stringify(infoSave));
+            $.ajax({
+                url: '/api/emulation/addgrademulation',
+                type: 'POST',
+                data: JSON.stringify(infoSave),
+                beforeSend: function () {
+                    $('body').addClass("loading")
+                },
+                complete: function () {
+                    $('body').removeClass("loading")
+                },
+                success: function (data) {
+                    var messageCode = data.messageCode;
+                    var message = data.message;
+                    if (messageCode == 0) {
+                        $('#saveSuccess .modal-body').html(`
+                            <img class="mb-3 mt-3" src="/img/img-success.png"/>
+                            <h5>Thông tin đã lưu thành công!</h5>
+                        `);
+                    } else {
+                        dialogErr("/img/img-error.png", message);
+                    }
+                },
+                failure: function (errMsg) {
+                    dialogErr("/img/img-error.png", errMsg);
+                },
+                dataType: "json",
+                contentType: "application/json"
+            });
+        })
+    } else {
+        dialogErr("/img/img-error.png", 'Hãy chọn lỗi.');
     }
-    var $substract = $(this).closest('td').parent().find('.substract');
-    var $total = $(this).closest('td').parent().find('.total');
-    var total = parseFloat($substract.text()) * parseInt($qty.val());
-    $total.text(total.toFixed(2));
-});
+})
 
+/*Get value checkbox*/
+function getValueCheckbox() {
+    $('table tbody input[type="checkbox"]').each(function () {
+        if ($(this).is(':checked')) {
+            var quantity = $(this).closest('td').parent().find('.quantity-input').val();
+            if (quantity != "0") {
+                if (violationList.length > 0) {
+                    for (var i = 0; i < violationList.length; i++) {
+                        var ids = violationList.map(function (v) {
+                            return v.violationId;
+                        })
+                        if (jQuery.inArray($(this).val(), ids) == -1) {
+                            violationList.push({
+                                violationId: $(this).val(),
+                                quantity: quantity,
+                                substractGrade: $(this).closest('td').parent().find('.substract').text(),
+                                note: $(this).closest('td').parent().find('.violation-note').val()
+                            });
+                            return false;
+                        } else {
+                            objIndex = violationList.findIndex((obj => obj.violationId == $(this).val()));
+                            violationList[objIndex].quantity = quantity;
+                            violationList[objIndex].note = $(this).closest('td').parent().find('.violation-note').val();
+                            return false;
+                        }
+                    }
+                } else {
+                    violationList.push({
+                        violationId: $(this).val(),
+                        quantity: $(this).closest('td').parent().find('.quantity-input').val(),
+                        substractGrade: $(this).closest('td').parent().find('.substract').text(),
+                        note: $(this).closest('td').parent().find('.violation-note').val()
+                    });
+                }
+            } else {
+                console.log(quantity)
+                var removeItem = $(this).val();
+                violationList = $.grep(violationList, function (value) {
+                    return value.violationId != removeItem;
+                });
+            }
+        } else {
+            var removeItem = $(this).val();
+            violationList = $.grep(violationList, function (value) {
+                return value.violationId != removeItem;
+            });
+        }
 
-$('.btn-decrease').on('click', function () {
-    var $qty = $(this).closest('div').find('.quantity-input');
-    var currentVal = parseInt($qty.val());
-    if (!isNaN(currentVal) && currentVal > 0) {
-        $qty.val(currentVal - 1);
+    });
+};
+
+/*Set class for red star*/
+function getClass() {
+    if (roleId == 3) {
+        $('#classList').prop('disabled', true);
+        $('#datetime').prop('disabled', true);
+        var request = {
+            username: username,
+            applyDate: $('#datetime').val()
+        }
+        $.ajax({
+            url: '/api/emulation/getClassIdOfRedStar',
+            type: 'POST',
+            data: JSON.stringify(request),
+            beforeSend: function () {
+                $('body').addClass("loading")
+            },
+            complete: function () {
+                $('body').removeClass("loading")
+            },
+            success: function (data) {
+                var messageCode = data.message.messageCode;
+                var message = data.message.message;
+                if (messageCode == 0) {
+                    $('#classList').val(data.currentClassId);
+                } else {
+                    $('#classList').val(message);
+                }
+            },
+            failure: function (errMsg) {
+                $('#classList').val(errMsg);
+            },
+            dataType: "json",
+            contentType: "application/json"
+        });
     }
-    var $substract = $(this).closest('td').parent().find('.substract');
-    var $total = $(this).closest('td').parent().find('.total');
-    var total = parseFloat($substract.text()) * parseInt($qty.val());
-    $total.text(total.toFixed(2));
-});
-getTotalGrade();
-
-function getTotalGrade() {
-    var $this = $('tbody tr');
-    var $substract = $this.find('.substract');
-    var $total = $this.find('.total');
-    var $qty = $this.find('.quantity-input')
-    var total = parseFloat($substract.text()) * parseInt($qty.val());
-    $total.text(total.toFixed(2));
 }
 
+/*Set dialog template*/
+function dialogErr(img, message) {
+    $('#saveSuccess').modal('show');
+    $('#saveSuccess .modal-body').html('');
+    $('#saveSuccess .modal-body').append(`
+        <img class="mb-3 mt-3" src=` + img + `/>
+        <h5>` + message + `</h5>
+    `);
+}
+
+/*Button Increase*/
+function increaseBtn() {
+    $('.btn-increase').on('click', function () {
+        var $qty = $(this).closest('div').find('.quantity-input');
+        var currentVal = parseInt($qty.val());
+        if (!isNaN(currentVal)) {
+            $qty.val(currentVal + 1);
+        }
+        var $substract = $(this).closest('td').parent().find('.substract');
+        var $total = $(this).closest('td').parent().find('.total');
+        var total = parseFloat($substract.text()) * parseInt($qty.val());
+        $total.text(total.toFixed(1));
+    });
+}
+
+/*Button Decrease*/
+function decreaseBtn() {
+    $('.btn-decrease').on('click', function () {
+        var $qty = $(this).closest('div').find('.quantity-input');
+        var currentVal = parseInt($qty.val());
+        if (!isNaN(currentVal) && currentVal > 0) {
+            $qty.val(currentVal - 1);
+        }
+        var $substract = $(this).closest('td').parent().find('.substract');
+        var $total = $(this).closest('td').parent().find('.total');
+        var total = parseFloat($substract.text()) * parseInt($qty.val());
+        $total.text(total.toFixed(2));
+    });
+}

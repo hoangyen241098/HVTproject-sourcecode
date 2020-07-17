@@ -69,4 +69,11 @@ public class ViolationClass {
 
     @Column(name = "HISTORY")
     private String history;
+
+    public ViolationClass() {
+    }
+
+    public ViolationClass(Long id) {
+        this.id = id;
+    }
 }
