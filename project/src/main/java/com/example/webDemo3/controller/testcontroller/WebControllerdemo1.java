@@ -13,7 +13,7 @@ import java.util.Random;
 @Controller
 public class WebControllerdemo1 {
 
-    public int  max = 10000;
+    //public int  max = 10000;
     //public int khoangcach[][] = {{max,5,6,9,max},{5,max,10,2,7},{6,10,max,max,15},{9,2,max,max,1},{max,7,15,1,max}};
     public Random ran = new Random();
     public static int n = 1000;
