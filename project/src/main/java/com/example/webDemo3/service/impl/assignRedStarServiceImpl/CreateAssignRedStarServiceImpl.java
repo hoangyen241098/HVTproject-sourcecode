@@ -47,7 +47,7 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
     public MessageDTO create(Date fromDate) {
         MessageDTO message = Constant.SUCCESS;
         List<Class> classList = classRepository.findAll();
-        List<User> redStarList = userRepository.finRedStar();
+        List<User> redStarList = userRepository.findRedStar();
         Date beforDate = classRedStarRepository.getBiggestClosetDate(fromDate);
         List<ClassRedStar> assignList = new ArrayList<>();
         User[] assignUser = new User[0];
