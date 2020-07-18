@@ -15,6 +15,10 @@ import java.util.List;
 
 @Repository
 public interface ClassRedStarRepository extends JpaRepository<ClassRedStar, ClassRedStarId> {
+
+    @Query(value = "select c from ClassRedStar c where c.classRedStarId.FROM_DATE = :fromDate")
+    List<ClassRedStar> findAllByDate(@Param("fromDate") Date fromDate);
+
     //@Query(value = "select MAX(c.classRedStarId.FROM_DATE) from ClassRedStar c where c.classRedStarId.FROM_DATE <= :fromDate and c.classId = :classId and c.classRedStarId.RED_STAR = :RED_STAR")
     //Date getBiggestClosetDate(@Param("fromDate") Date fromDate, @Param("classId") Integer classId, @Param("RED_STAR") String RED_STAR);
 
