@@ -1,7 +1,7 @@
 var fromDate;
 var inforSearch = {
-    fromDate: "2020-10-11",
-    orderBy: "1",
+    fromDate: $('#fromDate option:selected').val(),
+    orderBy: "0",
     sortBy: "0",
     classId: "",
     redStar: "",
@@ -9,7 +9,7 @@ var inforSearch = {
 };
 
 $("#search").click(function () {
-    var classId, redStar;
+    var classId, redStar, sortBy, orderBy;
     fromDate = $('#fromDate option:selected').val();
     if ($('#classList option:selected').val() == null || $('#classList option:selected').val() == "0") {
         classId = "";
@@ -21,10 +21,20 @@ $("#search").click(function () {
     } else {
         redStar = $('#redStarList option:selected').val();
     }
+    if ($('#sortBy option:selected').val() == null) {
+        sortBy = "1";
+    } else {
+        sortBy = $('#sortBy option:selected').val();
+    }
+    if ($('#orderBy option:selected').val() == null) {
+        orderBy = "0";
+    } else {
+        orderBy = $('#orderBy option:selected').val();
+    }
     inforSearch = {
         fromDate: fromDate,
-        orderBy: "1",
-        sortBy: "0",
+        orderBy: orderBy,
+        sortBy: sortBy,
         classId: classId,
         redStar: redStar,
         pageNumber: 0
@@ -116,20 +126,38 @@ function search() {
         success: function (data) {
             var messageCode = data.message.messageCode;
             var message = data.message.message;
+            var totalPage = data.totalPage;
+            if (totalPage == 0 || totalPage == null) {
+                $('.table-paging').addClass('hide');
+            } else {
+                $('.table-paging').removeClass('hide');
+                $('.table-paging').html('');
+                paging(inforSearch, totalPage);
+            }
             if (messageCode == 0) {
                 if (data.listAssignTask.length != 0) {
                     $('#myTable tbody').html("");
-                        $('#myTable').DataTable({
-                            destroy: true,
-                            searching: false,
-                            bInfo: false,
-                            paging: false,
-                            data: data.listAssignTask,
-                            columns: [
-                                {data: "classIdentifier"},
-                                {data: "redStar"},
-                            ]
-                        });
+                    $.each(data.listAssignTask, function (i, item) {
+                        var classIdentifier, redStar;
+                        if (item.classIdentifier == "" || item.classIdentifier == null) {
+                            classIdentifier = "-";
+                        } else {
+                            classIdentifier = item.classIdentifier;
+                        }
+                        if (item.redStar == "" || item.redStar == null) {
+                            redStar = "-";
+                        } else {
+                            redStar = item.redStar;
+                        }
+
+                        $('#myTable tbody').append(`
+                        <tr>
+                            <td>` + classIdentifier + `</td>
+                            <td>` + redStar + `</td>
+                        </tr>
+                        `);
+                    });
+                    pagingClick();
                 } else {
                     $('#myTable tbody').html(`<tr><td colspan="2" class="userlist-result">Danh sách trống.</td></tr>`);
                 }
