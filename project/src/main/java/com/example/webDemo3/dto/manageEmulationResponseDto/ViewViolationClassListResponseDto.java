@@ -14,5 +14,6 @@ import java.util.List;
 public class ViewViolationClassListResponseDto {
 
     List<ViolationClassResponseDto> viewViolationClassList;
+    private Integer totalPage;
     private MessageDTO message;
 }

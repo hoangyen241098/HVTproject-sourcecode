@@ -7,6 +7,7 @@ import com.example.webDemo3.dto.manageEmulationResponseDto.ViolationClassRequest
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViolationClassResponseDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewRequestDto;
 import com.example.webDemo3.entity.Class;
+import com.example.webDemo3.entity.Violation;
 import com.example.webDemo3.entity.ViolationClass;
 import com.example.webDemo3.entity.ViolationClassRequest;
 import com.example.webDemo3.repository.*;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -58,6 +60,7 @@ public class ViewRequestServiceImpl implements ViewRequestService {
         MessageDTO message = new MessageDTO();
         Page<ViolationClass> pagedResult = null;
         Page<ViolationClassRequest> pagedResultRequest = null;
+        Integer totalPage = 0;
 
         Integer typeRequest = viewRequest.getTypeRequest();
         Integer classId = viewRequest.getClassId();
@@ -70,6 +73,7 @@ public class ViewRequestServiceImpl implements ViewRequestService {
         Pageable paging;
         try {
 
+            //check classId null or not
             if(classId != null){
                 newClass = classRepository.findByClassId(classId);
 
@@ -81,7 +85,7 @@ public class ViewRequestServiceImpl implements ViewRequestService {
                 }
             }
 
-            paging = PageRequest.of(pageNumber, pageSize);
+            paging = PageRequest.of(pageNumber, pageSize, Sort.by("classId").ascending());
 
             //check typeRequest == 0
             if (typeRequest == 0) {
@@ -99,6 +103,7 @@ public class ViewRequestServiceImpl implements ViewRequestService {
                         violationClass.setTypeRequest(typeRequest);
                         viewViolationClassList.add(violationClass);
                     }
+                    totalPage = pagedResult.getTotalPages();
                     responseDto.setViewViolationClassList(viewViolationClassList);
                 }
             }
@@ -115,6 +120,7 @@ public class ViewRequestServiceImpl implements ViewRequestService {
                         violationClass.setTypeRequest(typeRequest);
                         viewViolationClassList.add(violationClass);
                     }
+                    totalPage = pagedResult.getTotalPages();
                     responseDto.setViewViolationClassList(viewViolationClassList);
                 }
             }
@@ -137,6 +143,7 @@ public class ViewRequestServiceImpl implements ViewRequestService {
                         viewViolationClassList.add(violationClass);
                         violationClass.setTypeRequest(0);
                     }
+                    totalPage = pagedResult.getTotalPages();
                 }
 
                 //check pagedResult null or not
@@ -148,13 +155,15 @@ public class ViewRequestServiceImpl implements ViewRequestService {
                         viewViolationClassList.add(violationClass);
                         violationClass.setTypeRequest(1);
                     }
+                    totalPage += pagedResult.getTotalPages();
                 }
 
+                responseDto.setTotalPage(totalPage);
                 responseDto.setViewViolationClassList(viewViolationClassList);
             }
 
             //check response empty or not
-            if(responseDto.getViewViolationClassList().size() == 0){
+            if(responseDto.getViewViolationClassList() == null){
                 message = Constant.VIEW_CHANGE_REQUEST_NULL;
                 responseDto.setMessage(message);
                 return  responseDto;
@@ -214,9 +223,7 @@ public class ViewRequestServiceImpl implements ViewRequestService {
                     break;
                 }
                 default: {
-                    //pagedResultRequest = violationClassRequestRepository.findViolationClassRequestByCondition(classId, createDate, paging);
                     pagedResultRequest = violationClassRequestRepository.findViolationClassRequestByCondition(classId,createDate, paging);
-
                 }
             }
             return pagedResultRequest;
@@ -228,15 +235,21 @@ public class ViewRequestServiceImpl implements ViewRequestService {
 
     public ViolationClassResponseDto changeViolationClassFromEntityToDto(ViolationClass violationClass){
         ViolationClassResponseDto responseDto = new ViolationClassResponseDto();
+        Class newClass = classRepository.findById(violationClass.getClassId()).orElse(null);
 
         responseDto.setViolationClassId(violationClass.getId());
-        responseDto.setClassId(violationClass.getClassId());
         responseDto.setNote(violationClass.getNote());
         responseDto.setQuantity(violationClass.getQuantity());
         responseDto.setDescription(violationClass.getViolation().getDescription());
         responseDto.setCreateDate(violationClass.getDate());
         responseDto.setCreateBy(violationClass.getCreateBy());
 
+        //check newClass exists or not
+        if(newClass != null){
+            responseDto.setClassId(newClass.getClassId());
+            responseDto.setClassName(newClass.getClassIdentifier());
+        }
+        
         Integer dayId = validateEmulationService.getDayIdByDate(violationClass.getDate());
         String dayName = dayRepository.findByDayId(dayId).getDayName();
         responseDto.setDayName(dayName);
@@ -246,6 +259,7 @@ public class ViewRequestServiceImpl implements ViewRequestService {
 
     public ViolationClassRequestResponseDto changeViolationClassRequestFromEntityToDto(ViolationClassRequest violationClassRequest){
         ViolationClassRequestResponseDto responseDto = new ViolationClassRequestResponseDto();
+        Violation violation = violationRepository.findById(violationClassRequest.getViolationClass().getClassId()).orElse(null);
 
         responseDto.setRequestId(violationClassRequest.getRequestId());
         responseDto.setViolationClassId(violationClassRequest.getViolationClass().getId());
@@ -254,6 +268,11 @@ public class ViewRequestServiceImpl implements ViewRequestService {
         responseDto.setStatus(violationClassRequest.getStatusChange());
         responseDto.setReason(violationClassRequest.getReason());
         responseDto.setQuantityNew(violationClassRequest.getQuantityNew());
+
+        //check violation null or not
+        if(violation != null){
+            responseDto.setSubstractGrade(violation.getSubstractGrade());
+        }
 
         return responseDto;
     }

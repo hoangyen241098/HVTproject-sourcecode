@@ -17,4 +17,5 @@ public class ViolationClassRequestResponseDto {
     private Integer status;
     private String reason;
     private Integer quantityNew;
+    private Float substractGrade;
 }

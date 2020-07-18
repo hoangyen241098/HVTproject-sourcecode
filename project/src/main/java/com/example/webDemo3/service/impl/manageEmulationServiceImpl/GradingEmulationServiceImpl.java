@@ -169,6 +169,7 @@ public class GradingEmulationServiceImpl implements GradingEmulationService {
                 violationClass.setYear(new SchoolYear(yearId));
                 violationClass.setDay(new Day(dayId));
                 violationClass.setStatus(status);
+                violationClass.setCreateBy(username);
                 violationClassRepository.save(violationClass);
             }
         }catch (Exception e){

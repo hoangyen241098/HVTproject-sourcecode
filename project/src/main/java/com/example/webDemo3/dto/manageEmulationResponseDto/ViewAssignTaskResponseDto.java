@@ -12,5 +12,6 @@ import java.util.List;
 @Data
 public class ViewAssignTaskResponseDto {
     List<ClassRedStarResponseDto> listAssignTask;
+    private Integer totalPage;
     private MessageDTO message;
 }

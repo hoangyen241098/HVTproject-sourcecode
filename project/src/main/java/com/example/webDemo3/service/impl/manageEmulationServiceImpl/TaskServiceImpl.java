@@ -133,6 +133,7 @@ public class TaskServiceImpl implements TaskService {
             message = Constant.SUCCESS;
             assignTaskResponseDto.setListAssignTask(list);
             assignTaskResponseDto.setMessage(message);
+            assignTaskResponseDto.setTotalPage(pagedResult.getTotalPages());
         }catch (Exception e){
             message.setMessageCode(1);
             message.setMessage(e.toString());

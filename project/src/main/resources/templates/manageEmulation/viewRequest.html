@@ -17,6 +17,7 @@
     <script th:src="@{/js/public/select2.min.js}"></script>
     <!--Font-Awesome-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"/>
+    <script th:src="@{/js/public/moment.min.js}"></script>
     <link th:href="@{/css/style.css}" rel="stylesheet"/>
     <script type="text/javascript" th:src="@{/js/functions.js}"></script>
 
@@ -32,18 +33,18 @@
                     <div class="search-line">
                         <span>Loại yêu cầu</span>
                         <select class="combobox searchable" id="requestType">
-                            <option value="0" selected>Tất cả</option>
-                            <option value="1">Thêm mới</option>
-                            <option value="2">Sửa đổi</option>
+                            <option value="2" selected>Tất cả</option>
+                            <option value="1">Tạo mới</option>
+                            <option value="0">Sửa đổi</option>
                         </select>
                     </div>
                     <div class="search-line">
                         <span>Trạng thái</span>
                         <select class="combobox searchable" id="status">
-                            <option value="0" selected>Tất cả</option>
-                            <option value="1">Chưa duyệt</option>
-                            <option value="2">Chấp nhận</option>
-                            <option value="3">Từ chối</option>
+                            <option value="3" selected>Tất cả</option>
+                            <option value="0">Chưa duyệt</option>
+                            <option value="1">Chấp nhận</option>
+                            <option value="2">Từ chối</option>
                         </select>
                     </div>
                 </div>
@@ -51,9 +52,7 @@
                 <div class="col-xl-4 d-inline-block">
                     <div class="search-line">
                         <span>Lớp</span>
-                        <select class="combobox searchable" id="classList">
-                            <option value="0" selected>Tất cả</option>
-                        </select>
+                        <select class="combobox searchable" id="classList"></select>
                     </div>
                     <div class="search-line">
                         <span>Ngày</span>
@@ -65,77 +64,7 @@
                 </div>
             </div>
         </div>
-        <div class="panel panel-default">
-            <div class="panel-heading mt-3 mb-0" data-toggle="collapse" data-target="#collapseOne"
-                 onclick="toggleClick()">
-                <div class="w-100">
-                    <div class="violation-date violationTypeName">
-                        <span>Thứ 2 - 07/06/2020</span>
-                    </div>
-                    <div class="violation-class violationTypeName">
-                        <span class="font-500">Lớp: </span>
-                        <span>10H</span>
-                    </div>
-                    <div class="violation-details violationTypeName">
-                        <span class="font-500">Mô tả lỗi: </span>
-                        <span>Đi lại lộn xộn.</span>
-                    </div>
-                    <div class="violation-author violationTypeName">
-                        <span class="font-500">Người yêu cầu thay đổi: </span>
-                        <span>codo11T1</span>
-                    </div>
-                    <div class="violation-status violationTypeName">
-                        <span class="font-500">Trạng thái: </span>
-                        <span>Chưa duyệt</span>
-                    </div>
-                    <div class="violation-request violationTypeName">
-                        <span class="font-500">Loại yêu cầu: </span>
-                        <span>Thêm mới</span>
-                    </div>
-                </div>
-                <button class="violation-btn"><i class="fa fa-chevron-down rotate"></i></button>
-            </div>
-            <div class="panel-collapse collapse in" id="collapseOne">
-                <div class="modal-body text-center mx-auto">
-                    <div class="panel-body">
-                        <div class="col-md-6 px-0 d-inline-block">
-                            <div class="violationName">
-                                <span class="title">Mô tả lỗi: </span>
-                                <span class="info ml-4">Đi lại lộn xộn</span>
-                            </div>
-                            <div class="note">
-                                <span class="title">Ghi chú: </span>
-                                <span class="info ml-4">A và B đi lại lộn xộn trong lớp</span>
-                            </div>
-                            <div class="reason-change">
-                                <span class="title">Lý do thay đổi: </span>
-                                <span class="info ml-4">Sao đỏ chấm nhầm</span>
-                            </div>
-                        </div>
-                        <div class="d-inline-block">
-                            <div class="substract-grade">
-                                <span class="title">Điểm trừ: </span>
-                                <span class="info ml-4">0.2</span>
-                            </div>
-                            <div class="quantity">
-                                <span class="title">Số lần: </span>
-                                <span class="info ml-4">2 -> <span class="text-red font-500">1</span></span>
-                            </div>
-                            <div class="totals">
-                                <span class="title">Tổng điểm trừ: </span>
-                                <span class="info ml-4">0.4 -> <span class="text-red font-500">0.2</span></span>
-                            </div>
-                        </div>
-                        <div class="col-md-12 text-right mt-4">
-                            <input type="submit" class="btn btn-primary" data-toggle="modal" data-target="#passSuccess"
-                                   value="XÁC NHẬN">
-                            <input type="button" class="btn btn-danger ml-3" data-toggle="modal"
-                                   data-target="#rejectSuccess" value="TỪ CHỐI">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="panel panel-default"></div>
     </div>
 </div>
 
@@ -143,12 +72,9 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="passSuccess">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-body text-center">
-                <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
-                <h5>Xác nhận yêu cầu thành công!</h5>
-            </div>
+            <div class="modal-body text-center"></div>
             <div class="modal-footer">
-                <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
+                <a href="viewRequest" class="btn btn-primary">ĐÓNG</a>
             </div>
         </div>
     </div>
@@ -158,12 +84,9 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="rejectSuccess">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-body text-center">
-                <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
-                <h5>Từ chối yêu cầu thành công!</h5>
-            </div>
+            <div class="modal-body text-center"></div>
             <div class="modal-footer">
-                <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
+                <a href="viewRequest" class="btn btn-primary">ĐÓNG</a>
             </div>
         </div>
     </div>
