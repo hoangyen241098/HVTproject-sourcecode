@@ -186,6 +186,8 @@ public class Constant {
             new MessageDTO(1,"Hãy nhập số lượng mà bạn muốn.");
     public static final MessageDTO REQUEST_ID_NULL =
             new MessageDTO(1,"Hãy chọn yêu cầu thay đổi.");
+    public static final MessageDTO NOT_ACCEPT_EDIT =
+            new MessageDTO(1,"Bạn không có quyền chỉnh sửa.");
     /**
      * Success message
      */
