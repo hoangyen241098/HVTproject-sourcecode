@@ -93,23 +93,32 @@ function search() {
             var messageCode = data.message.messageCode;
             var message = data.message.message;
             if (messageCode == 0) {
-                if (data.viewViolationClassList != null) {
+                var totalPages = data.totalPage;
+                if (totalPages > 0) {
+                    $('.table-paging').removeClass('hide');
+                    paging(infoSearch, totalPages);
+                } else {
+                    $('.table-paging').addClass('hide');
+                }
+                if (data.viewViolationClassList.length != 0) {
                     $(".panel-default").html("");
-                    var check = false;
                     $.each(data.viewViolationClassList, function (i, item) {
-                        if (item.violationClassRequest != null) {
-                            check = true;
-                            var requestId = item.violationClassRequest.requestId;
-                            var dataTarget = "collapse" + requestId;
+                        var typeRequest = item.typeRequest;
+                        if ((item.violationClassRequest != null && typeRequest == 0) || typeRequest == 1) {
+                            var typeRequestName, status, requestId, dataTarget, createBy, totals, quantityNew,
+                                totalsNew, reason;
                             var violationDate = item.dayName + " - " + convertDate(item.createDate);
-                            var typeRequest, status;
-                            var substractGrade = item.violationClassRequest.substractGrade;
+                            var substractGrade = item.substractGrade;
                             var quantity = item.quantity;
-                            var quantityNew = item.violationClassRequest.quantityNew;
-                            var totals = parseFloat(parseFloat(substractGrade) * parseInt(quantity)).toFixed(1);
-                            var totalsNew = parseFloat(parseFloat(substractGrade) * parseInt(quantityNew)).toFixed(1);
-                            if (item.typeRequest == 0 || item.typeRequest == null) {
-                                typeRequest = "Sửa đổi";
+                            totals = parseFloat(parseFloat(substractGrade) * parseInt(quantity)).toFixed(1);
+                            if (typeRequest == 0 || typeRequest == null) {
+                                typeRequestName = "Sửa đổi";
+                                requestId = item.violationClassRequest.requestId;
+                                dataTarget = "collapse" + requestId;
+                                createBy = item.violationClassRequest.createBy;
+                                quantityNew = item.violationClassRequest.quantityNew;
+                                totalsNew = parseFloat(parseFloat(substractGrade) * parseInt(quantityNew)).toFixed(1);
+                                reason = item.violationClassRequest.reason;
                                 if (item.violationClassRequest.status == 0) {
                                     status = "Chưa duyệt";
                                 } else if (item.violationClassRequest.status == 2) {
@@ -117,13 +126,17 @@ function search() {
                                 } else if (item.violationClassRequest.status == 1) {
                                     status = "Từ chối";
                                 }
-                            } else if (item.typeRequest == 1) {
-                                typeRequest = "Tạo mới";
-                                if (item.violationClassRequest.status == 2) {
+                            } else if (typeRequest == 1) {
+                                typeRequestName = "Tạo mới";
+                                createBy = item.createBy;
+                                requestId = null;
+                                dataTarget = "collapseNew" + item.violationClassId;
+                                reason = "";
+                                if (item.status == 2) {
                                     status = "Chưa duyệt";
-                                } else if (item.violationClassRequest.status == 1) {
+                                } else if (item.status == 1) {
                                     status = "Chấp nhận";
-                                } else if (item.violationClassRequest.status == 0) {
+                                } else if (item.status == 0) {
                                     status = "Từ chối";
                                 }
                             }
@@ -143,7 +156,7 @@ function search() {
                                         </div>
                                         <div class="violation-author violationTypeName">
                                             <span class="font-500">Người yêu cầu thay đổi: </span>
-                                            <span>` + item.violationClassRequest.createBy + `</span>
+                                            <span>` + createBy + `</span>
                                         </div>
                                         <div class="violation-status violationTypeName">
                                             <span class="font-500">Trạng thái: </span>
@@ -151,13 +164,13 @@ function search() {
                                         </div>
                                         <div class="violation-request violationTypeName">
                                             <span class="font-500">Loại yêu cầu: </span>
-                                            <span>` + typeRequest + `</span>
+                                            <span>` + typeRequestName + `</span>
                                         </div>
                                     </div>
                                     <button class="violation-btn"><i class="fa fa-chevron-down rotate up"></i></button>
                                 </div>
 
-                                <div class="panel-collapse collapse in" id="` + dataTarget + `">
+                                <div class="panel-collapse collapse" id="` + dataTarget + `">
                                     <div class="modal-body text-center mx-auto">
                                         <div class="panel-body">
                                             <div class="col-md-6 px-0 d-inline-block">
@@ -171,7 +184,7 @@ function search() {
                                                 </div>
                                                 <div class="reason-change">
                                                     <span class="title">Lý do thay đổi: </span>
-                                                    <span class="info ml-4">` + item.violationClassRequest.reason + `</span>
+                                                    <span class="info ml-4">` + reason + `</span>
                                                 </div>
                                             </div>
                                             <div class="d-inline-block">
@@ -189,7 +202,7 @@ function search() {
                                                 </div>
                                             </div>
                                             <div class="hide violationClassId">` + item.violationClassId + `</div>
-                                            <div class="hide typeRequest">` + item.typeRequest + `</div>
+                                            <div class="hide typeRequest">` + typeRequest + `</div>
                                             <div class="col-md-12 text-right mt-4">
                                                 <input type="submit" name="` + requestId + `" class="btn btn-primary accept-request" data-toggle="modal" value="XÁC NHẬN">
                                                 <input type="button" name="` + requestId + `" class="btn btn-danger ml-3 reject-request" data-toggle="modal" value="TỪ CHỐI">
@@ -198,19 +211,52 @@ function search() {
                                     </div>
                                 </div>
                             `);
+                            if (typeRequest == 1) {
+                                var dataTargetID = "#" + dataTarget + " .panel-body";
+                                $(dataTargetID).html(`
+                                <div class="col-md-12 px-0">
+                                    <div class="violationName">
+                                        <span class="title">Mô tả lỗi: </span>
+                                        <span class="info ml-4">` + item.description + `</span>
+                                    </div>
+                                    <div class="substract-grade">
+                                        <span class="title">Điểm trừ: </span>
+                                        <span class="info ml-4">` + substractGrade + `</span>
+                                    </div>
+                                    <div class="quantity">
+                                        <span class="title">Số lần: </span>
+                                        <span class="info ml-4">` + quantity + `</span>
+                                    </div>
+                                    <div class="totals">
+                                        <span class="title">Tổng điểm trừ: </span>
+                                        <span class="info ml-4">` + totals + `</span>
+                                    </div>
+                                </div>
+                                <div class="hide violationClassId">` + item.violationClassId + `</div>
+                                <div class="hide typeRequest">` + typeRequest + `</div>
+                                <div class="col-md-12 text-right mt-4">
+                                    <input type="submit" name="` + requestId + `" class="btn btn-primary accept-request" data-toggle="modal" value="XÁC NHẬN">
+                                    <input type="button" name="` + requestId + `" class="btn btn-danger ml-3 reject-request" data-toggle="modal" value="TỪ CHỐI">
+                                </div>
+                                `)
+                            }
+                            if (status == "Chấp nhận" || status == "Từ chối") {
+                                var dataTargetID = "#" + dataTarget;
+                                $(dataTargetID).find('.accept-request').addClass('hide');
+                                $(dataTargetID).find('.reject-request').addClass('hide');
+                            }
                         }
                     });
-                    if (check == false) {
-                        $(".panel-default").html(`<h3 class="text-center mt-3">Không có kết quả.</h3>`);
-                    }
+
                 } else {
-                    $(".panel-default").html(`<h3 class="text-center mt-3">` + message + `</h3>`);
+                    $(".panel-default").html(`<h3 class="text-center mt-3">Danh sách yêu cầu trống.</h3>`);
                 }
             } else {
                 $(".panel-default").html(`<h3 class="text-center mt-3">` + message + `</h3>`);
             }
             acceptRequest();
             rejectRequest();
+            pagingClick();
         },
         failure: function (errMsg) {
             $(".panel-default").html(`<h3 class="text-center mt-3">` + errMsg + `</h3>`);
@@ -245,7 +291,7 @@ function acceptRequest() {
             success: function (data) {
                 var messageCode = data.messageCode;
                 var message = data.message;
-                if (messageCode == 1) {
+                if (messageCode == 0) {
                     $('#passSuccess').modal('show');
                     $('#passSuccess .modal-body').html(`
                         <img class="mb-3 mt-3" src="/img/img-success.png"/>
@@ -295,7 +341,7 @@ function rejectRequest() {
             success: function (data) {
                 var messageCode = data.messageCode;
                 var message = data.message;
-                if (messageCode == 1) {
+                if (messageCode == 0) {
                     $('#rejectSuccess').modal('show');
                     $('#rejectSuccess .modal-body').html(`
                         <img class="mb-3 mt-3" src="/img/img-success.png"/>

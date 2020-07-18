@@ -1233,8 +1233,20 @@ fieldset .note {
 
 /*Responsive table max-width:650px*/
 @media screen and (max-width: 700px) {
+    .table-wrapper {
+        margin: 0;
+    }
+
+    .modal-body .panel-body,
     .panel-collapse table {
         width: 100%;
+    }
+
+    .search .d-inline-block.ml-2 {
+        display: block !important;
+        text-align: right;
+        margin-right: 5px;
+        margin-top: 15px;
     }
 
     .table-responsive-customer {
