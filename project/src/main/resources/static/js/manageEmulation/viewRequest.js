@@ -97,19 +97,20 @@ function search() {
                     $(".panel-default").html("");
                     var check = false;
                     $.each(data.viewViolationClassList, function (i, item) {
-                        if (item.violationClassRequest != null) {
+                        var typeRequest = item.typeRequest;
+                        if (item.violationClassRequest != null && typeRequest == 0 || typeRequest == 1) {
+                            var typeRequestName, status;
                             check = true;
                             var requestId = item.violationClassRequest.requestId;
                             var dataTarget = "collapse" + requestId;
                             var violationDate = item.dayName + " - " + convertDate(item.createDate);
-                            var typeRequest, status;
                             var substractGrade = item.violationClassRequest.substractGrade;
                             var quantity = item.quantity;
                             var quantityNew = item.violationClassRequest.quantityNew;
                             var totals = parseFloat(parseFloat(substractGrade) * parseInt(quantity)).toFixed(1);
                             var totalsNew = parseFloat(parseFloat(substractGrade) * parseInt(quantityNew)).toFixed(1);
-                            if (item.typeRequest == 0 || item.typeRequest == null) {
-                                typeRequest = "Sửa đổi";
+                            if (typeRequest == 0 || typeRequest == null) {
+                                typeRequestName = "Sửa đổi";
                                 if (item.violationClassRequest.status == 0) {
                                     status = "Chưa duyệt";
                                 } else if (item.violationClassRequest.status == 2) {
@@ -117,8 +118,8 @@ function search() {
                                 } else if (item.violationClassRequest.status == 1) {
                                     status = "Từ chối";
                                 }
-                            } else if (item.typeRequest == 1) {
-                                typeRequest = "Tạo mới";
+                            } else if (typeRequest == 1) {
+                                typeRequestName = "Tạo mới";
                                 if (item.violationClassRequest.status == 2) {
                                     status = "Chưa duyệt";
                                 } else if (item.violationClassRequest.status == 1) {
@@ -151,7 +152,7 @@ function search() {
                                         </div>
                                         <div class="violation-request violationTypeName">
                                             <span class="font-500">Loại yêu cầu: </span>
-                                            <span>` + typeRequest + `</span>
+                                            <span>` + typeRequestName + `</span>
                                         </div>
                                     </div>
                                     <button class="violation-btn"><i class="fa fa-chevron-down rotate up"></i></button>
