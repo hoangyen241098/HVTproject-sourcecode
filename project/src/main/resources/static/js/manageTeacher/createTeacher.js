@@ -39,11 +39,7 @@ $("#submit").click(function (e) {
                 var messageCode = data.messageCode;
                 var message = data.message;
                 if (messageCode == 0) {
-                    $('#createSuccess .modal-body').html('');
-                    $('#createSuccess .modal-body').append(`
-                        <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
-                        <h5>Thêm giáo viên thành công!</h5>
-                    `);
+                    dialogModal('/img/img-success.png', "Thêm giáo viên thành công!");
                     $('.createTeacher-err').text("");
                 } else {
                     $('.createTeacher-err').text(message);
@@ -58,4 +54,12 @@ $("#submit").click(function (e) {
     }
 });
 
-
+/*Set dialog template*/
+function dialogModal(img, message) {
+    $('#createSuccess').modal('show');
+    $('#createSuccess .modal-body').html('');
+    $('#createSuccess .modal-body').append(`
+        <img class="mb-3 mt-3" src=` + img + `/>
+        <h5>` + message + `</h5>
+    `);
+}
