@@ -92,24 +92,19 @@ public class WebControllerdemo1 {
         }
     }
 
-    @Autowired
-    private CreateAssignRedStarServiceImpl createAssignRedStarService;
-
-
     @GetMapping("/demo")
     public String index(Model model) {
-        Date date = Date.valueOf("2020-01-01");
-        createAssignRedStarService.create(date);
-
-//        khoitao();
-//        for (int i=0;i<1000;i++)
-//        {
-//            danhgia();
-//            Print();
-//            chonloc();
-//            laighep();
-//            dotbien();
-//        }
+//        Date date = Date.valueOf("2020-02-01");
+//        createAssignRedStarService.create(date);
+        khoitao();
+        for (int i=0;i<1000;i++)
+        {
+            danhgia();
+            Print();
+            chonloc();
+            laighep();
+            dotbien();
+        }
         return "demo";
     }
 
