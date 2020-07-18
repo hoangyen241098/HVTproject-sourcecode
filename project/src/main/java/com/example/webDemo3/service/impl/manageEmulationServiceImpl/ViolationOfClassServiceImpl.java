@@ -7,11 +7,11 @@ import com.example.webDemo3.dto.manageEmulationResponseDto.ViolationClassRequest
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViolationClassResponseDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.EditViolationOfClassRequestDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewViolationOfClassRequestDto;
+import com.example.webDemo3.entity.Class;
+import com.example.webDemo3.entity.Violation;
 import com.example.webDemo3.entity.ViolationClass;
 import com.example.webDemo3.entity.ViolationClassRequest;
-import com.example.webDemo3.repository.DayRepository;
-import com.example.webDemo3.repository.ViolationClassRepository;
-import com.example.webDemo3.repository.ViolationClassRequestRepository;
+import com.example.webDemo3.repository.*;
 import com.example.webDemo3.service.manageEmulationService.ValidateEmulationService;
 import com.example.webDemo3.service.manageEmulationService.ViolationOfClassService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +38,12 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
 
     @Autowired
     private DayRepository dayRepository;
+
+    @Autowired
+    private ClassRepository classRepository;
+
+    @Autowired
+    private ViolationRepository violationRepository;
 
     /**
      * kimpt142
@@ -208,7 +214,7 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
                     }
                 }
 
-                if (validateEmulationService.checkRoleForEmulate(classId, username, createDate) ||
+                else if (validateEmulationService.checkRoleForEmulate(classId, username, createDate) ||
                         validateEmulationService.checkMonitorOfClass(classId, username)) {
                     ViolationClassRequest violationClassRequest = new ViolationClassRequest();
                     violationClassRequest.setDateChange(editDate);
@@ -218,6 +224,10 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
                     violationClassRequest.setQuantityNew(newQuantity);
                     violationClassRequest.setViolationClass(new ViolationClass(violationClassId));
                     violationClassRequestRepository.save(violationClassRequest);
+                }
+                else{
+                    message = Constant.NOT_ACCEPT_EDIT;
+                    return message;
                 }
             }
         }
@@ -240,6 +250,7 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
      */
     private ViolationClassResponseDto convertViolationClassFromEntityToDto(ViolationClass violationClass){
         ViolationClassResponseDto responseDto = new ViolationClassResponseDto();
+        Class newClass = classRepository.findById(violationClass.getClassId()).orElse(null);
 
         responseDto.setViolationClassId(violationClass.getId());
         responseDto.setClassId(violationClass.getClassId());
@@ -247,6 +258,12 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
         responseDto.setQuantity(violationClass.getQuantity());
         responseDto.setDescription(violationClass.getViolation().getDescription());
         responseDto.setCreateDate(violationClass.getDate());
+
+        //check newClass exists or not
+        if(newClass != null){
+            responseDto.setClassId(newClass.getClassId());
+            responseDto.setClassName(newClass.getClassIdentifier());
+        }
 
         Integer dayId = validateEmulationService.getDayIdByDate(violationClass.getDate());
         String dayName = dayRepository.findByDayId(dayId).getDayName();
@@ -264,6 +281,7 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
      */
     private ViolationClassRequestResponseDto convertViolationClassRequestFromEntityToDto(ViolationClassRequest violationClassRequest){
         ViolationClassRequestResponseDto responseDto = new ViolationClassRequestResponseDto();
+        Violation violation = violationRepository.findById(violationClassRequest.getViolationClass().getClassId()).orElse(null);
 
         responseDto.setRequestId(violationClassRequest.getRequestId());
         responseDto.setViolationClassId(violationClassRequest.getViolationClass().getId());
@@ -272,6 +290,11 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
         responseDto.setStatus(violationClassRequest.getStatusChange());
         responseDto.setReason(violationClassRequest.getReason());
         responseDto.setQuantityNew(violationClassRequest.getQuantityNew());
+
+        //check violation null or not
+        if(violation != null){
+            responseDto.setSubstractGrade(violation.getSubstractGrade());
+        }
 
         return responseDto;
     }
