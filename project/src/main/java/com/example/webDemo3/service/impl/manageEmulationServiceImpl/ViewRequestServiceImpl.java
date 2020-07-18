@@ -236,6 +236,7 @@ public class ViewRequestServiceImpl implements ViewRequestService {
     public ViolationClassResponseDto changeViolationClassFromEntityToDto(ViolationClass violationClass){
         ViolationClassResponseDto responseDto = new ViolationClassResponseDto();
         Class newClass = classRepository.findById(violationClass.getClassId()).orElse(null);
+        Violation violation = violationRepository.findById(violationClass.getClassId()).orElse(null);
 
         responseDto.setViolationClassId(violationClass.getId());
         responseDto.setNote(violationClass.getNote());
@@ -243,6 +244,13 @@ public class ViewRequestServiceImpl implements ViewRequestService {
         responseDto.setDescription(violationClass.getViolation().getDescription());
         responseDto.setCreateDate(violationClass.getDate());
         responseDto.setCreateBy(violationClass.getCreateBy());
+        responseDto.setStatus(violationClass.getStatus());
+
+        //check violation null or not
+        if(violation != null){
+            responseDto.setSubstractGrade(violation.getSubstractGrade());
+        }
+
 
         //check newClass exists or not
         if(newClass != null){
