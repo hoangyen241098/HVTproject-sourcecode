@@ -46,16 +46,16 @@ $.ajax({
                                     <span>` + item.totalGrade + `</span>
                                 </div>
                             </div>
-                            <button><i class="fa fa-chevron-down rotate"></i></button>
+                            <button><i class="fa fa-chevron-down rotate up"></i></button>
                         </div>
                         <div class="panel-collapse collapse in" id="` + dataTarget + `">
-                            <table class="table table-responsive-customer">
+                            <table class="table table-responsive-customer table-vertical-middle">
                                 <thead>
-                                    <th></th>
-                                    <th>Vi phạm</th>
-                                    <th>Điểm trừ</th>
-                                    <th>Số lần</th>
-                                    <th>Tổng điểm trừ</th>
+                                    <td></td>
+                                    <td>Vi phạm</td>
+                                    <td class="text-center">Điểm trừ</td>
+                                    <td class="text-center">Số lần</td>
+                                    <td class="text-center">Tổng điểm trừ</td>
                                 </thead>
                                 <tbody></tbody>
                             </table>
@@ -74,7 +74,7 @@ $.ajax({
                                     </span>
                                 </td>
                                 <td>
-                                    <div class="form-group text-left">
+                                    <div class="form-group my-0 text-left">
                                         <label class="violation-des">` + list.description + `</label>
                                         <input type="text" class="form-control text-red violation-note" placeholder="Ghi chú...">
                                     </div>
@@ -116,29 +116,34 @@ $.ajax({
 $('#saveGrading').on('click', function () {
     getValueCheckbox();
     if (violationList.length != 0) {
-        $('#confirmModal').modal('show');
-        $('#confirmModal .modal-body').html('');
-        $('#confirmModal .modal-body').append(`
-            <table class="table table-bordered">
-                <thead class="bg-light text-center">
-                    <td>Mô tả lỗi</td>
-                    <td>Điểm trừ</td>
-                    <td>Số lần</td>
-                    <td>Tổng điểm trừ</td>
-                </thead>
-                <tbody></tbody>
-            </table>
-        `);
         for (var i = 0; i < violationList.length; i++) {
-            var total = parseFloat(violationList[i].substractGrade) * parseInt(violationList[i].quantity);
-            total = total.toFixed(1);
-            var description;
-            $('table tbody input[type="checkbox"]').each(function () {
-                if ($(this).val() == violationList[i].violationId) {
-                    description = $(this).closest('td').parent().find('.violation-des').text();
-                }
-            });
-            $('#confirmModal .modal-body tbody').append(`
+            if (violationList[i].note == "") {
+                dialogErr("/img/img-error.png", "Hãy điền đủ ghi chú cho các lỗi.");
+                return false;
+            } else {
+                $('#confirmModal').modal('show');
+                $('#confirmModal .modal-body').html('');
+                $('#confirmModal .modal-body').append(`
+                    <table class="table table-bordered">
+                        <thead class="bg-light text-center">
+                            <td>Mô tả lỗi</td>
+                            <td>Điểm trừ</td>
+                            <td>Số lần</td>
+                            <td>Tổng điểm trừ</td>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                `);
+                for (var i = 0; i < violationList.length; i++) {
+                    var total = parseFloat(violationList[i].substractGrade) * parseInt(violationList[i].quantity);
+                    total = total.toFixed(1);
+                    var description;
+                    $('table tbody input[type="checkbox"]').each(function () {
+                        if ($(this).val() == violationList[i].violationId) {
+                            description = $(this).closest('td').parent().find('.violation-des').text();
+                        }
+                    });
+                    $('#confirmModal .modal-body tbody').append(`
             <tr>
                 <td>
                     <p class="mb-0">` + description + `</p>
@@ -149,46 +154,46 @@ $('#saveGrading').on('click', function () {
                 <td class="text-center">` + total + `</td>
             </tr>                    
             `);
-        }
-        $('#confirm').on('click', function () {
-            var infoSave = {
-                username: username,
-                classId: $('#classList option:selected').val(),
-                date: $('#datetime').val(),
-                roleId: roleId,
-                yearId: localStorage.getItem('currentYearId'),
-                violationList: violationList
-            }
-            console.log(JSON.stringify(infoSave));
-            $.ajax({
-                url: '/api/emulation/addgrademulation',
-                type: 'POST',
-                data: JSON.stringify(infoSave),
-                beforeSend: function () {
-                    $('body').addClass("loading")
-                },
-                complete: function () {
-                    $('body').removeClass("loading")
-                },
-                success: function (data) {
-                    var messageCode = data.messageCode;
-                    var message = data.message;
-                    if (messageCode == 0) {
-                        $('#saveSuccess .modal-body').html(`
-                            <img class="mb-3 mt-3" src="/img/img-success.png"/>
-                            <h5>Thông tin đã lưu thành công!</h5>
-                        `);
-                    } else {
-                        dialogErr("/img/img-error.png", message);
+                }
+                $('#confirm').on('click', function () {
+                    var infoSave = {
+                        username: username,
+                        classId: $('#classList option:selected').val(),
+                        date: $('#datetime').val(),
+                        roleId: roleId,
+                        yearId: localStorage.getItem('currentYearId'),
+                        violationList: violationList
                     }
-                },
-                failure: function (errMsg) {
-                    dialogErr("/img/img-error.png", errMsg);
-                },
-                dataType: "json",
-                contentType: "application/json"
-            });
-        })
+                    console.log(JSON.stringify(infoSave));
+                    $.ajax({
+                        url: '/api/emulation/addgrademulation',
+                        type: 'POST',
+                        data: JSON.stringify(infoSave),
+                        beforeSend: function () {
+                            $('body').addClass("loading")
+                        },
+                        complete: function () {
+                            $('body').removeClass("loading")
+                        },
+                        success: function (data) {
+                            var messageCode = data.messageCode;
+                            var message = data.message;
+                            if (messageCode == 0) {
+                                dialogErr("/img/img-success.png", "Thông tin đã lưu thành công!");
+                                $('#saveSuccess .modal-footer').html(` <a href="gradingToEmulation" class="btn btn-primary">ĐÓNG</a>`)
+                            } else {
+                                dialogErr("/img/img-error.png", message);
+                            }
+                        },
+                        failure: function (errMsg) {
+                            dialogErr("/img/img-error.png", errMsg);
+                        },
+                        dataType: "json",
+                        contentType: "application/json"
+                    });
+                })
+            }
+        }
     } else {
         dialogErr("/img/img-error.png", 'Hãy chọn lỗi.');
     }
