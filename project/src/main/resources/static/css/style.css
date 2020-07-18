@@ -1193,7 +1193,7 @@ fieldset .note {
 
 .violation-action {
     position: absolute;
-    top: 40%;
+    bottom: 20px;
     right: 20px;
     width: auto;
 }
@@ -1235,6 +1235,10 @@ fieldset .note {
 @media screen and (max-width: 700px) {
     .table-wrapper {
         margin: 0;
+    }
+
+    .div-space {
+        display: none!important;
     }
 
     .modal-body .panel-body,
