@@ -15,5 +15,6 @@ public class ViewViolationClassListResponseDto {
 
     List<ViolationClassResponseDto> viewViolationClassList;
     private Integer totalPage;
+    private Float substractGrade;
     private MessageDTO message;
 }
