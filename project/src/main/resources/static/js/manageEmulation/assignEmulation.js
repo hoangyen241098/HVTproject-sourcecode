@@ -58,17 +58,17 @@ $.ajax({
         var messageCode = data.message.messageCode;
         var message = data.message.message;
         if (messageCode == 0) {
-            if (data.listRedStar != null) {
-                $("#redStarList").select2();
-                $("#redStarList").html(`<option value="0" selected="selected">Tất cả</option>`);
-                $.each(data.listRedStar, function (i, item) {
-                    $('#redStarList').append(
-                        `<option value="` + item.username + `">` + item.username + `</option>
-                    `);
-                });
-            } else {
-                $("#redStarList").html(`<option>Danh sách sao đỏ trống.</option>`);
-            }
+            // if (data.listRedStar != null) {
+            //     $("#redStarList").select2();
+            //     $("#redStarList").html(`<option value="0" selected="selected">Tất cả</option>`);
+            //     $.each(data.listRedStar, function (i, item) {
+            //         $('#redStarList').append(
+            //             `<option value="` + item.username + `">` + item.username + `</option>
+            //         `);
+            //     });
+            // } else {
+            //     $("#redStarList").html(`<option>Danh sách sao đỏ trống.</option>`);
+            // }
             if (data.listClass != null) {
                 $("#classList").select2();
                 $("#classList").html(`<option value="0" selected="selected">Tất cả</option>`);
@@ -108,6 +108,7 @@ $.ajax({
     dataType: "json",
     contentType: "application/json"
 });
+
 search();
 
 /*Load data to list*/

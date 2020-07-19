@@ -28,30 +28,27 @@
     <div class="table-wrapper">
         <div class="table-title">
             <h2>Danh sách lỗi theo ngày</h2>
-            <div class="search">
-                <div class="col-xl-4 d-inline-block">
-                    <div class="search-line">
-                        <span>Lớp</span>
-                        <select class="combobox searchable" id="classList"></select>
+            <div class="search row align-items-baseline">
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0">
+                    <div class="form-group text-left mb-1">
+                        <label>Lớp:</label>
+                        <select class="combobox form-control w-75" id="classList"></select>
                     </div>
                 </div>
-                <div class="col-xl-2 d-inline-block div-space"></div>
-                <div class="col-xl-4 d-inline-block">
-                    <div class="search-line">
-                        <span>Ngày</span>
-                        <input type="date" class="searchable" id="datetime">
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0">
+                    <div class="form-group text-left mb-1">
+                        <label>Ngày:</label>
+                        <input type="date" class="form-control w-75" id="datetime">
                     </div>
-                </div>
-                <div class="d-inline-block ml-2">
-                    <button class="btn btn-search" id="search">Tìm kiếm</button>
                 </div>
             </div>
         </div>
-        <div class="table-title-2">
-            <div class="col-sm-12 d-flex justify-content-end align-items-center">
+        <div class="table-title-2 pt-0">
+            <div class="col-sm-12 px-0 d-flex justify-content-end align-items-center">
                 <a th:href="@{addNewViolation}" class="btn btn-success">
                     <span>Thêm vi phạm mới</span>
                 </a>
+                <button class="btn btn-search mr-0" id="search">Tìm kiếm</button>
             </div>
         </div>
         <div class="violation-by-date"></div>

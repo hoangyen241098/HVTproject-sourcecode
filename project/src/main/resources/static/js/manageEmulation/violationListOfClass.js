@@ -156,22 +156,22 @@ function search() {
                                     <div class="hide quantity">` + quantity + `</div>
                                     <div class="hide quantityNew">` + quantityNew + `</div>
                                     <div class="hide reason">` + reason + `</div>
-                                    <input type="button" class="btn btn-danger edit-btn" data-toggle="modal" value="CHỈNH SỬA"/>
+                                    <input type="button" class="btn btn-danger edit-btn" data-toggle="modal" name="` + checkEdit + `" value="CHỈNH SỬA"/>
                                 </div>
                             </div>
                         `);
                         if (checkEdit == 0) {
-                            $('.violation-action input').removeClass('hide');
-                            $('.violation-action input').val('CHỈNH SỬA');
+                            $('.violation-action input[name="0"]').removeClass('hide');
+                            $('.violation-action input[name="0"]').val('CHỈNH SỬA');
                         } else if (checkEdit == 2) {
-                            $('.violation-action input').removeClass('hide');
-                            $('.violation-action input').val('XEM YÊU CẦU CHỈNH SỬA');
+                            $('.violation-action input[name="2"]').removeClass('hide');
+                            $('.violation-action input[name="2"]').val('XEM YÊU CẦU CHỈNH SỬA');
 
                         } else if (checkEdit == 1) {
-                            $('.violation-action input').addClass('hide');
+                            $('.violation-action input[name="1"]').addClass('hide');
                         }
-                        editBtn();
                     });
+                    editBtn();
                 } else {
                     $(".violation-by-date").html(`<h3 class="text-center mt-3">` + message + `</h3>`);
                 }
@@ -205,14 +205,14 @@ function editBtn() {
         var quantityNew = $(this).parent().find('.quantityNew').text();
         var reason = $(this).parent().find('.reason').text();
         var total = parseFloat(parseFloat(substract) * parseInt(quantity)).toFixed(1);
-
         if ($('.violation-action input').val() == 'CHỈNH SỬA') {
             editModal(violationDate, className, description, note, substract, quantity, total)
             var $total = $('.total');
             increaseBtn(substract, total, $total);
             decreaseBtn(substract, total, $total);
-
+            var count = 0;
             $('#editModalBtn').on('click', function () {
+                console.log(count)
                 var newQuantity = $('.quantity-input').val();
                 var reason = $('#reason').val().trim();
                 $('.editInfo-err').text('');
@@ -224,6 +224,7 @@ function editBtn() {
                     return false;
                 } else {
                     $('.editInfo-err').text('');
+                    editViolation = null;
                     editViolation = {
                         violationClassId: violationClassId,
                         username: username,
