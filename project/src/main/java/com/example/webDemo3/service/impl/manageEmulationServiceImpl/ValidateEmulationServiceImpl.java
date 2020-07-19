@@ -108,7 +108,9 @@ public class ValidateEmulationServiceImpl implements ValidateEmulationService {
     @Override
     public Boolean checkMonitorOfClass(Integer classId, String username) {
         User user = userRepository.findUserByUsername(username);
-        if(user != null && user.getClassSchool() != null && user.getClassSchool().getClassId() == classId && (user.getStatus() == null || user.getStatus() !=1))
+        if(user != null && user.getClassSchool() != null && user.getClassSchool().getClassId() == classId
+                && user.getRole() != null && user.getRole().getRoleId() == 4
+                && (user.getStatus() == null || user.getStatus() !=1))
         {
             return true;
         }
