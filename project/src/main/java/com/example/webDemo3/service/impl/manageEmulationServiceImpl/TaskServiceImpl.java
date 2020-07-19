@@ -62,17 +62,23 @@ public class TaskServiceImpl implements TaskService {
         String redStar = assignTaskRequestDto.getRedStar();
 
         String orderByProperty;
+        String orderByProperty2 = "";
         //catch sortBy
         switch (sortBy){
             case 0: {
-                orderByProperty = "classId";
+                orderByProperty = "aClass.grade";
+                orderByProperty2 = "aClass.giftedClass.giftedClassId";
                 break;
             }
             case 1: {
                 orderByProperty = "classRedStarId.RED_STAR";
+                orderByProperty2 = "classRedStarId.FROM_DATE";
                 break;
             }
-            default: orderByProperty = "classId";
+            default: {
+                orderByProperty = "aClass.grade";
+                orderByProperty2 = "aClass.giftedClass.giftedClassId";
+            }
         }
 
         try{
@@ -80,9 +86,9 @@ public class TaskServiceImpl implements TaskService {
 
             //catch orderBy
             if(orderBy == 0){
-                paging = PageRequest.of(pageNumber, pageSize, Sort.by(orderByProperty).descending());
+                paging = PageRequest.of(pageNumber, pageSize, Sort.by(orderByProperty).descending().and(Sort.by(orderByProperty2).descending()));
             }else{
-                paging = PageRequest.of(pageNumber, pageSize, Sort.by(orderByProperty).ascending());
+                paging = PageRequest.of(pageNumber, pageSize, Sort.by(orderByProperty).ascending().and(Sort.by(orderByProperty2).ascending()));
             }
 
             //check fromDate null or not
@@ -121,7 +127,9 @@ public class TaskServiceImpl implements TaskService {
             //conver classRedStar from entiti to Dto
             for(ClassRedStar classRedStar : pagedResult){
                 ClassRedStarResponseDto classRedStarResponseDto = new ClassRedStarResponseDto();
-                classRedStarResponseDto.setClassName(classRepository.findByClassId(classRedStar.getClassId()).getGiftedClass().getName());
+                Integer grade = classRepository.findByClassId(classRedStar.getClassSchool().getClassId()).getGrade();
+                String name = classRepository.findByClassId(classRedStar.getClassSchool().getClassId()).getGiftedClass().getName();
+                classRedStarResponseDto.setClassName(String.valueOf(grade) + name);
                 classRedStarResponseDto.setRedStar(classRedStar.getClassRedStarId().getRED_STAR());
                 list.add(classRedStarResponseDto);
             }
