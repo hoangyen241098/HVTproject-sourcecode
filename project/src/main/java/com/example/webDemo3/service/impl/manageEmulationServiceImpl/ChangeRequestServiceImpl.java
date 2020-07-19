@@ -3,6 +3,7 @@ package com.example.webDemo3.service.impl.manageEmulationServiceImpl;
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ChangeRequestDto;
+import com.example.webDemo3.entity.ClassRedStar;
 import com.example.webDemo3.entity.User;
 import com.example.webDemo3.entity.ViolationClass;
 import com.example.webDemo3.entity.ViolationClassRequest;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.List;
 
 /**
  * lamnt98
@@ -36,55 +38,52 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
 
         Long violationClassId = changeRequestDto.getViolationClassId();
         Integer requestId = changeRequestDto.getRequestId();
-        Integer typeRequest = changeRequestDto.getTypeRequest();
         Integer quantityNew = null;
+        Integer quantiy = null;
+        String history = "";
+        String userName = changeRequestDto.getUserName().trim();
 
         ViolationClass violationClass = null;
         ViolationClassRequest violationClassRequest = null;
         User user = null;
 
         try{
-            //check typeRequest null or not
-            if(typeRequest == null){
-                message = Constant.TYPE_REQUEST_NULL;
+
+            //check requestId null or not
+            if(requestId == null){
+                message = Constant.REQUEST_ID_NULL;
                 return message;
             }
 
-            if(typeRequest == 1 ){
-                //check violationClassId null or not
-                if(violationClassId == null){
-                    message = Constant.VIOLATION_CLASS_ID_NULL;
-                    return message;
-                }
-                violationClass = violationClassRepository.findById(violationClassId).orElse(null);
-                //check violationClass null or not
-                if(violationClass == null){
-                    message = Constant.VIOLATION_CLASS_NULL;
-                    return message;
-                }
-
-                violationClass.setStatus(1);
-                violationClassRepository.save(violationClass);
+            //check userName empty or not
+            if(userName.isEmpty()){
+                message = Constant.USERNAME_EMPTY;
+                return message;
             }
 
-            if(typeRequest == 0){
-                //check requestId null or not
-                if(requestId == null){
-                    message = Constant.REQUEST_ID_NULL;
-                    return message;
-                }
-                violationClassRequest = violationClassRequestRepository.findById(requestId).orElse(null);
-                //check violationClassRequest null or not
-                if(violationClassRequest == null){
-                    message = Constant.VIOLATION_CLASS_NULL;
-                    return message;
-                }
+            user = userRepository.findUserByUsername(userName);
 
-                quantityNew = violationClassRequest.getQuantityNew();
-                violationClassRequest.getViolationClass().setQuantity(quantityNew);
-                violationClassRequest.setStatusChange(2);
-                violationClassRequestRepository.save(violationClassRequest);
+            //check user null or not
+            if(user == null){
+                message = Constant.USER_NOT_EXIT;
+                return message;
             }
+            violationClassRequest = violationClassRequestRepository.findById(requestId).orElse(null);
+            //check violationClassRequest null or not
+            if(violationClassRequest == null){
+                message = Constant.VIOLATION_CLASS_NULL;
+                return message;
+            }
+
+            quantityNew = violationClassRequest.getQuantityNew();
+            violationClassRequest.getViolationClass().setQuantity(quantityNew);
+            violationClassRequest.setStatusChange(2);
+            history = violationClassRequest.getViolationClass().getHistory();
+            quantiy = violationClassRequest.getViolationClass().getQuantity();
+            history = addHistory(history, violationClassRequest.getReason(),userName,quantiy);
+
+            violationClassRequest.getViolationClass().setHistory(history);
+            violationClassRequestRepository.save(violationClassRequest);
 
             message = Constant.ACCEPT_REQUEST_SUCCESS;
 
@@ -102,7 +101,6 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
 
         Long violationClassId = changeRequestDto.getViolationClassId();
         Integer requestId = changeRequestDto.getRequestId();
-        Integer typeRequest = changeRequestDto.getTypeRequest();
         Integer quantityNew = null;
 
         ViolationClass violationClass = null;
@@ -110,30 +108,7 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
         User user = null;
 
         try{
-            //check typeRequest null or not
-            if(typeRequest == null){
-                message = Constant.TYPE_REQUEST_NULL;
-                return message;
-            }
-            
-            if(typeRequest == 1 ){
-                //check violationClassId null or not
-                if(violationClassId == null){
-                    message = Constant.VIOLATION_CLASS_ID_NULL;
-                    return message;
-                }
-                violationClass = violationClassRepository.findById(violationClassId).orElse(null);
-                //check violationClass null or not
-                if(violationClass == null){
-                    message = Constant.VIOLATION_CLASS_NULL;
-                    return message;
-                }
 
-                violationClass.setStatus(0);
-                violationClassRepository.save(violationClass);
-            }
-
-            if(typeRequest == 0){
                 //check requestId null or not
                 if(requestId == null){
                     message = Constant.REQUEST_ID_NULL;
@@ -149,7 +124,6 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
 
                 violationClassRequest.setStatusChange(1);
                 violationClassRequestRepository.save(violationClassRequest);
-            }
 
             message = Constant.REJECT_REQUEST_SUCCESS;
 
@@ -160,4 +134,18 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
         }
         return message;
     }
+
+    public String addHistory(String history, String reason, String username, int number){
+        Date date = new Date(System.currentTimeMillis());
+        //check history null or not
+        if(history == null){
+            history =  date + " - " + username + ".\n";
+        }else{
+            history += "\n" + date + " - " + username + ".\n";
+        }
+        history += "Lý do: " + reason + ".\n";
+        history += " Số lần vi phạm trước thay đổi: " + number + ".\n";
+        return  history;
+    }
+
 }
