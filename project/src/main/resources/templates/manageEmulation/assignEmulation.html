@@ -25,49 +25,48 @@
 <div class="container">
     <div class="table-wrapper">
         <div class="table-title">
-            <h2>Phân công trực tuần</h2>
-            <div class="search">
-                <div class="col-xl-4 d-inline-block">
-                    <div class="search-line">
-                        <span>Ngày</span>
-                        <select class="combobox searchable" id="fromDate"></select>
+            <h2>PHÂN CÔNG TRỰC TUẦN</h2>
+            <div class="search row align-items-baseline">
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0">
+                    <div class="form-group text-left mb-1">
+                        <label>Ngày:</label>
+                        <select class="combobox form-control w-75" id="fromDate"></select>
                     </div>
-                    <div class="search-line">
-                        <span>Lớp</span>
-                        <select class="combobox searchable" id="classList"></select>
-                    </div>
-                    <div class="search-line">
-                        <span>Sao đỏ</span>
-                        <select class="combobox searchable" id="redStarList"></select>
-                    </div>
-                </div>
-                <div class="col-xl-2 d-inline-block div-space"></div>
-                <div class="col-xl-4 d-inline-block">
-                    <div class="search-line">
-                        <span>Sắp xếp theo</span>
-                        <select class="combobox searchable" id="orderBy">
+                    <div class="form-group text-left mb-1">
+                        <label>Sắp xếp theo:</label>
+                        <select class="combobox form-control w-75" id="orderBy">
                             <option value="0" selected="selected">Lớp</option>
                             <option value="1">Sao đỏ</option>
                         </select>
                     </div>
-                    <div class="search-line">
-                        <span>Thứ tự</span>
-                        <select class="combobox searchable" id="sortBy">
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0">
+                    <div class="form-group text-left mb-1">
+                        <label>Lớp:</label>
+                        <select class="combobox form-control w-75" id="classList"></select>
+                    </div>
+                    <div class="form-group text-left mb-1">
+                        <label>Thứ tự:</label>
+                        <select class="combobox form-control w-75" id="sortBy">
                             <option value="0" selected="selected">Giảm dần</option>
                             <option value="1">Tăng dần</option>
                         </select>
                     </div>
                 </div>
-                <div class="d-inline-block ml-2">
-                    <button class="btn btn-search" id="search">Tìm kiếm</button>
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0">
+                    <div class="form-group text-left mb-1">
+                        <label>Sao đỏ:</label>
+                        <input type="text" class="form-control w-75" id="redStarList" placeholder="Sao đỏ"/>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="table-title-2">
-            <div class="col-sm-12 d-flex justify-content-end align-items-center">
+        <div class="table-title-2 pt-0">
+            <div class="col-sm-12 px-0 d-flex justify-content-end align-items-center">
                 <a href="#addAssign" class="btn btn-success" data-toggle="modal">
                     <span>Tạo phân công</span>
                 </a>
+                <button class="btn btn-search mr-0" id="search">Tìm kiếm</button>
             </div>
         </div>
         <table class="table table-bordered text-center" id="myTable">
