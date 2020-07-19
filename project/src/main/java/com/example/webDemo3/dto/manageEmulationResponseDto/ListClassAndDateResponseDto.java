@@ -9,8 +9,7 @@ import java.sql.Date;
 import java.util.List;
 
 @Data
-public class ListStarClassDateResponseDto {
-    List<User> listRedStar;
+public class ListClassAndDateResponseDto {
     List<Class> listClass;
     List<Date> listDate;
     private MessageDTO message;

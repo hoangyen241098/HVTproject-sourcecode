@@ -12,4 +12,5 @@ import java.sql.Date;
 public class ChangeRequestDto {
      private Long violationClassId;
      private Integer requestId;
+     private String userName;
 }
