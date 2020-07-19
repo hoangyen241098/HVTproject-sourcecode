@@ -29,9 +29,9 @@ public interface ViolationClassRequestRepository extends JpaRepository<Violation
 
     @Query(value = "select v from ViolationClassRequest v " +
             "where (v.violationClass.classId = :classId or :classId is NULL )" +
-            "and (v.dateChange = :creatDate or :creatDate is null )")
+            "and (v.dateChange = :createDate or :createDate is null )")
     Page<ViolationClassRequest> findViolationClassRequestByCondition(@Param("classId") Integer classId,
-                                                       @Param("creatDate") Date creatDate,
+                                                       @Param("createDate") Date createDate,
                                                        Pageable paging);
 
 

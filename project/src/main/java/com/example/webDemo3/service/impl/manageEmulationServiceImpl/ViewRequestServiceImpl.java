@@ -62,7 +62,6 @@ public class ViewRequestServiceImpl implements ViewRequestService {
         Page<ViolationClassRequest> pagedResultRequest = null;
         Integer totalPage = 0;
 
-        Integer typeRequest = viewRequest.getTypeRequest();
         Integer classId = viewRequest.getClassId();
         Integer status = viewRequest.getStatus();
         Date createDate = viewRequest.getCreateDate();
@@ -85,85 +84,30 @@ public class ViewRequestServiceImpl implements ViewRequestService {
                 }
             }
 
-            paging = PageRequest.of(pageNumber, pageSize, Sort.by("classId").ascending());
+            paging = PageRequest.of(pageNumber, pageSize, Sort.by("dateChange").descending());
 
-            //check typeRequest == 0
-            if (typeRequest == 0) {
-                pagedResultRequest = getListPageViolationClassRequestWithCondition(createDate, status, classId, paging);
+            pagedResultRequest = getListPageViolationClassRequestWithCondition(createDate, status, classId, paging);
 
-                //check pagedResultRequest null or not
-                if(pagedResultRequest != null){
-                    //Run to change from ViolationClassEntity và ViolationClassRequest to Dto
-                    for(ViolationClassRequest newViolatinClassRequest : pagedResultRequest){
-                        violationClassRequest = changeViolationClassRequestFromEntityToDto(newViolatinClassRequest);
+            //check pagedResultRequest null or not
+            if(pagedResultRequest != null){
+                //Run to change from ViolationClassEntity và ViolationClassRequest to Dto
+                for(ViolationClassRequest newViolatinClassRequest : pagedResultRequest){
+                    violationClassRequest = changeViolationClassRequestFromEntityToDto(newViolatinClassRequest);
 
-                        ViolationClass violationClass1 = violationClassRepository.findById(violationClassRequest.getViolationClassId()).orElse(null);
-                        violationClass = changeViolationClassFromEntityToDto(violationClass1);
-                        violationClass.setViolationClassRequest(violationClassRequest);
-                        violationClass.setTypeRequest(typeRequest);
-                        viewViolationClassList.add(violationClass);
-                    }
-                    totalPage = pagedResult.getTotalPages();
-                    responseDto.setViewViolationClassList(viewViolationClassList);
+                    ViolationClass violationClass1 = violationClassRepository.findById(violationClassRequest.getViolationClassId()).orElse(null);
+                    violationClass = changeViolationClassFromEntityToDto(violationClass1);
+                    violationClass.setViolationClassRequest(violationClassRequest);
+                    viewViolationClassList.add(violationClass);
                 }
-            }
-
-            //check typeRequest == 1
-            if (typeRequest == 1) {
-                pagedResult = getListPageViolationClassWithCondition(createDate, status, classId, paging);
-
-                //check pagedResult null or not
-                if(pagedResult != null){
-                    //Run to change from ViolationClassEntity to Dto
-                    for(ViolationClass newViolationClass: pagedResult){
-                        violationClass = changeViolationClassFromEntityToDto(newViolationClass);
-                        violationClass.setTypeRequest(typeRequest);
-                        viewViolationClassList.add(violationClass);
-                    }
-                    totalPage = pagedResult.getTotalPages();
-                    responseDto.setViewViolationClassList(viewViolationClassList);
-                }
-            }
-
-            //check typeRequest == 2
-            if (typeRequest == 2) {
-                pagedResultRequest = getListPageViolationClassRequestWithCondition(createDate, status, classId, paging);
-                pagedResult = getListPageViolationClassWithCondition(createDate, status, classId, paging);
-
-                //check pagedResultRequest null or not
-                if(pagedResultRequest != null){
-                    //Run to change from ViolationClassEntity và ViolationClassRequest to Dto
-                    for(ViolationClassRequest newViolatinClassRequest : pagedResultRequest){
-                        violationClassRequest = changeViolationClassRequestFromEntityToDto(newViolatinClassRequest);
-
-                        ViolationClass violationClass1 = violationClassRepository.findById(violationClassRequest.getViolationClassId()).orElse(null);
-                        violationClass = changeViolationClassFromEntityToDto(violationClass1);
-                        violationClass.setViolationClassRequest(violationClassRequest);
-                        violationClass.setTypeRequest(typeRequest);
-                        viewViolationClassList.add(violationClass);
-                        violationClass.setTypeRequest(0);
-                    }
-                    totalPage = pagedResult.getTotalPages();
-                }
-
-                //check pagedResult null or not
-                if(pagedResult != null){
-                    //Run to change from ViolationClassEntity to Dto
-                    for(ViolationClass newViolationClass: pagedResult){
-                        violationClass = changeViolationClassFromEntityToDto(newViolationClass);
-                        violationClass.setTypeRequest(typeRequest);
-                        viewViolationClassList.add(violationClass);
-                        violationClass.setTypeRequest(1);
-                    }
-                    totalPage += pagedResult.getTotalPages();
-                }
-
-                responseDto.setTotalPage(totalPage);
+                totalPage = pagedResultRequest.getTotalPages();
                 responseDto.setViewViolationClassList(viewViolationClassList);
             }
 
+            responseDto.setTotalPage(totalPage);
+            responseDto.setViewViolationClassList(viewViolationClassList);
+
             //check response empty or not
-            if(responseDto.getViewViolationClassList() == null){
+            if(responseDto.getViewViolationClassList().size() == 0){
                 message = Constant.VIEW_CHANGE_REQUEST_NULL;
                 responseDto.setMessage(message);
                 return  responseDto;
@@ -179,35 +123,8 @@ public class ViewRequestServiceImpl implements ViewRequestService {
         return responseDto;
     }
 
-    public Page<ViolationClass> getListPageViolationClassWithCondition(Date createDate, Integer status, Integer classId, Pageable paging) {
-        Page<ViolationClass> pagedResult;
-        try {
-            switch (status) {
-                case 0: {
-                    pagedResult = violationClassRepository.findViolationClassByConditionAndStatus(classId, createDate, 2, paging);
-                    break;
-                }
-                case 1: {
-                    pagedResult = violationClassRepository.findViolationClassByConditionAndStatus(classId, createDate, 1, paging);
-                    break;
-                }
-                case 2: {
-                    pagedResult = violationClassRepository.findViolationClassByConditionAndStatus(classId, createDate, 0, paging);
-                    break;
-                }
-                default: {
-                    pagedResult = violationClassRepository.findViolationClassByCondition(classId, createDate, paging);
-                }
-            }
-            return  pagedResult;
-        } catch (Exception e) {
-        }
-
-        return null;
-    }
-
     public Page<ViolationClassRequest> getListPageViolationClassRequestWithCondition(Date createDate, Integer status, Integer classId, Pageable paging) {
-        Page<ViolationClassRequest> pagedResultRequest;
+        Page<ViolationClassRequest> pagedResultRequest = null;
         try {
             switch (status) {
                 case 0: {
@@ -224,13 +141,15 @@ public class ViewRequestServiceImpl implements ViewRequestService {
                 }
                 default: {
                     pagedResultRequest = violationClassRequestRepository.findViolationClassRequestByCondition(classId,createDate, paging);
+                    //pagedResultRequest = violationClassRequestRepository.findAllByCondition(paging);
                 }
             }
             return pagedResultRequest;
         } catch (Exception e) {
+            System.out.println(e.toString());
         }
 
-        return null;
+        return pagedResultRequest;
     }
 
     public ViolationClassResponseDto changeViolationClassFromEntityToDto(ViolationClass violationClass){
@@ -284,7 +203,6 @@ public class ViewRequestServiceImpl implements ViewRequestService {
 
         return responseDto;
     }
-
 
 }
 

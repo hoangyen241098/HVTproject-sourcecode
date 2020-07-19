@@ -26,6 +26,5 @@ public class ViolationClassResponseDto {
     private Float substractGrade;
 
     private ViolationClassRequestResponseDto violationClassRequest;
-    private Integer typeRequest;
     private Integer checkEdit;
 }
