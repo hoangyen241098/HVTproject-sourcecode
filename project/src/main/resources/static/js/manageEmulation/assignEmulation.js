@@ -2,7 +2,7 @@ var fromDate;
 var inforSearch = {
     fromDate: $('#fromDate option:selected').val(),
     orderBy: "0",
-    sortBy: "0",
+    sortBy: "1",
     classId: "",
     redStar: "",
     pageNumber: 0
@@ -84,6 +84,8 @@ $.ajax({
                     `);
                     }
                 });
+                inforSearch.fromDate = $('#fromDate option:selected').val();
+                console.log(inforSearch.fromDate);
             } else {
                 $("#fromDate").html(`<option>Danh sách ngày trống.</option>`);
             }
@@ -99,7 +101,7 @@ $.ajax({
     contentType: "application/json"
 });
 
-search();
+setTimeout(search, 500);
 
 /*Load data to list*/
 function search() {
