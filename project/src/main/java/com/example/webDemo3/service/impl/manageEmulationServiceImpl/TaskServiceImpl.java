@@ -127,8 +127,8 @@ public class TaskServiceImpl implements TaskService {
             //conver classRedStar from entiti to Dto
             for(ClassRedStar classRedStar : pagedResult){
                 ClassRedStarResponseDto classRedStarResponseDto = new ClassRedStarResponseDto();
-                Integer grade = classRepository.findByClassId(classRedStar.getAClass().getClassId()).getGrade();
-                String name = classRepository.findByClassId(classRedStar.getAClass().getClassId()).getGiftedClass().getName();
+                Integer grade = classRepository.findByClassId(classRedStar.getClassSchool().getClassId()).getGrade();
+                String name = classRepository.findByClassId(classRedStar.getClassSchool().getClassId()).getGiftedClass().getName();
                 classRedStarResponseDto.setClassName(String.valueOf(grade) + name);
                 classRedStarResponseDto.setRedStar(classRedStar.getClassRedStarId().getRED_STAR());
                 list.add(classRedStarResponseDto);

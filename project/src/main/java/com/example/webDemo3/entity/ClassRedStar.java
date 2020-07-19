@@ -19,7 +19,7 @@ public class ClassRedStar {
     @JoinColumn(name = "CLASS_ID")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Class aClass;
+    private Class classSchool;
 
     @EmbeddedId
     private ClassRedStarId classRedStarId;

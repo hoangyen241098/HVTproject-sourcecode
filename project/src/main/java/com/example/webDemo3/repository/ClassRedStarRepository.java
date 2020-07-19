@@ -32,20 +32,20 @@ public interface ClassRedStarRepository extends JpaRepository<ClassRedStar, Clas
     Page<ClassRedStar> findByClassRedStarId_FROM_DATEAndClassRedStarId_RED_STAR(@Param("fromDate") Date fromDate,@Param("redStar") String redStar, Pageable paging);
 
 
-    @Query(value = "select MAX(c.classRedStarId.FROM_DATE) from ClassRedStar c where c.classRedStarId.FROM_DATE <= :fromDate and c.aClass.classId = :classId")
+    @Query(value = "select MAX(c.classRedStarId.FROM_DATE) from ClassRedStar c where c.classRedStarId.FROM_DATE <= :fromDate and c.classSchool.classId = :classId")
     Date getBiggestClosetDateClassId(@Param("fromDate") Date fromDate, @Param("classId") Integer classId);
 
-    @Query(value = "select c from ClassRedStar c where c.aClass.classId = :classId and c.classRedStarId.FROM_DATE = :fromDate")
+    @Query(value = "select c from ClassRedStar c where c.classSchool.classId = :classId and c.classRedStarId.FROM_DATE = :fromDate")
     Page<ClassRedStar> findByClassIdAndClassRedStarId_FROM_DATE(@Param("classId") Integer classId,@Param("fromDate") Date fromDate, Pageable paging);
 
 
-    @Query(value = "select MAX(c.classRedStarId.FROM_DATE) from ClassRedStar c where c.classRedStarId.FROM_DATE <= :fromDate and c.aClass.classId = :classId and c.classRedStarId.RED_STAR like %:redStar%")
+    @Query(value = "select MAX(c.classRedStarId.FROM_DATE) from ClassRedStar c where c.classRedStarId.FROM_DATE <= :fromDate and c.classSchool.classId = :classId and c.classRedStarId.RED_STAR like %:redStar%")
     Date getBiggestClosetDateClassIdRedStar(@Param("fromDate") Date fromDate, @Param("classId") Integer classId, @Param("redStar") String redStar);
 
-    @Query(value = "select c from ClassRedStar c where c.aClass.classId = :classId and c.classRedStarId.FROM_DATE = :fromDate and c.classRedStarId.RED_STAR like %:redStar%")
+    @Query(value = "select c from ClassRedStar c where c.classSchool.classId = :classId and c.classRedStarId.FROM_DATE = :fromDate and c.classRedStarId.RED_STAR like %:redStar%")
     Page<ClassRedStar> findByClassIdAndClassRedStarId_FROM_DATEAndClassRedStarId_RED_STAR(@Param("classId") Integer classId,@Param("fromDate") Date fromDate, @Param("redStar") String redStar,  Pageable paging);
 
-    @Query(value = "select MAX(c.classRedStarId.FROM_DATE) from ClassRedStar c where c.classRedStarId.FROM_DATE <= :fromDate and c.aClass.classId = :classId and c.classRedStarId.RED_STAR <> :username")
+    @Query(value = "select MAX(c.classRedStarId.FROM_DATE) from ClassRedStar c where c.classRedStarId.FROM_DATE <= :fromDate and c.classSchool.classId = :classId and c.classRedStarId.RED_STAR <> :username")
     Date getBiggestClosetDateClassIdAndDifferRedStar(@Param("fromDate") Date fromDate, @Param("classId") Integer classId, @Param("username") String username);
 
     @Query(value = "select c from ClassRedStar c where c.classRedStarId.FROM_DATE = :fromDate and c.classRedStarId.RED_STAR = :RED_STAR")
