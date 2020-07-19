@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,18 +58,12 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
         ViewViolationClassListResponseDto responseDto = new ViewViolationClassListResponseDto();
         List<ViolationClassResponseDto> violationClassListDto = new ArrayList<>();
         MessageDTO message = new MessageDTO();
-        Integer checkEdit;
+        Integer checkEdit = null;
 
         String username = model.getUsername();
         Integer classId = model.getClassId();
         Integer roleId = model.getRoleId();
         Date date = model.getDate();
-
-        if(username.equalsIgnoreCase("")){
-            message = Constant.USER_NOT_EXIT;
-            responseDto.setMessage(message);
-            return responseDto;
-        }
 
         if(classId == null){
             message = Constant.CLASS_ID_NULL;
@@ -84,14 +79,6 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
 
         List<ViolationClass> violationClassRankedList = violationClassRepository.findViolationClassRankedByClassId(classId, date);
         List<ViolationClass> violationClassList = violationClassRepository.findVioClassByClassIdAndAndDate(classId, date);
-        List<ViolationClass> violationClassAddRequestList = violationClassRepository.findAddRequestByClassIdAndAndDate(classId, date);
-
-        if(validateEmulationService.checkRoleForEmulate(classId, username,date) || roleId == 1 || validateEmulationService.checkMonitorOfClass(classId,username)){
-            checkEdit = 0;
-        }
-        else {
-            checkEdit = 1;
-        }
 
         if(violationClassRankedList != null && violationClassRankedList.size() != 0){
             for(ViolationClass item : violationClassList){
@@ -102,42 +89,39 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
             }
         }
 
-        if(violationClassList != null && violationClassList.size() != 0){
-            for(ViolationClass item : violationClassList){
+        if (violationClassList != null && violationClassList.size() != 0) {
+            for (ViolationClass item : violationClassList) {
                 ViolationClassResponseDto violationClassDto = new ViolationClassResponseDto();
                 ViolationClassRequestResponseDto violationClassRequestDto = new ViolationClassRequestResponseDto();
 
                 //set violation class into violation class dto
                 violationClassDto = convertViolationClassFromEntityToDto(item);
 
-                //find request edit in violation request
-                ViolationClassRequest violationClassRequest = violationClassRequestRepository.findNewEditRequest(item.getId(), username);
-                if(violationClassRequest != null){
-                    checkEdit = 2;
-                    violationClassRequestDto = convertViolationClassRequestFromEntityToDto(violationClassRequest);
-                    violationClassDto.setViolationClassRequest(violationClassRequestDto);
-                }
-
-                if(item.getCreateBy().equalsIgnoreCase(username)) {
+                if(username.equalsIgnoreCase("")){
+                    checkEdit = 1;
                     violationClassDto.setCheckEdit(checkEdit);
+                    violationClassListDto.add(violationClassDto);
                 }
                 else {
-                    violationClassDto.setCheckEdit(1);
+                    //find request edit in violation request
+                    ViolationClassRequest violationClassRequest = violationClassRequestRepository.findNewEditRequest(item.getId(), username);
+                    if (violationClassRequest != null && item.getCreateBy().equalsIgnoreCase(username)) {
+                        violationClassRequestDto = convertViolationClassRequestFromEntityToDto(violationClassRequest);
+                        violationClassDto.setViolationClassRequest(violationClassRequestDto);
+                        violationClassDto.setCheckEdit(2);
+                    } else {
+                        if (validateEmulationService.checkRoleForEditViolationClass(username, roleId, classId, date)) {
+                            checkEdit = 0;
+                        } else {
+                            checkEdit = 1;
+                        }
+                        violationClassDto.setCheckEdit(checkEdit);
+                    }
+                    violationClassListDto.add(violationClassDto);
                 }
-                violationClassListDto.add(violationClassDto);
             }
         }
 
-        if(violationClassAddRequestList != null && violationClassAddRequestList.size() !=0){
-            for(ViolationClass item : violationClassAddRequestList){
-                if(item.getCreateBy().equalsIgnoreCase(username)){
-                    ViolationClassResponseDto violationClassNewRequestDto = new ViolationClassResponseDto();
-                    violationClassNewRequestDto = convertViolationClassFromEntityToDto(item);
-                    violationClassNewRequestDto.setCheckEdit(2);
-                    violationClassListDto.add(violationClassNewRequestDto);
-                }
-            }
-        }
 
         if(violationClassListDto == null || violationClassListDto.size() == 0){
             message = Constant.VIOLATIONOFCLASS_EMPTY;
