@@ -99,7 +99,8 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
                 dataID.setRED_STAR(redStar.getUsername());
                 dataID.setFROM_DATE(fromDate);
                 data.setClassRedStarId(dataID);
-                data.setClassId(classi.getClassId());
+                data.setClassSchool(new Class(classi.getClassId()));
+//                data.getClass().setClassId();
                 classRedStarRepository.save(data);
             }
         } catch (Exception e) {
@@ -243,7 +244,7 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
                 }
                 for (int k = 0; k < assignList.size(); k++) {
                     ClassRedStar data = assignList.get(k);
-                    if ((data.getClassId() == classi.getClassId())
+                    if ((data.getClassSchool().getClassId() == classi.getClassId())
                             && (data.getClassRedStarId().getRED_STAR() == redstar.getUsername())) {
                         flag[i * 2][j] = -1;
                         flag[i * 2 + 1][j] = -1;
@@ -251,7 +252,7 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
                     User userData = assignUser[k];
                     //userRepository.findUserByUsername(data.getClassRedStarId().getRED_STAR());
                     if ((userData.getClassSchool().getClassId() == classi.getClassId())
-                            && (data.getClassId() == redstar.getClassSchool().getClassId())) {
+                            && (data.getClassSchool().getClassId() == redstar.getClassSchool().getClassId())) {
                         flag[i * 2][j] = -1;
                         flag[i * 2 + 1][j] = -1;
                     }
