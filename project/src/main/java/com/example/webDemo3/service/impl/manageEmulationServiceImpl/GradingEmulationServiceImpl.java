@@ -131,50 +131,18 @@ public class GradingEmulationServiceImpl implements GradingEmulationService {
             message = Constant.VIOLATION_ID_NULL;
             return message;
         }
-
-        Date dateCurrent = new Date(System.currentTimeMillis());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        if(sdf.format(date).equals(sdf.format(dateCurrent))){
-            status = 1;
-        }
-        else if(date.compareTo(dateCurrent) < 0){
-            status = 2;
-        }
-        else{
-            message = Constant.OVERDATE_EMULATE;
-            return message;
-        }
-
-        if(!validateEmulationService.checkRoleForEmulate(classId,username, date) && roleId != 1 && roleId != 5){
-            message = Constant.EMULATE_FAIL;
-            return message;
-        }
-
-        if(validateEmulationService.checkRankedDate(classId, date)){
-            message = Constant.DATE_RANKED;
-            return message;
-        }
-
-        Integer dayId = validateEmulationService.getDayIdByDate(date);
-
-        try {
-            for(SubViolationForClassRequestDto item : violationList) {
-                ViolationClass violationClass = new ViolationClass();
-                violationClass.setClassId(classId);
-                violationClass.setDate(date);
-                violationClass.setViolation(new Violation(item.getViolationId()));
-                violationClass.setQuantity(item.getQuantity());
-                violationClass.setNote(item.getNote());
-                violationClass.setWeekId(weekId);
-                violationClass.setYear(new SchoolYear(yearId));
-                violationClass.setDay(new Day(dayId));
-                violationClass.setStatus(status);
-                violationClass.setCreateBy(username);
-                violationClassRepository.save(violationClass);
+        status = 1;
+        if(validateEmulationService.checkRoleForAddViolationClass(username,roleId,classId, date)){
+            try {
+                addViolationClassToDB(violationList,classId, date, weekId, yearId, status, username);
+            }catch (Exception e){
+                message.setMessageCode(1);
+                message.setMessage(e.toString());
+                return message;
             }
-        }catch (Exception e){
-            message.setMessageCode(1);
-            message.setMessage(e.toString());
+        }
+        else {
+            message = Constant.EMULATE_FAIL;
             return message;
         }
 
@@ -208,6 +176,41 @@ public class GradingEmulationServiceImpl implements GradingEmulationService {
             responseDto.setCurrentClassId(classRedStar.getClassSchool().getClassId());
             responseDto.setMessage(Constant.SUCCESS);
             return responseDto;
+        }
+    }
+
+    /**
+     * kimpt142 - 19/07
+     * add violation list into database
+     * @param violationClassList
+     * @param classId
+     * @param date
+     * @param weekId
+     * @param yearId
+     * @param status
+     * @param username
+     */
+    private void addViolationClassToDB(List<SubViolationForClassRequestDto> violationClassList,
+                                       Integer classId,
+                                       Date date,
+                                       Integer weekId,
+                                       Integer yearId,
+                                       Integer status,
+                                       String username){
+        Integer dayId = validateEmulationService.getDayIdByDate(date);
+        for(SubViolationForClassRequestDto item : violationClassList) {
+            ViolationClass violationClass = new ViolationClass();
+            violationClass.setClassId(classId);
+            violationClass.setDate(date);
+            violationClass.setViolation(new Violation(item.getViolationId()));
+            violationClass.setQuantity(item.getQuantity());
+            violationClass.setNote(item.getNote());
+            violationClass.setWeekId(weekId);
+            violationClass.setYear(new SchoolYear(yearId));
+            violationClass.setDay(new Day(dayId));
+            violationClass.setStatus(status);
+            violationClass.setCreateBy(username);
+            violationClassRepository.save(violationClass);
         }
     }
 }
