@@ -67,10 +67,10 @@ $.ajax({
                         $.each(item.violation, function (i, list) {
                             $(dataTable).append(`
                             <tr>
-                                <td>
+                                <td style="vertical-align: top">
                                     <span class="custom-checkbox ">
                                         <input id="` + list.violationId + `" type="checkbox" name="options" value="` + list.violationId + `">
-                                        <label for="` + list.violationId + `"></label>
+                                        <label class="mt-2" for="` + list.violationId + `"></label>
                                     </span>
                                 </td>
                                 <td>
