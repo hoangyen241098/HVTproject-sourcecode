@@ -260,10 +260,10 @@ public class Constant {
 
     //accept request emulation success
     public static final MessageDTO ACCEPT_REQUEST_SUCCESS =
-            new MessageDTO(1,"Yêu cầu thay đổi được chấp nhận.");
+            new MessageDTO(0,"Yêu cầu thay đổi được chấp nhận.");
 
     //reject request emulation success
     public static final MessageDTO REJECT_REQUEST_SUCCESS =
-            new MessageDTO(1,"Yêu cầu từ chối thành công.");
+            new MessageDTO(0,"Từ chối thành công.");
 
 }
