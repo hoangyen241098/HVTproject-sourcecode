@@ -1,14 +1,14 @@
 package com.example.webDemo3.ServiceTest;
 
 import com.example.webDemo3.constant.Constant;
-import com.example.webDemo3.dto.LoginResponseDto;
 import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.dto.request.LoginRequestDto;
+import com.example.webDemo3.dto.manageAccountResponseDto.LoginResponseDto;
+import com.example.webDemo3.dto.request.manageAccountRequestDto.LoginRequestDto;
 import com.example.webDemo3.entity.Role;
 import com.example.webDemo3.entity.User;
 import com.example.webDemo3.repository.UserRepository;
-import com.example.webDemo3.service.LoginService;
 import com.example.webDemo3.*;
+import com.example.webDemo3.service.manageAccountService.LoginService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

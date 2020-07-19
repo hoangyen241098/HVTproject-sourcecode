@@ -2,14 +2,14 @@ package com.example.webDemo3.ServiceTest;
 
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.dto.ViewPerInforResponseDto;
-import com.example.webDemo3.dto.request.ViewPerInforRequestDto;
+import com.example.webDemo3.dto.manageAccountResponseDto.ViewPerInforResponseDto;
+import com.example.webDemo3.dto.request.manageAccountRequestDto.ViewPerInforRequestDto;
 import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.entity.GiftedClass;
 import com.example.webDemo3.entity.Role;
 import com.example.webDemo3.entity.User;
 import com.example.webDemo3.repository.UserRepository;
-import com.example.webDemo3.service.ViewPerInfoService;
+import com.example.webDemo3.service.manageAccountService.ViewPerInfoService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

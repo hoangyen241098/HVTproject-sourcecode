@@ -2,18 +2,17 @@ package com.example.webDemo3.ControllerTest;
 
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.controller.UserController;
-import com.example.webDemo3.dto.LoginResponseDto;
 import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.dto.ViewPerInforResponseDto;
-import com.example.webDemo3.dto.request.ChangePasswordRequestDto;
-import com.example.webDemo3.dto.request.EditPerInforRequestDto;
-import com.example.webDemo3.dto.request.LoginRequestDto;
-import com.example.webDemo3.dto.request.ViewPerInforRequestDto;
-import com.example.webDemo3.repository.UserRepository;
-import com.example.webDemo3.service.ChangePasswordService;
-import com.example.webDemo3.service.EditPerInforService;
-import com.example.webDemo3.service.LoginService;
-import com.example.webDemo3.service.ViewPerInfoService;
+import com.example.webDemo3.dto.manageAccountResponseDto.LoginResponseDto;
+import com.example.webDemo3.dto.manageAccountResponseDto.ViewPerInforResponseDto;
+import com.example.webDemo3.dto.request.manageAccountRequestDto.ChangePasswordRequestDto;
+import com.example.webDemo3.dto.request.manageAccountRequestDto.EditPerInforRequestDto;
+import com.example.webDemo3.dto.request.manageAccountRequestDto.LoginRequestDto;
+import com.example.webDemo3.dto.request.manageAccountRequestDto.ViewPerInforRequestDto;
+import com.example.webDemo3.service.manageAccountService.ChangePasswordService;
+import com.example.webDemo3.service.manageAccountService.EditPerInforService;
+import com.example.webDemo3.service.manageAccountService.LoginService;
+import com.example.webDemo3.service.manageAccountService.ViewPerInfoService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +22,6 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
-import org.springframework.web.servlet.FlashMap;
 
 import static org.hamcrest.CoreMatchers.is;
 

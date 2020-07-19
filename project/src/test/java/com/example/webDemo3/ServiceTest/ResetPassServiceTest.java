@@ -5,7 +5,7 @@ import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.entity.Role;
 import com.example.webDemo3.entity.User;
 import com.example.webDemo3.repository.UserRepository;
-import com.example.webDemo3.service.ResetPassService;
+import com.example.webDemo3.service.manageAccountService.ResetPassService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

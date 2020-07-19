@@ -2,7 +2,7 @@ package com.example.webDemo3.ServiceTest;
 
 import com.example.webDemo3.entity.Role;
 import com.example.webDemo3.repository.RoleRepository;
-import com.example.webDemo3.service.RoleService;
+import com.example.webDemo3.service.manageClassService.RoleService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

@@ -2,10 +2,10 @@ package com.example.webDemo3.ServiceTest;
 
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.dto.request.AddAccResquestDTO;
+import com.example.webDemo3.dto.request.manageAccountRequestDto.AddAccResquestDTO;
 import com.example.webDemo3.entity.User;
 import com.example.webDemo3.repository.UserRepository;
-import com.example.webDemo3.service.AddAccountService;
+import com.example.webDemo3.service.manageAccountService.AddAccountService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
