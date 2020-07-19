@@ -4,7 +4,6 @@ var inforSearch = {
     pageNumber: 0
 }
 var list = [];
-localStorage.removeItem("teacherId");
 search();
 
 /*Search button*/
@@ -137,17 +136,25 @@ $("#deleteTeacher").click(function (e) {
             var messageCode = data.messageCode;
             var message = data.message;
             if (messageCode == 0) {
-                $('.img-success').removeClass('hide');
-                $('.img-fail').addClass('hide');
-                $('#message-delete').text(message);
+                $("#deleteSuccess .modal-body").html("");
+                $('#deleteSuccess .modal-body').append(`
+                    <img class="mb-3 mt-3" src="img/img-success.png"/>
+                    <h5>` + message + `</h5>
+                `);
             } else {
-                $('.img-success').addClass('hide');
-                $('.img-fail').removeClass('hide');
-                $('#message-delete').text(message);
+                $("#deleteSuccess .modal-body").html("");
+                $('#deleteSuccess .modal-body').append(`
+                    <img class="mb-3 mt-3" src="img/img-error.png"/>
+                    <h5>` + message + `</h5>
+                `);
             }
         },
         failure: function (errMsg) {
-            $('#message-delete').text(errMsg);
+            $("#deleteSuccess .modal-body").html("");
+            $('#deleteSuccess .modal-body').append(`
+                <img class="mb-3 mt-3" src="img/img-error.png"/>
+                <h5>` + errMsg + `</h5>
+            `);
         },
         dataType: "json",
         contentType: "application/json"
@@ -156,19 +163,20 @@ $("#deleteTeacher").click(function (e) {
 
 /*Check teacher before delete account*/
 function checkTeacher() {
+    $('#deleteTeacherModal').modal('show');
     $('#deleteTeacherModal .modal-body').html("");
     if (list.length == 0) {
         $("#deleteTeacherModal .modal-body").html("");
         $('#deleteTeacherModal .modal-body').append(`
-            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-            <h5>Hãy chọn giáo viên mà bạn muốn xóa</h5>
+            <img class="mb-3 mt-3" src="img/img-error.png"/>
+            <h5>Hãy chọn giáo viên mà bạn muốn xóa!</h5>
         `);
         $('#deleteTeacherModal .modal-footer .btn-danger').addClass('hide');
         $('#deleteTeacherModal .modal-footer .btn-primary').attr('value', 'ĐÓNG');
     } else {
         $("#deleteTeacherModal .modal-body").html("");
         $('#deleteTeacherModal .modal-body').append(`
-            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+            <img class="mb-3 mt-3" src="img/img-error.png"/>
             <h5>Bạn có chắc muốn <b>XÓA</b> giáo viên này không?</h5>
         `);
         $('#deleteTeacherModal .modal-footer .btn-danger').removeClass('hide');
@@ -181,6 +189,6 @@ function getTeacherID() {
     var teacherId = $('.bt-table-edit');
     $(teacherId).on('click', function (e) {
         teacherId = $(this).prop('id');
-        localStorage.setItem("teacherId", teacherId);
+        sessionStorage.setItem("teacherId", teacherId);
     });
 }

@@ -476,7 +476,7 @@ body.loading .modal-loading {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    padding: 20px 0;
+    padding: 0 0 20px 0;
 }
 
 .search {
@@ -730,12 +730,10 @@ div.searchable {
 
 .status-active {
     color: #4bdd33;
-    margin-left: 30px;
 }
 
 .status-deactive {
     color: #ff3154;
-    margin-left: 30px;
 }
 
 /*END Manage Account*/

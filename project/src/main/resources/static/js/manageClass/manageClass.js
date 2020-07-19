@@ -1,4 +1,3 @@
-localStorage.removeItem("classId");
 var inforSearch = {
     classIdentifier: "",
     grade: "",
@@ -130,7 +129,6 @@ function getClassID() {
     var classId = $('.bt-table-edit');
     $(classId).on('click', function (e) {
         classId = $(this).prop('id');
-        localStorage.setItem("classId", classId);
-        console.log(localStorage.getItem("classId"));
+        sessionStorage.setItem("classId", classId);
     });
 }
