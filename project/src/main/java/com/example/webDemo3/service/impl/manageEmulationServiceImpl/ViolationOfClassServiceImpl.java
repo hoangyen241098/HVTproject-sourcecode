@@ -118,7 +118,12 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
                     violationClassDto.setViolationClassRequest(violationClassRequestDto);
                 }
 
-                violationClassDto.setCheckEdit(checkEdit);
+                if(item.getCreateBy().equalsIgnoreCase(username)) {
+                    violationClassDto.setCheckEdit(checkEdit);
+                }
+                else {
+                    violationClassDto.setCheckEdit(1);
+                }
                 violationClassListDto.add(violationClassDto);
             }
         }
@@ -251,13 +256,21 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
     private ViolationClassResponseDto convertViolationClassFromEntityToDto(ViolationClass violationClass){
         ViolationClassResponseDto responseDto = new ViolationClassResponseDto();
         Class newClass = classRepository.findById(violationClass.getClassId()).orElse(null);
+        Violation violation = violationRepository.findById(violationClass.getClassId()).orElse(null);
 
         responseDto.setViolationClassId(violationClass.getId());
-        responseDto.setClassId(violationClass.getClassId());
         responseDto.setNote(violationClass.getNote());
         responseDto.setQuantity(violationClass.getQuantity());
         responseDto.setDescription(violationClass.getViolation().getDescription());
         responseDto.setCreateDate(violationClass.getDate());
+        responseDto.setCreateBy(violationClass.getCreateBy());
+        responseDto.setStatus(violationClass.getStatus());
+
+        //check violation null or not
+        if(violation != null){
+            responseDto.setSubstractGrade(violation.getSubstractGrade());
+        }
+
 
         //check newClass exists or not
         if(newClass != null){
