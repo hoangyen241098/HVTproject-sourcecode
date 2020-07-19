@@ -86,10 +86,8 @@ public class TaskServiceImpl implements TaskService {
 
             //catch orderBy
             if(orderBy == 0){
-                //paging = PageRequest.of(pageNumber, pageSize, Sort.by(orderByProperty).descending());
                 paging = PageRequest.of(pageNumber, pageSize, Sort.by(orderByProperty).descending().and(Sort.by(orderByProperty2).descending()));
             }else{
-                //paging = PageRequest.of(pageNumber, pageSize, Sort.by(orderByProperty).ascending());
                 paging = PageRequest.of(pageNumber, pageSize, Sort.by(orderByProperty).ascending().and(Sort.by(orderByProperty2).ascending()));
             }
 
