@@ -280,3 +280,4 @@ function limitedDate() {
     $('#toDate').attr('min', toYear + '-01-01');
     $('#toDate').attr('max', toYear + '-12-31');
 }
+

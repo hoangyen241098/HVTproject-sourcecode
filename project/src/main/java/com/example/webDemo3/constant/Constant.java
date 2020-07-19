@@ -264,6 +264,6 @@ public class Constant {
 
     //reject request emulation success
     public static final MessageDTO REJECT_REQUEST_SUCCESS =
-            new MessageDTO(0,"Yêu cầu từ chối thành công.");
+            new MessageDTO(0,"Từ chối thành công.");
 
 }

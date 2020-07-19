@@ -22,6 +22,8 @@ public class ViolationClassResponseDto {
     private String description;
     private Date createDate;
     private String createBy;
+    private Integer status;
+    private Float substractGrade;
 
     private ViolationClassRequestResponseDto violationClassRequest;
     private Integer typeRequest;
