@@ -1,6 +1,8 @@
 package com.example.webDemo3.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -13,8 +15,11 @@ import java.sql.Date;
 @Table(name = "CLASS_RED_STARS")
 public class ClassRedStar {
 
-    @Column(name = "CLASS_ID")
-    private Integer classId;
+    @ManyToOne
+    @JoinColumn(name = "CLASS_ID")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Class aClass;
 
     @EmbeddedId
     private ClassRedStarId classRedStarId;

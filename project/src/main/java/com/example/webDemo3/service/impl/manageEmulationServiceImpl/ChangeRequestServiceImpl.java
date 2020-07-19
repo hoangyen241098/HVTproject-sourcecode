@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -137,11 +138,13 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
 
     public String addHistory(String history, String reason, String username, int number){
         Date date = new Date(System.currentTimeMillis());
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String strDate = formatter.format(date);
         //check history null or not
         if(history == null){
-            history =  date + " - " + username + ".\n";
+            history =  strDate + " - " + username + ".\n";
         }else{
-            history += "\n" + date + " - " + username + ".\n";
+            history += "\n" + strDate + " - " + username + ".\n";
         }
         history += "Lý do: " + reason + ".\n";
         history += " Số lần vi phạm trước thay đổi: " + number + ".\n";

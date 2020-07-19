@@ -205,7 +205,7 @@ public class GradingEmulationServiceImpl implements GradingEmulationService {
             return responseDto;
         }
         else{
-            responseDto.setCurrentClassId(classRedStar.getClassId());
+            responseDto.setCurrentClassId(classRedStar.getAClass().getClassId());
             responseDto.setMessage(Constant.SUCCESS);
             return responseDto;
         }
