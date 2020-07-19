@@ -66,8 +66,8 @@ public class TaskServiceImpl implements TaskService {
         //catch sortBy
         switch (sortBy){
             case 0: {
-                orderByProperty = "aClass.grade";
-                orderByProperty2 = "aClass.giftedClass.giftedClassId";
+                orderByProperty = "classSchool.grade";
+                orderByProperty2 = "classSchool.giftedClass.giftedClassId";
                 break;
             }
             case 1: {
@@ -76,8 +76,8 @@ public class TaskServiceImpl implements TaskService {
                 break;
             }
             default: {
-                orderByProperty = "aClass.grade";
-                orderByProperty2 = "aClass.giftedClass.giftedClassId";
+                orderByProperty = "classSchool.grade";
+                orderByProperty2 = "classSchool.giftedClass.giftedClassId";
             }
         }
 
