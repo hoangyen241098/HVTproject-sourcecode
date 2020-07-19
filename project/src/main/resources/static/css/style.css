@@ -27,6 +27,18 @@ a:hover {
     background: #35579c;
 }
 
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
 /*Header*/
 
 .myHeader {
@@ -58,8 +70,6 @@ a:hover {
     display: block;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(20%);
-    transition: all .5s;
     border: none;
     color: #ffffff;
     background-color: #4267b2;
@@ -69,7 +79,6 @@ a:hover {
 .dropdown-menu.show {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0%);
 }
 
 .dropdown-item:hover {
@@ -213,8 +222,6 @@ a:hover {
     font-family: inherit;
     width: 80%;
     left: 10%;
-    transform: translateY(20%);
-    transition: all .5s;
     z-index: 1000;
 }
 
@@ -222,7 +229,6 @@ a:hover {
 .mega-menu.show {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0%);
 }
 
 .mega-title {
@@ -1071,9 +1077,9 @@ fieldset .note {
     }
 }
 
-/*Conbobox search*/
+/*Combobox search*/
 .select2-container--default .select2-selection--single {
-    width: 220px;
+    width: 100%;
     color: #495057;
     border: 1px solid #ced4da;
     border-radius: .25rem;
@@ -1177,133 +1183,45 @@ fieldset .note {
 }
 
 /* Global "table" column settings */
-.column-labels {
-    display: flex;
-    margin-bottom: 12px;
-    color: #888;
-    font-size: 1.1rem;
-    padding: 0 20px;
-}
 
 .violation-date {
-    width: 15%;
+    font-size: 1.2rem;
     font-weight: 500;
-}
-
-.violation-details {
-    width: 40%;
-}
-
-.violation-substract-grade,
-.violation-quantity,
-.violation-total,
-.violation-action {
-    width: 11.3%;
-    text-align: center;
-}
-
-.violation-description {
-    display: flex;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-}
-
-.violation-name {
-    font-weight: 500;
-}
-
-.totals-footer {
-    margin-top: 30px;
-}
-
-.totals-footer .totals-item {
-    float: right;
-    clear: both;
-    width: 100%;
     margin-bottom: 10px;
 }
 
-.totals-footer .totals-item label {
-    float: left;
-    width: 79%;
-    text-align: right;
-    font-weight: 500;
+.violation-description {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    position: relative;
 }
 
-.totals-footer .totals-item .totals-value {
-    float: right;
-    width: 21%;
-    text-align: right;
+.violation-date, .violation-details,
+.violation-substract-grade, .violation-quantity,
+.violation-total {
+    width: calc(100% - 160px);
 }
 
-@media screen and (max-width: 650px) {
-    .column-labels {
-        display: none;
-    }
+.violation-action {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: auto;
+}
 
-    .violation-description {
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #eee;
-        display: table;
-        width: 100%;
-        position: relative;
-    }
-
-    .violation-date {
-        width: 100%;
-        font-size: 1.2rem;
-    }
-
-    .violation-details {
-        width: 100%;
-        margin: 10px 0;
-    }
-
-    .violation-substract-grade, .violation-quantity {
-        width: auto;
-        display: inline-block;
-        margin: 0 10px;
-    }
-
-    .violation-substract-grade:before {
-        content: 'Điểm trừ: ';
-        font-weight: 500;
-    }
-
-    .violation-quantity:before {
-        content: 'Số lượng: ';
-        font-weight: 500;
-    }
-
-    .violation-total {
-        width: auto;
-        text-align: left;
-        margin: 10px 0 0 10px;
-    }
-
-    .violation-total:before {
-        content: 'Tổng điểm trừ: ';
-        font-weight: 500;
-    }
-
-    .violation-action {
-        position: absolute;
-        top: 40%;
-        right: 20px;
-        width: auto;
-    }
+.violationTypeName {
+    width: calc(100% - 50px);
 }
 
 .modal-body .panel-title {
     font-size: 1.2rem;
-    margin: 20px;
-    margin-bottom: 0;
+    margin: auto;
+    width: 80%;
     padding: 10px;
     background: #f5f5f5;
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 5px 5px 0 0;
     font-weight: 500;
 }
 
@@ -1312,7 +1230,7 @@ fieldset .note {
     width: 80%;
     margin: auto;
     padding: 15px;
-    border-radius: 5px;
+    border-radius: 0 0 5px 5px;
     text-align: left;
     padding-left: 30px;
 }
@@ -1325,8 +1243,36 @@ fieldset .note {
     font-weight: 500;
 }
 
+.table-vertical-middle tbody tr td {
+    vertical-align: middle;
+    text-align: center;
+}
+.table-responsive-customer td:nth-of-type(2) {
+    max-width: 435px;
+
+}
 /*Responsive table max-width:650px*/
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 700px) {
+    .table-wrapper {
+        margin: 0;
+    }
+
+    .div-space {
+        display: none !important;
+    }
+
+    .modal-body .panel-body,
+    .panel-collapse table {
+        width: 100%;
+    }
+
+    .search .d-inline-block.ml-2 {
+        display: block !important;
+        text-align: right;
+        margin-right: 5px;
+        margin-top: 15px;
+    }
+
     .table-responsive-customer {
         display: block;
     }
@@ -1349,12 +1295,15 @@ fieldset .note {
         position: absolute;
         top: .75rem;
         border: none;
+        padding-left: 0;
+        padding-right: 0;
     }
 
     .table-responsive-customer td:nth-of-type(2) {
         display: block;
-        margin-left: 70px;
+        margin-left: 35px;
         border: none;
+        max-width: 100%;
 
     }
 
@@ -1363,12 +1312,13 @@ fieldset .note {
     }
 
     .table-responsive-customer td:nth-of-type(3) {
-        margin-left: 75px;
+        margin-left: 35px;
     }
 
     .table-responsive-customer td:nth-of-type(3),
     .table-responsive-customer td:nth-of-type(4) {
         display: inline-block;
+        text-align: left;
         border: none;
     }
 
@@ -1384,8 +1334,9 @@ fieldset .note {
 
     .table-responsive-customer td:nth-of-type(5) {
         display: block;
-        margin-left: 75px;
+        margin-left: 35px;
         border: none;
+        text-align: left;
     }
 
     .saveResult {

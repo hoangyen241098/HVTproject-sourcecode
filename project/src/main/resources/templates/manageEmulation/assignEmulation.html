@@ -6,18 +6,16 @@
     <link th:href="@{/img/logo.png}" rel="shortcut icon" type="image/x-icon"/>
 
     <!-- jQuery library -->
-    <script th:src="@{/js/jquery-3.5.1.min.js}"></script>
-
+    <script th:src="@{/js/public/jquery-3.5.1.min.js}"></script>
     <!--Bootstrap 4-->
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-    <script th:src="@{/js/popper.min.js}"></script>
-    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/public/popper.min.js}"></script>
+    <script th:src="@{/js/public/bootstrap.min.js}"></script>
     <!--Select2-->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet"/>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/select2.min.css}">
+    <script th:src="@{/js/public/select2.min.js}"></script>
     <!--Font-Awesome-->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"
-          type="text/css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"/>
     <link th:href="@{/css/style.css}" rel="stylesheet"/>
     <script type="text/javascript" th:src="@{/js/functions.js}"></script>
 
@@ -32,32 +30,18 @@
                 <div class="col-xl-4 d-inline-block">
                     <div class="search-line">
                         <span>Ngày</span>
-<!--                        <input type="date" id="fromDate" class="searchable">-->
-                        <select class="combobox searchable" id="fromDate">
-                            <option value="0" selected="selected">06/07/2020</option>
-                            <option value="1">13/07/2020</option>
-                            <option value="1">20/07/2020</option>
-                            <option value="1">27/07/2020</option>
-                        </select>
+                        <select class="combobox searchable" id="fromDate"></select>
                     </div>
                     <div class="search-line">
                         <span>Lớp</span>
-                        <select class="combobox searchable" id="classList">
-                            <option value="0" selected="selected">Tất cả</option>
-                            <option value="1">10 Tin</option>
-                            <option value="2">10 Toán</option>
-                        </select>
+                        <select class="combobox searchable" id="classList"></select>
                     </div>
                     <div class="search-line">
                         <span>Sao đỏ</span>
-                        <select class="combobox searchable" id="redStarList">
-                            <option value="0" selected="selected">Tất cả</option>
-                            <option value="1">saodo11tin1</option>
-                            <option value="2">saodo11tin2</option>
-                        </select>
+                        <select class="combobox searchable" id="redStarList"></select>
                     </div>
                 </div>
-                <div class="col-xl-2 d-inline-block"></div>
+                <div class="col-xl-2 d-inline-block div-space"></div>
                 <div class="col-xl-4 d-inline-block">
                     <div class="search-line">
                         <span>Sắp xếp theo</span>
@@ -69,8 +53,8 @@
                     <div class="search-line">
                         <span>Thứ tự</span>
                         <select class="combobox searchable" id="sortBy">
-                            <option value="0">Giảm dần</option>
-                            <option value="1" selected="selected">Tăng dần</option>
+                            <option value="0" selected="selected">Giảm dần</option>
+                            <option value="1">Tăng dần</option>
                         </select>
                     </div>
                 </div>
@@ -86,22 +70,14 @@
                 </a>
             </div>
         </div>
-        <table class="table table-hover">
-            <thead class="text-center">
+        <table class="table table-bordered text-center" id="myTable">
+            <thead class="thead-light">
             <tr>
                 <th style="width: 50%">Lớp</th>
                 <th>Sao đỏ trực tuần</th>
             </tr>
             </thead>
             <tbody class="text-center">
-            <tr>
-                <td style="width: 50%">10 Toán</td>
-                <td>saodo11tin1</td>
-            </tr>
-            <tr>
-                <td style="width: 50%">11 Toán</td>
-                <td>saodo12tin1</td>
-            </tr>
             </tbody>
         </table>
         <div class="table-paging">
@@ -129,7 +105,7 @@
                 </div>
                 <div class="modal-footer">
                     <input type="submit" class="btn btn-danger" data-toggle="modal" data-target="#addSuccess"
-                            data-dismiss="modal" value="TẠO">
+                           data-dismiss="modal" value="TẠO">
                     <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
                 </div>
             </form>

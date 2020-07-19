@@ -1,4 +1,6 @@
 sessionStorage.removeItem('schoolYearId');
+var schoolYearId;
+
 $.ajax({
     url: '/api/admin/schoolyearlist',
     type: 'POST',
@@ -16,7 +18,7 @@ $.ajax({
                 var id = 0;
                 $('tbody').html("");
                 $.each(data.schoolYearList, function (i, item) {
-                    var schoolYearId, fromDate, toDate, yearName;
+                    var fromDate, toDate, yearName;
                     schoolYearId = item.schoolYearId;
                     id += 1;
                     if (item.fromDate == null) {
@@ -42,17 +44,25 @@ $.ajax({
                             <td><span id="fromDate">` + fromDate + `</span></td>
                             <td><span id="toDate">` + toDate + `</span></td>
                             <td><span id="action">
-                                <a href="editSchoolYear" title="Sửa" class="mx-2" name="` + schoolYearId + `" id="btnEdit">
+                                <a href="editSchoolYear" title="Sửa" class="mx-2 btnEdit" name="` + schoolYearId + `">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a>
-                                <a href="#deleteModal" title="Xóa" class="mx-2" name="` + schoolYearId + `" 
-                                data-toggle="modal" id="btnDelete">
+                                <a href="#deleteModal" title="Xóa" class="mx-2 btnDelete" name="` + schoolYearId + `" data-toggle="modal">
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                 </a>
                             </span></td>
                         </tr>
                     `);
                 });
+                $('#tableSchoolYear').DataTable({
+                    lengthMenu: [30],
+                    bLengthChange: false,
+                    bFilter: false,
+                    bInfo: false,
+                    paging: false,
+                });
+                getSchoolYearId();
+                deleteYear();
             }
         } else {
             $('tbody').html("");
@@ -62,8 +72,6 @@ $.ajax({
                 </tr>`
             )
         }
-        getSchoolYearId();
-        deleteYear();
     },
     failure: function (errMsg) {
         $('tbody').html("");
@@ -79,8 +87,8 @@ $.ajax({
 
 /*Get schoolYear ID*/
 function getSchoolYearId() {
-    var schoolYearId = $('#btnEdit');
-    $(schoolYearId).on('click', function (e) {
+    var btnEdit = $('.btnEdit');
+    $(btnEdit).on('click', function (e) {
         schoolYearId = $(this).prop('name');
         sessionStorage.setItem('schoolYearId', schoolYearId);
     });
@@ -88,9 +96,10 @@ function getSchoolYearId() {
 
 /*Delete School Year*/
 function deleteYear() {
-    var schoolYearId = $('#btnDelete');
-    $(schoolYearId).on('click', function (e) {
+    var btnDelete = $('.btnDelete');
+    $(btnDelete).on('click', function (e) {
         schoolYearId = $(this).prop('name');
+        console.log(schoolYearId);
     });
     $('#deleteModal .modal-body').html('');
     $('#deleteModal .modal-body').append(`
@@ -98,7 +107,7 @@ function deleteYear() {
         <h5>Bạn có muốn <b>XÓA</b> năm học này không?</h5>
     `);
 
-    $('#btnDelete').on('click', function () {
+    $('#btnDeleteModal').on('click', function () {
         var schoolYear = {
             schoolYearId: schoolYearId
         }

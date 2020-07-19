@@ -14,4 +14,15 @@ $("#editGrades").on("click", function () {
         $('#editGrades').removeClass('editMode');
     }
 });
-
+$(document).ready(function () {
+    $("#byClass").select2();
+    $('table').DataTable(
+        {
+            "lengthMenu": [ 30 ],
+            "bLengthChange": false,
+            "bFilter": false,
+            "bInfo": false,
+            "paging": false
+        }
+    );
+});

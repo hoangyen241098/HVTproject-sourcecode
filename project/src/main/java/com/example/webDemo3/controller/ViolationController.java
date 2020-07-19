@@ -1,8 +1,12 @@
 package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.*;
-import com.example.webDemo3.dto.request.*;
-import com.example.webDemo3.service.ViolationService;
+import com.example.webDemo3.dto.manageViolationResponseDto.ListVioAndTypeResponseDto;
+import com.example.webDemo3.dto.manageViolationResponseDto.ListViolationTypeResponseDto;
+import com.example.webDemo3.dto.manageViolationResponseDto.ViewViolationResponseDto;
+import com.example.webDemo3.dto.manageViolationResponseDto.ViewViolationTypeResponseDto;
+import com.example.webDemo3.dto.request.manageViolationRequestDto.*;
+import com.example.webDemo3.service.manageViolationService.ViolationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -30,4 +30,11 @@ public class SchoolYear {
 
     @Column(name = "TO_YEAR")
     private Integer toYear;
+
+    public SchoolYear() {
+    }
+
+    public SchoolYear(Integer yearID) {
+        this.yearID = yearID;
+    }
 }

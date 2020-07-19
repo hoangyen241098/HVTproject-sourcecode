@@ -46,16 +46,12 @@ function login() {
                 var messageCode = data.message.messageCode;
                 var message = data.message.message;
                 var roleID = data.roleid;
-                var account = {
-                    username,
-                    password,
-                    roleID
-                }
                 if (messageCode == 0) {
-                    $('#loginSuccess').css('display', 'block');
-                    localStorage.setItem("username", account.username);
+                    $('#loginSuccess').modal('show');
+                    localStorage.setItem("username", username);
                     localStorage.setItem("loginSuccess", messageCode);
-                    localStorage.setItem("roleID", account.roleID);
+                    localStorage.setItem("roleID", roleID);
+                    localStorage.setItem("currentYearId", data.currentYearId);
                     $("#loginSuccess-menu").addClass("show");
                     $('#login').css('display', 'none');
                     if (roleID == 1) {

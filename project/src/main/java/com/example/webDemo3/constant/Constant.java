@@ -143,7 +143,7 @@ public class Constant {
     public static final MessageDTO ENTERING_TIME_EMPTY =
             new MessageDTO(1,"Thời gian thực thi này không tồn tại.");
     public static final MessageDTO ROLE_ID_NULL =
-            new MessageDTO(1,"Hãy chọn role.");
+            new MessageDTO(1,"Hãy chọn chức vụ.");
     public static final MessageDTO DAY_NOT_EXIST =
             new MessageDTO(1,"Không có ngày thỏa mãn.");
     public static final MessageDTO START_TIME_EMPTY =
@@ -158,6 +158,36 @@ public class Constant {
             new MessageDTO(1,"Danh sách ngày trống.");
     public static final MessageDTO LIST_CLASS_EMPTY =
             new MessageDTO(1,"Danh sách lớp trống.");
+    public static final MessageDTO DATE_EMPTY =
+            new MessageDTO(1,"Hãy lựa chọn ngày.");
+    public static final MessageDTO LIST_REDSTAR_EMPTY =
+            new MessageDTO(1,"Danh sách sao đỏ trống.");
+    public static final MessageDTO VIEW_CHANGE_REQUEST_NULL =
+            new MessageDTO(1,"Không có kết quả.");
+    public static final MessageDTO EMULATE_FAIL =
+            new MessageDTO(1,"Bạn không có quyền thêm/chỉnh sửa với lớp này.");
+    public static final MessageDTO DATE_RANKED =
+            new MessageDTO(1,"Điểm thi đua của lớp vào ngày này đã được xếp hạng.");
+    public static final MessageDTO OVERDATE_EMULATE =
+            new MessageDTO(1,"Bạn không thể chấm điểm ngày ở tương lai.");
+    public static final MessageDTO TYPE_REQUEST_NULL =
+            new MessageDTO(1,"Hãy chọn loại yêu cầu.");
+    public static final MessageDTO VIOLATION_CLASS_ID_NULL =
+            new MessageDTO(1,"Hãy chọn yêu cầu thay đổi.");
+    public static final MessageDTO VIOLATION_CLASS_NULL =
+            new MessageDTO(1,"Thông tin chấm điểm không tồn tại.");
+    public static final MessageDTO VIOLATIONOFCLASS_EMPTY =
+            new MessageDTO(1,"Danh sách lỗi của lớp đang trống.");
+    public static final MessageDTO VIOLATIONCLASSID_EMPTY =
+            new MessageDTO(1,"Hãy lựa chọn lỗi của lớp học.");
+    public static final MessageDTO REASON_EMPTY =
+            new MessageDTO(1,"Hãy nhập lý do của bạn.");
+    public static final MessageDTO QUANTITY_EMPTY =
+            new MessageDTO(1,"Hãy nhập số lượng mà bạn muốn.");
+    public static final MessageDTO REQUEST_ID_NULL =
+            new MessageDTO(1,"Hãy chọn yêu cầu thay đổi.");
+    public static final MessageDTO NOT_ACCEPT_EDIT =
+            new MessageDTO(1,"Bạn không có quyền chỉnh sửa.");
     /**
      * Success message
      */
@@ -227,5 +257,13 @@ public class Constant {
     //dulicate date update timetable
     public static final MessageDTO CONFIRM_UPDATE_TIMTABLE=
             new MessageDTO(2,"ngày áp dụng này đã tồn tại bạn có muốn ghi đè không");
+
+    //accept request emulation success
+    public static final MessageDTO ACCEPT_REQUEST_SUCCESS =
+            new MessageDTO(0,"Yêu cầu thay đổi được chấp nhận.");
+
+    //reject request emulation success
+    public static final MessageDTO REJECT_REQUEST_SUCCESS =
+            new MessageDTO(0,"Từ chối thành công.");
 
 }
