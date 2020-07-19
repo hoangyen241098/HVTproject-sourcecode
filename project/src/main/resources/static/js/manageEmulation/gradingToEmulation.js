@@ -4,6 +4,7 @@ var list = [];
 var roleId = localStorage.getItem('roleID');
 var username = localStorage.getItem('username');
 $('#datetime').val(moment().format('YYYY-MM-DD'));
+$('#datetime').prop('max', moment().format('YYYY-MM-DD'));
 
 /*Get data in page*/
 $.ajax({
@@ -180,7 +181,11 @@ $('#saveGrading').on('click', function () {
                             var message = data.message;
                             if (messageCode == 0) {
                                 dialogErr("/img/img-success.png", "Thông tin đã lưu thành công!");
-                                $('#saveSuccess .modal-footer').html(` <a href="gradingToEmulation" class="btn btn-primary">ĐÓNG</a>`)
+                                $('#saveSuccess .modal-footer').html(`
+                                    <a href="violationListOfClass" class="btn btn-danger">XEM VI PHẠM</a> 
+                                    <a href="gradingToEmulation" class="btn btn-primary">ĐÓNG</a> `);
+                                sessionStorage.setItem('classId', $('#classList option:selected').val());
+                                sessionStorage.setItem('date', $('#datetime').val());
                             } else {
                                 dialogErr("/img/img-error.png", message);
                             }
@@ -309,3 +314,4 @@ function decreaseBtn() {
         $total.text(total.toFixed(2));
     });
 }
+

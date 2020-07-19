@@ -2,10 +2,23 @@
 $('#datetime').val(moment().format('YYYY-MM-DD'));
 var roleId = localStorage.getItem('roleID');
 var username = localStorage.getItem('username');
+var classId, date;
+if (sessionStorage.getItem('classId') == null) {
+    classId = 1;
+} else {
+    classId = sessionStorage.getItem('classId');
+}
+if (sessionStorage.getItem('date') == null) {
+    date = moment().format('YYYY-MM-DD');
+    $('#datetime').val(date);
+} else {
+    date = sessionStorage.getItem('date');
+    $('#datetime').val(date);
+}
 var infoSearch = {
     username: username,
-    classId: 1,
-    date: $('#datetime').val(),
+    classId: classId,
+    date: date,
     roleId: roleId
 }
 var editViolation = "";
@@ -28,10 +41,18 @@ $.ajax({
                 $("#classList").select2();
                 $("#classList").html('');
                 $.each(data.classList, function (i, item) {
-                    if (item.classID == 1) {
-                        $('#classList').append(`<option value="` + item.classID + `" selected="selected">` + item.className + `</option>`);
+                    if (classId != null) {
+                        if (item.classID == classId) {
+                            $('#classList').append(`<option value="` + item.classID + `" selected="selected">` + item.className + `</option>`);
+                        } else {
+                            $('#classList').append(`<option value="` + item.classID + `">` + item.className + `</option>`);
+                        }
                     } else {
-                        $('#classList').append(`<option value="` + item.classID + `">` + item.className + `</option>`);
+                        if (item.classID == 1) {
+                            $('#classList').append(`<option value="` + item.classID + `" selected="selected">` + item.className + `</option>`);
+                        } else {
+                            $('#classList').append(`<option value="` + item.classID + `">` + item.className + `</option>`);
+                        }
                     }
                 });
             } else {
@@ -50,7 +71,6 @@ $.ajax({
 
 /*Search button*/
 $("#search").click(function () {
-    var classId, date;
     date = $('#datetime').val();
     if ($('#classList option:selected').val() == null || $('#classList option:selected').val() == "") {
         classId = "";
@@ -66,7 +86,6 @@ $("#search").click(function () {
     console.log(JSON.stringify(infoSearch))
     $(".violation-by-date").html("");
     search();
-
 });
 
 search();
@@ -295,6 +314,12 @@ function editModal(violationDate, className, description, note, substract, quant
             <span class="text-red editInfo-err"></span>
         </div>
     `)
+    if (roleId == 1) {
+        $('#editModalBtn').val("CHỈNH SỬA");
+    }
+    if (roleId == 4) {
+        $('#editModalBtn').val("TẠO YÊU CẦU THAY ĐỔI");
+    }
 }
 
 /*Edit Modal Button*/
@@ -396,3 +421,27 @@ function decreaseBtn(substract, total, $total) {
         $total.text(total);
     });
 }
+
+$('.closeModal').on('click', function () {
+    $('#saveSuccess').modal('hide');
+    date = $('#datetime').val();
+    if ($('#classList option:selected').val() == null || $('#classList option:selected').val() == "") {
+        classId = "";
+    } else {
+        classId = $('#classList option:selected').val();
+    }
+    infoSearch = {
+        username: username,
+        classId: classId,
+        date: date,
+        roleId: roleId
+    }
+    console.log(JSON.stringify(infoSearch))
+    $(".violation-by-date").html("");
+    search();
+})
+/*Clear session when leaving page*/
+$(window).bind('beforeunload', function () {
+    sessionStorage.removeItem('classId');
+    sessionStorage.removeItem('date');
+});
