@@ -3,13 +3,12 @@ package com.example.webDemo3.service.impl.manageEmulationServiceImpl;
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ClassRedStarResponseDto;
 import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.dto.manageEmulationResponseDto.ListStarClassDateResponseDto;
+import com.example.webDemo3.dto.manageEmulationResponseDto.ListClassAndDateResponseDto;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViewAssignTaskResponseDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewAssignTaskRequestDto;
 import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.entity.ClassRedStar;
 import com.example.webDemo3.entity.User;
-import com.example.webDemo3.entity.ViolationClassRequest;
 import com.example.webDemo3.repository.ClassRedStarRepository;
 import com.example.webDemo3.repository.ClassRepository;
 import com.example.webDemo3.repository.UserRepository;
@@ -46,8 +45,6 @@ public class TaskServiceImpl implements TaskService {
         ViewAssignTaskResponseDto assignTaskResponseDto = new ViewAssignTaskResponseDto();
 
         List<ClassRedStarResponseDto> list = new ArrayList<>();
-        List<Class> listClass = new ArrayList<>();
-        List<User> listRedStar = new ArrayList<>();
         List<Date> listDate = new ArrayList<>();
 
         Page<ClassRedStar> pagedResult = null;
@@ -65,29 +62,33 @@ public class TaskServiceImpl implements TaskService {
         String redStar = assignTaskRequestDto.getRedStar();
 
         String orderByProperty;
+        String orderByProperty2 = "";
         //catch sortBy
         switch (sortBy){
             case 0: {
-                orderByProperty = "classId";
+                orderByProperty = "aClass.grade";
+                orderByProperty2 = "aClass.giftedClass.giftedClassId";
                 break;
             }
             case 1: {
-                orderByProperty = "redStar";
+                orderByProperty = "classRedStarId.RED_STAR";
+                orderByProperty2 = "classRedStarId.FROM_DATE";
                 break;
             }
-            default: orderByProperty = "classId";
+            default: {
+                orderByProperty = "aClass.grade";
+                orderByProperty2 = "aClass.giftedClass.giftedClassId";
+            }
         }
 
         try{
-            listClass = classRepository.findAll();
-            listRedStar = userRepository.findAllByRoleRoleId(3);
             listDate = classRedStarRepository.findDistinctByClassRedStarId_FROM_DATE();
 
             //catch orderBy
             if(orderBy == 0){
-                paging = PageRequest.of(pageNumber, pageSize, Sort.by(orderByProperty).descending());
+                paging = PageRequest.of(pageNumber, pageSize, Sort.by(orderByProperty).descending().and(Sort.by(orderByProperty2).descending()));
             }else{
-                paging = PageRequest.of(pageNumber, pageSize, Sort.by(orderByProperty).ascending());
+                paging = PageRequest.of(pageNumber, pageSize, Sort.by(orderByProperty).ascending().and(Sort.by(orderByProperty2).ascending()));
             }
 
             //check fromDate null or not
@@ -126,7 +127,9 @@ public class TaskServiceImpl implements TaskService {
             //conver classRedStar from entiti to Dto
             for(ClassRedStar classRedStar : pagedResult){
                 ClassRedStarResponseDto classRedStarResponseDto = new ClassRedStarResponseDto();
-                classRedStarResponseDto.setClassIdentifier(classRepository.findByClassId(classRedStar.getClassId()).getClassIdentifier());
+                Integer grade = classRepository.findByClassId(classRedStar.getClassSchool().getClassId()).getGrade();
+                String name = classRepository.findByClassId(classRedStar.getClassSchool().getClassId()).getGiftedClass().getName();
+                classRedStarResponseDto.setClassName(String.valueOf(grade) + name);
                 classRedStarResponseDto.setRedStar(classRedStar.getClassRedStarId().getRED_STAR());
                 list.add(classRedStarResponseDto);
             }
@@ -144,19 +147,16 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public ListStarClassDateResponseDto listStarClassDate() {
-        ListStarClassDateResponseDto list = new ListStarClassDateResponseDto();
+    public ListClassAndDateResponseDto listStarClassDate() {
+        ListClassAndDateResponseDto list = new ListClassAndDateResponseDto();
         List<Class> listClass = new ArrayList<>();
-        List<User> listRedStar = new ArrayList<>();
         List<Date> listDate = new ArrayList<>();
         MessageDTO message = new MessageDTO();
         try{
             listClass = classRepository.findAll();
-            listRedStar = userRepository.findAllByRoleRoleId(3);
             listDate = classRedStarRepository.findDistinctByClassRedStarId_FROM_DATE();
 
             list.setListClass(listClass);
-            list.setListRedStar(listRedStar);
             list.setListDate(listDate);
 
             //check list class emptu or not
@@ -173,12 +173,6 @@ public class TaskServiceImpl implements TaskService {
                 return list;
             }
 
-            //check list red star empty or not
-            if(listRedStar.size() == 0){
-                message = Constant.LIST_REDSTAR_EMPTY;
-                list.setMessage(message);
-                return list;
-            }
             message = Constant.SUCCESS;
             list.setMessage(message);
         }catch (Exception e){
@@ -189,7 +183,4 @@ public class TaskServiceImpl implements TaskService {
         }
         return list;
     }
-
-
-
 }

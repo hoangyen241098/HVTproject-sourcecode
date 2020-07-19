@@ -9,6 +9,7 @@ import com.example.webDemo3.dto.request.manageEmulationRequestDto.ChangeRequestD
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewAssignTaskRequestDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewRequestDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewViolationOfClassRequestDto;
+import com.example.webDemo3.entity.ViolationClass;
 import com.example.webDemo3.service.manageEmulationService.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,10 +45,10 @@ public class EmulationController {
      * lamnt98
      * 14/07
      * catch request to get list star, class and date
-     * @return ListStarClassDateResponseDto
+     * @return ListClassAndDateResponseDto
      */
     @PostMapping("/liststarclassdate")
-    public ListStarClassDateResponseDto getListStarClassDate()
+    public ListClassAndDateResponseDto getListStarClassDate()
     {
         return taskService.listStarClassDate();
     }

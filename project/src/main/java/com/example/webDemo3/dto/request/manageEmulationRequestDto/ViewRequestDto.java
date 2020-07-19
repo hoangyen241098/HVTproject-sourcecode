@@ -11,7 +11,6 @@ import java.sql.Date;
  */
 @Data
 public class ViewRequestDto {
-    private Integer typeRequest;
     private Integer classId;
     private Integer status;
     private Date createDate;
