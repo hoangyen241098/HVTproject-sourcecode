@@ -4,7 +4,7 @@ import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.request.manageTeacherRequestDto.AddTeacherRequestDto;
 import com.example.webDemo3.dto.request.manageTeacherRequestDto.DeleteTeacherRequestDto;
-import com.example.webDemo3.entity.*;
+import com.example.webDemo3.entity.Teacher;
 import com.example.webDemo3.repository.TeacherRepository;
 import com.example.webDemo3.service.manageTeacherService.TeacherService;
 import org.junit.Assert;
@@ -20,14 +20,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * lamnt98
- * 19/07
- */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class TeacherServiceTest {
-
     @MockBean
     private TeacherRepository teacherRepository;
 
