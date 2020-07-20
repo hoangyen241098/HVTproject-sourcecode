@@ -129,7 +129,7 @@ public class TaskServiceImpl implements TaskService {
                 ClassRedStarResponseDto classRedStarResponseDto = new ClassRedStarResponseDto();
                 Integer grade = classRepository.findByClassId(classRedStar.getClassSchool().getClassId()).getGrade();
                 String name = classRepository.findByClassId(classRedStar.getClassSchool().getClassId()).getGiftedClass().getName();
-                classRedStarResponseDto.setClassName(String.valueOf(grade) + name);
+                classRedStarResponseDto.setClassName(String.valueOf(grade) + " " + name);
                 classRedStarResponseDto.setRedStar(classRedStar.getClassRedStarId().getRED_STAR());
                 list.add(classRedStarResponseDto);
             }

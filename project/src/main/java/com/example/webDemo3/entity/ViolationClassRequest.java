@@ -41,4 +41,7 @@ public class ViolationClassRequest {
     @Column(name = "STATUS_CHANGE")
     private Integer statusChange;
 
+    @Column(name = "QUANTITY_OLD")
+    private Integer quantityOld;
+
 }

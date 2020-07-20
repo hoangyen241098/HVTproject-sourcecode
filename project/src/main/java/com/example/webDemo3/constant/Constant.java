@@ -188,6 +188,10 @@ public class Constant {
             new MessageDTO(1,"Hãy chọn yêu cầu thay đổi.");
     public static final MessageDTO NOT_ACCEPT_EDIT =
             new MessageDTO(1,"Bạn không có quyền chỉnh sửa.");
+    public static final MessageDTO NOT_ACCEPT_REQUEST_CHANGE =
+            new MessageDTO(1,"Bạn không có quyền chấp nhận yêu cầu thay đổi.");
+    public static final MessageDTO NOT_REJECT_REQUEST_CHANGE =
+            new MessageDTO(1,"Bạn không có quyền từ chối yêu cầu thay đổi .");
     /**
      * Success message
      */
