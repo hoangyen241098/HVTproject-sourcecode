@@ -27,20 +27,12 @@
 <div class="container">
     <div class="table-wrapper">
         <div class="table-title">
-            <h2>Xem yêu cầu thay đổi</h2>
-            <div class="search">
-                <div class="col-xl-4 d-inline-block">
-                    <div class="search-line">
-                        <span>Loại yêu cầu</span>
-                        <select class="combobox searchable" id="requestType">
-                            <option value="2" selected>Tất cả</option>
-                            <option value="1">Tạo mới</option>
-                            <option value="0">Sửa đổi</option>
-                        </select>
-                    </div>
-                    <div class="search-line">
-                        <span>Trạng thái</span>
-                        <select class="combobox searchable" id="status">
+            <h2>XEM YÊU CẦU THAY ĐỔI</h2>
+            <div class="search row">
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0">
+                    <div class="form-group text-left mb-1">
+                        <label>Trạng thái:</label>
+                        <select class="combobox form-control w-75" id="status">
                             <option value="3" selected>Tất cả</option>
                             <option value="0">Chưa duyệt</option>
                             <option value="1">Chấp nhận</option>
@@ -48,24 +40,41 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-xl-2 d-inline-block div-space"></div>
-                <div class="col-xl-4 d-inline-block">
-                    <div class="search-line">
-                        <span>Lớp</span>
-                        <select class="combobox searchable" id="classList"></select>
-                    </div>
-                    <div class="search-line">
-                        <span>Ngày</span>
-                        <input type="date" class="searchable" id="inputDate">
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0">
+                    <div class="form-group text-left mb-1">
+                        <label>Lớp:</label>
+                        <select class="combobox form-control w-75" id="classList"></select>
                     </div>
                 </div>
-                <div class="d-inline-block ml-2">
-                    <button class="btn btn-search" id="search">Tìm kiếm</button>
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0">
+                    <div class="form-group text-left mb-1">
+                        <label>Ngày:</label>
+                        <input type="date" class="form-control w-75" id="inputDate">
+                    </div>
+                </div>
+            </div>
+            <div class="table-title-2 pt-0">
+                <div class="col-sm-12 px-0 d-flex justify-content-end align-items-center">
+                    <button class="btn btn-search mr-0" id="search">Tìm kiếm</button>
                 </div>
             </div>
         </div>
         <div class="panel panel-default"></div>
         <div class="table-paging">
+        </div>
+    </div>
+</div>
+
+<!--    Modal confirm-->
+<div class="modal fade" tabindex="-1" role="dialog" id="confirmModal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center"></div>
+            <div class="modal-footer">
+                <input type="button" id="confirmBtn" class="btn btn-danger" value="XÁC NHẬN"/>
+                <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG"/>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -75,7 +84,7 @@
         <div class="modal-content">
             <div class="modal-body text-center"></div>
             <div class="modal-footer">
-                <a href="viewRequest" class="btn btn-primary">ĐÓNG</a>
+                <input type="button" class="btn btn-primary btn-reload" data-dismiss="modal" value="ĐÓNG"/>
             </div>
         </div>
     </div>
@@ -87,7 +96,7 @@
         <div class="modal-content">
             <div class="modal-body text-center"></div>
             <div class="modal-footer">
-                <a href="viewRequest" class="btn btn-primary">ĐÓNG</a>
+                <input type="button" class="btn btn-primary btn-reload" data-dismiss="modal" value="ĐÓNG"/>
             </div>
         </div>
     </div>

@@ -43,27 +43,28 @@ input[type=number] {
 
 .myHeader {
     background-color: #4267b2;
+    position: relative;
+    padding: .5rem 1rem 0 1rem;
+}
+
+.navbar-brand {
+    position: absolute;
+    top: 5%;
+    height: 90%;
+    margin: 0;
+    padding: 0;
 }
 
 .logo-img {
-    max-height: 70px;
+    height: 100%;
 }
 
 .fa-phone {
     transform: rotate(90deg);
 }
 
-.navbar-toggler {
-    border: 1px solid #FFF;
-    margin-right: 30px;
-}
-
 .navbar-toggler i {
     font-size: 30px;
-}
-
-.nav-item:last-child {
-    margin: 0 20px;
 }
 
 .dropdown-menu {
@@ -73,7 +74,9 @@ input[type=number] {
     border: none;
     color: #ffffff;
     background-color: #4267b2;
-    margin-top: 28px;
+    margin-top: 0;
+    padding: 0;
+    border-radius: 0;
 }
 
 .dropdown-menu.show {
@@ -83,12 +86,13 @@ input[type=number] {
 
 .dropdown-item:hover {
     color: #ffffff;
-    font-weight: 500;
-    background-color: transparent;
+    background: #ffffff4f;
 }
 
 .dropdown-item {
     color: #ffffff;
+    padding: 10px 20px;
+    border-top: 1px solid #ffffff4f;
 }
 
 .dropdown-toggle::after {
@@ -108,36 +112,37 @@ input[type=number] {
 }
 
 .nav-link:hover {
+    background: #ffffff4f;
     color: #FFF;
 }
 
-.nav-link:before {
-    top: 0px;
-    transform: translateY(10px);
-}
+/*.nav-link:before {*/
+/*    top: 0px;*/
+/*    transform: translateY(10px);*/
+/*}*/
 
-.nav-link:after {
-    bottom: 0px;
-    transform: translateY(-10px);
-}
+/*.nav-link:after {*/
+/*    bottom: 0px;*/
+/*    transform: translateY(-10px);*/
+/*}*/
 
-.nav-link:before,
-.nav-link:after {
-    position: absolute;
-    left: 0px;
-    width: 100%;
-    height: 1px;
-    background: #FFF;
-    content: "";
-    opacity: 0;
-    transition: all 0.3s;
-}
+/*.nav-link:before,*/
+/*.nav-link:after {*/
+/*    position: absolute;*/
+/*    left: 0px;*/
+/*    width: 100%;*/
+/*    height: 1px;*/
+/*    background: #FFF;*/
+/*    content: "";*/
+/*    opacity: 0;*/
+/*    transition: all 0.3s;*/
+/*}*/
 
-.nav-link:not(.active):hover:before,
-.nav-link:not(.active):hover:after {
-    opacity: 1;
-    transform: translateY(0px);
-}
+/*.nav-link:not(.active):hover:before,*/
+/*.nav-link:not(.active):hover:after {*/
+/*    opacity: 1;*/
+/*    transform: translateY(0px);*/
+/*}*/
 
 .nav-link i {
     margin-left: 10px;
@@ -161,13 +166,8 @@ input[type=number] {
     height: 100%;
 }
 
-.navbar-collapse {
-    padding: 10px 20px;
-    padding-right: 0;
-}
-
 .contact-number a {
-    color: #FFF;
+    color: #ffffffb8;
     margin: 0 10px;
     font-weight: 700;
 }
@@ -178,7 +178,7 @@ input[type=number] {
 }
 
 .header-hotline {
-    border-bottom: 1px solid #FFF;
+    border-bottom: 1px solid #ffffffb8;
 }
 
 .btn-login {
@@ -211,10 +211,10 @@ input[type=number] {
 
 .mega-menu {
     background-color: #4267b2;
-    margin-top: 28px;
+    margin-top: 0;
+    border-top: 1px solid #ffffff4f;
     position: absolute;
     padding: 50px;
-    border-radius: .25rem;
     display: block;
     opacity: 0;
     visibility: hidden;
@@ -263,7 +263,7 @@ ul.stander li a {
 
 ul.stander li a:hover, ul.stander li.active {
     color: #fefefe;
-    font-weight: 500;
+    /*font-weight: 500;*/
     cursor: pointer;
     background: #7a96ca;
 }
@@ -334,7 +334,7 @@ body.loading .modal-loading {
 }
 
 .footer-info i {
-    font-size: 30px;
+    font-size: 20px;
     margin-right: 20px;
 }
 
@@ -416,20 +416,6 @@ body.loading .modal-loading {
     font-size: 18px;
 }
 
-/*.login-form .form-group input[type=text], .form-group input[type=password] {*/
-/*    width: 100%;*/
-/*    display: block;*/
-/*    border: none;*/
-/*    border-bottom: 1px solid #999;*/
-/*    padding: 6px 30px;*/
-/*    outline: none;*/
-/*    background: transparent;*/
-/*}*/
-
-/*.login-form .form-group input[type=text]:focus, .form-group input[type=password]:focus {*/
-/*    border-bottom: 1px solid #222;*/
-/*}*/
-
 .form-button {
     text-align: center;
 }
@@ -450,6 +436,15 @@ body.loading .modal-loading {
     background: #4292dc;
 }
 
+.select2-container {
+    display: block;
+    width: 75%;
+}
+
+.select2-container--default.select2-container--disabled .select2-selection--single {
+    background-color: #e9ecef;
+}
+
 .error {
     color: red;
     font-weight: 500;
@@ -465,24 +460,27 @@ body.loading .modal-loading {
 /*Manage Account*/
 
 .table-wrapper {
-    margin: 30px 0;
     padding: 20px 25px;
 }
 
 .table-title {
     align-items: center;
-    padding: 10px 0;
+    padding: 10px 0 0 0;
+}
+
+.table-title h2 {
+    font-size: 1.8rem;
 }
 
 .table-title-2 {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    padding: 10px 0;
+    padding: 0 0 20px 0;
 }
 
 .search {
-    margin: 10px 0;
+    margin: 30px 0 20px 0;
     align-items: center;
 }
 
@@ -602,18 +600,18 @@ tr.selected {
 /* Custom checkbox */
 .custom-checkbox {
     position: relative;
-    margin-left: 10px;
+    vertical-align: middle;
 }
 
 .custom-checkbox input[type="checkbox"] {
     opacity: 0;
     position: absolute;
-    margin: 5px 0 0 3px;
     z-index: 9;
 }
 
 .custom-checkbox label {
     position: relative;
+    margin: 0;
 }
 
 .custom-checkbox label:before {
@@ -623,7 +621,6 @@ tr.selected {
 
 .custom-checkbox label:before {
     content: '';
-    margin-right: 10px;
     display: inline-block;
     vertical-align: text-top;
     background: white;
@@ -733,12 +730,10 @@ div.searchable {
 
 .status-active {
     color: #4bdd33;
-    margin-left: 30px;
 }
 
 .status-deactive {
     color: #ff3154;
-    margin-left: 30px;
 }
 
 /*END Manage Account*/
@@ -1097,6 +1092,10 @@ fieldset .note {
 /*END Timetable*/
 
 /*violation list*/
+.panel-default .panel-heading:first-child {
+    margin-top: 0 !important;
+}
+
 .panel-heading:hover {
     cursor: pointer;
 }
@@ -1146,7 +1145,7 @@ fieldset .note {
 
 .panel-collapse table {
     width: 80%;
-    margin: 20px auto 0 auto;
+    margin: 0 auto;
     border: 1px solid rgb(227, 227, 227);
 }
 
@@ -1247,16 +1246,14 @@ fieldset .note {
     vertical-align: middle;
     text-align: center;
 }
+
 .table-responsive-customer td:nth-of-type(2) {
     max-width: 435px;
 
 }
+
 /*Responsive table max-width:650px*/
 @media screen and (max-width: 700px) {
-    .table-wrapper {
-        margin: 0;
-    }
-
     .div-space {
         display: none !important;
     }
@@ -1293,10 +1290,10 @@ fieldset .note {
 
     .table-responsive-customer td:nth-of-type(1) {
         position: absolute;
-        top: .75rem;
         border: none;
         padding-left: 0;
         padding-right: 0;
+        margin-left: 13px;
     }
 
     .table-responsive-customer td:nth-of-type(2) {

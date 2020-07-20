@@ -36,13 +36,14 @@
                 </div>
             </div>
         </div>
-        <div class="container">
-            <div class="navbar-brand">
-                <a th:href="@{/}">
-                    <img class="logo-img" th:src="@{/img/logo.png}" title=".::Trường THPT Chuyên Hoàng Văn Thụ::."/>
-                </a>
-            </div>
-
+<!--        <div class="container">-->
+<!--            <div class="navbar-brand">-->
+<!--                <a th:href="@{/}">-->
+<!--                    <img class="logo-img" th:src="@{/img/logo.png}" title=".::Trường THPT Chuyên Hoàng Văn Thụ::."/>-->
+<!--                </a>-->
+<!--            </div>-->
+<!--        </div>-->
+        <div class="container justify-content-end">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="fa fa-bars text-white"></i>
@@ -160,18 +161,15 @@
                         </div>
                     </li>
 
-
                     <li class="nav-item" id="loginMenu">
-                        <a class="btn btn-outline btn-login" th:href="@{login}">ĐĂNG NHẬP</a>
+                        <a class="nav-link" th:href="@{login}">ĐĂNG NHẬP</a>
                     </li>
                     <li class="nav-item dropdown" id="loginSuccessMenu">
-                        <button class="btn btn-outline btn-login p-1">
-                            <img src="https://img.icons8.com/material-rounded/30/FFFFFF/person-male.png"/>
-                        </button>
+                        <a class="nav-link" href="#"></a>
                         <div class="dropdown-menu">
                             <a th:href="@{userInformation}" class="dropdown-item">Thông tin tài khoản</a>
                             <a th:href="@{changePassword}" class="dropdown-item">Đổi mật khẩu</a>
-                            <a th:href="@{/}" id="logout" class="dropdown-item"><b>Đăng xuất</b></a>
+                            <a th:href="@{/}" id="logout" class="dropdown-item"><b>ĐĂNG XUẤT</b></a>
                         </div>
                     </li>
                 </ul>

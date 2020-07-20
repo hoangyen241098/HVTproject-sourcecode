@@ -12,5 +12,5 @@ public interface ValidateEmulationService {
     Integer getDayIdByDate(Date date);
     Boolean checkMonitorOfClass(Integer classId, String username);
     Boolean checkRoleForAddViolationClass(String username, Integer roleId,Integer classId, Date addDate);
-    Boolean checkRoleForEditViolationClass(String username, Integer roleId,Integer classId, Date editDate);
+    Boolean checkRoleForEditViolationClass(String username, Integer roleId,Integer classId, Date date);
 }

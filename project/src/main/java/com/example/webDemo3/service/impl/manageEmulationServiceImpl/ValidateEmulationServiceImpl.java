@@ -150,27 +150,27 @@ public class ValidateEmulationServiceImpl implements ValidateEmulationService {
      * @param username
      * @param roleId
      * @param classId
-     * @param editDate
+     * @param date
      * @return true if user can edit
      */
     @Override
-    public Boolean checkRoleForEditViolationClass(String username, Integer roleId,Integer classId , Date editDate) {
+    public Boolean checkRoleForEditViolationClass(String username, Integer roleId,Integer classId , Date date) {
         Date currentDate = new Date(System.currentTimeMillis());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Time time = new Time(System.currentTimeMillis());
 
         //admin can edit violation of class
-        if(roleId == 1 && checkImportViolationClass(editDate)){
+        if(roleId == 1 && checkImportViolationClass(date)){
             return true;
         }
         //check monitor can edit violation of class
         else if (checkMonitorOfClass(classId, username)
-                && sdf.format(currentDate).equalsIgnoreCase(sdf.format(editDate))){
+                && sdf.format(currentDate).equalsIgnoreCase(sdf.format(date))){
             return true;
         }
         //red star can edit violation of class
-        else if(roleId == 3 && checkRoleForEmulate(classId, username, editDate)
-                && checkImportViolationWithEnteringTime(roleId,editDate, time)){
+        else if(roleId == 3 && checkRoleForEmulate(classId, username, date)
+                && checkImportViolationWithEnteringTime(roleId,date, time)){
             return true;
         }
         else{

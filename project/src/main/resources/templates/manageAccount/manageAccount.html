@@ -22,52 +22,50 @@
 <div class="container">
     <div class="table-wrapper">
         <div class="table-title">
-            <h2>Danh sách tài khoản</h2>
-            <div class="search">
-                <div class="col-xl-4 d-inline-block">
-                    <div class="search-line" id="searchByUsername">
-                        <span>Tên đăng nhập</span>
-                        <input type="text" placeholder="Tên đăng nhập">
+            <h2>DANH SÁCH TÀI KHOẢN</h2>
+            <div class="search row align-items-end">
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0">
+                    <div class="form-group text-left mb-1" id="searchByUsername">
+                        <label>Tên đăng nhập:</label>
+                        <input type="text" class="form-control w-75" placeholder="Tên đăng nhập">
                     </div>
-                    <div class="search-line">
-                        <span>Sắp xếp theo</span>
-                        <select class="combobox searchable" id="orderBY">
+                    <div class="form-group text-left mb-1">
+                        <label>Chức vụ:</label>
+                        <select class="combobox form-control w-75" id="role-name">
+                            <option value="" selected="selected">Tất cả</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0">
+                    <div class="form-group text-left mb-1">
+                        <label>Sắp xếp theo:</label>
+                        <select class="combobox form-control w-75" id="orderBY">
                             <option value="0" selected="selected">Tên đăng nhập</option>
                             <option value="1">Họ và tên</option>
                         </select>
                     </div>
-                </div>
-                <div class="col-xl-2 d-inline-block div-space"></div>
-                <div class="col-xl-4 d-inline-block">
-                    <div class="search-line">
-                        <span>Chức vụ</span>
-                        <select class="combobox searchable" id="role-name">
-                            <option value="" selected="selected">Tất cả</option>
-                        </select>
-                    </div>
-                    <div class="search-line">
-                        <span>Thứ tự</span>
-                        <select class="combobox searchable" id="sortBy">
+                    <div class="form-group text-left mb-1">
+                        <label>Thứ tự:</label>
+                        <select class="combobox form-control w-75" id="sortBy">
                             <option value="0">Giảm dần</option>
                             <option value="1" selected="selected">Tăng dần</option>
                         </select>
                     </div>
                 </div>
-                <div class="d-inline-block ml-2">
-                    <button class="btn btn-search" id="search">Tìm kiếm</button>
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0">
+                    <div class="form-group text-right mb-1">
+                        <button class="btn btn-search mx-0 mt-3" id="search">Tìm kiếm</button>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="table-title-2">
-            <div class="col-sm-12 d-flex justify-content-end align-items-center">
-                <a href="#resetPasswordModal" class="btn btn-success" data-toggle="modal"
-                   onclick="checkResetPassword()">
-                    <span>Đặt lại MK</span>
-                </a>
-                <a href="#deleteAccountModal" class="btn btn-success" data-toggle="modal" onclick="checkUser()">
-                    <span>Xóa</span>
-                </a>
-                <a th:href="@{createAccount}" class="btn btn-success">
+            <div class="col-sm-12 px-0 d-flex justify-content-end align-items-center">
+                <input type="button" class="btn btn-success mx-2" data-toggle="modal" onclick="checkResetPassword()"
+                       value="Đặt lại MK"/>
+                <input type="button" class="btn btn-success mx-2" data-toggle="modal" onclick="checkUser()"
+                       value="Xóa"/>
+                <a th:href="@{createAccount}" class="btn btn-success mr-0">
                     <span>Tạo tài khoản</span>
                 </a>
             </div>
@@ -102,12 +100,10 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form>
-                <div class="modal-body text-center">
-
-                </div>
+                <div class="modal-body text-center"></div>
                 <div class="modal-footer">
-                    <input type="submit" class="btn btn-danger" data-toggle="modal" data-target="#deleteSuccess"
-                           id="deleteAccount" data-dismiss="modal" value="CÓ">
+                    <input type="button" class="btn btn-danger" data-toggle="modal" id="deleteAccount"
+                           data-dismiss="modal" value="CÓ">
                     <input type="button" class="btn btn-primary" data-dismiss="modal" value="KHÔNG">
                 </div>
             </form>
@@ -119,11 +115,7 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="deleteSuccess">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-body text-center">
-                <img class="mb-3 mt-3 img-success hide" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
-                <img class="mb-3 mt-3 img-fail hide" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                <h5 id="message-delete"></h5>
-            </div>
+            <div class="modal-body text-center"></div>
             <div class="modal-footer">
                 <a type="button" class="btn btn-primary" href="manageAccount">ĐÓNG</a>
             </div>
@@ -140,9 +132,7 @@
                     <h4 class="modal-title">Đặt lại mật khẩu</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
-                <div class="modal-body text-center">
-
-                </div>
+                <div class="modal-body text-center"></div>
                 <div class="modal-footer">
                     <input type="submit" class="btn btn-danger" data-toggle="modal" data-target="#resetSuccess"
                            id="resetPassword" data-dismiss="modal" value="XÁC NHẬN">
@@ -157,11 +147,7 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="resetSuccess">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-body text-center">
-                <img class="mb-3 mt-3 img-success hide" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
-                <img class="mb-3 mt-3 img-fail hide" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                <h5 id="message-reset"></h5>
-            </div>
+            <div class="modal-body text-center"></div>
             <div class="modal-footer">
                 <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
             </div>

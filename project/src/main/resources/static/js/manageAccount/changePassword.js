@@ -45,7 +45,8 @@ $(document).ready(function () {
                     var messageCode = data.messageCode;
                     var message = data.message;
                     if (messageCode == 0) {
-                        $('#changePassword').css('display', 'block');
+                        $('.changePassword-err').text("");
+                        $('#changePassword').modal('show');
                     } else {
                         $('.changePassword-err').text(message);
                     }

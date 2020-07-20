@@ -1,6 +1,7 @@
 $('#inputDate').val(moment().format('YYYY-MM-DD'));
+$('#inputDate').prop('max', moment().format('YYYY-MM-DD'));
+var username = localStorage.getItem('username');
 var infoSearch = {
-    typeRequest: 2,
     classId: null,
     status: 3,
     createDate: $('#inputDate').val(),
@@ -9,13 +10,8 @@ var infoSearch = {
 
 /*Search button*/
 $("#search").click(function () {
-    var typeRequest, classId, status, createDate;
+    var classId, status, createDate;
     createDate = $('#inputDate').val();
-    if ($('#requestType option:selected').val() == null || $('#requestType option:selected').val() == 2 || $('#requestType option:selected').val() == "") {
-        typeRequest = 2;
-    } else {
-        typeRequest = $('#requestType option:selected').val();
-    }
     if ($('#classList option:selected').val() == null || $('#classList option:selected').val() == "" || $('#classList option:selected').val() == 0) {
         classId = null;
     } else {
@@ -27,7 +23,6 @@ $("#search").click(function () {
         status = $('#status option:selected').val();
     }
     infoSearch = {
-        typeRequest: typeRequest,
         classId: classId,
         status: status,
         createDate: createDate,
@@ -79,6 +74,7 @@ search();
 
 /*Set data to container*/
 function search() {
+    console.log(JSON.stringify(infoSearch))
     $.ajax({
         url: '/api/emulation/viewrequest',
         type: 'POST',
@@ -96,6 +92,7 @@ function search() {
                 var totalPages = data.totalPage;
                 if (totalPages > 0) {
                     $('.table-paging').removeClass('hide');
+                    $('.table-paging').html('');
                     paging(infoSearch, totalPages);
                 } else {
                     $('.table-paging').addClass('hide');
@@ -103,42 +100,25 @@ function search() {
                 if (data.viewViolationClassList.length != 0) {
                     $(".panel-default").html("");
                     $.each(data.viewViolationClassList, function (i, item) {
-                        var typeRequest = item.typeRequest;
-                        if ((item.violationClassRequest != null && typeRequest == 0) || typeRequest == 1) {
-                            var typeRequestName, status, requestId, dataTarget, createBy, totals, quantityNew,
+                        if (item.violationClassRequest != null) {
+                            var status, requestId, dataTarget, createBy, totals, quantityNew,
                                 totalsNew, reason;
                             var violationDate = item.dayName + " - " + convertDate(item.createDate);
                             var substractGrade = item.substractGrade;
                             var quantity = item.quantity;
                             totals = parseFloat(parseFloat(substractGrade) * parseInt(quantity)).toFixed(1);
-                            if (typeRequest == 0 || typeRequest == null) {
-                                typeRequestName = "Sửa đổi";
-                                requestId = item.violationClassRequest.requestId;
-                                dataTarget = "collapse" + requestId;
-                                createBy = item.violationClassRequest.createBy;
-                                quantityNew = item.violationClassRequest.quantityNew;
-                                totalsNew = parseFloat(parseFloat(substractGrade) * parseInt(quantityNew)).toFixed(1);
-                                reason = item.violationClassRequest.reason;
-                                if (item.violationClassRequest.status == 0) {
-                                    status = "Chưa duyệt";
-                                } else if (item.violationClassRequest.status == 2) {
-                                    status = "Chấp nhận";
-                                } else if (item.violationClassRequest.status == 1) {
-                                    status = "Từ chối";
-                                }
-                            } else if (typeRequest == 1) {
-                                typeRequestName = "Tạo mới";
-                                createBy = item.createBy;
-                                requestId = null;
-                                dataTarget = "collapseNew" + item.violationClassId;
-                                reason = "";
-                                if (item.status == 2) {
-                                    status = "Chưa duyệt";
-                                } else if (item.status == 1) {
-                                    status = "Chấp nhận";
-                                } else if (item.status == 0) {
-                                    status = "Từ chối";
-                                }
+                            requestId = item.violationClassRequest.requestId;
+                            dataTarget = "collapse" + requestId;
+                            createBy = item.violationClassRequest.createBy;
+                            quantityNew = item.violationClassRequest.quantityNew;
+                            totalsNew = parseFloat(parseFloat(substractGrade) * parseInt(quantityNew)).toFixed(1);
+                            reason = item.violationClassRequest.reason;
+                            if (item.violationClassRequest.status == 0) {
+                                status = "Chưa duyệt";
+                            } else if (item.violationClassRequest.status == 2) {
+                                status = "Chấp nhận";
+                            } else if (item.violationClassRequest.status == 1) {
+                                status = "Từ chối";
                             }
                             $('.panel-default').append(`
                                 <div class="panel-heading mt-3 mb-0" data-toggle="collapse" data-target="#` + dataTarget + `" onclick="toggleClick()">
@@ -161,10 +141,6 @@ function search() {
                                         <div class="violation-status violationTypeName">
                                             <span class="font-500">Trạng thái: </span>
                                             <span>` + status + `</span>
-                                        </div>
-                                        <div class="violation-request violationTypeName">
-                                            <span class="font-500">Loại yêu cầu: </span>
-                                            <span>` + typeRequestName + `</span>
                                         </div>
                                     </div>
                                     <button class="violation-btn"><i class="fa fa-chevron-down rotate up"></i></button>
@@ -202,7 +178,6 @@ function search() {
                                                 </div>
                                             </div>
                                             <div class="hide violationClassId">` + item.violationClassId + `</div>
-                                            <div class="hide typeRequest">` + typeRequest + `</div>
                                             <div class="col-md-12 text-right mt-4">
                                                 <input type="submit" name="` + requestId + `" class="btn btn-primary accept-request" data-toggle="modal" value="XÁC NHẬN">
                                                 <input type="button" name="` + requestId + `" class="btn btn-danger ml-3 reject-request" data-toggle="modal" value="TỪ CHỐI">
@@ -211,35 +186,6 @@ function search() {
                                     </div>
                                 </div>
                             `);
-                            if (typeRequest == 1) {
-                                var dataTargetID = "#" + dataTarget + " .panel-body";
-                                $(dataTargetID).html(`
-                                <div class="col-md-12 px-0">
-                                    <div class="violationName">
-                                        <span class="title">Mô tả lỗi: </span>
-                                        <span class="info ml-4">` + item.description + `</span>
-                                    </div>
-                                    <div class="substract-grade">
-                                        <span class="title">Điểm trừ: </span>
-                                        <span class="info ml-4">` + substractGrade + `</span>
-                                    </div>
-                                    <div class="quantity">
-                                        <span class="title">Số lần: </span>
-                                        <span class="info ml-4">` + quantity + `</span>
-                                    </div>
-                                    <div class="totals">
-                                        <span class="title">Tổng điểm trừ: </span>
-                                        <span class="info ml-4">` + totals + `</span>
-                                    </div>
-                                </div>
-                                <div class="hide violationClassId">` + item.violationClassId + `</div>
-                                <div class="hide typeRequest">` + typeRequest + `</div>
-                                <div class="col-md-12 text-right mt-4">
-                                    <input type="submit" name="` + requestId + `" class="btn btn-primary accept-request" data-toggle="modal" value="XÁC NHẬN">
-                                    <input type="button" name="` + requestId + `" class="btn btn-danger ml-3 reject-request" data-toggle="modal" value="TỪ CHỐI">
-                                </div>
-                                `)
-                            }
                             if (status == "Chấp nhận" || status == "Từ chối") {
                                 var dataTargetID = "#" + dataTarget;
                                 $(dataTargetID).find('.accept-request').parent().addClass('hide');
@@ -268,99 +214,138 @@ function search() {
 /*Accept Request*/
 function acceptRequest() {
     $('.accept-request').on('click', function () {
+        $('#confirmModal').modal('show');
+        $('#confirmModal .modal-body').html(`
+            <img class="mb-3 mt-3" src="/img/img-error.png"/>
+            <h5>Bạn có muốn <b>CHẤP NHẬN</b> yêu cầu này không?</h5>
+        `);
         var violationClassId = $(this).parent().parent().find('.violationClassId').text();
         var requestId = $(this).prop('name')
-        var typeRequest = $(this).parent().parent().find('.typeRequest').text();
-        var accept = {
-            violationClassId: violationClassId,
-            requestId: requestId,
-            typeRequest: typeRequest
-        }
-        console.log(JSON.stringify(accept));
-        $.ajax({
-            url: '/api/emulation/acceptrequest',
-            type: 'POST',
-            data: JSON.stringify(accept),
-            beforeSend: function () {
-                $('body').addClass("loading")
-            },
-            complete: function () {
-                $('body').removeClass("loading")
-            },
-            success: function (data) {
-                var messageCode = data.messageCode;
-                var message = data.message;
-                if (messageCode == 0) {
-                    $('#passSuccess').modal('show');
-                    $('#passSuccess .modal-body').html(`
+        $('#confirmBtn').on('click', function () {
+            $('#confirmModal').modal('hide');
+            var accept = {
+                violationClassId: violationClassId,
+                requestId: requestId,
+                userName: username,
+            }
+            console.log(JSON.stringify(accept));
+            $.ajax({
+                url: '/api/emulation/acceptrequest',
+                type: 'POST',
+                data: JSON.stringify(accept),
+                beforeSend: function () {
+                    $('body').addClass("loading")
+                },
+                complete: function () {
+                    $('body').removeClass("loading")
+                },
+                success: function (data) {
+                    var messageCode = data.messageCode;
+                    var message = data.message;
+                    if (messageCode == 0) {
+                        $('#passSuccess').modal('show');
+                        $('#passSuccess .modal-body').html(`
                         <img class="mb-3 mt-3" src="/img/img-success.png"/>
                         <h5>` + message + `</h5>
                     `);
-                } else {
-                    $('#passSuccess .modal-body').html(`
+                    } else {
+                        $('#passSuccess .modal-body').html(`
                         <img class="mb-3 mt-3" src="/img/img-error.png"/>
                         <h5>` + message + `</h5>
                     `);
-                }
-            },
-            failure: function (errMsg) {
-                $('#passSuccess .modal-body').html(`
+                    }
+                },
+                failure: function (errMsg) {
+                    $('#passSuccess .modal-body').html(`
                     <img class="mb-3 mt-3" src="/img/img-error.png"/>
                     <h5>` + errMsg + `</h5>
                 `);
-            },
-            dataType: "json",
-            contentType: "application/json"
-        });
+                },
+                dataType: "json",
+                contentType: "application/json"
+            });
+        })
+
     });
 }
 
 /*Reject Request*/
 function rejectRequest() {
     $('.reject-request').on('click', function () {
+        $('#confirmModal').modal('show');
+        $('#confirmModal .modal-body').html(`
+            <img class="mb-3 mt-3" src="/img/img-error.png"/>
+            <h5>Bạn có muốn <b>TỪ CHỐI</b> yêu cầu này không?</h5>
+        `);
         var violationClassId = $(this).parent().parent().find('.violationClassId').text();
-        var requestId = $(this).prop('name')
-        var typeRequest = $(this).parent().parent().find('.typeRequest').text();
-        var accept = {
-            violationClassId: violationClassId,
-            requestId: requestId,
-            typeRequest: typeRequest
-        }
-        console.log(JSON.stringify(accept));
-        $.ajax({
-            url: '/api/emulation/rejectrequest',
-            type: 'POST',
-            data: JSON.stringify(accept),
-            beforeSend: function () {
-                $('body').addClass("loading")
-            },
-            complete: function () {
-                $('body').removeClass("loading")
-            },
-            success: function (data) {
-                var messageCode = data.messageCode;
-                var message = data.message;
-                if (messageCode == 0) {
-                    $('#rejectSuccess').modal('show');
-                    $('#rejectSuccess .modal-body').html(`
+        var requestId = $(this).prop('name');
+        $('#confirmBtn').on('click', function () {
+            $('#confirmModal').modal('hide');
+            var accept = {
+                violationClassId: violationClassId,
+                requestId: requestId,
+            }
+            console.log(JSON.stringify(accept));
+            $.ajax({
+                url: '/api/emulation/rejectrequest',
+                type: 'POST',
+                data: JSON.stringify(accept),
+                beforeSend: function () {
+                    $('body').addClass("loading")
+                },
+                complete: function () {
+                    $('body').removeClass("loading")
+                },
+                success: function (data) {
+                    var messageCode = data.messageCode;
+                    var message = data.message;
+                    if (messageCode == 0) {
+                        $('#rejectSuccess').modal('show');
+                        $('#rejectSuccess .modal-body').html(`
                         <img class="mb-3 mt-3" src="/img/img-success.png"/>
                         <h5>` + message + `</h5>
                     `);
-                } else {
-                    $('#rejectSuccess .modal-body').html(`
+                    } else {
+                        $('#rejectSuccess .modal-body').html(`
                         <img class="mb-3 mt-3" src="/img/img-error.png"/>
                         <h5>` + message + `</h5>
                     `);
-                }
-            },
-            failure: function (errMsg) {
-                $('#rejectSuccess .modal-body').html(`
+                    }
+                },
+                failure: function (errMsg) {
+                    $('#rejectSuccess .modal-body').html(`
                     <img class="mb-3 mt-3" src="/img/img-error.png"/>
                     <h5>` + errMsg + `</h5>
                 `);
-            },
-            dataType: "json",
-            contentType: "application/json"
+                },
+                dataType: "json",
+                contentType: "application/json"
+            });
         });
+
     });
 }
+
+$('.btn-reload').on('click', function () {
+    var classId, status, createDate;
+    createDate = $('#inputDate').val();
+    if ($('#classList option:selected').val() == null || $('#classList option:selected').val() == "" || $('#classList option:selected').val() == 0) {
+        classId = null;
+    } else {
+        classId = $('#classList option:selected').val();
+    }
+    if ($('#status option:selected').val() == null || $('#status option:selected').val() == 3 || $('#status option:selected').val() == "") {
+        status = 3;
+    } else {
+        status = $('#status option:selected').val();
+    }
+    infoSearch = {
+        classId: classId,
+        status: status,
+        createDate: createDate,
+        pageNumber: 0
+    }
+    console.log(JSON.stringify(infoSearch))
+    $(".panel-default").html("");
+    search();
+})
