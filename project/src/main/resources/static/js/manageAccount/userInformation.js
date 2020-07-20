@@ -2,7 +2,6 @@ var roleId = localStorage.getItem("roleID");
 var oldFullName, oldPhone, oldEmail;
 
 $(document).ready(function () {
-    $('.userInfo-err').text("");
     var account = {
         userName: localStorage.getItem("username")
     }
@@ -121,59 +120,8 @@ $("#editInfo").click(function () {
     });
 });
 
-// $("#confirmEdit").click(function (e) {
-//     var emailRegex = '^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$';
-//     var phoneRegex = '^[0-9\\-\\+]{9,15}$';
-//     var fullName = $('#fullName').val().trim();
-//     var phone = $('#phone').val().trim();
-//     var email = $('#email').val().trim();
-//
-//     if (phone != "" && !phone.match(phoneRegex)) {
-//         $('.userInfo-err').text("SĐT không đúng định dạng.");
-//         return false;
-//     } else if (email != "" && !email.match(emailRegex)) {
-//         $('.userInfo-err').text("Email không đúng định dạng.");
-//         return false;
-//     } else {
-//         $('.userInfo-err').text("");
-//         $('#fullName').prop('disabled', true);
-//         $('#phone').prop('disabled', true);
-//         $('#email').prop('disabled', true);
-//         $('#confirmEdit').addClass('hide');
-//         $('#confirmEdit').removeClass('show');
-//         $('#editInfo').addClass('show');
-//         $('#editInfo').removeClass('hide');
-//         var info = {
-//             userName: localStorage.getItem("username"),
-//             fullName: fullName,
-//             phone: phone,
-//             email: email
-//         }
-//         e.preventDefault();
-//         $.ajax({
-//             url: '/api/user/editinformation',
-//             type: 'POST',
-//             data: JSON.stringify(info),
-//             beforeSend: function () {
-//                 $('body').addClass("loading")
-//             },
-//             complete: function () {
-//                 $('body').removeClass("loading")
-//             },
-//             success: function (data) {
-//                 var messageCode = data.messageCode;
-//                 var message = data.message;
-//                 if (messageCode == 0) {
-//
-//                 } else {
-//                     $('.userInfo-err').text(message);
-//                 }
-//             },
-//             failure: function (errMsg) {
-//                 $('.userInfo-err').text(errMsg);
-//             },
-//             dataType: "json",
-//             contentType: "application/json"
-//         });
-//     }
-// })
+/*Check Role has create or not*/
+if (localStorage.getItem('roleID') == null) {
+    $('.userInfo-err').append(`Hãy <a href="login">ĐĂNG NHẬP</a> để có thể sửa thông tin!`);
+    $('#editInfo').prop('disabled', true);
+}

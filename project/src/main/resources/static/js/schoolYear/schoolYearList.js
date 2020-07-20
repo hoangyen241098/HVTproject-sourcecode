@@ -63,6 +63,7 @@ $.ajax({
                 });
                 getSchoolYearId();
                 deleteYear();
+                manageBtn();
             }
         } else {
             $('tbody').html("");
@@ -103,7 +104,7 @@ function deleteYear() {
     });
     $('#deleteModal .modal-body').html('');
     $('#deleteModal .modal-body').append(`
-        <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+        <img class="mb-3 mt-3" src="img/img-question.png"/>
         <h5>Bạn có muốn <b>XÓA</b> năm học này không?</h5>
     `);
 
@@ -128,13 +129,13 @@ function deleteYear() {
                 if (messageCode == 0) {
                     $("#deleteSuccess .modal-body").html("");
                     $('#deleteSuccess .modal-body').append(`
-                    <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
+                    <img class="mb-3 mt-3" src="img/img-success.png"/>
                     <h5 id="message-delete">Xóa năm học thành công!</h5>
                 `);
                 } else {
                     $("#deleteSuccess .modal-body").html("");
                     $('#deleteSuccess .modal-body').append(`
-                    <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+                    <img class="mb-3 mt-3" src="img/img-error.png"/>
                     <h5>` + message + `</h5>
                 `);
                 }
@@ -142,7 +143,7 @@ function deleteYear() {
             failure: function (errMsg) {
                 $("#deleteSuccess .modal-body").html("");
                 $('#deleteSuccess .modal-body').append(`
-                    <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+                    <img class="mb-3 mt-3" src="img/img-success.png"/>
                     <h5>` + errMsg + `</h5>
             `);
             },
@@ -152,6 +153,14 @@ function deleteYear() {
     })
 }
 
+function manageBtn() {
+    if (localStorage.getItem('roleID') != 1) {
+        $('.manageBtn').addClass('hide');
+        $('thead th:last-child').addClass('hide');
+        $('tbody tr td:last-child').addClass('hide');
+        $('.table-title').addClass('pb-4');
+    }
+}
 
 
 

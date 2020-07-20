@@ -68,11 +68,12 @@ $.ajax({
                 `);
                 $.each(data.listDay, function (i, list) {
                     $('#allDay').append(`
-                        <div class="form-check text-left">
+                        <div class="form-check text-left my-1">
                             <span class="custom-checkbox">
                                 <input type="checkbox" name="options" value="` + list.dayId + `">
-                                <label for="` + list.dayId + `">` + list.dayName + `</label>
+                                <label for="` + list.dayId + `"></label>
                             </span>
+                            <span class="ml-3">` + list.dayName + `</span>
                         </div>
                     `);
                 });
@@ -146,30 +147,37 @@ $('#submit').on('click', function () {
                 var message = data.message;
                 if (messageCode == 0) {
                     $('.createTime-err').text('');
+                    $('#createSuccess').modal('show');
                     $('#createSuccess .modal-body').html('');
                     $('#createSuccess .modal-body').append(`
-                        <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
+                        <img class="mb-3 mt-3" src="img/img-success.png"/>
                         <h5>Thêm thời gian chấm thành công!</h5>
                     `);
                 } else {
+                    $('#createSuccess').modal('show');
                     $('#createSuccess .modal-body').html('');
                     $('#createSuccess .modal-body').append(`
-                        <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+                        <img class="mb-3 mt-3" src="img/img-error.png"/>
                         <h5>` + message + `</h5>
                     `);
                 }
             },
             failure: function (errMsg) {
+                $('#createSuccess').modal('show');
                 $('#createSuccess .modal-body').html('');
                 $('#createSuccess .modal-body').append(`
-                    <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+                    <img class="mb-3 mt-3" src="img/img-error.png"/>
                     <h5>` + errMsg + `</h5>
                 `);
             },
             dataType: "json",
             contentType: "application/json"
         });
-
-
     }
-})
+});
+
+/*Show or hide button manage*/
+if (localStorage.getItem('roleID') != 1) {
+    $('.createTime-err').text('Bạn không có quyền thêm thời gian chấm!');
+    $('#submit').prop('disabled', true);
+}

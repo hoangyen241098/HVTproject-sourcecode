@@ -92,6 +92,7 @@ function search() {
                 getTeacherID();
                 selectCheckbox();
                 pagingClick();
+                manageBtn();
             } else {
                 $('tbody').append(
                     `<tr>
@@ -176,7 +177,7 @@ function checkTeacher() {
     } else {
         $("#deleteTeacherModal .modal-body").html("");
         $('#deleteTeacherModal .modal-body').append(`
-            <img class="mb-3 mt-3" src="img/img-error.png"/>
+            <img class="mb-3 mt-3" src="img/img-question.png"/>
             <h5>Bạn có chắc muốn <b>XÓA</b> giáo viên này không?</h5>
         `);
         $('#deleteTeacherModal .modal-footer .btn-danger').removeClass('hide');
@@ -191,4 +192,21 @@ function getTeacherID() {
         teacherId = $(this).prop('id');
         sessionStorage.setItem("teacherId", teacherId);
     });
+}
+
+/*Show or hide button manage*/
+function manageBtn() {
+    if (localStorage.getItem('roleID') == 1) {
+        $('.manageBtn').removeClass('hide');
+        $('table thead th:first-child').removeClass('hide');
+        $('tbody > tr > td:first-child').removeClass('hide');
+        $('table thead th:last-child').removeClass('hide');
+        $('tbody > tr > td:last-child').removeClass('hide');
+    } else {
+        $('.manageBtn').addClass('hide');
+        $('table thead th:first-child').addClass('hide');
+        $('tbody > tr > td:first-child').addClass('hide');
+        $('table thead th:last-child').addClass('hide');
+        $('tbody > tr > td:last-child').addClass('hide')
+    }
 }
