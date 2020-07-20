@@ -12,6 +12,7 @@ import com.example.webDemo3.entity.Violation;
 import com.example.webDemo3.entity.ViolationClass;
 import com.example.webDemo3.entity.ViolationClassRequest;
 import com.example.webDemo3.repository.*;
+import com.example.webDemo3.service.manageEmulationService.AdditionalFunctionViolationClassService;
 import com.example.webDemo3.service.manageEmulationService.ValidateEmulationService;
 import com.example.webDemo3.service.manageEmulationService.ViolationOfClassService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,13 +40,7 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
     private ValidateEmulationService validateEmulationService;
 
     @Autowired
-    private DayRepository dayRepository;
-
-    @Autowired
-    private ClassRepository classRepository;
-
-    @Autowired
-    private ViolationRepository violationRepository;
+    private AdditionalFunctionViolationClassService additionalFunctionService;
 
     /**
      * kimpt142
@@ -83,7 +79,7 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
         if(violationClassRankedList != null && violationClassRankedList.size() != 0){
             for(ViolationClass item : violationClassList){
                 ViolationClassResponseDto violationClassRankedDto = new ViolationClassResponseDto();
-                violationClassRankedDto = convertViolationClassFromEntityToDto(item);
+                violationClassRankedDto = additionalFunctionService.convertViolationClassFromEntityToDto(item);
                 violationClassRankedDto.setCheckEdit(1);
                 violationClassListDto.add(violationClassRankedDto);
             }
@@ -95,7 +91,7 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
                 ViolationClassRequestResponseDto violationClassRequestDto = new ViolationClassRequestResponseDto();
 
                 //set violation class into violation class dto
-                violationClassDto = convertViolationClassFromEntityToDto(item);
+                violationClassDto = additionalFunctionService.convertViolationClassFromEntityToDto(item);
 
                 if(username.equalsIgnoreCase("")){
                     checkEdit = 1;
@@ -106,7 +102,7 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
                     //find request edit in violation request
                     ViolationClassRequest violationClassRequest = violationClassRequestRepository.findNewEditRequest(item.getId(), username);
                     if (violationClassRequest != null && item.getCreateBy().equalsIgnoreCase(username)) {
-                        violationClassRequestDto = convertViolationClassRequestFromEntityToDto(violationClassRequest);
+                        violationClassRequestDto = additionalFunctionService.convertViolationClassRequestFromEntityToDto(violationClassRequest);
                         violationClassDto.setViolationClassRequest(violationClassRequestDto);
                         violationClassDto.setCheckEdit(2);
                     } else {
@@ -154,6 +150,7 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
         String reason = model.getReason();
         Integer roleId = model.getRoleId();
         Integer classId = model.getClassId();
+        String note = model.getNote();
 
         if(username.equalsIgnoreCase("")){
             message = Constant.USER_NOT_EXIT;
@@ -192,27 +189,34 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
 
         try {
             if(!validateEmulationService.checkRankedDateByViolationId(violationClassId)) {
-                if (roleId == 1) {
-                    ViolationClass violationClass = violationClassRepository.findViolationClassByById(violationClassId);
-                    if (newQuantity == 0) {
-                        violationClass.setStatus(0);
-                        violationClassRepository.save(violationClass);
-                    } else {
-                        violationClass.setQuantity(newQuantity);
-                        violationClassRepository.save(violationClass);
-                    }
-                }
+                if(validateEmulationService.checkRoleForEditViolationClass(username, roleId, classId, createDate)){
 
-                else if (validateEmulationService.checkRoleForEmulate(classId, username, createDate) ||
-                        validateEmulationService.checkMonitorOfClass(classId, username)) {
-                    ViolationClassRequest violationClassRequest = new ViolationClassRequest();
-                    violationClassRequest.setDateChange(editDate);
-                    violationClassRequest.setStatusChange(0);
-                    violationClassRequest.setCreatBy(username);
-                    violationClassRequest.setReason(reason);
-                    violationClassRequest.setQuantityNew(newQuantity);
-                    violationClassRequest.setViolationClass(new ViolationClass(violationClassId));
-                    violationClassRequestRepository.save(violationClassRequest);
+                    if(roleId == 1 || roleId == 3){
+                        ViolationClass violationClass = violationClassRepository.findViolationClassByById(violationClassId);
+                        String history = violationClass.getHistory();
+                        String newHistory = additionalFunctionService.addHistory(history, reason, username, newQuantity);
+                        if (newQuantity == 0) {
+                            violationClass.setStatus(0);
+                            violationClass.setHistory(newHistory);
+                            violationClass.setNote(note);
+                            violationClassRepository.save(violationClass);
+                        } else {
+                            violationClass.setQuantity(newQuantity);
+                            violationClass.setHistory(newHistory);
+                            violationClass.setNote(note);
+                            violationClassRepository.save(violationClass);
+                        }
+                    }
+                    else{
+                        ViolationClassRequest violationClassRequest = new ViolationClassRequest();
+                        violationClassRequest.setDateChange(editDate);
+                        violationClassRequest.setStatusChange(0);
+                        violationClassRequest.setCreatBy(username);
+                        violationClassRequest.setReason(reason);
+                        violationClassRequest.setQuantityNew(newQuantity);
+                        violationClassRequest.setViolationClass(new ViolationClass(violationClassId));
+                        violationClassRequestRepository.save(violationClassRequest);
+                    }
                 }
                 else{
                     message = Constant.NOT_ACCEPT_EDIT;
@@ -228,71 +232,5 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
 
         message = Constant.SUCCESS;
         return message;
-    }
-
-    /**
-     * kimpt142
-     * 16/07
-     * convert violation class entity to response dto
-     * @param violationClass
-     * @return
-     */
-    private ViolationClassResponseDto convertViolationClassFromEntityToDto(ViolationClass violationClass){
-        ViolationClassResponseDto responseDto = new ViolationClassResponseDto();
-        Class newClass = classRepository.findById(violationClass.getClassId()).orElse(null);
-        Violation violation = violationRepository.findById(violationClass.getClassId()).orElse(null);
-
-        responseDto.setViolationClassId(violationClass.getId());
-        responseDto.setNote(violationClass.getNote());
-        responseDto.setQuantity(violationClass.getQuantity());
-        responseDto.setDescription(violationClass.getViolation().getDescription());
-        responseDto.setCreateDate(violationClass.getDate());
-        responseDto.setCreateBy(violationClass.getCreateBy());
-        responseDto.setStatus(violationClass.getStatus());
-
-        //check violation null or not
-        if(violation != null){
-            responseDto.setSubstractGrade(violation.getSubstractGrade());
-        }
-
-
-        //check newClass exists or not
-        if(newClass != null){
-            responseDto.setClassId(newClass.getClassId());
-            responseDto.setClassName(newClass.getClassIdentifier());
-        }
-
-        Integer dayId = validateEmulationService.getDayIdByDate(violationClass.getDate());
-        String dayName = dayRepository.findByDayId(dayId).getDayName();
-        responseDto.setDayName(dayName);
-
-        return responseDto;
-    }
-
-    /**
-     * kimpt142
-     * 16/07
-     * convert violation class request entity to response dto
-     * @param violationClassRequest
-     * @return
-     */
-    private ViolationClassRequestResponseDto convertViolationClassRequestFromEntityToDto(ViolationClassRequest violationClassRequest){
-        ViolationClassRequestResponseDto responseDto = new ViolationClassRequestResponseDto();
-        Violation violation = violationRepository.findById(violationClassRequest.getViolationClass().getClassId()).orElse(null);
-
-        responseDto.setRequestId(violationClassRequest.getRequestId());
-        responseDto.setViolationClassId(violationClassRequest.getViolationClass().getId());
-        responseDto.setChangeDate(violationClassRequest.getDateChange());
-        responseDto.setCreateBy(violationClassRequest.getCreatBy());
-        responseDto.setStatus(violationClassRequest.getStatusChange());
-        responseDto.setReason(violationClassRequest.getReason());
-        responseDto.setQuantityNew(violationClassRequest.getQuantityNew());
-
-        //check violation null or not
-        if(violation != null){
-            responseDto.setSubstractGrade(violation.getSubstractGrade());
-        }
-
-        return responseDto;
     }
 }
