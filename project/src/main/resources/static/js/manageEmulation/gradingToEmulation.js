@@ -5,7 +5,6 @@ var roleId = localStorage.getItem('roleID');
 var username = localStorage.getItem('username');
 $('#datetime').val(moment().format('YYYY-MM-DD'));
 $('#datetime').prop('max', moment().format('YYYY-MM-DD'));
-
 /*Get data in page*/
 $.ajax({
     url: '/api/emulation/viewgradingemulation',
@@ -316,7 +315,9 @@ function decreaseBtn() {
 }
 
 /*Set role*/
-if (roleId != 1 || roleId != 3 || roleId != 5) {
+if (roleId != 1 && roleId != 3 && roleId != 5) {
+    $('#classList').prop('disabled', true);
+    $('#datetime').prop('disabled', true);
     $('#saveGrading').prop('disabled', true);
     $('.gradingToEmulation-err').text('Bạn không có quyền chấm điểm thi đua!');
 }
