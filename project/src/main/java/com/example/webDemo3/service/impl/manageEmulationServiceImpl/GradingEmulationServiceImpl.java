@@ -93,7 +93,7 @@ public class GradingEmulationServiceImpl implements GradingEmulationService {
         String username = model.getUsername();
         Integer classId = model.getClassId();
         Date date = model.getDate();
-        Integer yearId = model.getYearId();
+        Integer currentYearId = model.getYearId();
         Integer roleId = model.getRoleId();
         Integer weekId = 0;
         Integer status;
@@ -119,12 +119,18 @@ public class GradingEmulationServiceImpl implements GradingEmulationService {
             return message;
         }
 
-        if(yearId == null){
+        if(currentYearId == null){
             Date dateCurrent = new Date(System.currentTimeMillis());
             SchoolYear schoolCurrent = schoolYearRepository.findSchoolYearsByDate(dateCurrent);
             if(schoolCurrent != null) {
-                yearId = schoolCurrent.getYearID();
+                currentYearId = schoolCurrent.getYearID();
             }
+        }
+
+        SchoolYear schoolYearOfDate = schoolYearRepository.findSchoolYearsByDate(date);
+        if(schoolYearOfDate!= null && schoolYearOfDate.getYearID() != currentYearId){
+            message = Constant.ADD_VIOLATION_NOT_CURRENTYEAR;
+            return message;
         }
 
         if(violationList == null || violationList.size() == 0){
@@ -132,9 +138,11 @@ public class GradingEmulationServiceImpl implements GradingEmulationService {
             return message;
         }
         status = 1;
-        if(validateEmulationService.checkRoleForAddViolationClass(username,roleId,classId, date)){
+
+        message = validateEmulationService.checkRoleForAddViolationClass(username,roleId,classId, date);
+        if(message.getMessageCode() == 0){
             try {
-                addViolationClassToDB(violationList,classId, date, weekId, yearId, status, username);
+                addViolationClassToDB(violationList,classId, date, weekId, currentYearId, status, username);
             }catch (Exception e){
                 message.setMessageCode(1);
                 message.setMessage(e.toString());
@@ -142,7 +150,6 @@ public class GradingEmulationServiceImpl implements GradingEmulationService {
             }
         }
         else {
-            message = Constant.EMULATE_FAIL;
             return message;
         }
 

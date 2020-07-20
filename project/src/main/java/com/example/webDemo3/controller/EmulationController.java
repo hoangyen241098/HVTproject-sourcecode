@@ -166,4 +166,17 @@ public class EmulationController {
     {
         return gradingEmulationService.getClassIdByUserAndDate(model);
     }
+
+    /**
+     * kimpt142
+     * 20/07
+     * catch request to delete the request by request id
+     * @param model include request id
+     * @return message
+     */
+    @PostMapping("/deleteViolationClassRequest")
+    public MessageDTO deleteRequestById(@RequestBody DeleteRequestChangeViolationClassRequestDto model)
+    {
+        return violationOfClassService.deleteRequestChange(model);
+    }
 }
