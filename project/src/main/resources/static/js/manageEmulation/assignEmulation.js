@@ -2,7 +2,7 @@ var fromDate;
 var inforSearch = {
     fromDate: $('#fromDate option:selected').val(),
     orderBy: "0",
-    sortBy: "0",
+    sortBy: "1",
     classId: "",
     redStar: "",
     pageNumber: 0
@@ -11,15 +11,16 @@ var inforSearch = {
 $("#search").click(function () {
     var classId, redStar, sortBy, orderBy;
     fromDate = $('#fromDate option:selected').val();
+    redStar = $('#redStarList').val().trim();
     if ($('#classList option:selected').val() == null || $('#classList option:selected').val() == "0") {
         classId = "";
     } else {
         classId = $('#classList option:selected').val();
     }
-    if ($('#redStarList option:selected').val() == null || $('#redStarList option:selected').val() == "0") {
+    if (redStar == null) {
         redStar = "";
     } else {
-        redStar = $('#redStarList option:selected').val();
+        redStar = $('#redStarList').val().trim();
     }
     if ($('#sortBy option:selected').val() == null) {
         sortBy = "1";
@@ -58,24 +59,13 @@ $.ajax({
         var messageCode = data.message.messageCode;
         var message = data.message.message;
         if (messageCode == 0) {
-            if (data.listRedStar != null) {
-                $("#redStarList").select2();
-                $("#redStarList").html(`<option value="0" selected="selected">Tất cả</option>`);
-                $.each(data.listRedStar, function (i, item) {
-                    $('#redStarList').append(
-                        `<option value="` + item.username + `">` + item.username + `</option>
-                    `);
-                });
-            } else {
-                $("#redStarList").html(`<option>Danh sách sao đỏ trống.</option>`);
-            }
             if (data.listClass != null) {
                 $("#classList").select2();
                 $("#classList").html(`<option value="0" selected="selected">Tất cả</option>`);
                 $.each(data.listClass, function (i, item) {
                     $('#classList').append(
-                        `<option value="` + item.classId + `">` + item.classIdentifier + `</option>
-                `);
+                        `<option value="` + item.classId + `">` + item.grade + ` ` + item.giftedClass.name + `</option>`
+                    );
                 });
             } else {
                 $("#classList").html(`<option>Danh sách lớp trống.</option>`);
@@ -86,14 +76,16 @@ $.ajax({
                 $.each(data.listDate, function (i, item) {
                     if (i == 0) {
                         $('#fromDate').append(
-                            `<option value="` + item + `" selected="selected">` + item + `</option>
+                            `<option value="` + item + `" selected="selected">` + convertDate(item) + `</option>
                         `);
                     } else {
                         $('#fromDate').append(
-                            `<option value="` + item + `">` + item + `</option>
+                            `<option value="` + item + `">` + convertDate(item) + `</option>
                     `);
                     }
                 });
+                inforSearch.fromDate = $('#fromDate option:selected').val();
+                console.log(inforSearch.fromDate);
             } else {
                 $("#fromDate").html(`<option>Danh sách ngày trống.</option>`);
             }
@@ -108,7 +100,8 @@ $.ajax({
     dataType: "json",
     contentType: "application/json"
 });
-search();
+
+setTimeout(search, 500);
 
 /*Load data to list*/
 function search() {
@@ -139,10 +132,10 @@ function search() {
                     $('#myTable tbody').html("");
                     $.each(data.listAssignTask, function (i, item) {
                         var classIdentifier, redStar;
-                        if (item.classIdentifier == "" || item.classIdentifier == null) {
+                        if (item.className == "" || item.className == null) {
                             classIdentifier = "-";
                         } else {
-                            classIdentifier = item.classIdentifier;
+                            classIdentifier = item.className;
                         }
                         if (item.redStar == "" || item.redStar == null) {
                             redStar = "-";

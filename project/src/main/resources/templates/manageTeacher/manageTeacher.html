@@ -23,31 +23,35 @@
 <div class="container">
     <div class="table-wrapper">
         <div class="table-title">
-            <h2>Danh sách giáo viên</h2>
-            <div class="search">
-                <div class="col-xl-4 d-inline-block search-line" id="searchByFullName">
-                    <span>Họ và tên</span>
-                    <input type="text" placeholder="Họ và tên">
+            <h2>DANH SÁCH GIÁO VIÊN</h2>
+            <div class="search row">
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0" >
+                    <div class="form-group text-left mb-1" id="searchByFullName">
+                        <label>Họ và tên:</label>
+                        <input type="text" placeholder="Họ và tên" class="form-control w-75">
+                    </div>
                 </div>
-                <div class="col-xl-2 d-inline-block div-space"></div>
-                <div class="col-xl-4 d-inline-block search-line">
-                    <span>Thứ tự</span>
-                    <select class="combobox searchable" id="orderBy">
-                        <option value="0">Giảm dần</option>
-                        <option value="1" selected="selected">Tăng dần</option>
-                    </select>
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0">
+                    <div class="form-group text-left mb-1">
+                        <label>Thứ tự:</label>
+                        <select class="combobox form-control w-75" id="orderBy">
+                            <option value="0">Giảm dần</option>
+                            <option value="1" selected="selected">Tăng dần</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="d-inline-block ml-2">
-                    <button class="btn btn-search" id="search">Tìm kiếm</button>
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0">
+                    <div class="form-group text-right mb-1">
+                        <button class="btn btn-search mx-0 mt-3" id="search">Tìm kiếm</button>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="table-title-2">
-            <div class="col-sm-12 d-flex justify-content-end align-items-center">
-                <a href="#deleteTeacherModal" class="btn btn-success" data-toggle="modal" onclick="checkTeacher()">
-                    <span>Xóa</span>
-                </a>
-                <a th:href="@{createTeacher}" class="btn btn-success">
+            <div class="col-sm-12 px-0 d-flex justify-content-end align-items-center">
+                <input type="button" class="btn btn-success mx-2" data-toggle="modal" onclick="checkTeacher()"
+                       value="Xóa"/>
+                <a th:href="@{createTeacher}" class="btn btn-success mr-0">
                     <span>Thêm giáo viên</span>
                 </a>
             </div>
@@ -80,13 +84,12 @@
 <div id="deleteTeacherModal" class="modal fade">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-                <div class="modal-body text-center">
-                </div>
-                <div class="modal-footer">
-                    <input type="submit" class="btn btn-danger" data-toggle="modal" data-target="#deleteSuccess"
-                           id="deleteTeacher" data-dismiss="modal" value="CÓ">
-                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="KHÔNG">
-                </div>
+            <div class="modal-body text-center"></div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-danger" data-toggle="modal" data-target="#deleteSuccess"
+                       id="deleteTeacher" data-dismiss="modal" value="CÓ">
+                <input type="button" class="btn btn-primary" data-dismiss="modal" value="KHÔNG">
+            </div>
         </div>
     </div>
 </div>
@@ -95,11 +98,7 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="deleteSuccess">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-body text-center">
-                <img class="mb-3 mt-3 img-success hide" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
-                <img class="mb-3 mt-3 img-fail hide" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                <h5 id="message-delete"></h5>
-            </div>
+            <div class="modal-body text-center"></div>
             <div class="modal-footer">
                 <a type="button" class="btn btn-primary" th:href="@{manageTeacher}">ĐÓNG</a>
             </div>

@@ -1,6 +1,6 @@
 var oldFullName, oldIdentifier, oldPhone, oldEmail;
 $(document).ready(function () {
-    var teacherId = localStorage.getItem("teacherId");
+    var teacherId = sessionStorage.getItem("teacherId");
     $('.teacherInfo-err').text("");
     var teacher = {
         teacherId: teacherId,
@@ -67,7 +67,7 @@ $("#editInfo").click(function (e) {
     } else {
         $('.teacherInfo-err').text("");
         var info = {
-            teacherId: localStorage.getItem("teacherId"),
+            teacherId: sessionStorage.getItem("teacherId"),
             teacherIdentifier: identifier,
             fullName: fullName,
             phone: phone,
@@ -90,9 +90,10 @@ $("#editInfo").click(function (e) {
                 var messageCode = data.messageCode;
                 var message = data.message;
                 if (messageCode == 0) {
+                    $('#editInfoSuccess').modal('show')
                     $('#editInfoSuccess .modal-body').html('');
                     $('#editInfoSuccess .modal-body').append(`
-                        <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
+                        <img class="mb-3 mt-3" src="img/img-success.png"/>
                         <h5>Thông tin sửa thành công!</h5>
                     `);
                     $('.teacherInfo-err').text("");
@@ -108,3 +109,8 @@ $("#editInfo").click(function (e) {
         });
     }
 })
+
+/*Clear session when leaving page*/
+$(window).bind('beforeunload', function () {
+    sessionStorage.removeItem('teacherId');
+});
