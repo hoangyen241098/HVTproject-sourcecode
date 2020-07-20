@@ -8,7 +8,6 @@ import com.example.webDemo3.dto.manageEmulationResponseDto.ViewAssignTaskRespons
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewAssignTaskRequestDto;
 import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.entity.ClassRedStar;
-import com.example.webDemo3.entity.User;
 import com.example.webDemo3.repository.ClassRedStarRepository;
 import com.example.webDemo3.repository.ClassRepository;
 import com.example.webDemo3.repository.UserRepository;
@@ -118,7 +117,7 @@ public class TaskServiceImpl implements TaskService {
                 }
 
             //check result when get list
-            if(pagedResult.getTotalElements() == 0){
+            if(pagedResult==null || pagedResult.getTotalElements() == 0){
                 message = Constant.CLASS_RED_STAR_EMPTY;
                 assignTaskResponseDto.setMessage(message);
                 return assignTaskResponseDto;
@@ -129,7 +128,7 @@ public class TaskServiceImpl implements TaskService {
                 ClassRedStarResponseDto classRedStarResponseDto = new ClassRedStarResponseDto();
                 Integer grade = classRepository.findByClassId(classRedStar.getClassSchool().getClassId()).getGrade();
                 String name = classRepository.findByClassId(classRedStar.getClassSchool().getClassId()).getGiftedClass().getName();
-                classRedStarResponseDto.setClassName(String.valueOf(grade) + name);
+                classRedStarResponseDto.setClassName(String.valueOf(grade) + " " + name);
                 classRedStarResponseDto.setRedStar(classRedStar.getClassRedStarId().getRED_STAR());
                 list.add(classRedStarResponseDto);
             }

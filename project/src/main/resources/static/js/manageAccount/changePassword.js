@@ -63,4 +63,10 @@ $(document).ready(function () {
 
 $('#changePassword .modal-footer a').click(function () {
     localStorage.clear();
-})
+});
+
+/*Check Role has create or not*/
+if (localStorage.getItem('roleID') == null) {
+    $('.changePassword-err').append(`Hãy <a href="login">ĐĂNG NHẬP</a> để có thể thay đổi mật khẩu!`);
+    $('#confirm').prop('disabled', true);
+}

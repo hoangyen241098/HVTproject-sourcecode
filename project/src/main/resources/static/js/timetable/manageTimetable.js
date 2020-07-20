@@ -1,4 +1,6 @@
 var date;
+$('#date-input').val(moment().format('YYYY-MM-DD'));
+
 $('#submit').on('click', function () {
     date = $('#date-input').val();
     var form = $('#inputFile')[0].files[0];
@@ -13,7 +15,8 @@ $('#submit').on('click', function () {
     } else {
         return true;
     }
-})
+});
+
 $("#timetableform").submit(function (e) {
     //gửi date lên, nếu messagecode =0 hoạc confirm có thì gửi data lên
     e.preventDefault(); // avoid to execute the actual submit of the form.
@@ -116,4 +119,9 @@ function dialogErr(model, mess) {
     $(modalFooter).append(`
         <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
     `);
+}
+
+if (localStorage.getItem('roleID') != 1 || localStorage.getItem('roleID') != 2) {
+    $('.input-err').text('Bạn không có quyền thêm thời khóa biểu!');
+    $('#submit').prop('disabled', true);
 }

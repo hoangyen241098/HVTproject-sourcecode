@@ -123,9 +123,9 @@ public class TeacherServicempl implements TeacherService {
         try {
             Integer teacherId = editTeaInforRequestDto.getTeacherId();
 
-            //check teacherId empty or not
-            if(teacherId.toString().isEmpty()){
-                message = Constant.TEACHER_NOT_EXIT;
+            //check teacherId null or not
+            if(teacherId == null){
+                message = Constant.TEACHER_ID_NULL;
                 return message;
             }
 
@@ -198,7 +198,7 @@ public class TeacherServicempl implements TeacherService {
         }
 
         //check result when get list
-        if(pagedResult.getTotalElements() == 0){
+        if(pagedResult==null || pagedResult.getTotalElements() == 0){
             message = Constant.TEACHERLIST_NULL;
             viewListResponse.setMessage(message);
             return viewListResponse;

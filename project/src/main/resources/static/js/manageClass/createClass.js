@@ -37,7 +37,6 @@ $("#submit").click(function (e) {
     if ($('#isMonitor').is(":checked")) {
         isMonitor = true;
     }
-
     if (grade == 0 || grade == null) {
         $('.createClass-err').text("Hãy chọn khối lớp!");
         return false;
@@ -129,3 +128,9 @@ $("#submit").click(function (e) {
         });
     }
 });
+
+/*Check Role has create or not*/
+if (localStorage.getItem('roleID') != 1) {
+    $('.createClass-err').text("Bạn không có quyền thêm lớp!");
+    $('#submit').prop('disabled', true);
+}

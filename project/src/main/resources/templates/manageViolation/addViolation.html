@@ -50,14 +50,15 @@
         </div>
     </div>
 </div>
+
 <!--    Modal Create Success-->
-<div class="modal" tabindex="-1" role="dialog" id="createSuccess">
+<div class="modal fade" tabindex="-1" role="dialog" id="createSuccess">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-body text-center">
-            </div>
+            <div class="modal-body text-center"></div>
             <div class="modal-footer">
-                <a type="button" id="closeDialog" class="btn btn-primary" th:href="@{violationList}">ĐÓNG</a>
+                <a type="button" class="btn btn-danger" th:href="@{violationList}">DANH SÁCH LỖI</a>
+                <a type="button" class="btn btn-primary" th:href="@{addViolation}">ĐÓNG</a>
             </div>
         </div>
     </div>

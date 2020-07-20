@@ -93,6 +93,7 @@ public class AdditionalFunctionViolationClassServiceImpl implements AdditionalFu
         responseDto.setStatus(violationClassRequest.getStatusChange());
         responseDto.setReason(violationClassRequest.getReason());
         responseDto.setQuantityNew(violationClassRequest.getQuantityNew());
+        responseDto.setQuantityOld(violationClassRequest.getQuantityOld());
 
         //check violation null or not
         if(violation != null){

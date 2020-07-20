@@ -66,7 +66,7 @@ public class SearchUserServiceImpl implements SearchUserService {
         }
 
         //check result when get list
-        if(pagedResult.getTotalElements() == 0){
+        if(pagedResult == null || pagedResult.getTotalElements() == 0){
             message = Constant.USERLIST_NULL;
             responseDto.setMessage(message);
             return responseDto;

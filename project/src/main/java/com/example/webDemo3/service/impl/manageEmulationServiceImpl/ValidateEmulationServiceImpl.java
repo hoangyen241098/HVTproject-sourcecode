@@ -1,6 +1,7 @@
 package com.example.webDemo3.service.impl.manageEmulationServiceImpl;
 
 import com.example.webDemo3.constant.Constant;
+import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.entity.User;
 import com.example.webDemo3.entity.ViolationClass;
 import com.example.webDemo3.entity.ViolationEnteringTime;
@@ -102,7 +103,7 @@ public class ValidateEmulationServiceImpl implements ValidateEmulationService {
     public Boolean checkMonitorOfClass(Integer classId, String username) {
         User user = userRepository.findUserByUsername(username);
         if(user != null && user.getClassSchool() != null && user.getClassSchool().getClassId() == classId
-                && user.getRole() != null && user.getRole().getRoleId() == 4
+                && user.getRole() != null && user.getRole().getRoleId() == Constant.ROLEID_MONITOR
                 && (user.getStatus() == null || user.getStatus() !=1))
         {
             return true;
@@ -121,25 +122,51 @@ public class ValidateEmulationServiceImpl implements ValidateEmulationService {
      * @return true if user can add
      */
     @Override
-    public Boolean checkRoleForAddViolationClass(String username, Integer roleId,Integer classId , Date addDate) {
+    public MessageDTO checkRoleForAddViolationClass(String username, Integer roleId, Integer classId , Date addDate) {
         Time time = new Time(System.currentTimeMillis());
+        MessageDTO message = new MessageDTO();
 
         //admin can add into violation class
-        if(roleId == 1 && checkImportViolationClass(addDate)){
-            return true;
+        if(roleId == Constant.ROLEID_ADMIN){
+            if(!checkImportViolationClass(addDate)){
+                message = Constant.NOT_ACCEPT_DAY_EDIT;
+                return message;
+            }
+            else {
+                return Constant.SUCCESS;
+            }
         }
         //summerize group can add into violation class
-        else if (roleId == 5 && checkImportViolationWithEnteringTime(roleId, addDate, time)
-                && checkImportViolationClass(addDate)){
-            return true;
+        else if (roleId == Constant.ROLEID_SUMMERIZEGROUP){
+            if(!checkImportViolationClass(addDate)){
+                message = Constant.NOT_ACCEPT_DAY_EDIT;
+                return message;
+            }
+            else if(!checkImportViolationWithEnteringTime(roleId, addDate, time)){
+                message = Constant.NOT_ACCEPT_TIME_EDIT;
+                return message;
+            }
+            else {
+                return Constant.SUCCESS;
+            }
         }
         //red star can add into violation class
-        else if(roleId == 3 && checkRoleForEmulate(classId, username, addDate)
-                && checkImportViolationWithEnteringTime(roleId,addDate, time)){
-            return true;
+        else if(roleId == Constant.ROLEID_REDSTAR){
+            if(!checkRoleForEmulate(classId, username, addDate)){
+                message = Constant.NOT_ACCEPT_EDIT;
+                return message;
+            }
+            else if(!checkImportViolationWithEnteringTime(roleId,addDate, time)){
+                message = Constant.NOT_ACCEPT_TIME_EDIT;
+                return message;
+            }
+            else {
+                return Constant.SUCCESS;
+            }
         }
         else{
-            return false;
+            message = Constant.NOT_ACCEPT_EDIT;
+            return message;
         }
     }
 
@@ -154,27 +181,49 @@ public class ValidateEmulationServiceImpl implements ValidateEmulationService {
      * @return true if user can edit
      */
     @Override
-    public Boolean checkRoleForEditViolationClass(String username, Integer roleId,Integer classId , Date date) {
+    public MessageDTO checkRoleForEditViolationClass(String username, Integer roleId,Integer classId , Date date) {
+        MessageDTO message = new MessageDTO();
         Date currentDate = new Date(System.currentTimeMillis());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Time time = new Time(System.currentTimeMillis());
 
         //admin can edit violation of class
-        if(roleId == 1 && checkImportViolationClass(date)){
-            return true;
+        if(roleId == Constant.ROLEID_ADMIN){
+            if(!checkImportViolationClass(date)){
+                message = Constant.NOT_ACCEPT_DAY_EDIT;
+                return message;
+            }
+            else{
+                return Constant.SUCCESS;
+            }
         }
         //check monitor can edit violation of class
-        else if (checkMonitorOfClass(classId, username)
-                && sdf.format(currentDate).equalsIgnoreCase(sdf.format(date))){
-            return true;
+        else if (checkMonitorOfClass(classId, username)){
+            if(!sdf.format(currentDate).equalsIgnoreCase(sdf.format(date))){
+                message = Constant.MONITOR_NOT_EDIT_TODAY;
+                return message;
+            }
+            else{
+                return Constant.SUCCESS;
+            }
         }
         //red star can edit violation of class
-        else if(roleId == 3 && checkRoleForEmulate(classId, username, date)
-                && checkImportViolationWithEnteringTime(roleId,date, time)){
-            return true;
+        else if(roleId == Constant.ROLEID_REDSTAR){
+            if(!checkRoleForEmulate(classId, username, date)){
+                message = Constant.NOT_ACCEPT_EDIT;
+                return message;
+            }
+            else if(!checkImportViolationWithEnteringTime(roleId,date, time)){
+                message = Constant.NOT_ACCEPT_TIME_EDIT;
+                return message;
+            }
+            else{
+                return Constant.SUCCESS;
+            }
         }
         else{
-            return false;
+            message = Constant.NOT_ACCEPT_EDIT;
+            return message;
         }
     }
 

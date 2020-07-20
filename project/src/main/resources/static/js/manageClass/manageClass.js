@@ -101,6 +101,7 @@ function search() {
                     });
                     getClassID();
                     pagingClick();
+                    manageBtn();
                 }
             } else {
                 $('tbody').append(
@@ -131,4 +132,13 @@ function getClassID() {
         classId = $(this).prop('id');
         sessionStorage.setItem("classId", classId);
     });
+}
+
+/*Show or hide button manage*/
+function manageBtn() {
+    if (localStorage.getItem('roleID') != 1) {
+        $('.manageBtn').addClass('hide');
+        $('table > thead > tr > th:last-child').addClass('hide');
+        $('tbody > tr > td:last-child').addClass('hide');
+    }
 }

@@ -17,5 +17,5 @@ public class EditViolationOfClassRequestDto {
     private Date editDate;
     private Date createDate;
     private String reason;
-    private String note;
+    private Integer oldQuantity;
 }

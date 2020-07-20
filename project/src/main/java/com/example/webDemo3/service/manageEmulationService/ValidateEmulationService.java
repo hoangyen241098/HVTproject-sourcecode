@@ -1,5 +1,7 @@
 package com.example.webDemo3.service.manageEmulationService;
 
+import com.example.webDemo3.dto.MessageDTO;
+
 import java.sql.Date;
 import java.sql.Time;
 
@@ -11,6 +13,6 @@ public interface ValidateEmulationService {
     Boolean checkRankedDateByViolationId(Long violationClassId);
     Integer getDayIdByDate(Date date);
     Boolean checkMonitorOfClass(Integer classId, String username);
-    Boolean checkRoleForAddViolationClass(String username, Integer roleId,Integer classId, Date addDate);
-    Boolean checkRoleForEditViolationClass(String username, Integer roleId,Integer classId, Date date);
+    MessageDTO checkRoleForAddViolationClass(String username, Integer roleId, Integer classId, Date addDate);
+    MessageDTO checkRoleForEditViolationClass(String username, Integer roleId,Integer classId, Date date);
 }
