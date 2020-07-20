@@ -43,16 +43,16 @@
                     </div>
                     <div class="form-group text-left">
                         <label>Trạng thái <span class="text-red">*</span></label>
-                            <div class="form-check">
-                                <div class="form-check-label">
-                                    <input type="radio" class="form-check-input" value="0" name="optradio">Hoạt động
-                                </div>
+                        <div class="form-check">
+                            <div class="form-check-label">
+                                <input type="radio" class="form-check-input" value="0" name="optradio">Hoạt động
                             </div>
-                            <div class="form-check">
-                                <div class="form-check-label">
-                                    <input type="radio" class="form-check-input" value="1" name="optradio">Khóa
-                                </div>
+                        </div>
+                        <div class="form-check">
+                            <div class="form-check-label">
+                                <input type="radio" class="form-check-input" value="1" name="optradio">Khóa
                             </div>
+                        </div>
                     </div>
                     <div class="error classInfo-err text-left"></div>
                     <button type="button" class="btn btn-customer" id="editInfo">CHỈNH SỬA</button>
@@ -63,25 +63,24 @@
 </div>
 
 <!-- Confirm edit Modal HTML -->
-<div id="confirmEditModal" class="modal" tabindex="-1" role="dialog">
+<div id="confirmEditModal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-body text-center">
-            </div>
+            <div class="modal-body text-center"></div>
             <div class="modal-footer">
                 <input type="submit" class="btn btn-danger" id="editClassModal" data-dismiss="modal" value="CÓ">
-                <input type="button" class="btn btn-primary" id="closeModal" value="KHÔNG">
+                <input type="button" class="btn btn-primary" data-dismiss="modal" value="KHÔNG">
             </div>
         </div>
     </div>
 </div>
 
 <!--    Modal Edit Information Success-->
-<div class="modal" tabindex="-1" role="dialog" id="editInfoSuccess">
+<div class="modal fade" tabindex="-1" role="dialog" id="editInfoSuccess">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-body text-center">
-                <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
+                <img class="mb-3 mt-3" src="img/img-success.png"/>
                 <h5>Thông tin sửa thành công!</h5>
             </div>
             <div class="modal-footer">

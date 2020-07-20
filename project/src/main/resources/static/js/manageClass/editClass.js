@@ -1,6 +1,7 @@
 var editClassId, oldIdentifierName, oldStatus, newStatus;
+
 $(document).ready(function () {
-    editClassId = localStorage.getItem("classId")
+    editClassId = sessionStorage.getItem("classId")
     var classRequest = {
         classId: editClassId
     }
@@ -71,18 +72,14 @@ $("#editInfo").click(function (e) {
         if (newStatus != oldStatus) {
             $("#confirmEditModal .modal-body").html("");
             $('#confirmEditModal .modal-body').append(`
-                <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+                <img class="mb-3 mt-3" src="img/img-error.png"/>
                 <h5>Bạn có chắc muốn <b>CẬP NHẬT</b> trạng thái của lớp này không?</h5>
             `);
             $('#confirmEditModal .modal-footer .btn-danger').removeClass('hide');
             $('#confirmEditModal .modal-footer .btn-primary').attr('value', 'KHÔNG');
-            $('#confirmEditModal').css('display', 'block');
+            $('#confirmEditModal').modal('show');
             $('#editClassModal').click(function (e) {
-                $('#confirmEditModal').css('display', 'none');
                 editClass(e);
-            })
-            $('#closeModal').click(function (e) {
-                $('#confirmEditModal').css('display', 'none');
             })
         } else {
             editClass(e);
@@ -119,7 +116,7 @@ function editClass(e) {
                 }
                 oldIdentifierName = newClassIdentifier;
                 oldStatus = newStatus;
-                $('#editInfoSuccess').css('display', 'block');
+                $('#editInfoSuccess').modal('show');
                 $('.classInfo-err').text("");
             } else {
                 $('.classInfo-err').text(message);
@@ -132,3 +129,8 @@ function editClass(e) {
         contentType: "application/json"
     });
 }
+
+/*Clear session when leaving page*/
+$(window).bind('beforeunload', function () {
+    sessionStorage.removeItem('classId');
+});

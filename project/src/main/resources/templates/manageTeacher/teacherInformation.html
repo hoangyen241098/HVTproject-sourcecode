@@ -14,8 +14,6 @@
     <script th:src="@{/js/public/bootstrap.min.js}"></script>
     <!--Font-Awesome-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"/>
-    <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
-    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto|Varela+Round'>
     <link th:href="@{/css/style.css}" rel="stylesheet"/>
     <script type="text/javascript" th:src="@{/js/functions.js}"></script>
 </head>
@@ -46,7 +44,7 @@
                         <input type="email" class="form-control" id="email">
                     </div>
                     <div class="error teacherInfo-err text-left"></div>
-                    <input type="button" data-toggle="modal" data-target="#editInfoSuccess" id="editInfo" class="btn btn-customer" value="CHỈNH SỬA"/>
+                    <input type="button" id="editInfo" class="btn btn-customer" value="CHỈNH SỬA"/>
                 </fieldset>
             </form>
         </div>
@@ -57,8 +55,7 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="editInfoSuccess">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-body text-center">
-            </div>
+            <div class="modal-body text-center"></div>
             <div class="modal-footer">
                 <a type="button" class="btn btn-primary" th:href="@{manageTeacher}">ĐÓNG</a>
             </div>
