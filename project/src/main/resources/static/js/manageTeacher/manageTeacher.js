@@ -196,13 +196,7 @@ function getTeacherID() {
 
 /*Show or hide button manage*/
 function manageBtn() {
-    if (localStorage.getItem('roleID') == 1) {
-        $('.manageBtn').removeClass('hide');
-        $('table thead th:first-child').removeClass('hide');
-        $('tbody > tr > td:first-child').removeClass('hide');
-        $('table thead th:last-child').removeClass('hide');
-        $('tbody > tr > td:last-child').removeClass('hide');
-    } else {
+    if (localStorage.getItem('roleID') != 1) {
         $('.manageBtn').addClass('hide');
         $('table thead th:first-child').addClass('hide');
         $('tbody > tr > td:first-child').addClass('hide');

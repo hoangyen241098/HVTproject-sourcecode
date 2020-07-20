@@ -1,6 +1,6 @@
 var violationID, oldDescription, oldSubstractGrade, oldTypeId;
 $(document).ready(function () {
-    violationID = localStorage.getItem("violationId")
+    violationID = sessionStorage.getItem("violationId")
     var model = {
         violationId: violationID
     }

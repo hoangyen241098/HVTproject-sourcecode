@@ -3,16 +3,16 @@ $('#datetime').val(moment().format('YYYY-MM-DD'));
 var roleId = localStorage.getItem('roleID');
 var username = localStorage.getItem('username');
 var classId, date;
-if (sessionStorage.getItem('classId') == null) {
+if (sessionStorage.getItem('classIdGrading') == null) {
     classId = 1;
 } else {
-    classId = sessionStorage.getItem('classId');
+    classId = sessionStorage.getItem('classIdGrading');
 }
-if (sessionStorage.getItem('date') == null) {
+if (sessionStorage.getItem('dateGrading') == null) {
     date = moment().format('YYYY-MM-DD');
     $('#datetime').val(date);
 } else {
-    date = sessionStorage.getItem('date');
+    date = sessionStorage.getItem('dateGrading');
     $('#datetime').val(date);
 }
 var infoSearch = {
@@ -170,7 +170,7 @@ function search() {
                                     <span class="font-500">Tổng điểm trừ: </span>
                                     <span>` + totals + `</span>
                                 </div>
-                                <div class="violation-action">
+                                <div class="violation-action" style="display: grid">
                                     <div class="hide violationClassId">` + violationClassId + `</div>
                                     <div class="hide classId">` + classId + `</div>
                                     <div class="hide className">` + className + `</div>
@@ -185,6 +185,7 @@ function search() {
                                     <div class="hide quantityNew">` + quantityNew + `</div>
                                     <div class="hide reason">` + reason + `</div>
                                     <input type="button" class="btn btn-danger edit-btn" data-toggle="modal" name="` + checkEdit + `" value="CHỈNH SỬA"/>
+                                    <input type="button" class="btn btn-primary history-btn mt-3" data-toggle="modal" value="LỊCH SỬ SỬA"/>
                                 </div>
                             </div>
                         `);
@@ -200,6 +201,7 @@ function search() {
                         }
                     });
                     editBtn();
+                    historyBtn();
                 } else {
                     $(".violation-by-date").html(`<h3 class="text-center mt-3">` + message + `</h3>`);
                 }
@@ -249,6 +251,13 @@ function editBtn() {
         }
         editModalBtn(violationClassId, classId, createDate, description, substract, note, $reason, quantity, $newQuantity)
     })
+}
+
+/*History button*/
+function historyBtn() {
+    $('.history-btn').on('click', function () {
+        $('#historyModal').modal('show');
+    });
 }
 
 /*Edit modal template*/
@@ -455,11 +464,6 @@ $('.closeModal').on('click', function () {
     $(".violation-by-date").html("");
     search();
 })
-// /*Clear session when leaving page*/
-// $(window).bind('beforeunload', function () {
-//     sessionStorage.removeItem('classId');
-//     sessionStorage.removeItem('date');
-// });
 
 if (roleId != 1) {
     $('.manageBtn').addClass('hide');

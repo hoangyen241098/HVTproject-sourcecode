@@ -121,7 +121,7 @@ $("#editInfo").click(function () {
 });
 
 /*Check Role has create or not*/
-if (localStorage.getItem('roleID') == null) {
+if (roleId == null) {
     $('.userInfo-err').append(`Hãy <a href="login">ĐĂNG NHẬP</a> để có thể sửa thông tin!`);
     $('#editInfo').prop('disabled', true);
 }

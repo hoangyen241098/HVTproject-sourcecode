@@ -1,6 +1,6 @@
 var violationTypeID, oldName, oldTotalGrade, newName, newTotalGrade;
 $(document).ready(function () {
-    violationTypeID = localStorage.getItem("violationTypeID")
+    violationTypeID = sessionStorage.getItem("violationTypeID")
     var editRequest = {
         typeId: violationTypeID
     }

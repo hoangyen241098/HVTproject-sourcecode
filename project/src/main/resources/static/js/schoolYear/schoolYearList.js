@@ -1,4 +1,3 @@
-sessionStorage.removeItem('schoolYearId');
 var schoolYearId;
 
 $.ajax({
