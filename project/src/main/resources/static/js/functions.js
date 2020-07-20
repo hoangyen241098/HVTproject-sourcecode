@@ -2,8 +2,10 @@
 $(document).ready(function () {
     var loginSuccess = localStorage.getItem("loginSuccess");
     var roleID = localStorage.getItem("roleID");
+    var username = localStorage.getItem("username");
     if (loginSuccess == 0) {
         $("#loginSuccessMenu").addClass("show");
+        $("#loginSuccessMenu .nav-link").html(username+`<i class="fa fa-caret-down"></i>`);
         $('#loginMenu').css('display', 'none');
         if (roleID == 1) {
             $("#adminMenu").addClass("show");

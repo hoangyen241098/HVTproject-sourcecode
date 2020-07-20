@@ -158,6 +158,7 @@ function search() {
 
 /*Delete account*/
 $("#deleteAccount").click(function (e) {
+    $('#deleteSuccess').modal('show');
     listUser = {
         listUser: list,
     }
@@ -176,17 +177,25 @@ $("#deleteAccount").click(function (e) {
             var messageCode = data.messageCode;
             var message = data.message;
             if (messageCode == 0) {
-                $('.img-success').removeClass('hide');
-                $('.img-fail').addClass('hide');
-                $('#message-delete').text(message);
+                $('#deleteSuccess .modal-body').html("");
+                $('#deleteSuccess .modal-body').append(`
+                    <img class="mb-3 mt-3 " src="img/img-success.png"/>
+                    <h5>` + message + `</h5>
+                `);
             } else {
-                $('.img-success').addClass('hide');
-                $('.img-fail').removeClass('hide');
-                $('#message-delete').text(message);
+                $('#deleteSuccess .modal-body').html("");
+                $('#deleteSuccess .modal-body').append(`
+                    <img class="mb-3 mt-3 " src="img/img-error.png"/>
+                    <h5>` + message + `</h5>
+                `);
             }
         },
         failure: function (errMsg) {
-            $('#message-delete').text(errMsg);
+            $('#deleteSuccess .modal-body').html("");
+            $('#deleteSuccess .modal-body').append(`
+                <img class="mb-3 mt-3 " src="img/img-error.png"/>
+                <h5>` + errMsg + `</h5>
+            `);
         },
         dataType: "json",
         contentType: "application/json"
@@ -231,17 +240,25 @@ $("#resetPassword").click(function (e) {
                 var messageCode = data.messageCode;
                 var message = data.message;
                 if (messageCode == 0) {
-                    $('.img-success').removeClass('hide');
-                    $('.img-fail').addClass('hide');
-                    $('#message-reset').text(message);
+                    $('#resetSuccess .modal-body').html("");
+                    $('#resetSuccess .modal-body').append(`
+                    <img class="mb-3 mt-3 " src="img/img-success.png"/>
+                    <h5>` + message + `</h5>
+                `);
                 } else {
-                    $('.img-success').addClass('hide');
-                    $('.img-fail').removeClass('hide');
-                    $('#message-reset').text(message);
+                    $('#resetSuccess .modal-body').html("");
+                    $('#resetSuccess .modal-body').append(`
+                        <img class="mb-3 mt-3 " src="img/img-error.png"/>
+                        <h5>` + message + `</h5>
+                    `);
                 }
             },
             failure: function (errMsg) {
-                $('#message-reset').text(errMsg);
+                $('#resetSuccess .modal-body').html("");
+                $('#resetSuccess .modal-body').append(`
+                    <img class="mb-3 mt-3 " src="img/img-error.png"/>
+                    <h5>` + errMsg + `</h5>
+                `);
             },
             dataType: "json",
             contentType: "application/json"
@@ -251,28 +268,29 @@ $("#resetPassword").click(function (e) {
 
 /*Check user before delete account*/
 function checkUser() {
+    $('#deleteAccountModal').modal('show');
     $('#deleteAccountModal .modal-body').html("");
     var userErr = localStorage.getItem("username");
     if (jQuery.inArray(userErr, list) != -1) {
         $("#deleteAccountModal .modal-body").html("");
         $('#deleteAccountModal .modal-body').append(`
-            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-            <h5>Bạn không thể xoá tài khoản <b class="error">` + userErr + `</b></h5>
+            <img class="mb-3 mt-3" src="img/img-error.png"/>
+            <h5>Bạn không thể xoá tài khoản <b class="error">` + userErr + `</b>!</h5>
         `);
         $('#deleteAccountModal .modal-footer .btn-danger').addClass('hide');
         $('#deleteAccountModal .modal-footer .btn-primary').attr('value', 'ĐÓNG');
     } else if (list.length == 0) {
         $("#deleteAccountModal .modal-body").html("");
         $('#deleteAccountModal .modal-body').append(`
-            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-            <h5>Hãy chọn tài khoản mà bạn muốn xóa</h5>`
+            <img class="mb-3 mt-3" src="img/img-error.png"/>
+            <h5>Hãy chọn tài khoản mà bạn muốn xóa!</h5>`
         );
         $('#deleteAccountModal .modal-footer .btn-danger').addClass('hide');
         $('#deleteAccountModal .modal-footer .btn-primary').attr('value', 'ĐÓNG');
     } else {
         $("#deleteAccountModal .modal-body").html("");
         $('#deleteAccountModal .modal-body').append(`
-            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+            <img class="mb-3 mt-3" src="img/img-error.png"/>
             <h5>Bạn có chắc muốn <b>XÓA</b> tài khoản này không?</h5>
         `);
         $('#deleteAccountModal .modal-footer .btn-danger').removeClass('hide');
@@ -282,17 +300,19 @@ function checkUser() {
 
 /*Check user before reset password*/
 function checkResetPassword() {
+    $('#resetPasswordModal').modal('show');
     if (list.length == 0) {
         $("#resetPasswordModal .modal-body").html("");
-        $('#resetPasswordModal .modal-body .form-group').addClass('hide');
+        $("#resetPasswordModal .modal-header").addClass('hide');
         $('#resetPasswordModal .modal-body').append(`
-            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-            <h5>Hãy chọn tài khoản mà bạn muốn đặt lại mật khẩu</h5>
+            <img class="mb-3 mt-3" src="img/img-error.png"/>
+            <h5>Hãy chọn tài khoản mà bạn muốn đặt lại mật khẩu!</h5>
         `);
         $('#resetPasswordModal .modal-footer .btn-danger').addClass('hide');
         $('#resetPasswordModal .modal-footer .btn-primary').attr('value', 'ĐÓNG');
     } else {
         $("#resetPasswordModal .modal-body").html("");
+        $("#resetPasswordModal .modal-header").removeClass('hide');
         $('#resetPasswordModal .modal-body').append(`
         <div class="form-group text-left">
             <label for="new-password">Mật khẩu mới <span class="text-red">*</span></label>

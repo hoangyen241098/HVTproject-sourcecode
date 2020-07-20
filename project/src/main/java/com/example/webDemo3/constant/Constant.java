@@ -202,6 +202,10 @@ public class Constant {
             new MessageDTO(1,"Bạn chỉ có thể yêu cầu thay đổi trong ngày hôm nay.");
     public static final MessageDTO ADD_VIOLATION_NOT_CURRENTYEAR =
             new MessageDTO(1,"Bạn chỉ có thể thêm lỗi vi phạm của lớp trong năm học này.");
+    public static final MessageDTO NOT_ACCEPT_REQUEST_CHANGE =
+            new MessageDTO(1,"Bạn không có quyền chấp nhận yêu cầu thay đổi.");
+    public static final MessageDTO NOT_REJECT_REQUEST_CHANGE =
+            new MessageDTO(1,"Bạn không có quyền từ chối yêu cầu thay đổi .");
     /**
      * Success message
      */

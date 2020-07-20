@@ -58,7 +58,7 @@ function deleteGifted(e) {
             if (messageCode == 0) {
                 $("#deleteSuccess .modal-body").html("");
                 $('#deleteSuccess .modal-body').append(`
-                    <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
+                    <img class="mb-3 mt-3" src="img/img-success.png"/>
                     <h5>Xoá hệ chuyên thành công !</h5>
                 `);
                 $("#deleteSuccess .modal-footer input").addClass('hide');
@@ -68,7 +68,7 @@ function deleteGifted(e) {
             } else {
                 $("#deleteSuccess .modal-body").html("");
                 $('#deleteSuccess .modal-body').append(`
-                    <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+                    <img class="mb-3 mt-3" src="img/img-error.png"/>
                     <h5>` + message + `</h5>
                 `);
                 $("#deleteSuccess .modal-footer input").removeClass('hide');

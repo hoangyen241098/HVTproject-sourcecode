@@ -2,10 +2,23 @@
 $('#datetime').val(moment().format('YYYY-MM-DD'));
 var roleId = localStorage.getItem('roleID');
 var username = localStorage.getItem('username');
+var classId, date;
+if (sessionStorage.getItem('classId') == null) {
+    classId = 1;
+} else {
+    classId = sessionStorage.getItem('classId');
+}
+if (sessionStorage.getItem('date') == null) {
+    date = moment().format('YYYY-MM-DD');
+    $('#datetime').val(date);
+} else {
+    date = sessionStorage.getItem('date');
+    $('#datetime').val(date);
+}
 var infoSearch = {
     username: username,
-    classId: 1,
-    date: $('#datetime').val(),
+    classId: classId,
+    date: date,
     roleId: roleId
 }
 var editViolation = "";
@@ -28,10 +41,18 @@ $.ajax({
                 $("#classList").select2();
                 $("#classList").html('');
                 $.each(data.classList, function (i, item) {
-                    if (item.classID == 1) {
-                        $('#classList').append(`<option value="` + item.classID + `" selected="selected">` + item.className + `</option>`);
+                    if (classId != null) {
+                        if (item.classID == classId) {
+                            $('#classList').append(`<option value="` + item.classID + `" selected="selected">` + item.className + `</option>`);
+                        } else {
+                            $('#classList').append(`<option value="` + item.classID + `">` + item.className + `</option>`);
+                        }
                     } else {
-                        $('#classList').append(`<option value="` + item.classID + `">` + item.className + `</option>`);
+                        if (item.classID == 1) {
+                            $('#classList').append(`<option value="` + item.classID + `" selected="selected">` + item.className + `</option>`);
+                        } else {
+                            $('#classList').append(`<option value="` + item.classID + `">` + item.className + `</option>`);
+                        }
                     }
                 });
             } else {
@@ -50,7 +71,6 @@ $.ajax({
 
 /*Search button*/
 $("#search").click(function () {
-    var classId, date;
     date = $('#datetime').val();
     if ($('#classList option:selected').val() == null || $('#classList option:selected').val() == "") {
         classId = "";
@@ -66,7 +86,6 @@ $("#search").click(function () {
     console.log(JSON.stringify(infoSearch))
     $(".violation-by-date").html("");
     search();
-
 });
 
 search();
@@ -156,22 +175,22 @@ function search() {
                                     <div class="hide quantity">` + quantity + `</div>
                                     <div class="hide quantityNew">` + quantityNew + `</div>
                                     <div class="hide reason">` + reason + `</div>
-                                    <input type="button" class="btn btn-danger edit-btn" data-toggle="modal" value="CHỈNH SỬA"/>
+                                    <input type="button" class="btn btn-danger edit-btn" data-toggle="modal" name="` + checkEdit + `" value="CHỈNH SỬA"/>
                                 </div>
                             </div>
                         `);
                         if (checkEdit == 0) {
-                            $('.violation-action input').removeClass('hide');
-                            $('.violation-action input').val('CHỈNH SỬA');
+                            $('.violation-action input[name="0"]').removeClass('hide');
+                            $('.violation-action input[name="0"]').val('CHỈNH SỬA');
                         } else if (checkEdit == 2) {
-                            $('.violation-action input').removeClass('hide');
-                            $('.violation-action input').val('XEM YÊU CẦU CHỈNH SỬA');
+                            $('.violation-action input[name="2"]').removeClass('hide');
+                            $('.violation-action input[name="2"]').val('XEM YÊU CẦU CHỈNH SỬA');
 
                         } else if (checkEdit == 1) {
-                            $('.violation-action input').addClass('hide');
+                            $('.violation-action input[name="1"]').addClass('hide');
                         }
-                        editBtn();
                     });
+                    editBtn();
                 } else {
                     $(".violation-by-date").html(`<h3 class="text-center mt-3">` + message + `</h3>`);
                 }
@@ -205,14 +224,14 @@ function editBtn() {
         var quantityNew = $(this).parent().find('.quantityNew').text();
         var reason = $(this).parent().find('.reason').text();
         var total = parseFloat(parseFloat(substract) * parseInt(quantity)).toFixed(1);
-
         if ($('.violation-action input').val() == 'CHỈNH SỬA') {
             editModal(violationDate, className, description, note, substract, quantity, total)
             var $total = $('.total');
             increaseBtn(substract, total, $total);
             decreaseBtn(substract, total, $total);
-
+            var count = 0;
             $('#editModalBtn').on('click', function () {
+                console.log(count)
                 var newQuantity = $('.quantity-input').val();
                 var reason = $('#reason').val().trim();
                 $('.editInfo-err').text('');
@@ -224,6 +243,7 @@ function editBtn() {
                     return false;
                 } else {
                     $('.editInfo-err').text('');
+                    editViolation = null;
                     editViolation = {
                         violationClassId: violationClassId,
                         username: username,
@@ -294,6 +314,12 @@ function editModal(violationDate, className, description, note, substract, quant
             <span class="text-red editInfo-err"></span>
         </div>
     `)
+    if (roleId == 1) {
+        $('#editModalBtn').val("CHỈNH SỬA");
+    }
+    if (roleId == 4) {
+        $('#editModalBtn').val("TẠO YÊU CẦU THAY ĐỔI");
+    }
 }
 
 /*Edit Modal Button*/
@@ -395,3 +421,27 @@ function decreaseBtn(substract, total, $total) {
         $total.text(total);
     });
 }
+
+$('.closeModal').on('click', function () {
+    $('#saveSuccess').modal('hide');
+    date = $('#datetime').val();
+    if ($('#classList option:selected').val() == null || $('#classList option:selected').val() == "") {
+        classId = "";
+    } else {
+        classId = $('#classList option:selected').val();
+    }
+    infoSearch = {
+        username: username,
+        classId: classId,
+        date: date,
+        roleId: roleId
+    }
+    console.log(JSON.stringify(infoSearch))
+    $(".violation-by-date").html("");
+    search();
+})
+/*Clear session when leaving page*/
+$(window).bind('beforeunload', function () {
+    sessionStorage.removeItem('classId');
+    sessionStorage.removeItem('date');
+});
