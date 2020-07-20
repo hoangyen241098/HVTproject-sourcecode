@@ -25,11 +25,4 @@ public class SchoolWeek {
 
     @Column(name = "WEEK")
     private Integer week;
-
-    @Column(name = "FROM_DATE")
-    private Date fromDate;
-
-    @Column(name = "TO_DATE")
-    private Date toDate;
-
 }
