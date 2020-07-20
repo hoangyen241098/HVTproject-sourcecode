@@ -134,6 +134,7 @@ function search() {
                 });
                 selectCheckbox();
                 pagingClick();
+                manageBtn();
             } else {
                 $('tbody').append(
                     `<tr>
@@ -290,7 +291,7 @@ function checkUser() {
     } else {
         $("#deleteAccountModal .modal-body").html("");
         $('#deleteAccountModal .modal-body').append(`
-            <img class="mb-3 mt-3" src="img/img-error.png"/>
+            <img class="mb-3 mt-3" src="img/img-question.png"/>
             <h5>Bạn có chắc muốn <b>XÓA</b> tài khoản này không?</h5>
         `);
         $('#deleteAccountModal .modal-footer .btn-danger').removeClass('hide');
@@ -322,9 +323,22 @@ function checkResetPassword() {
             <label for="confirm-password">Xác nhận mật khẩu mới <span class="text-red">*</span></label>
             <input type="password" class="form-control" id="confirm-password" required>
         </div>
-        <div class="error resetPass-err"></div>
+        <div class="error text-left resetPass-err"></div>
         `);
         $('#resetPasswordModal .modal-footer .btn-danger').removeClass('hide');
         $('#resetPasswordModal .modal-footer .btn-primary').attr('value', 'KHÔNG');
+    }
+}
+
+/*Show or hide button manage*/
+function manageBtn() {
+    if (localStorage.getItem('roleID') == 1) {
+        $('.manageBtn').removeClass('hide');
+        $('table thead th:first-child').removeClass('hide');
+        $('tbody > tr > td:first-child').removeClass('hide')
+    } else {
+        $('.manageBtn').addClass('hide');
+        $('table thead th:first-child').addClass('hide');
+        $('tbody > tr > td:first-child').addClass('hide')
     }
 }

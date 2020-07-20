@@ -63,3 +63,9 @@ function dialogModal(img, message) {
         <h5>` + message + `</h5>
     `);
 }
+
+/*Check Role has create or not*/
+if (localStorage.getItem('roleID') != 1) {
+    $('.createTeacher-err').text("Bạn không có quyền thêm giáo viên!");
+    $('#submit').prop('disabled', true);
+}

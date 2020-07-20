@@ -69,3 +69,8 @@ function login() {
         });
     }
 }
+
+/*Check Role has create or not*/
+if (localStorage.getItem('roleID') != null) {
+    $('fieldset').html(`<h5 class="text-red">Bạn đã đăng nhập!</h5>`);
+}

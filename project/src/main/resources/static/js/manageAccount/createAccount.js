@@ -222,3 +222,8 @@ $(".previous").click(function () {
     });
 });
 
+/*Check Role has create or not*/
+if (localStorage.getItem('roleID') != 1) {
+    $('.createAccount-err').text("Bạn không có quyền tạo tài khoản!");
+    $('#next').prop('disabled', true);
+}

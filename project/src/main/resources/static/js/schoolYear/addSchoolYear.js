@@ -31,8 +31,6 @@ $(document).ready(function () {
                 toYear: $('#toYear').val(),
             }
             console.log(JSON.stringify(schoolYear))
-            $('#createSuccess').addClass('fade');
-            $('#submit').attr('data-target', '#createSuccess');
             $.ajax({
                 url: '/api/admin/addschoolyear',
                 type: 'POST',
@@ -47,23 +45,26 @@ $(document).ready(function () {
                     var messageCode = data.messageCode;
                     var message = data.message;
                     if (messageCode == 0) {
+                        $('#createSuccess').modal('show');
                         $('#createSuccess .modal-body').html('');
                         $('#createSuccess .modal-body').append(`
-                            <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
+                            <img class="mb-3 mt-3" src="img/img-success.png"/>
                             <h5>Thêm năm học mới thành công!</h5>
                         `);
                     } else {
+                        $('#createSuccess').modal('show');
                         $('#createSuccess .modal-body').html('');
                         $('#createSuccess .modal-body').append(`
-                            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+                            <img class="mb-3 mt-3" src="img/img-error.png"/>
                             <h5>` + message + `</h5>
                         `);
                     }
                 },
                 failure: function (errMsg) {
+                    $('#createSuccess').modal('show');
                     $('#createSuccess .modal-body').html('');
                     $('#createSuccess .modal-body').append(`
-                        <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+                        <img class="mb-3 mt-3" src="img/img-error.png"/>
                         <h5>` + errMsg + `</h5>
                     `);
                 },
@@ -74,3 +75,8 @@ $(document).ready(function () {
         }
     })
 })
+
+if (localStorage.getItem('roleID') != 1) {
+    $('.addSchoolYear-err').text('Bạn không có quyền thêm năm học!');
+    $('#submit').prop('disabled', true);
+}

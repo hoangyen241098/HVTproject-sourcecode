@@ -74,7 +74,6 @@ $("#editInfo").click(function (e) {
             fromYear: fromYear,
             toYear: toYear
         }
-        console.log(JSON.stringify(newInfo))
         e.preventDefault();
         $.ajax({
             url: '/api/admin/editschoolyear',
@@ -91,6 +90,7 @@ $("#editInfo").click(function (e) {
                 var message = data.message;
                 if (messageCode == 0) {
                     $('.editSchoolYear-err').text("");
+                    $('#editInfoSuccess').modal('show');
                 } else {
                     $('.editSchoolYear-err').text(message);
                 }

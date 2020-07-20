@@ -1,5 +1,5 @@
-sessionStorage.removeItem('schoolId');
 var list = [];
+
 $.ajax({
     url: '/api/admin/viewenteringtime',
     type: 'POST',
@@ -68,6 +68,7 @@ $.ajax({
             )
         }
         selectCheckbox();
+        manageBtn();
     },
     failure: function (errMsg) {
         $('tbody').html("");
@@ -83,19 +84,18 @@ $.ajax({
 
 /*Check select*/
 function checkSelect() {
-    console.log(list.length)
     if (list.length == 0) {
         $("#deleteModal .modal-body").html("");
         $('#deleteModal .modal-body').append(`
-            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-            <h5>Hãy chọn thời gian mà bạn muốn xóa</h5>
+            <img class="mb-3 mt-3" src="img/img-error.png"/>
+            <h5>Hãy chọn thời gian mà bạn muốn xóa!</h5>
         `);
         $('#deleteModal .modal-footer .btn-danger').addClass('hide');
         $('#deleteModal .modal-footer .btn-primary').attr('value', 'ĐÓNG');
     } else {
         $("#deleteModal .modal-body").html("");
         $('#deleteModal .modal-body').append(`
-            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+            <img class="mb-3 mt-3" src="img/img-question.png"/>
             <h5>Bạn có muốn <b>XÓA</b> thời gian chấm này không?</h5>
         `);
         $('#deleteModal .modal-footer .btn-danger').removeClass('hide');
@@ -126,13 +126,13 @@ $('#deleteTime').on('click', function () {
             if (messageCode == 0) {
                 $('#deleteSuccess .modal-body').html('');
                 $('#deleteSuccess .modal-body').append(`
-                    <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
+                    <img class="mb-3 mt-3" src="img/img-success.png"/>
                     <h5>Xóa thời gian chấm thành công!</h5>
                 `);
             } else {
                 $('#deleteSuccess .modal-body').html('');
                 $('#deleteSuccess .modal-body').append(`
-                    <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+                    <img class="mb-3 mt-3" src="img/img-error.png"/>
                     <h5>` + message + `</h5>
                 `);
             }
@@ -140,14 +140,21 @@ $('#deleteTime').on('click', function () {
         failure: function (errMsg) {
             $('#deleteSuccess .modal-body').html('');
             $('#deleteSuccess .modal-body').append(`
-                    <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
+                    <img class="mb-3 mt-3" src="img/img-error.png"/>
                     <h5>` + errMsg + `</h5>
                 `);
         },
         dataType: "json",
         contentType: "application/json"
     });
-})
+});
 
-
-
+/*Show or hide button manage*/
+function manageBtn() {
+    if (localStorage.getItem('roleID') != 1) {
+        $('.manageBtn').addClass('hide');
+        $('table > thead > tr > th:first-child').addClass('hide');
+        $('tbody > tr > td:first-child').addClass('hide');
+        $('.table-title').addClass('pb-3');
+    }
+}

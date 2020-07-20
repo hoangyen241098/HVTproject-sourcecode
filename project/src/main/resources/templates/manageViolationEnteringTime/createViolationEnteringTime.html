@@ -36,17 +36,16 @@
                     </div>
                     <div class="form-group text-left">
                         <label for="timeToStart">Thời gian bắt đầu <span class="text-red">*</span></label>
-                        <input type="time" class="form-control" id="timeToStart" placeholder="07:00">
+                        <input type="time" class="form-control" id="timeToStart" value="07:00">
                     </div>
                     <div class="form-group text-left">
                         <label for="timeToEnd">Thời gian kết thúc <span class="text-red">*</span></label>
-                        <input type="time" class="form-control" id="timeToEnd" placeholder="07:30">
+                        <input type="time" class="form-control" id="timeToEnd" value="07:30">
                     </div>
                     <div class="form-group text-left" id="allDay">
                     </div>
                     <div class="error createTime-err text-left"></div>
-                    <input type="button" id="submit" data-toggle="modal" data-target="#createSuccess"
-                           class="btn btn-customer" value="TẠO"/>
+                    <input type="button" id="submit" data-toggle="modal" class="btn btn-customer" value="TẠO"/>
                 </fieldset>
             </form>
         </div>
@@ -57,13 +56,10 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="createSuccess">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-body text-center">
-                <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
-                <img class="mb-3 mt-3 hide" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                <h5 id="message-createSuccess">Thêm thời gian chấm thành công!</h5>
-            </div>
+            <div class="modal-body text-center"></div>
             <div class="modal-footer">
-                <input type="button" id="closeDialog" data-dismiss="modal" class="btn btn-primary" value="ĐÓNG"/>
+                <a href="manageViolationEnteringTime" class="btn btn-danger">XEM THỜI GIAN CHẤM</a>
+                <a href="createViolationEnteringTime" class="btn btn-primary">ĐÓNG</a>
             </div>
         </div>
     </div>
