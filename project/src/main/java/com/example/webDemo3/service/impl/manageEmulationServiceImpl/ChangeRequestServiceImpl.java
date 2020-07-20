@@ -3,7 +3,6 @@ package com.example.webDemo3.service.impl.manageEmulationServiceImpl;
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ChangeRequestDto;
-import com.example.webDemo3.entity.ClassRedStar;
 import com.example.webDemo3.entity.User;
 import com.example.webDemo3.entity.ViolationClass;
 import com.example.webDemo3.entity.ViolationClassRequest;
@@ -14,10 +13,6 @@ import com.example.webDemo3.service.manageEmulationService.AdditionalFunctionVio
 import com.example.webDemo3.service.manageEmulationService.ChangeRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.util.List;
 
 /**
  * lamnt98

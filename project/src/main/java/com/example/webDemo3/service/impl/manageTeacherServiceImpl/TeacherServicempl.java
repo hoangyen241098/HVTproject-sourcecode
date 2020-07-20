@@ -198,7 +198,7 @@ public class TeacherServicempl implements TeacherService {
         }
 
         //check result when get list
-        if(pagedResult.getTotalElements() == 0){
+        if(pagedResult==null || pagedResult.getTotalElements() == 0){
             message = Constant.TEACHERLIST_NULL;
             viewListResponse.setMessage(message);
             return viewListResponse;
