@@ -99,7 +99,7 @@ public class GradingEmulationServiceImpl implements GradingEmulationService {
         Integer status;
         List<SubViolationForClassRequestDto> violationList = model.getViolationList();
 
-        if(username.equalsIgnoreCase("")){
+        if(username == null || username.trim().isEmpty()){
             message = Constant.USER_NOT_EXIT;
             return message;
         }
