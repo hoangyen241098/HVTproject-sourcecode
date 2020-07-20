@@ -94,7 +94,7 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
                 //set violation class into violation class dto
                 violationClassDto = additionalFunctionService.convertViolationClassFromEntityToDto(item);
 
-                if(username.equalsIgnoreCase("")){
+                if(username == null || username.trim().isEmpty()){
                     checkEdit = 1;
                     violationClassDto.setCheckEdit(checkEdit);
                     violationClassListDto.add(violationClassDto);
@@ -154,7 +154,7 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
         Integer classId = model.getClassId();
         Integer oldQuantity = model.getOldQuantity();
 
-        if(username.equalsIgnoreCase("")){
+        if(username == null || username.trim().isEmpty()){
             message = Constant.USER_NOT_EXIT;
             return message;
         }
@@ -174,7 +174,7 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
             return message;
         }
 
-        if(reason.equalsIgnoreCase("")){
+        if(reason == null || reason.trim().isEmpty()){
             message = Constant.REASON_EMPTY;
             return message;
         }

@@ -241,7 +241,7 @@ public class ClassServiceImpl implements ClassService {
         MessageDTO message = new MessageDTO();
         String giftedClassName = model.getGiftedClassName().trim();
 
-        if(giftedClassName.equalsIgnoreCase("")){
+        if(giftedClassName == null || giftedClassName.trim().isEmpty()){
             message = Constant.GIFTEDCLASSID_EMPTY;
             return message;
         }
@@ -280,7 +280,7 @@ public class ClassServiceImpl implements ClassService {
         Integer status = model.getStatus();
         MessageDTO message = new MessageDTO();
 
-        if(classIdentifier.equalsIgnoreCase("")){
+        if(classIdentifier == null || classIdentifier.trim().isEmpty()){
             message = Constant.CLASSIDENTIFIER_EMPTY;
             return message;
         }

@@ -122,12 +122,12 @@ public class SchoolYearServiceImpl implements SchoolYearService {
             return message;
         }
 
-        if(fromDate.toString().equalsIgnoreCase("")){
+        if(fromDate == null || fromDate.toString().isEmpty()){
             message = Constant.FROMDATE_EMPTY;
             return message;
         }
 
-        if(toDate.toString().equalsIgnoreCase("")){
+        if(toDate == null || toDate.toString().isEmpty()){
             message = Constant.TODATE_EMPTY;
             return message;
         }
@@ -199,12 +199,12 @@ public class SchoolYearServiceImpl implements SchoolYearService {
             return message;
         }
 
-        if(fromDate.toString().equalsIgnoreCase("")){
+        if(fromDate == null || fromDate.toString().isEmpty()){
             message = Constant.FROMDATE_EMPTY;
             return message;
         }
 
-        if(toDate.toString().equalsIgnoreCase("")){
+        if(toDate == null || toDate.toString().isEmpty()){
             message = Constant.TODATE_EMPTY;
             return message;
         }
