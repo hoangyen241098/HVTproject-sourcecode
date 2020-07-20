@@ -1,6 +1,7 @@
 $('#inputDate').val(moment().format('YYYY-MM-DD'));
 $('#inputDate').prop('max', moment().format('YYYY-MM-DD'));
 var username = localStorage.getItem('username');
+var roleId = localStorage.getItem('roleID');
 var infoSearch = {
     classId: null,
     status: 3,
@@ -186,7 +187,7 @@ function search() {
                                     </div>
                                 </div>
                             `);
-                            if (status == "Chấp nhận" || status == "Từ chối") {
+                            if (status == "Chấp nhận" || status == "Từ chối" || roleId != 1) {
                                 var dataTargetID = "#" + dataTarget;
                                 $(dataTargetID).find('.accept-request').parent().addClass('hide');
                             }
@@ -216,7 +217,7 @@ function acceptRequest() {
     $('.accept-request').on('click', function () {
         $('#confirmModal').modal('show');
         $('#confirmModal .modal-body').html(`
-            <img class="mb-3 mt-3" src="/img/img-error.png"/>
+            <img class="mb-3 mt-3" src="img/img-question.png"/>
             <h5>Bạn có muốn <b>CHẤP NHẬN</b> yêu cầu này không?</h5>
         `);
         var violationClassId = $(this).parent().parent().find('.violationClassId').text();
@@ -274,7 +275,7 @@ function rejectRequest() {
     $('.reject-request').on('click', function () {
         $('#confirmModal').modal('show');
         $('#confirmModal .modal-body').html(`
-            <img class="mb-3 mt-3" src="/img/img-error.png"/>
+            <img class="mb-3 mt-3" src="img/img-question.png"/>
             <h5>Bạn có muốn <b>TỪ CHỐI</b> yêu cầu này không?</h5>
         `);
         var violationClassId = $(this).parent().parent().find('.violationClassId').text();
