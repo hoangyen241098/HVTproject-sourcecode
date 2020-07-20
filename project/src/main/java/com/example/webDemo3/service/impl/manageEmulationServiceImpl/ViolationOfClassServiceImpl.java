@@ -5,6 +5,7 @@ import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViewViolationClassListResponseDto;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViolationClassRequestResponseDto;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViolationClassResponseDto;
+import com.example.webDemo3.dto.request.manageEmulationRequestDto.DeleteRequestChangeViolationClassRequestDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.EditViolationOfClassRequestDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewViolationOfClassRequestDto;
 import com.example.webDemo3.entity.Class;
@@ -106,7 +107,8 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
                         violationClassDto.setViolationClassRequest(violationClassRequestDto);
                         violationClassDto.setCheckEdit(2);
                     } else {
-                        if (validateEmulationService.checkRoleForEditViolationClass(username, roleId, classId, date)) {
+                        message = validateEmulationService.checkRoleForEditViolationClass(username, roleId, classId, date);
+                        if (message.getMessageCode() == 0) {
                             checkEdit = 0;
                         } else {
                             checkEdit = 1;
@@ -150,7 +152,7 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
         String reason = model.getReason();
         Integer roleId = model.getRoleId();
         Integer classId = model.getClassId();
-        String note = model.getNote();
+        Integer oldQuantity = model.getOldQuantity();
 
         if(username.equalsIgnoreCase("")){
             message = Constant.USER_NOT_EXIT;
@@ -189,21 +191,20 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
 
         try {
             if(!validateEmulationService.checkRankedDateByViolationId(violationClassId)) {
-                if(validateEmulationService.checkRoleForEditViolationClass(username, roleId, classId, createDate)){
+                message = validateEmulationService.checkRoleForEditViolationClass(username, roleId, classId, createDate);
+                if(message.getMessageCode() == 0){
 
-                    if(roleId == 1 || roleId == 3){
+                    if(roleId == Constant.ROLEID_ADMIN || roleId == Constant.ROLEID_REDSTAR){
                         ViolationClass violationClass = violationClassRepository.findViolationClassByById(violationClassId);
                         String history = violationClass.getHistory();
                         String newHistory = additionalFunctionService.addHistory(history, reason, username, newQuantity);
                         if (newQuantity == 0) {
                             violationClass.setStatus(0);
                             violationClass.setHistory(newHistory);
-                            violationClass.setNote(note);
                             violationClassRepository.save(violationClass);
                         } else {
                             violationClass.setQuantity(newQuantity);
                             violationClass.setHistory(newHistory);
-                            violationClass.setNote(note);
                             violationClassRepository.save(violationClass);
                         }
                     }
@@ -215,14 +216,42 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
                         violationClassRequest.setReason(reason);
                         violationClassRequest.setQuantityNew(newQuantity);
                         violationClassRequest.setViolationClass(new ViolationClass(violationClassId));
+                        violationClassRequest.setQuantityOld(oldQuantity);
                         violationClassRequestRepository.save(violationClassRequest);
                     }
                 }
                 else{
-                    message = Constant.NOT_ACCEPT_EDIT;
                     return message;
                 }
             }
+        }
+        catch (Exception e){
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            return message;
+        }
+
+        message = Constant.SUCCESS;
+        return message;
+    }
+
+    /**
+     * kimpt142
+     * 20/07
+     * delete violation class request by requestId
+     * @param model
+     * @return
+     */
+    @Override
+    public MessageDTO deleteRequestChange(DeleteRequestChangeViolationClassRequestDto model) {
+        MessageDTO message = new MessageDTO();
+        Integer requestId = model.getRequestId();
+        if(requestId == null){
+            message = Constant.REQUEST_ID_NULL;
+        }
+
+        try {
+            violationClassRequestRepository.deleteById(requestId);
         }
         catch (Exception e){
             message.setMessageCode(1);

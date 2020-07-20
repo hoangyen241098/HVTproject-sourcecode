@@ -7,6 +7,12 @@ public class Constant {
      * Constant value
      */
     public static final Integer PAGE_SIZE = 10;
+    public static final Integer ROLEID_ADMIN = 1;
+    public static final Integer ROLEID_TIMETABLE_MANAGER = 2;
+    public static final Integer ROLEID_REDSTAR = 3;
+    public static final Integer ROLEID_MONITOR = 4;
+    public static final Integer ROLEID_SUMMERIZEGROUP = 5;
+    public static final Integer ROLEID_CLUBLEADER = 6;
     /**
      * Fail message
      */
@@ -188,6 +194,14 @@ public class Constant {
             new MessageDTO(1,"Hãy chọn yêu cầu thay đổi.");
     public static final MessageDTO NOT_ACCEPT_EDIT =
             new MessageDTO(1,"Bạn không có quyền chỉnh sửa.");
+    public static final MessageDTO NOT_ACCEPT_DAY_EDIT =
+            new MessageDTO(1,"Bạn không có quyền thêm/chỉnh sửa vào ngày được chọn.");
+    public static final MessageDTO NOT_ACCEPT_TIME_EDIT =
+            new MessageDTO(1,"Đã quá thời gian để thêm/chỉnh sửa lỗi.");
+    public static final MessageDTO MONITOR_NOT_EDIT_TODAY =
+            new MessageDTO(1,"Bạn chỉ có thể yêu cầu thay đổi trong ngày hôm nay.");
+    public static final MessageDTO ADD_VIOLATION_NOT_CURRENTYEAR =
+            new MessageDTO(1,"Bạn chỉ có thể thêm lỗi vi phạm của lớp trong năm học này.");
     public static final MessageDTO NOT_ACCEPT_REQUEST_CHANGE =
             new MessageDTO(1,"Bạn không có quyền chấp nhận yêu cầu thay đổi.");
     public static final MessageDTO NOT_REJECT_REQUEST_CHANGE =
