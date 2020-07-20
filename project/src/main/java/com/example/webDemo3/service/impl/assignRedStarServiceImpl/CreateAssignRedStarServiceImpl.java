@@ -42,6 +42,16 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
     int[] costValue;//= new int[n];
     int size;
 
+    @Override
+    public MessageDTO checkDate(Date fromDate) {
+        MessageDTO message = Constant.SUCCESS;
+        Date date = classRedStarRepository.findByDate(fromDate);
+        if(date != null){
+            message = Constant.CONFIRM_UPDATE_TIMTABLE;
+        }
+        return message;
+    }
+
     @Transactional
     @Override
     public MessageDTO create(Date fromDate) {

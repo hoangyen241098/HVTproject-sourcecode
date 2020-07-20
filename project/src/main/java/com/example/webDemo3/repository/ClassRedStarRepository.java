@@ -16,6 +16,9 @@ import java.util.List;
 @Repository
 public interface ClassRedStarRepository extends JpaRepository<ClassRedStar, ClassRedStarId> {
 
+    @Query(value = "select distinct c.classRedStarId.FROM_DATE from ClassRedStar c where c.classRedStarId.FROM_DATE = :fromDate")
+    Date findByDate(@Param("fromDate") Date fromDate);
+
     @Query(value = "select c from ClassRedStar c where c.classRedStarId.FROM_DATE = :fromDate")
     List<ClassRedStar> findAllByDate(@Param("fromDate") Date fromDate);
 

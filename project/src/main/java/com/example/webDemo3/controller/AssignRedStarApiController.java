@@ -17,10 +17,15 @@ public class AssignRedStarApiController {
     @Autowired
     private CreateAssignRedStarService assignRedStarService;
 
+    @PostMapping("/checkDate")
+    public MessageDTO checkDate(@RequestBody CheckDateRequestDto data)
+    {
+        return assignRedStarService.checkDate(data.getDate());
+    }
+
     @PostMapping("/create")
     public MessageDTO craete(@RequestBody CheckDateRequestDto data)
     {
-        //Date date = Date.valueOf("2020-02-01");
         return assignRedStarService.create(data.getDate());
     }
 
