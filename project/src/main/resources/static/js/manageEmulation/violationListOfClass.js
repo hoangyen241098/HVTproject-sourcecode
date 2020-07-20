@@ -219,44 +219,131 @@ function search() {
 
 /*Edit button*/
 function editBtn() {
+    var violationClassId, classId, className, createDate, violationDate, createBy, status, description, note, substract,
+        quantity, quantityNew, reason, total;
+
     $('.edit-btn').on('click', function () {
-        var violationClassId = $(this).parent().find('.violationClassId').text();
-        var classId = $(this).parent().find('.classId').text();
-        var className = $(this).parent().find('.className').text();
-        var createDate = $(this).parent().find('.createDate').text();
-        var violationDate = $(this).parent().find('.violationDate').text();
-        var createBy = $(this).parent().find('.createBy').text();
-        var status = $(this).parent().find('.status').text();
-        var description = $(this).parent().find('.description').text();
-        var note = $(this).parent().find('.note').text();
-        var substract = $(this).parent().find('.substractGrade').text();
-        var quantity = $(this).parent().find('.quantity').text();
-        var quantityNew = $(this).parent().find('.quantityNew').text();
-        var reason = $(this).parent().find('.reason').text();
-        var total = parseFloat(parseFloat(substract) * parseInt(quantity)).toFixed(1);
-        if ($('.violation-action input').val() == 'CHỈNH SỬA') {
+        violationClassId = $(this).parent().find('.violationClassId').text();
+        classId = $(this).parent().find('.classId').text();
+        className = $(this).parent().find('.className').text();
+        createDate = $(this).parent().find('.createDate').text();
+        violationDate = $(this).parent().find('.violationDate').text();
+        createBy = $(this).parent().find('.createBy').text();
+        status = $(this).parent().find('.status').text();
+        description = $(this).parent().find('.description').text();
+        note = $(this).parent().find('.note').text();
+        substract = $(this).parent().find('.substractGrade').text();
+        quantity = $(this).parent().find('.quantity').text();
+        quantityNew = $(this).parent().find('.quantityNew').text();
+        reason = $(this).parent().find('.reason').text();
+        total = parseFloat(parseFloat(substract) * parseInt(quantity)).toFixed(1);
+        if ($(this).val() == 'CHỈNH SỬA') {
             editModal(violationDate, className, description, note, createBy, substract, quantity, total)
             var $total = $('.total');
             increaseBtn(substract, total, $total);
             decreaseBtn(substract, total, $total);
             var $newQuantity = $('.quantity-input');
             var $reason = $('#reason');
-
+            editModalBtn(violationClassId, classId, createDate, description, substract, note, $reason, quantity, $newQuantity);
         }
-        if ($('.violation-action input').val() == 'XEM YÊU CẦU CHỈNH SỬA') {
+        if ($(this).val() == 'XEM YÊU CẦU CHỈNH SỬA') {
             $('#confirmEdit .modal-title').text('Yêu cầu chỉnh sửa');
             $('#confirmEdit .modal-footer .btn-danger').val('HỦY YÊU CẦU CHỈNH SỬA');
             $('#confirmEdit .modal-footer .btn-danger').prop('id', 'confirmDeleteBtn');
             $('#confirmEdit .modal-footer .btn-primary').val('ĐÓNG');
         }
-        editModalBtn(violationClassId, classId, createDate, description, substract, note, $reason, quantity, $newQuantity)
     })
 }
 
-/*History button*/
-function historyBtn() {
-    $('.history-btn').on('click', function () {
-        $('#historyModal').modal('show');
+/*Edit Modal Button*/
+function editModalBtn(violationClassId, classId, createDate, description, substract, note, $reason, quantity, $newQuantity) {
+    $('.editModalBtn').one('click', function () {
+        console.log("#editModalBtn");
+        var newQuantity = $newQuantity.val();
+        var reason = $reason.val();
+        $('.editInfo-err').text('');
+        if (quantity == newQuantity) {
+            $('.editInfo-err').text('Hãy thay đổi thông tin.');
+            return false;
+        } else if (reason == null || reason == "") {
+            $('.editInfo-err').text('Hãy điền lý do thay đổi.');
+            return false;
+        } else {
+            $('.editInfo-err').text('');
+            editViolation = {
+                violationClassId: violationClassId,
+                username: username,
+                classId: classId,
+                editDate: moment().format('YYYY-MM-DD'),
+                createDate: createDate,
+                roleId: roleId,
+                newQuantity: newQuantity,
+                reason: reason,
+            }
+            var total = parseFloat(parseFloat(substract) * parseInt(quantity)).toFixed(1);
+            var newTotal = parseFloat(parseFloat(substract) * parseInt(newQuantity)).toFixed(1);
+            $('#editModal').modal('hide');
+
+            $('#confirmEdit .modal-body').html('');
+            $('#confirmEdit .modal-body').append(`
+                <div class="panel-title text-left">
+                    <h6 class="violationName">` + description + `</h6>
+                    <h6 class="substract-grade">Điểm trừ: ` + substract + `</h6>
+                </div>
+                <div class="panel-body">
+                    <div class="note">
+                        <span class="title">Ghi chú: </span> 
+                        <span class="info ml-4">` + note + `</span>
+                    </div>
+                    <div class="reason-change">
+                        <span class="title">Lý do thay đổi: </span> 
+                        <span class="info ml-4">` + reason + `</span>
+                    </div>
+                    <div class="quantity">
+                        <span class="title">Số lần: </span> 
+                        <span class="info ml-4">` + quantity + ` -> <span class="text-red font-500">` + newQuantity + `</span></span>
+                    </div>
+                    <div class="totals">
+                        <span class="title">Tổng điểm trừ: </span> 
+                        <span class="info ml-4">` + total + ` -> <span class="text-red font-500">` + newTotal + `</span></span>
+                    </div>
+                </div>
+            `);
+            $('#confirmEdit').modal('show');
+            confirmEditBtn();
+        }
+    });
+}
+
+/*Confirm Edit Button*/
+function confirmEditBtn() {
+    $('#confirmEditBtn').one('click', function () {
+        console.log(JSON.stringify(editViolation));
+        $.ajax({
+            url: '/api/emulation/requesteditviolation',
+            type: 'POST',
+            data: JSON.stringify(editViolation),
+            beforeSend: function () {
+                $('body').addClass("loading")
+            },
+            complete: function () {
+                $('body').removeClass("loading")
+            },
+            success: function (data) {
+                var messageCode = data.messageCode;
+                var message = data.message;
+                if (messageCode == 0) {
+                    dialogModal("img/img-success.png", "Tạo yêu cầu thay đổi thành công!");
+                } else {
+                    dialogModal("img/img-error.png", message);
+                }
+            },
+            failure: function (errMsg) {
+                dialogModal("img/img-error.png", errMsg);
+            },
+            dataType: "json",
+            contentType: "application/json"
+        });
     });
 }
 
@@ -318,96 +405,11 @@ function editModal(violationDate, className, description, note, createBy, substr
     }
 }
 
-/*Edit Modal Button*/
-function editModalBtn(violationClassId, classId, createDate, description, substract, note, $reason, quantity, $newQuantity) {
-    $('.editModalBtn').bind('click', function () {
-        console.log("#editModalBtn");
-        var newQuantity = $newQuantity.val();
-        var reason = $reason.val().trim();
-        $('.editInfo-err').text('');
-        if (quantity == newQuantity) {
-            $('.editInfo-err').text('Hãy thay đổi thông tin.');
-            return false;
-        } else if (reason == null || reason == "") {
-            $('.editInfo-err').text('Hãy điền lý do thay đổi.');
-            return false;
-        } else {
-            $('.editInfo-err').text('');
-            editViolation = {
-                violationClassId: violationClassId,
-                username: username,
-                classId: classId,
-                editDate: moment().format('YYYY-MM-DD'),
-                createDate: createDate,
-                roleId: roleId,
-                newQuantity: newQuantity,
-                reason: reason,
-            }
-            console.log(JSON.stringify(editViolation));
-            var total = parseFloat(parseFloat(substract) * parseInt(quantity)).toFixed(1);
-            var newTotal = parseFloat(parseFloat(substract) * parseInt(newQuantity)).toFixed(1);
-            $('#editModal').modal('hide');
-            $('#confirmEdit').modal('show');
-            $('#confirmEdit .modal-body').html('');
-            $('#confirmEdit .modal-body').append(`
-                <div class="panel-title text-left">
-                    <h6 class="violationName">` + description + `</h6>
-                    <h6 class="substract-grade">Điểm trừ: ` + substract + `</h6>
-                </div>
-                <div class="panel-body">
-                    <div class="note">
-                        <span class="title">Ghi chú: </span> 
-                        <span class="info ml-4">` + note + `</span>
-                    </div>
-                    <div class="reason-change">
-                        <span class="title">Lý do thay đổi: </span> 
-                        <span class="info ml-4">` + reason + `</span>
-                    </div>
-                    <div class="quantity">
-                        <span class="title">Số lần: </span> 
-                        <span class="info ml-4">` + quantity + ` -> <span class="text-red font-500">` + newQuantity + `</span></span>
-                    </div>
-                    <div class="totals">
-                        <span class="title">Tổng điểm trừ: </span> 
-                        <span class="info ml-4">` + total + ` -> <span class="text-red font-500">` + newTotal + `</span></span>
-                    </div>
-                </div>
-                `);
-            $('#confirmEditBtn').on('click', function () {
-                confirmEditBtn();
-            })
-        }
+/*History button*/
+function historyBtn() {
+    $('.history-btn').on('click', function () {
+        $('#historyModal').modal('show');
     });
-}
-
-/*Confirm Edit Button*/
-function confirmEditBtn() {
-    $.ajax({
-        url: '/api/emulation/requesteditviolation',
-        type: 'POST',
-        data: JSON.stringify(editViolation),
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
-        success: function (data) {
-            var messageCode = data.messageCode;
-            var message = data.message;
-            if (messageCode == 0) {
-                dialogModal("img/img-success.png", "Tạo yêu cầu thay đổi thành công!");
-            } else {
-                dialogModal("img/img-error.png", message);
-            }
-        },
-        failure: function (errMsg) {
-            dialogModal("img/img-error.png", errMsg);
-        },
-        dataType: "json",
-        contentType: "application/json"
-    });
-
 }
 
 /*Set dialog template*/
