@@ -315,3 +315,9 @@ function decreaseBtn() {
     });
 }
 
+/*Set role*/
+if (roleId != 1 || roleId != 3 || roleId != 5) {
+    $('#saveGrading').prop('disabled', true);
+    $('.gradingToEmulation-err').text('Bạn không có quyền chấm điểm thi đua!');
+}
+

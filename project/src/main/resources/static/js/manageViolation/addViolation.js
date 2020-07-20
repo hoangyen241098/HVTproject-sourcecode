@@ -29,16 +29,16 @@ $("#submit").click(function (e) {
     if (newTypeId == null || newTypeId == 0) {
         $('.addViolation-err').text("Hãy lựa chọn nội quy!");
         return false;
-    }else if(newDescription == ""){
+    } else if (newDescription == "") {
         $('.addViolation-err').text("Hãy nhập mô tả lỗi vi phạm!");
         return false;
-    }else if(newSubstractGrade == ""){
+    } else if (newSubstractGrade == "") {
         $('.addViolation-err').text("Hãy nhập điểm trừ của lỗi vi phạm!");
         return false;
-    }else if(newSubstractGrade <= 0){
+    } else if (newSubstractGrade <= 0) {
         $('.addViolation-err').text("Hãy nhập điểm trừ của lỗi vi phạm lớn hơn 0!");
         return false;
-    }else {
+    } else {
         var model = {
             typeId: newTypeId,
             description: newDescription,
@@ -59,11 +59,12 @@ $("#submit").click(function (e) {
                 var messageCode = data.messageCode;
                 var message = data.message;
                 if (messageCode == 0) {
+                    $('#createSuccess').modal('show');
+                    $('#createSuccess .modal-body').html('');
                     $('#createSuccess .modal-body').append(`
-                        <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
-                        <h5>Tạo lỗi vi phạm thành công!</h5>
+                        <img class="mb-3 mt-3" src="img/img-success.png"/>
+                        <h5>Đã thêm nội quy thành công!</h5>
                     `);
-                    $('#createSuccess').css('display', 'block');
                     $('.addViolation-err').text("");
                 } else {
                     $('.addViolation-err').text(message);
@@ -77,3 +78,8 @@ $("#submit").click(function (e) {
         });
     }
 });
+
+if (localStorage.getItem('roleID') != 1) {
+    $('.addViolation-err').text('Bạn không có quyền thêm lỗi vi phạm!');
+    $('#submit').prop('disabled', true);
+}

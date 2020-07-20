@@ -27,17 +27,21 @@ a:hover {
     background: #35579c;
 }
 
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
+/*input[type=time]::-webkit-datetime-edit-ampm-field {*/
+/*    display: none;*/
+/*}*/
 
-/* Firefox */
-input[type=number] {
-    -moz-appearance: textfield;
-}
+/*!* Chrome, Safari, Edge, Opera *!*/
+/*input::-webkit-outer-spin-button,*/
+/*input::-webkit-inner-spin-button {*/
+/*    -webkit-appearance: none;*/
+/*    margin: 0;*/
+/*}*/
+
+/*!* Firefox *!*/
+/*input[type=number] {*/
+/*    -moz-appearance: textfield;*/
+/*}*/
 
 /*Header*/
 
@@ -607,6 +611,8 @@ tr.selected {
     opacity: 0;
     position: absolute;
     z-index: 9;
+    width: 18px;
+    height: 18px;
 }
 
 .custom-checkbox label {
