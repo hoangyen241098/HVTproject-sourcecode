@@ -24,12 +24,21 @@
     <div class="table-wrapper">
         <div class="table-title">
             <h2>DANH SÁCH LỚP</h2>
-            <div class="search row align-items-end">
+            <div class="search row align-items-baseline">
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0">
                     <div class="form-group text-left mb-1" id="searchByIdentifier">
                         <label>Tên định danh:</label>
                         <input type="text" placeholder="Tên định danh" class="form-control w-75">
                     </div>
+                    <div class="form-group text-left mb-1">
+                        <label>Sắp xếp theo:</label>
+                        <select class="combobox form-control w-75" id="orderBy">
+                            <option value="0" selected="selected">Tên định danh</option>
+                            <option value="1">Khối</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0">
                     <div class="form-group text-left mb-1">
                         <label>Khối:</label>
                         <select class="combobox form-control w-75" id="searchByGrade">
@@ -37,15 +46,6 @@
                             <option value="10">10</option>
                             <option value="11">11</option>
                             <option value="12">12</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0">
-                    <div class="form-group text-left mb-1">
-                        <label>Sắp xếp theo:</label>
-                        <select class="combobox form-control w-75" id="orderBy">
-                            <option value="0" selected="selected">Tên định danh</option>
-                            <option value="1">Khối</option>
                         </select>
                     </div>
                     <div class="form-group text-left mb-1">
@@ -70,7 +70,7 @@
         </div>
         <div class="table-title-2">
             <div class="col-sm-12 px-0 d-flex justify-content-end align-items-center">
-                <a th:href="@{createClass}" class="btn btn-success">
+                <a th:href="@{createClass}" class="btn btn-success manageBtn">
                     <span>Thêm lớp</span>
                 </a>
                 <button class="btn btn-search mr-0" id="search">Tìm kiếm</button>

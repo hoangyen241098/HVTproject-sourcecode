@@ -44,16 +44,15 @@
         </div>
     </div>
 </div>
+
 <!--    Modal Create Success-->
-<div class="modal" tabindex="-1" role="dialog" id="createSuccess">
+<div class="modal fade" tabindex="-1" role="dialog" id="createSuccess">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-body text-center">
-                <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
-                <h5>Đã thêm nội quy thành công!</h5>
-            </div>
+            <div class="modal-body text-center"></div>
             <div class="modal-footer">
-                <a type="button" id="closeDialog" class="btn btn-primary" value="ĐÓNG" th:href="@{violationList}">ĐÓNG</a>
+                <a type="button" class="btn btn-danger" th:href="@{violationList}">DANH SÁCH LỖI</a>
+                <a type="button" class="btn btn-primary" th:href="@{addViolationType}">ĐÓNG</a>
             </div>
         </div>
     </div>

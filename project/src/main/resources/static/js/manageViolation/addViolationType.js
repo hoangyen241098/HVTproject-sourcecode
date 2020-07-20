@@ -31,7 +31,12 @@ $("#submit").click(function (e) {
             var messageCode = data.messageCode;
             var message = data.message;
             if (messageCode == 0) {
-                $('#createSuccess').css('display', 'block');
+                $('#createSuccess').modal('show');
+                $('#createSuccess .modal-body').html('');
+                $('#createSuccess .modal-body').append(
+                    `<img class="mb-3 mt-3" src="img/img-success.png"/>
+                    <h5>Đã thêm nội quy thành công!</h5>
+                `);
                 $('.addViolationType-err').text("");
             } else {
                 $('.addViolationType-err').text(message);
@@ -44,3 +49,8 @@ $("#submit").click(function (e) {
         contentType: "application/json"
     });
 });
+
+if (localStorage.getItem('roleID') != 1) {
+    $('.addViolationType-err').text('Bạn không có quyền thêm nội quy!');
+    $('#submit').prop('disabled', true);
+}

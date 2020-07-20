@@ -1,8 +1,8 @@
 var fromDate;
 var inforSearch = {
     fromDate: $('#fromDate option:selected').val(),
-    orderBy: "0",
-    sortBy: "1",
+    orderBy: "1",
+    sortBy: "0",
     classId: "",
     redStar: "",
     pageNumber: 0
@@ -164,4 +164,8 @@ function search() {
         dataType: "json",
         contentType: "application/json"
     });
+}
+
+if (localStorage.getItem('roleID') != 1) {
+    $('.manageBtn').addClass('hide');
 }

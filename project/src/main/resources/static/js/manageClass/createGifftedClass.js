@@ -64,3 +64,9 @@ $("#submit").click(function (e) {
         });
     }
 });
+
+/*Check Role has create or not*/
+if (localStorage.getItem('roleID') != 1) {
+    $('.giftedClassName-err').text("Bạn không có quyền hệ chuyên!");
+    $('#submit').prop('disabled', true);
+}

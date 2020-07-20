@@ -82,3 +82,9 @@ function deleteGifted(e) {
         contentType: "application/json"
     });
 }
+
+/*Check Role has create or not*/
+if (localStorage.getItem('roleID') != 1) {
+    $('.giftedClass-err').text("Bạn không có quyền xóa hệ chuyên!");
+    $('#deleteGC').prop('disabled', true);
+}
