@@ -5,7 +5,7 @@ $(document).ready(function () {
     var username = localStorage.getItem("username");
     if (loginSuccess == 0) {
         $("#loginSuccessMenu").addClass("show");
-        $("#loginSuccessMenu .nav-link").html(username+`<i class="fa fa-caret-down"></i>`);
+        $("#loginSuccessMenu .nav-link").html(username + `<i class="fa fa-caret-down"></i>`);
         $('#loginMenu').css('display', 'none');
         if (roleID == 1) {
             $("#adminMenu").addClass("show");
@@ -193,74 +193,11 @@ function paging(inforSearch, totalPages) {
 
 };
 
-function nextPage() {
-    $('#nextPage').on('click', function (event) {
-        $("#selectAll").prop("checked", false);
-        inforSearch.pageNumber++;
-        $('tbody').html("");
-        $('.table-paging').html("");
-        search();
-    })
-}
-
-function prevPage() {
-    $('#prevPage').on('click', function (event) {
-        $("#selectAll").prop("checked", false);
-        inforSearch.pageNumber--;
-        $('tbody').html("");
-        $('.table-paging').html("");
-        search();
-    })
-}
-
 /*Convert string to form date*/
 function convertDate(str) {
     str = str.split("-");
     str = str[2].concat("/" + str[1] + "/" + str[0]);
     return str;
-}
-
-/*Load combobox week in timetable*/
-function loadWeek() {
-    var listweek = {
-        yearIdCurrent: yearId,
-    }
-    /*Call API for weeks List*/
-    $.ajax({
-        url: '/api/timetable/listweek',
-        type: 'POST',
-        data: JSON.stringify(listweek),
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
-        success: function (data) {
-            var messageCode = data.messageDTO.messageCode;
-            var message = data.messageDTO.message;
-            if (messageCode == 0) {
-                if (data.listWeek != null) {
-                    $('#week').html("");
-                    $.each(data.listWeek, function (i, list) {
-                        if (list.timeTableWeekId == weekIdCurrent) {
-                            $('#week').append(`<option value="` + list.timeTableWeekId + `" selected>` + convertDate(list.fromDate) + ` đến ` + convertDate(list.toDate) + `</option>`);
-                        } else {
-                            $('#week').append(`<option value="` + list.timeTableWeekId + `">` + convertDate(list.fromDate) + ` đến ` + convertDate(list.toDate) + `</option>`);
-                        }
-                    });
-                }
-                weekIdCurrent = $('#week option:selected').val();
-            } else {
-                $('#week').html(`<option value="0">` + message + `</option>`);
-            }
-        },
-        failure: function (errMsg) {
-            $('#week').html(`<option value="0">` + errMsg + `</option>`);
-        },
-        dataType: 'JSON',
-        contentType: "application/json"
-    });
 }
 
 function toggleClick() {
@@ -283,3 +220,24 @@ function limitedDate() {
     $('#toDate').attr('max', toYear + '-12-31');
 }
 
+// /*Clear session when leaving page*/
+var pathname = $(location).attr('pathname');
+if (pathname != '/teacherInformation') {
+    sessionStorage.removeItem('teacherId');
+}
+if (pathname != '/editClass') {
+    sessionStorage.removeItem('classId');
+}
+if (pathname != '/editViolationType') {
+    sessionStorage.removeItem('violationTypeID');
+}
+if (pathname != '/editViolation') {
+    sessionStorage.removeItem('violationId');
+}
+if (pathname != '/editSchoolYear') {
+    sessionStorage.removeItem('schoolYearId');
+}
+if (pathname != '/violationListOfClass') {
+    sessionStorage.removeItem('classIdGrading');
+    sessionStorage.removeItem('dateGrading');
+}

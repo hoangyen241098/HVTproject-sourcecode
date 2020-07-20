@@ -1,6 +1,7 @@
 $('#inputDate').val(moment().format('YYYY-MM-DD'));
 $('#inputDate').prop('max', moment().format('YYYY-MM-DD'));
 var username = localStorage.getItem('username');
+var roleId = localStorage.getItem('roleID');
 var infoSearch = {
     classId: null,
     status: 3,
@@ -90,7 +91,7 @@ function search() {
             var message = data.message.message;
             if (messageCode == 0) {
                 var totalPages = data.totalPage;
-                if (totalPages > 0) {
+                if (totalPages > 1) {
                     $('.table-paging').removeClass('hide');
                     $('.table-paging').html('');
                     paging(infoSearch, totalPages);
@@ -105,7 +106,7 @@ function search() {
                                 totalsNew, reason;
                             var violationDate = item.dayName + " - " + convertDate(item.createDate);
                             var substractGrade = item.substractGrade;
-                            var quantity = item.quantity;
+                            var quantity = item.violationClassRequest.quantityOld;
                             totals = parseFloat(parseFloat(substractGrade) * parseInt(quantity)).toFixed(1);
                             requestId = item.violationClassRequest.requestId;
                             dataTarget = "collapse" + requestId;
@@ -186,9 +187,20 @@ function search() {
                                     </div>
                                 </div>
                             `);
-                            if (status == "Chấp nhận" || status == "Từ chối") {
+                            if (status == "Chấp nhận" || status == "Từ chối" || roleId != 1) {
                                 var dataTargetID = "#" + dataTarget;
                                 $(dataTargetID).find('.accept-request').parent().addClass('hide');
+                            }
+                            if (status == "Từ chối") {
+                                var dataTargetID = "#" + dataTarget;
+                                $(dataTargetID).find('.quantity').html(`
+                                    <span class="title">Số lần: </span>
+                                    <span class="info ml-4">` + quantity
+                                );
+                                $(dataTargetID).find('.totals').html(`
+                                    <span class="title">Tổng điểm trừ: </span>
+                                    <span class="info ml-4">` + totals
+                                );
                             }
                         }
                     });
@@ -216,7 +228,7 @@ function acceptRequest() {
     $('.accept-request').on('click', function () {
         $('#confirmModal').modal('show');
         $('#confirmModal .modal-body').html(`
-            <img class="mb-3 mt-3" src="/img/img-error.png"/>
+            <img class="mb-3 mt-3" src="img/img-question.png"/>
             <h5>Bạn có muốn <b>CHẤP NHẬN</b> yêu cầu này không?</h5>
         `);
         var violationClassId = $(this).parent().parent().find('.violationClassId').text();
@@ -243,20 +255,20 @@ function acceptRequest() {
                     var messageCode = data.messageCode;
                     var message = data.message;
                     if (messageCode == 0) {
-                        $('#passSuccess').modal('show');
-                        $('#passSuccess .modal-body').html(`
+                        $('#modalSuccess').modal('show');
+                        $('#modalSuccess .modal-body').html(`
                         <img class="mb-3 mt-3" src="/img/img-success.png"/>
                         <h5>` + message + `</h5>
                     `);
                     } else {
-                        $('#passSuccess .modal-body').html(`
+                        $('#modalSuccess .modal-body').html(`
                         <img class="mb-3 mt-3" src="/img/img-error.png"/>
                         <h5>` + message + `</h5>
                     `);
                     }
                 },
                 failure: function (errMsg) {
-                    $('#passSuccess .modal-body').html(`
+                    $('#modalSuccess .modal-body').html(`
                     <img class="mb-3 mt-3" src="/img/img-error.png"/>
                     <h5>` + errMsg + `</h5>
                 `);
@@ -274,7 +286,7 @@ function rejectRequest() {
     $('.reject-request').on('click', function () {
         $('#confirmModal').modal('show');
         $('#confirmModal .modal-body').html(`
-            <img class="mb-3 mt-3" src="/img/img-error.png"/>
+            <img class="mb-3 mt-3" src="img/img-question.png"/>
             <h5>Bạn có muốn <b>TỪ CHỐI</b> yêu cầu này không?</h5>
         `);
         var violationClassId = $(this).parent().parent().find('.violationClassId').text();
@@ -284,6 +296,7 @@ function rejectRequest() {
             var accept = {
                 violationClassId: violationClassId,
                 requestId: requestId,
+                userName: username,
             }
             console.log(JSON.stringify(accept));
             $.ajax({
@@ -300,20 +313,20 @@ function rejectRequest() {
                     var messageCode = data.messageCode;
                     var message = data.message;
                     if (messageCode == 0) {
-                        $('#rejectSuccess').modal('show');
-                        $('#rejectSuccess .modal-body').html(`
+                        $('#modalSuccess').modal('show');
+                        $('#modalSuccess .modal-body').html(`
                         <img class="mb-3 mt-3" src="/img/img-success.png"/>
                         <h5>` + message + `</h5>
                     `);
                     } else {
-                        $('#rejectSuccess .modal-body').html(`
+                        $('#modalSuccess .modal-body').html(`
                         <img class="mb-3 mt-3" src="/img/img-error.png"/>
                         <h5>` + message + `</h5>
                     `);
                     }
                 },
                 failure: function (errMsg) {
-                    $('#rejectSuccess .modal-body').html(`
+                    $('#modalSuccess .modal-body').html(`
                     <img class="mb-3 mt-3" src="/img/img-error.png"/>
                     <h5>` + errMsg + `</h5>
                 `);

@@ -87,7 +87,6 @@ $("#editInfo").click(function (e) {
     }
 });
 
-
 function editClass(e) {
     var editClass = {
         classId: editClassId,
@@ -129,8 +128,3 @@ function editClass(e) {
         contentType: "application/json"
     });
 }
-
-/*Clear session when leaving page*/
-$(window).bind('beforeunload', function () {
-    sessionStorage.removeItem('classId');
-});

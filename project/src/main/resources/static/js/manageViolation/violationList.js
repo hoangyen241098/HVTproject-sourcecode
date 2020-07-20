@@ -1,6 +1,4 @@
 $(document).ready(function () {
-    localStorage.removeItem("violationTypeID");
-    localStorage.removeItem("violationId");
     $.ajax({
         url: '/api/admin/violationandviolationtype',
         type: 'POST',
@@ -143,7 +141,7 @@ function getViolationTypeID() {
     var typeId = $('.bt-table-edit');
     $(typeId).on('click', function (e) {
         typeId = $(this).prop('id');
-        localStorage.setItem("violationTypeID", typeId);
+        sessionStorage.setItem("violationTypeID", typeId);
     });
 };
 
@@ -152,7 +150,7 @@ function getViolationID() {
     var violationId = $('.bt-table-edit-vio');
     $(violationId).on('click', function (e) {
         violationId = $(this).prop('id');
-        localStorage.setItem("violationId", violationId);
+        sessionStorage.setItem("violationId", violationId);
     });
 };
 

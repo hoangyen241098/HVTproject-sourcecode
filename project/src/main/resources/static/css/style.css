@@ -27,10 +27,6 @@ a:hover {
     background: #35579c;
 }
 
-/*input[type=time]::-webkit-datetime-edit-ampm-field {*/
-/*    display: none;*/
-/*}*/
-
 /* Chrome, Safari, Edge, Opera */
 .quantity-input::-webkit-outer-spin-button,
 .quantity-input::-webkit-inner-spin-button {
