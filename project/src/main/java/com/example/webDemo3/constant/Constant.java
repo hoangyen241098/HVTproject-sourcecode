@@ -237,6 +237,8 @@ public class Constant {
             new MessageDTO(1,"Không thể xóa yêu cầu thay đổi đã bị từ chối.");
     public static final MessageDTO DELETE_REQUEST_FAIL =
             new MessageDTO(1,"Không thể xóa yêu cầu thay đổi này.");
+    public static final MessageDTO INCORRECT_FILE_FORMAT =
+            new MessageDTO(1,"không đúng định dạng file");
     /**
      * Success message
      */
