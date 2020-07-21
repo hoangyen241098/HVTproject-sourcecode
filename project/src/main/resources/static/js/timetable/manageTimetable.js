@@ -121,7 +121,7 @@ function dialogErr(model, mess) {
     `);
 }
 
-if (localStorage.getItem('roleID') != 1 || localStorage.getItem('roleID') != 2) {
+if (localStorage.getItem('roleID') != 1 && localStorage.getItem('roleID') != 2) {
     $('.input-err').text('Bạn không có quyền thêm thời khóa biểu!');
     $('#submit').prop('disabled', true);
 }
