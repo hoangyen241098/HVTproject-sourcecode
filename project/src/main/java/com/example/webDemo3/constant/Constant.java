@@ -231,6 +231,16 @@ public class Constant {
             new MessageDTO(1,"Bạn không thể sửa tuần đã được xếp hạng ở tháng.");
     public static final MessageDTO SCHOOL_WEEK_NOT_EXIST =
             new MessageDTO(1,"Tuần không tồn tại.");
+    public static final MessageDTO VIOLATIONREQUEST_DELETED =
+            new MessageDTO(1,"Yêu cầu thay đổi này đã được xóa.");
+    public static final MessageDTO ACCEPT_REQUEST_DELETE =
+            new MessageDTO(1,"Không thể xóa yêu cầu thay đổi đã được chấp nhận.");
+    public static final MessageDTO REJECT_REQUEST_DELETE =
+            new MessageDTO(1,"Không thể xóa yêu cầu thay đổi đã bị từ chối.");
+    public static final MessageDTO DELETE_REQUEST_FAIL =
+            new MessageDTO(1,"Không thể xóa yêu cầu thay đổi này.");
+    public static final MessageDTO INCORRECT_FILE_FORMAT =
+            new MessageDTO(1,"không đúng định dạng file");
     /**
      * Success message
      */
