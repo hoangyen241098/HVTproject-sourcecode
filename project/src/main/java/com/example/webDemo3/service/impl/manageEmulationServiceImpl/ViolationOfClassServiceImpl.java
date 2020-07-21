@@ -102,7 +102,7 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
                 else {
                     //find request edit in violation request
                     ViolationClassRequest violationClassRequest = violationClassRequestRepository.findNewEditRequest(item.getId(), username);
-                    if (violationClassRequest != null && item.getCreateBy().equalsIgnoreCase(username)) {
+                    if (violationClassRequest != null && violationClassRequest.getCreatBy().equalsIgnoreCase(username)) {
                         violationClassRequestDto = additionalFunctionService.convertViolationClassRequestFromEntityToDto(violationClassRequest);
                         violationClassDto.setViolationClassRequest(violationClassRequestDto);
                         violationClassDto.setCheckEdit(2);

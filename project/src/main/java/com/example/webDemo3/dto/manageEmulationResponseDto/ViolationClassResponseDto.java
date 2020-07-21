@@ -24,6 +24,7 @@ public class ViolationClassResponseDto {
     private String createBy;
     private Integer status;
     private Float substractGrade;
+    private String history;
 
     private ViolationClassRequestResponseDto violationClassRequest;
     private Integer checkEdit;
