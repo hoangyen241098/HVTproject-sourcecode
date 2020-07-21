@@ -11,4 +11,6 @@ import java.util.List;
 @Repository
 public interface SchoolWeekRepository extends JpaRepository<SchoolWeek,Integer> {
 
+    @Query(value = "select s from SchoolWeek s where s.week = :week and s.monthID = :monthId and s.yearId = :yearId")
+    SchoolWeek findSchoolWeeksByWeekMonthIdAndYearId(@Param("week") Integer week,@Param("monthId") Integer monthId, @Param("yearId") Integer yearId);
 }

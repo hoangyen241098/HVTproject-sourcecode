@@ -13,6 +13,9 @@ public class Constant {
     public static final Integer ROLEID_MONITOR = 4;
     public static final Integer ROLEID_SUMMERIZEGROUP = 5;
     public static final Integer ROLEID_CLUBLEADER = 6;
+    public static final Float LEARNING_GRADE = (float) 20;
+    public static final Float MOVEMENT_GRADE = (float) 0.2;
+    public static final Float LABOR_GRADE = (float) 0.2;
     /**
      * Fail message
      */
@@ -205,7 +208,17 @@ public class Constant {
     public static final MessageDTO NOT_ACCEPT_REQUEST_CHANGE =
             new MessageDTO(1,"Bạn không có quyền chấp nhận yêu cầu thay đổi.");
     public static final MessageDTO NOT_REJECT_REQUEST_CHANGE =
-            new MessageDTO(1,"Bạn không có quyền từ chối yêu cầu thay đổi .");
+            new MessageDTO(1,"Bạn không có quyền từ chối yêu cầu thay đổi.");
+    public static final MessageDTO DATE_LIST_EMPTY =
+            new MessageDTO(1,"Không có ngày chưa được xếp hạng.");
+    public static final MessageDTO NOT_ACCEPT_CREATE_RANK_WEEK =
+            new MessageDTO(1,"Bạn không có quyền tạo xếp hạng tuần.");
+    public static final MessageDTO WEEK_NAME_EMPTY =
+            new MessageDTO(1,"Hãy điền tên tuần.");
+    public static final MessageDTO SCHOOL_WEEK_EXISTS =
+            new MessageDTO(1,"Tên tuần trong năm hiện tại đã tồn tại.");
+    public static final MessageDTO SCHOOL_RANK_WEEK_NULL =
+            new MessageDTO(1,"Danh sách xếp hạng lớp theo tuần trống.");
     /**
      * Success message
      */
