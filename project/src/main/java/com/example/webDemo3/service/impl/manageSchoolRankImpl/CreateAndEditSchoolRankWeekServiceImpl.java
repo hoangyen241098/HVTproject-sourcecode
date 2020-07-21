@@ -5,12 +5,14 @@ import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.DateViolationClassDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListDateResponseDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.CreateRankWeekRequestDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.EditRankWeekRequestDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewWeekAnDateListRequestDto;
 import com.example.webDemo3.entity.*;
 import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.repository.*;
 import com.example.webDemo3.service.manageEmulationService.ValidateEmulationService;
 import com.example.webDemo3.service.manageSchoolRank.CreateAndEditSchoolRankWeekService;
+import com.example.webDemo3.service.manageSchoolRank.SortSchoolRankWeekService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +55,9 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
 
     @Autowired
     private ViolationTypeRepository violationTypeRepository;
+
+    @Autowired
+    private SortSchoolRankWeekService sortSchoolRankWeekService;
 
     @Override
     public ListDateResponseDto loadListDate() {
@@ -113,6 +118,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         Integer weekId;
         Float allTotalGrade;
         Integer monthId = 0;
+        boolean edit = false;
         User user;
 
         try {
@@ -173,7 +179,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
             classList = classRepository.findAll();
             allTotalGrade = violationTypeRepository.sumAllTotalGradeViolationTypeActive();
 
-            message = createOrEditSchoolRankWeek(classList, dateList,allTotalGrade, schoolRankWeekList,weekId,message);
+            message = createOrEditSchoolRankWeek(classList, dateList,allTotalGrade, schoolRankWeekList,weekId,edit,message);
 
         }catch (Exception e){
             message.setMessageCode(1);
@@ -254,7 +260,68 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         return responseDto;
     }
 
+    @Override
+    public MessageDTO editRankWeek(EditRankWeekRequestDto requestDto) {
+        Integer weekId = requestDto.getWeekId();
+        Integer week = requestDto.getWeek();
+        List<DateViolationClassDto> dateList = requestDto.getDateList();
+        MessageDTO message = new MessageDTO();
+        SchoolWeek schoolWeek;
+        SchoolWeek newSchoolWeek;
+        List<Class> classList = new ArrayList<>();
+        Float allTotalGrade;
+        boolean edit = true;
+        List<SchoolRankWeek> schoolRankWeekList = new ArrayList<>();
 
+
+        //check weekId null or not
+        if(weekId == null){
+            message = Constant.WEEK_ID_NULL;
+            return  message;
+        }
+
+        //check weekName null or not
+        if(week == null){
+            message = Constant.WEEK_NAME_EMPTY;
+            return message;
+        }
+
+        //check dateList null or not
+        if(dateList == null || dateList.size() == 0){
+            message = Constant.DATE_LIST_EMPTY;
+            return message;
+        }
+
+        try{
+            schoolWeek = schoolWeekRepository.findById(weekId).orElse(null);
+            //check schoolWeek exists or not
+            if(schoolWeek == null){
+                message = Constant.SCHOOL_WEEK_NOT_EXIST;
+                return message;
+            }
+            newSchoolWeek = schoolWeekRepository.findSchoolWeeksByWeekMonthIdAndYearId(week,schoolWeek.getMonthID(),schoolWeek.getYearId());
+
+            //check week exist or not
+            if(newSchoolWeek != null){
+                message = Constant.SCHOOL_WEEK_EXISTS;
+                return message;
+            }
+            schoolWeek.setWeek(week);
+            schoolWeekRepository.save(schoolWeek);
+
+            classList = classRepository.findAll();
+            allTotalGrade = violationTypeRepository.sumAllTotalGradeViolationTypeActive();
+
+            message = createOrEditSchoolRankWeek(classList, dateList,allTotalGrade, schoolRankWeekList,weekId,edit,message);
+
+        }catch (Exception e){
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            return message;
+        }
+
+        return message;
+    }
 
 
     public String getDayNameByDate(Date date) {
@@ -265,7 +332,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         return dayName;
     }
 
-    public MessageDTO createOrEditSchoolRankWeek(List<Class> classList, List<DateViolationClassDto> dateList,Float allTotalGrade, List<SchoolRankWeek> schoolRankWeekList,Integer weekId, MessageDTO message){
+    public MessageDTO createOrEditSchoolRankWeek(List<Class> classList, List<DateViolationClassDto> dateList,Float allTotalGrade, List<SchoolRankWeek> schoolRankWeekList,Integer weekId,boolean edit, MessageDTO message){
         List<ViolationClass> violationClassList = new ArrayList<>();
         for(Class newClass: classList){
             Float allScore = (float) 0;
@@ -279,15 +346,25 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
                     violationClassList = violationClassRepository.findByDateClassAndStatus(date.getDate(),newClass.getClassId(),1);
                     size = violationClassList.size();
 
-                    //check size = 0 or not
-                    if(size == 0){
-                        break;
-                    }
-
                     for(ViolationClass violationClass: violationClassList){
                         violationClass.setWeekId(weekId);
                         totalSubTractGrade += violationClass.getQuantity() * violationClass.getViolation().getSubstractGrade();
                         allScore += allTotalGrade - totalSubTractGrade;
+                        violationClassRepository.save(violationClass);
+                    }
+                }
+                //check isCheck = 0 or not
+                if(isCheck == 0){
+                    Float totalSubTractGrade = (float) 0;
+                    violationClassList = violationClassRepository.findByDateClassAndStatus(date.getDate(),newClass.getClassId(),1);
+
+                    for(ViolationClass violationClass: violationClassList){
+                        SchoolRankWeek schoolRankWeek = schoolRankWeekRepository.findSchoolRankWeekByWeekIdAndClassId(violationClass.getWeekId(), violationClass.getClassId());
+                        //check schoolRankWeek is not null to delete
+                        if(schoolRankWeek != null){
+                            schoolRankWeekRepository.delete(schoolRankWeek);
+                        }
+                        violationClass.setWeekId(0);
                         violationClassRepository.save(violationClass);
                     }
                 }
@@ -313,11 +390,11 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
             }
         }
         //check schoolRankWeekList null or not
-        if(schoolRankWeekList == null || schoolRankWeekList.size() == 0){
+        if((schoolRankWeekList == null || schoolRankWeekList.size() == 0) && !edit){
             message = Constant.SCHOOL_RANK_WEEK_NULL;
             return message;
         }
-        List<SchoolRankWeek> newSchoolRankWeekList = arrangeRank(schoolRankWeekList);
+        List<SchoolRankWeek> newSchoolRankWeekList = sortSchoolRankWeekService.arrangeSchoolRankWeek(schoolRankWeekList);
 
         for(SchoolRankWeek schoolRankWeek : newSchoolRankWeekList){
             schoolRankWeekRepository.save(schoolRankWeek);
@@ -326,35 +403,4 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         return message;
     }
 
-    private List<SchoolRankWeek> arrangeRank(List<SchoolRankWeek> schoolRankWeekList){
-        Collections.sort(schoolRankWeekList, new Comparator<SchoolRankWeek>() {
-            @Override
-            public int compare(SchoolRankWeek o1, SchoolRankWeek o2) {
-                return o2.getTotalGrade().compareTo(o1.getTotalGrade());
-            }
-        });
-        int rank = 1;
-        //check size of schoolRankWeekList = 1 or not
-        if(schoolRankWeekList.size() == 1){
-            schoolRankWeekList.get(0).setRank(rank);
-            return schoolRankWeekList;
-        }
-        else {
-            int count = 0;
-            for (int i = 0; i < schoolRankWeekList.size() - 1; i++) {
-                SchoolRankWeek schoolRankWeek1 = schoolRankWeekList.get(i);
-                schoolRankWeekList.get(i).setRank(rank);
-                SchoolRankWeek schoolRankWeek2 = schoolRankWeekList.get(i + 1);
-                //check two totalGrade of two schoolWeek equal or not
-                if (schoolRankWeek2.getTotalGrade().compareTo(schoolRankWeek1.getTotalGrade()) == 0) {
-                    schoolRankWeekList.get(i + 1).setRank(rank);
-                    count++;
-                } else {
-                    rank += count + 1;
-                    schoolRankWeekList.get(i + 1).setRank(rank);
-                }
-            }
-        }
-        return schoolRankWeekList;
-    }
 }

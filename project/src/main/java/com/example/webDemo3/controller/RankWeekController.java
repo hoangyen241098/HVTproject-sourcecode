@@ -2,13 +2,10 @@ package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListDateResponseDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.CreateRankWeekRequestDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewWeekAnDateListRequestDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.*;
 import com.example.webDemo3.service.manageSchoolRank.CreateAndEditSchoolRankWeekService;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.RankWeekListResponseDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewWeekAndClassListResponseDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.SearchRankWeekRequestDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.UpdateSchoolRankWeekRequestDto;
 import com.example.webDemo3.service.manageSchoolRank.UpdateSchoolRankWeekService;
 import com.example.webDemo3.service.manageSchoolRank.ViewSchoolRankWeekService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +64,18 @@ public class RankWeekController {
     public ListDateResponseDto getEditDateList(@RequestBody ViewWeekAnDateListRequestDto module) {
 
         return createAndEditSchoolRankWeekService.loadEditListDate(module);
+    }
+
+    /**
+     * lamnt98
+     * 21/07
+     * catch request to get create rank week
+     * @return reponseDTO
+     */
+    @PostMapping("/editrankweek")
+    public MessageDTO editRankWeek(@RequestBody EditRankWeekRequestDto module) {
+
+        return createAndEditSchoolRankWeekService.editRankWeek(module);
     }
 
     /**

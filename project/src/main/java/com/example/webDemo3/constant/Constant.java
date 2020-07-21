@@ -229,6 +229,8 @@ public class Constant {
             new MessageDTO(1,"Điểm lao động không thể nhập quá số điểm cho phép.");
     public static final MessageDTO RANKWEEK_NOT_EDIT =
             new MessageDTO(1,"Bạn không thể sửa tuần đã được xếp hạng ở tháng.");
+    public static final MessageDTO SCHOOL_WEEK_NOT_EXIST =
+            new MessageDTO(1,"Tuần không tồn tại.");
     /**
      * Success message
      */
