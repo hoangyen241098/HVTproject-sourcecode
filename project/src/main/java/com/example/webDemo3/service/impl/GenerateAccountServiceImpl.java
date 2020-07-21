@@ -89,14 +89,14 @@ public class GenerateAccountServiceImpl implements GenerateAccountService {
         giftedClassName = giftedClass.getName();
         String className = genClass.getGrade().toString() + giftedClassName;
 
-        if(!rollName.equalsIgnoreCase("") ){
+        if(rollName != null && !rollName.isEmpty()){
             userName = stripAccents(rollName);
         }
 
         Integer indexAccount = 1;
         List<String> userNameList = userRepository.findAllUsername();
 
-        if(!className.equalsIgnoreCase("")) {
+        if(!className.isEmpty()) {
             convertClassName = stripAccents(className);
         }
 

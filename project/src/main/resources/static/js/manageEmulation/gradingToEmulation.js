@@ -5,6 +5,7 @@ var roleId = localStorage.getItem('roleID');
 var username = localStorage.getItem('username');
 $('#datetime').val(moment().format('YYYY-MM-DD'));
 $('#datetime').prop('max', moment().format('YYYY-MM-DD'));
+
 /*Get data in page*/
 $.ajax({
     url: '/api/emulation/viewgradingemulation',
@@ -183,8 +184,8 @@ $('#saveGrading').on('click', function () {
                                 $('#saveSuccess .modal-footer').html(`
                                     <a href="violationListOfClass" class="btn btn-danger">XEM VI PHẠM</a> 
                                     <a href="gradingToEmulation" class="btn btn-primary">ĐÓNG</a> `);
-                                sessionStorage.setItem('classId', $('#classList option:selected').val());
-                                sessionStorage.setItem('date', $('#datetime').val());
+                                sessionStorage.setItem('classIdGrading', $('#classList option:selected').val());
+                                sessionStorage.setItem('dateGrading', $('#datetime').val());
                             } else {
                                 dialogErr("/img/img-error.png", message);
                             }

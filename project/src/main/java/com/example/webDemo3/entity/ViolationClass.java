@@ -18,20 +18,12 @@ public class ViolationClass {
 
     @Column(name = "CLASS_ID")
     private Integer classId;
-//    @ManyToOne
-//    @JoinColumn(name = "CLASS_ID")
-//    @EqualsAndHashCode.Exclude
-//    @ToString.Exclude
-//    private Class classSchool;
 
-    //        @Column(name = "VIOLATION_ID")
-//    private Integer violationId;
     @ManyToOne
     @JoinColumn(name = "VIOLATION_ID")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Violation violation;
-
 
     @Column(name = "QUANTITY")
     private Integer quantity;
@@ -48,16 +40,12 @@ public class ViolationClass {
     @Column(name = "WEEK_ID")
     private Integer weekId;
 
-    //    @Column(name = "YEAR_ID")
-//    private Integer yearId;
     @ManyToOne
     @JoinColumn(name = "YEAR_ID")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private SchoolYear year;
 
-    //    @Column(name = "DAY_ID")
-//    private Integer dayId;
     @ManyToOne
     @JoinColumn(name = "DAY_ID")
     @EqualsAndHashCode.Exclude

@@ -67,7 +67,7 @@ $("#editInfo").click(function (e) {
     } else {
         $('.teacherInfo-err').text("");
         var info = {
-            teacherId: sessionStorage.getItem("teacherId"),
+            teacherId: teacherId,
             teacherIdentifier: identifier,
             fullName: fullName,
             phone: phone,
@@ -109,8 +109,3 @@ $("#editInfo").click(function (e) {
         });
     }
 })
-
-/*Clear session when leaving page*/
-$(window).bind('beforeunload', function () {
-    sessionStorage.removeItem('teacherId');
-});

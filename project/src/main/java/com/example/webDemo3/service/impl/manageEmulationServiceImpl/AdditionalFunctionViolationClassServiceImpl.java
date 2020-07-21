@@ -54,6 +54,7 @@ public class AdditionalFunctionViolationClassServiceImpl implements AdditionalFu
         responseDto.setCreateDate(violationClass.getDate());
         responseDto.setCreateBy(violationClass.getCreateBy());
         responseDto.setStatus(violationClass.getStatus());
+        responseDto.setHistory(violationClass.getHistory());
 
         //check violation null or not
         if(violation != null){
