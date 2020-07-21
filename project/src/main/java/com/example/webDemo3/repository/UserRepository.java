@@ -14,6 +14,10 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User,String>, PagingAndSortingRepository<User, String> {
+
+    @Query("select u from User u where u.role.roleId = 3 and (u.status <> 1 or u.status is null) order by u.classSchool.grade")
+    List<User> findRedStar();
+
     User findUserByUsername(String username);
 
     @Query("select u.username from User u")
