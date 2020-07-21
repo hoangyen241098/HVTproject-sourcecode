@@ -6,15 +6,22 @@ import com.example.webDemo3.entity.ClassRedStarId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.util.List;
 
 @Repository
 public interface ClassRedStarRepository extends JpaRepository<ClassRedStar, ClassRedStarId> {
+
+    @Transactional
+    @Modifying
+    @Query(value = "DELETE from ClassRedStar c where c.classRedStarId.FROM_DATE = :fromDate")
+    void deleteByFromDate(@Param("fromDate") Date fromDate);
 
     @Query(value = "select distinct c.classRedStarId.FROM_DATE from ClassRedStar c where c.classRedStarId.FROM_DATE = :fromDate")
     Date findByDate(@Param("fromDate") Date fromDate);

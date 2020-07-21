@@ -37,7 +37,7 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
     private List<Integer>[] indexRedStarOfClass;
     private int[][] flag;
     private Random ran = new Random();
-    private static int n = 10000;
+    private static int n = 1000;
     int[][] population;//= new int [n][];
     int[] costValue;//= new int[n];
     int size;
@@ -56,6 +56,12 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
     @Override
     public MessageDTO create(Date fromDate) {
         MessageDTO message = Constant.SUCCESS;
+        // delete if fromdate exit
+        MessageDTO messageCheckDate = checkDate(fromDate);
+        if(messageCheckDate.getMessageCode() == Constant.CONFIRM_UPDATE_TIMTABLE.getMessageCode()){
+            classRedStarRepository.deleteByFromDate(fromDate);
+        }
+
         List<Class> classList = classRepository.findAll();
         List<User> redStarList = userRepository.findRedStar();
         Date beforDate = classRedStarRepository.getBiggestClosetDate(fromDate);
@@ -70,19 +76,19 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
                 assignUser[k] = userData;
             }
         }
-
         getIndex(classList, redStarList, assignList, assignUser);
-        //genertic
+
+//genertic
 //        khoitao(redStarList.size());
-//        for (int i = 0; i < 10000; i++) {
-//            int[][] flagcCopy = copyflag(classList.size() * 2,redStarList.size());
-//                    //flag.clone();
-//            danhgia(flagcCopy);
+//        //khoitaoTest(redStarList.size());
+//        for (int i = 0; i < 1000; i++) {
+//            danhgia(classList.size() * 2,redStarList.size());
 //            Print();
 //            chonloc();
 //            laighep();
 //        }
-        //random with condition
+
+//random with condition
         int kq = 0;
         int[] output = null;
         for (int i = 0; i < 10000; i++) {
@@ -94,12 +100,15 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
             }
         }
 
+        message = insertClassRedStar(message,fromDate,classList,redStarList,output);
+        return message;
+    }
+
+    private MessageDTO insertClassRedStar(MessageDTO message,Date fromDate,
+                                          List<Class> classList, List<User> redStarList, int[] output){
         int i;
         try {
             for (i = 0; i < size; i++) {
-                if (i == 45) {
-                    int m = 1;
-                }
                 int indexClass = i;
                 if(indexClass != 0) indexClass = indexClass/2;
                 Class classi = classList.get(indexClass);
@@ -110,7 +119,6 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
                 dataID.setFROM_DATE(fromDate);
                 data.setClassRedStarId(dataID);
                 data.setClassSchool(new Class(classi.getClassId()));
-//                data.getClass().setClassId();
                 classRedStarRepository.save(data);
             }
         } catch (Exception e) {
@@ -139,7 +147,7 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
                 int h=0;
             }
             while (true){
-                int value ;//= ran.nextInt(max);
+                int value ;
                 if(max < 0){
                     if (output[classIndex] == -1)
                         kq =0;
@@ -151,10 +159,8 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
                 else {
                     value = ran.nextInt(max);
                 }
-                //output[i] = data[value];
                 int redStar = copyData[value];
                 if (flagCopy[classIndex][redStar] ==0) {
-                   // System.out.println(classIndex + "===============================================");
                     output[classIndex] = redStar;
                     flagCopy[classIndex][redStar] = 1;
                     if(classIndex%2 == 0) {
@@ -163,7 +169,6 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
                         for (int redStarOfClass : indexRedStarOfClass[classOfRedstar]) {
                             flagCopy[classIndex + 1][redStarOfClass] = 1;
                         }
-                        // flagCopy[classIndex+1][indexRedStarOfClass[].get(0)] = 1;
                     }
                     int k = 0;
                     if (classIndex != 0) k = classIndex/2;
@@ -205,6 +210,9 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
             System.out.print(output[j] + " ,");
         }
         System.out.println();
+        if (kq == 0){
+            output[size -1] = -1;
+        }
         return output;
     }
 
@@ -289,24 +297,42 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
         }
     }
 
-    private void danhgia(int[][] flagcCopy) {
+    private void khoitaoTest(int redStarListSize) {
+        int[] data = new int[redStarListSize];
+        for (int i = 0; i < redStarListSize; i++) {
+            data[i] = i;
+        }
+        for (int i = 0; i < n; i++) {
+            //population[i] = new int[size];
+            int[][] flagCopy = copyflag(size, redStarListSize);
+            int[] output = test(redStarListSize, flagCopy);
+            population[i] = output;
+        }
+    }
+
+    private void danhgia(int d,int c) {
         for (int i = 0; i < n; i++) {
             costValue[i] = 0;
+            int[][] flagCopy = copyflag(d,c);
             for (int classIndex = 0; classIndex < size; classIndex++) {
                 int redStar = population[i][classIndex];
-                if (flagcCopy[classIndex][redStar] != 0) {
+                if (flagCopy[classIndex][redStar] != 0) {
                     costValue[i]++;
                 }
                 else {
-                    flagcCopy[classIndex][redStar] = 1;
+                    flagCopy[classIndex][redStar] = 1;
                     if(classIndex%2 == 0){
-                        flagcCopy[classIndex+1][redStar] = 1;
+                        flagCopy[classIndex+1][redStar] = 1;
+                        int classOfRedstar = indexClassOfRedStar[redStar];
+                        for (int redStarOfClass : indexRedStarOfClass[classOfRedstar]) {
+                            flagCopy[classIndex + 1][redStarOfClass] = 1;
+                        }
                     }
                     int k = 0;
                     if (classIndex != 0) k = classIndex/2;
                     for (int redStarOfClass : indexRedStarOfClass[k]){
-                        flagcCopy[indexClassOfRedStar[redStar]*2][redStarOfClass] = 1;
-                        flagcCopy[indexClassOfRedStar[redStar]*2+1][redStarOfClass] = 1;
+                        flagCopy[indexClassOfRedStar[redStar]*2][redStarOfClass] = 1;
+                        flagCopy[indexClassOfRedStar[redStar]*2+1][redStarOfClass] = 1;
                     }
                 }
             }
