@@ -44,6 +44,7 @@ public class SortSchoolRankWeekServiceImpl implements SortSchoolRankWeekService 
                     count++;
                 } else {
                     rank += count + 1;
+                    count = 0;
                     schoolRankWeekList.get(i + 1).setRank(rank);
                 }
             }
