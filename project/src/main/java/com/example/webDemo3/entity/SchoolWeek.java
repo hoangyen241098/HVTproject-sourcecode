@@ -18,6 +18,7 @@ public class SchoolWeek {
 
     @Id
     @Column(name = "WEEK_ID")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer weekID;
 
     @Column(name = "Month_ID")
@@ -25,4 +26,7 @@ public class SchoolWeek {
 
     @Column(name = "WEEK")
     private Integer week;
+
+    @Column(name = "YEAR_ID")
+    private Integer yearId;
 }

@@ -19,4 +19,7 @@ public interface ViolationTypeRepository extends JpaRepository<ViolationType,Int
 
     @Query(value = "select v from ViolationType v where v.typeId = :typeId and (v.status <> 1 or v.status is null)")
     ViolationType searchViolationTypeByTypeId(@Param("typeId") Integer typeId);
+
+    @Query(value = "select SUM(v.totalGrade) from ViolationType v where v.status <> 1 or v.status is null")
+    Float sumAllTotalGradeViolationTypeActive();
 }

@@ -1,5 +1,9 @@
 package com.example.webDemo3.controller;
 
+import com.example.webDemo3.dto.MessageDTO;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListDateResponseDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.CreateRankWeekRequestDto;
+import com.example.webDemo3.service.manageSchoolRank.CreateAndEditSchoolRankWeekService;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.RankWeekListResponseDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewWeekAndClassListResponseDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.SearchRankWeekRequestDto;
@@ -18,7 +22,34 @@ kimpt142 - 21/07
 public class RankWeekController {
 
     @Autowired
+    private CreateAndEditSchoolRankWeekService createAndEditSchoolRankWeekService;
+
+    @Autowired
     private ViewSchoolRankWeekService viewSchoolRankWeekService;
+
+    /**
+     * lamnt98
+     * 21/07
+     * catch request to get date list which has no ranked
+     * @return reponseDTO with a class list and messagedto
+     */
+    @PostMapping("/loaddatelist")
+    public ListDateResponseDto getDateList()
+    {
+        return createAndEditSchoolRankWeekService.loadListDate();
+    }
+
+    /**
+     * lamnt98
+     * 21/07
+     * catch request to get create rank week
+     * @return reponseDTO
+     */
+    @PostMapping("/createrankweek")
+    public MessageDTO createRankWeek(@RequestBody CreateRankWeekRequestDto module) {
+
+        return createAndEditSchoolRankWeekService.createRankWeek(module);
+    }
 
     /**
      * kimpt142
