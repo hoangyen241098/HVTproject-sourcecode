@@ -17,7 +17,7 @@ if (sessionStorage.getItem('dateGrading') == null) {
 }
 var infoSearch = {
     username: username,
-    classId: 9,
+    classId: classId,
     date: date,
     roleId: roleId
 }
@@ -233,7 +233,7 @@ function search() {
 /*Edit button*/
 function editBtn() {
     var editBtn = $('.violation-action .edit-btn[name="0"]');
-    $(editBtn).on('click', function () {
+    $(editBtn).unbind("click").click(function () {
         var violationClassId = $(this).parent().find('.violationClassId').text();
         var classId = $(this).parent().find('.classId').text();
         var className = $(this).parent().find('.className').text();
@@ -247,6 +247,7 @@ function editBtn() {
         var total = parseFloat(parseFloat(substract) * parseInt(quantity)).toFixed(1);
         $('#confirmEdit .modal-title').text('Xác nhận thay đổi');
         $('#confirmEdit .modal-footer .btn-danger').val('XÁC NHẬN');
+        $('#confirmEdit .modal-footer .btn-danger').prop('id', 'confirmEditBtn');
         $('#confirmEdit .modal-footer .btn-danger').removeClass('confirmDeleteBtn');
         $('#confirmEdit .modal-footer .btn-primary').val('HỦY');
         editModal(violationDate, className, description, note, createBy, substract, quantity, total)
@@ -281,7 +282,7 @@ function editBtn() {
 /*Edit Modal Button*/
 function editModalBtn(violationClassId, classId, createDate, description, substract, note, $reason, quantity, $newQuantity) {
     var editBtn = $('.violation-action .edit-btn[name="0"]');
-    $('#editModalBtn').one('click', function () {
+    $('#editModalBtn').unbind("click").click(function () {
         var newQuantity = $newQuantity.val();
         var reason = $reason.val();
         $('.editInfo-err').text('');
@@ -346,7 +347,7 @@ function confirmEditModal(description, substract, note, reason, quantity, newQua
 
 /*Confirm Edit Button*/
 function confirmEditBtn() {
-    $('#confirmEditBtn').one('click', function () {
+    $('#confirmEditBtn').unbind("click").click(function () {
         console.log(JSON.stringify(editViolation));
         $.ajax({
             url: '/api/emulation/requesteditviolation',
@@ -437,7 +438,7 @@ function editModal(violationDate, className, description, note, createBy, substr
 /*History button*/
 function historyBtn() {
     $('.history-btn').on('click', function () {
-        var history = $(this).parent().find('.history').text();
+        var history = $(this).parent().find('.history').html();
         $('#historyModal .modal-body').html(history);
         $('#historyModal').modal('show');
     });
@@ -445,7 +446,7 @@ function historyBtn() {
 
 /*Delete request button*/
 function deleteRequest() {
-    $('#confirmEdit .confirmDeleteBtn').one('click', function () {
+    $('#confirmEdit .confirmDeleteBtn').unbind("click").click(function () {
         var requestId = $(this).prop('id');
         var requestId = {
             requestId: requestId
@@ -525,7 +526,7 @@ $('.closeModal').on('click', function () {
     }
     infoSearch = {
         username: username,
-        classId: 9,
+        classId: classId,
         date: date,
         roleId: roleId
     }

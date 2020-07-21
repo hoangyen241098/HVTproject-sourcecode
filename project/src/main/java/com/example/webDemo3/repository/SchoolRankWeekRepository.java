@@ -19,4 +19,7 @@ public interface SchoolRankWeekRepository extends JpaRepository<SchoolRankWeek,I
             "and (srw.schoolRankWeekId.schoolClass.classId = :classId or :classId is NULL) "+
             "order by srw.schoolRankWeekId.schoolClass.grade, srw.schoolRankWeekId.schoolClass.giftedClass.giftedClassId asc")
     List<SchoolRankWeek> findByWeekIđAndClassId(@Param("weekId")Integer weekId, @Param("classId") Integer classId);
+
+    @Query(value = "select srw from SchoolRankWeek srw where srw.schoolRankWeekId.WEEK_ID = :weekId and srw.schoolRankWeekId.schoolClass.classId = :classId")
+    SchoolRankWeek findSchoolRankWeekByWeekIdAndClassId(@Param("weekId")Integer weekId, @Param("classId") Integer classId);
 }
