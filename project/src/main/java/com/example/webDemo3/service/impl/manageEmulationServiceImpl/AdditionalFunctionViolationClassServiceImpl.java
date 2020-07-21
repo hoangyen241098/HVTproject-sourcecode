@@ -128,7 +128,7 @@ public class AdditionalFunctionViolationClassServiceImpl implements AdditionalFu
             history += "<ul> <li><span class=\"font-500\">" + strDate + " - " + username + ".</span>";
         }
         history += "<ol>Lý do: " + reason + ".</ol>";
-        history += "<ol>Số lần vi phạm trước thay đổi: " + number + ".</ol>";
+        history += "<ol>Số lần vi phạm trước thay đổi: " + number + ".</ol> </li> </ul>";
         return  history;
     }
 }
