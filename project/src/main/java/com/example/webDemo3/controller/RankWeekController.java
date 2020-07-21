@@ -3,6 +3,7 @@ package com.example.webDemo3.controller;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListDateResponseDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.CreateRankWeekRequestDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewWeekAnDateListRequestDto;
 import com.example.webDemo3.service.manageSchoolRank.CreateAndEditSchoolRankWeekService;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.RankWeekListResponseDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewWeekAndClassListResponseDto;
@@ -49,6 +50,18 @@ public class RankWeekController {
     public MessageDTO createRankWeek(@RequestBody CreateRankWeekRequestDto module) {
 
         return createAndEditSchoolRankWeekService.createRankWeek(module);
+    }
+
+    /**
+     * lamnt98
+     * 21/07
+     * catch request to get list edit date
+     * @return reponseDTO
+     */
+    @PostMapping("/loadeditrankweek")
+    public ListDateResponseDto getEditDateList(@RequestBody ViewWeekAnDateListRequestDto module) {
+
+        return createAndEditSchoolRankWeekService.loadEditListDate(module);
     }
 
     /**
