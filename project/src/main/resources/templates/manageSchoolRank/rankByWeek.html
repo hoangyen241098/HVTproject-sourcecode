@@ -29,167 +29,72 @@
 <div class="container">
     <div class="table-wrapper">
         <div class="table-title">
-            <h2>Xếp hạng thi đua theo tuần</h2>
-            <div class="search">
-                <div class="col-xl-4 d-inline-block">
-                    <div class="search-line">
-                        <span>Tuần</span>
-                        <select class="combobox searchable" id="byWeek">
-                            <option value="0" selected="selected">Tuần hiện tại</option>
-                            <option value="1">Tuần 1</option>
-                            <option value="2">Tuần 2</option>
-                            <option value="3">Tuần 3</option>
-                        </select>
+            <h2>XẾP HẠNG THI ĐUA THEO TUẦN</h2>
+            <div class="search row align-items-end">
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0">
+                    <div class="form-group text-left mb-1">
+                        <label>Tuần:</label>
+                        <select class="combobox form-control w-75" id="byWeek"></select>
                     </div>
                 </div>
-                <div class="col-xl-2 d-inline-block div-space"></div>
-                <div class="col-xl-4 d-inline-block">
-                    <div class="search-line">
-                        <span>Lớp</span>
-                        <select class="combobox searchable" id="byClass">
-                            <option value="0" selected="selected">Tất cả</option>
-                        </select>
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0">
+                    <div class="form-group text-left mb-1">
+                        <label>Lớp:</label>
+                        <select class="combobox form-control w-75" id="byClass"></select>
                     </div>
                 </div>
-                <div class="d-inline-block ml-2">
-                    <button class="btn btn-search" id="search">Tìm kiếm</button>
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0 text-right">
+                    <button class="btn btn-search mr-0" id="search">Tìm kiếm</button>
                 </div>
             </div>
-        </div>
-        <div class="table-title-2">
-            <div class="col-sm-12 d-flex justify-content-end align-items-center">
-                <input type="button" class="btn btn-success" id="editGrades" value="Sửa điểm"/>
-                <a href="#editRank" class="btn btn-success" data-toggle="modal">
-                    <span>Sửa xếp hạng tuần</span>
-                </a>
-                <a href="#createNewRank" class="btn btn-success" data-toggle="modal">
-                    <span>Tạo xếp hạng tuần</span>
-                </a>
+            <div class="table-title-2 pb-0">
+                <div class="col-sm-12 px-0 d-flex justify-content-end align-items-center">
+                    <input type="button" class="btn btn-success mx-2 manageBtn" id="editGrades" value="Sửa điểm"/>
+                    <input type="button" id="editRankBtn" class="btn btn-success mx-2 manageBtn" value="Sửa xếp hạng tuần"/>
+                    <input type="button" id="createRank" class="btn btn-success mx-2 manageBtn" value="Tạo xếp hạng tuần"/>
+                    <input type="button" id="download" class="btn btn-success ml-2" value="Tải xuống"/>
+                </div>
             </div>
-        </div>
-        <table class="table table-bordered table-edit mt-3">
-            <thead class="thead-light">
-            <tr class="align-items-center">
-                <th>Lớp</th>
-                <th>Điểm nề nếp</th>
-                <th>Điểm học tập</th>
-                <th>Điểm phong trào</th>
-                <th>Điểm lao động</th>
-                <th>Tổng điểm</th>
-                <th>Xếp hạng</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>10 Toán</td>
-                <td>20</td>
-                <td contenteditable="false">20</td>
-                <td contenteditable="false">0.2</td>
-                <td contenteditable="false">0.2</td>
-                <td>40.4</td>
-                <td><b>1</b></td>
-            </tr>
-            <tr>
-                <td>10 Tin</td>
-                <td>20</td>
-                <td contenteditable="false">20</td>
-                <td contenteditable="false">0.2</td>
-                <td contenteditable="false">0.2</td>
-                <td>40.4</td>
-                <td><b>1</b></td>
-            </tr>
-            <tr>
-                <td>10 Lý</td>
-                <td>20</td>
-                <td contenteditable="false">20</td>
-                <td contenteditable="false">0.2</td>
-                <td contenteditable="false">0.1</td>
-                <td>40.3</td>
-                <td><b>3</b></td>
-            </tr>
-            <tr>
-                <td>10 Hóa</td>
-                <td>20</td>
-                <td contenteditable="false">18</td>
-                <td contenteditable="false">0.2</td>
-                <td contenteditable="false">0.2</td>
-                <td>38.4</td>
-                <td><b>4</b></td>
-            </tr>
-            </tbody>
-        </table>
-        <div class="table-paging">
+            <table class="table table-bordered table-edit mt-3">
+                <thead class="thead-light">
+                <tr class="align-items-center">
+                    <th>Lớp</th>
+                    <th>Điểm nề nếp</th>
+                    <th>Điểm học tập</th>
+                    <th>Điểm phong trào</th>
+                    <th>Điểm lao động</th>
+                    <th>Tổng điểm</th>
+                    <th>Xếp hạng</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
     </div>
 </div>
+</div>
+
 <!-- Create New Rank Modal HTML -->
 <div id="createNewRank" class="modal fade">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form>
-                <div class="modal-header">
-                    <h4 class="modal-title">Tạo xếp hạng tuần</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <div class="modal-header">
+                <h4 class="modal-title">Tạo xếp hạng tuần</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body px-5">
+                <div class="search-line">
+                    <span>Tên tuần <span class="text-red">*</span></span>
+                    <input type="number" id="weekName" class="searchable" placeholder="Tên tuần"/>
                 </div>
-                <div class="modal-body px-5">
-                    <div class="search-line">
-                        <span>Tên tuần <span class="text-red">*</span></span>
-                        <input type="text" id="weekName" class="searchable" placeholder="16"/>
-                    </div>
-                    <div class="form-group text-left">
-                        <h6>Các ngày áp dụng <span class="text-red">*</span></h6>
-                        <div class="form-check text-left">
-                            <span class="custom-checkbox">
-                                <input type="checkbox" name="options">
-                                <label>Thứ 2 - Ngày 06/07/2020</label>
-                            </span>
-                        </div>
-                        <div class="form-check text-left">
-                            <span class="custom-checkbox">
-                                <input type="checkbox" name="options">
-                                <label>Thứ 3 - Ngày 07/07/2020</label>
-                            </span>
-                        </div>
-                        <div class="form-check text-left">
-                            <span class="custom-checkbox">
-                                <input type="checkbox" name="options">
-                                <label>Thứ 4 - Ngày 08/07/2020</label>
-                            </span>
-                        </div>
-                        <div class="form-check text-left">
-                            <span class="custom-checkbox">
-                                <input type="checkbox" name="options">
-                                <label>Thứ 5 - Ngày 09/07/2020</label>
-                            </span>
-                        </div>
-                        <div class="form-check text-left">
-                            <span class="custom-checkbox">
-                                <input type="checkbox" name="options">
-                                <label>Thứ 6 - Ngày 10/07/2020</label>
-                            </span>
-                        </div>
-                        <div class="form-check text-left">
-                            <span class="custom-checkbox">
-                                <input type="checkbox" name="options">
-                                <label>Thứ 7 - Ngày 11/07/2020</label>
-                            </span>
-                        </div>
-                        <div class="form-check text-left">
-                            <span class="custom-checkbox">
-                                <input type="checkbox" name="options">
-                                <label>Chủ nhật - Ngày 12/07/2020</label>
-                            </span>
-                        </div>
-
-                    </div>
-                    <div class="error createNewRank-err"></div>
-                </div>
-                <div class="modal-footer">
-                    <input type="submit" class="btn btn-danger" data-toggle="modal" data-target="#createSuccess"
-                           data-dismiss="modal" value="TẠO">
-                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
-                </div>
-            </form>
+                <div class="form-group text-left" id="dateList"></div>
+                <div class="error createNewRank-err"></div>
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-danger" data-toggle="modal" id="createNewRankBtn"
+                       data-dismiss="modal" value="TẠO">
+                <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
+            </div>
         </div>
     </div>
 </div>
@@ -198,13 +103,9 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="createSuccess">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-body text-center">
-                <img class="mb-3 mt-3 img-success" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
-                <img class="mb-3 mt-3 img-fail hide" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                <h5 id="message-createSuccess">Tạo xếp hạng tuần thành công!</h5>
-            </div>
+            <div class="modal-body text-center"></div>
             <div class="modal-footer">
-                <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
+                <a href="rankByWeek" class="btn btn-primary">ĐÓNG</a>
             </div>
         </div>
     </div>
@@ -214,70 +115,23 @@
 <div id="editRank" class="modal fade">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form>
-                <div class="modal-header">
-                    <h4 class="modal-title">Sửa xếp hạng tuần</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <div class="modal-header">
+                <h4 class="modal-title">Sửa xếp hạng tuần</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body px-5">
+                <div class="search-line">
+                    <span>Tên tuần <span class="text-red">*</span></span>
+                    <input type="number" id="newWeekName" class="searchable"/>
                 </div>
-                <div class="modal-body px-5">
-                    <div class="search-line">
-                        <span>Tên tuần <span class="text-red">*</span></span>
-                        <input type="text" id="newWeekName" class="searchable" placeholder="16"/>
-                    </div>
-                    <div class="form-group text-left">
-                        <h6>Các ngày áp dụng <span class="text-red">*</span></h6>
-                        <div class="form-check text-left">
-                            <span class="custom-checkbox">
-                                <input type="checkbox" name="options">
-                                <label>Thứ 2 - Ngày 06/07/2020</label>
-                            </span>
-                        </div>
-                        <div class="form-check text-left">
-                            <span class="custom-checkbox">
-                                <input type="checkbox" name="options">
-                                <label>Thứ 3 - Ngày 07/07/2020</label>
-                            </span>
-                        </div>
-                        <div class="form-check text-left">
-                            <span class="custom-checkbox">
-                                <input type="checkbox" name="options">
-                                <label>Thứ 4 - Ngày 08/07/2020</label>
-                            </span>
-                        </div>
-                        <div class="form-check text-left">
-                            <span class="custom-checkbox">
-                                <input type="checkbox" name="options">
-                                <label>Thứ 5 - Ngày 09/07/2020</label>
-                            </span>
-                        </div>
-                        <div class="form-check text-left">
-                            <span class="custom-checkbox">
-                                <input type="checkbox" name="options">
-                                <label>Thứ 6 - Ngày 10/07/2020</label>
-                            </span>
-                        </div>
-                        <div class="form-check text-left">
-                            <span class="custom-checkbox">
-                                <input type="checkbox" name="options">
-                                <label>Thứ 7 - Ngày 11/07/2020</label>
-                            </span>
-                        </div>
-                        <div class="form-check text-left">
-                            <span class="custom-checkbox">
-                                <input type="checkbox" name="options">
-                                <label>Chủ nhật - Ngày 12/07/2020</label>
-                            </span>
-                        </div>
-
-                    </div>
-                    <div class="error createNewRank-err"></div>
-                </div>
-                <div class="modal-footer">
-                    <input type="submit" class="btn btn-danger" data-toggle="modal" data-target="#editSuccess"
-                           data-dismiss="modal" value="CHỈNH SỬA">
-                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
-                </div>
-            </form>
+                <div class="form-group text-left" id="dateListEdit"></div>
+                <div class="error editRank-err"></div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-danger" data-toggle="modal" id="editRankBtnModal"
+                       data-dismiss="modal" value="CHỈNH SỬA">
+                <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
+            </div>
         </div>
     </div>
 </div>
@@ -286,13 +140,21 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="editSuccess">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-body text-center">
-                <img class="mb-3 mt-3 img-success" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
-                <img class="mb-3 mt-3 img-fail hide" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                <h5 id="message-editSuccess">Sửa xếp hạng tuần thành công!</h5>
-            </div>
+            <div class="modal-body text-center"></div>
             <div class="modal-footer">
-                <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
+                <a href="rankByWeek" class="btn btn-primary">ĐÓNG</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--    Modal Save Success-->
+<div class="modal fade" tabindex="-1" role="dialog" id="downloadModal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center"></div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG"/>
             </div>
         </div>
     </div>
