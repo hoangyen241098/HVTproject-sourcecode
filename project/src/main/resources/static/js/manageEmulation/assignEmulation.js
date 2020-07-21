@@ -103,8 +103,9 @@ $.ajax({
 
 /*Download button*/
 $("#download").click(function () {
+    var fromDate = $('#fromDate option:selected').val();
     var download = {
-        fromDate: $('#fromDate option:selected').val(),
+        fromDate: fromDate,
         classId: "",
         redStar: ""
     }
@@ -113,6 +114,9 @@ $("#download").click(function () {
         url: '/api/assignRedStar/download',
         type: 'POST',
         data: JSON.stringify(download),
+        xhrFields: {
+            responseType: 'blob'
+        },
         beforeSend: function () {
             $('body').addClass("loading")
         },
@@ -120,10 +124,18 @@ $("#download").click(function () {
             $('body').removeClass("loading")
         },
         success: function (data) {
-            console.log(data)
+            var a = document.createElement('a');
+            var url = window.URL.createObjectURL(data);
+            var name = "Phân-công-trực-tuần-" + fromDate + '.xls';
+            a.href = url;
+            a.download = name;
+            document.body.append(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
         },
         failure: function (errMsg) {
-            $('#myTable tbody').html(`<tr><td colspan="2" class="userlist-result">` + errMsg + `</td></tr>`);
+            dialogModal('downloadModal', 'img/img-error.png', 'Không thể tải xuống!')
         },
         dataType: "binary",
         contentType: "application/json"
@@ -193,6 +205,15 @@ function search() {
         dataType: "json",
         contentType: "application/json"
     });
+}
+
+/*Dialog Modal*/
+function dialogModal(modalName, img, message) {
+    $('#' + modalName + ' .modal-body').html(`
+        <img class="mb-3 mt-3" src="` + img + `"/>
+        <h5>` + message + `</h5>
+    `)
+    $('#' + modalName).modal('show');
 }
 
 if (localStorage.getItem('roleID') != 1) {
