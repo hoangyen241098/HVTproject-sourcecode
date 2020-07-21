@@ -256,7 +256,7 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
             return message;
         }
 
-        if(violationClassRequest.getStatusChange() == 1 || violationClassRequest.getStatusChange() == 2){
+        if(violationClassRequest.getStatusChange() != 0){
             message = Constant.REJECT_DELETE_REQUEST_FAIL;
             return message;
         }
