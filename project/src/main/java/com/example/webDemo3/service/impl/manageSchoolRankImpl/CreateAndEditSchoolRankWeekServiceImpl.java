@@ -5,6 +5,7 @@ import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.DateViolationClassDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListDateResponseDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.CreateRankWeekRequestDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewWeekAnDateListRequestDto;
 import com.example.webDemo3.entity.*;
 import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.repository.*;
@@ -181,6 +182,80 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         }
         return message;
     }
+
+    @Override
+    public ListDateResponseDto loadEditListDate(ViewWeekAnDateListRequestDto requestDto) {
+        ListDateResponseDto responseDto = new ListDateResponseDto();
+        List<DateViolationClassDto> dateResponseList = new ArrayList<>();
+        List<Date> dateList = new ArrayList<>();
+        List<Date> newDateList = new ArrayList<>();
+        Integer weekId = requestDto.getWeekId();
+        Integer week = null;
+        SchoolWeek schoolWeek = new SchoolWeek();
+        MessageDTO message = new MessageDTO();
+
+        Date biggestDate = null;
+
+        try{
+            biggestDate = violationClassRepository.findBiggestDateRanked();
+            dateList = violationClassRepository.findListDateByCondition(biggestDate);
+
+            for(int i = 0; i < dateList.size(); i++){
+                Date date = dateList.get(i);
+                String dayName = getDayNameByDate(date);
+
+                DateViolationClassDto dateResponseDto = new DateViolationClassDto();
+
+                dateResponseDto.setDate(date);
+                dateResponseDto.setDayName(dayName);
+                dateResponseDto.setIsCheck(0);
+
+                dateResponseList.add(dateResponseDto);
+            }
+
+            newDateList = violationClassRepository.findListDateByWeekId(weekId);
+            schoolWeek = schoolWeekRepository.findById(weekId).orElse(null);
+
+            //check schoolWeek null or not
+            if(schoolWeek != null){
+                week = schoolWeek.getWeek();
+            }
+            for(int i = 0; i < newDateList.size(); i++){
+                Date date = newDateList.get(i);
+                String dayName = getDayNameByDate(date);
+
+                DateViolationClassDto dateResponseDto = new DateViolationClassDto();
+
+                dateResponseDto.setDate(date);
+                dateResponseDto.setDayName(dayName);
+                dateResponseDto.setIsCheck(1);
+                dateResponseDto.setWeek(week);
+
+                dateResponseList.add(dateResponseDto);
+            }
+
+            //check dateList empty or not
+            if(dateResponseList == null || dateResponseList.size() == 0){
+                message = Constant.DATE_LIST_EMPTY;
+                responseDto.setMessage(message);
+                return responseDto;
+            }
+
+            message = Constant.SUCCESS;
+            responseDto.setDateList(dateResponseList);
+            responseDto.setMessage(message);
+        }catch (Exception e){
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            responseDto.setMessage(message);
+            return responseDto;
+        }
+
+        return responseDto;
+    }
+
+
+
 
     public String getDayNameByDate(Date date) {
         LocalDate localDate = date.toLocalDate();
