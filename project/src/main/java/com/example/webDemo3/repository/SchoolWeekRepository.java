@@ -14,4 +14,6 @@ public interface SchoolWeekRepository extends JpaRepository<SchoolWeek,Integer> 
 
     @Query(value="select sw from SchoolWeek sw where sw.weekID <> 0")
     List<SchoolWeek> findSchoolWeekExcludeZero();
+
+    SchoolWeek findSchoolWeekByWeekID(Integer weekId);
 }
