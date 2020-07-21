@@ -12,6 +12,8 @@ import java.util.List;
 
 @Repository
 public interface ClassRepository extends JpaRepository<Class,Integer> {
+    @Query(value = "select c from Class c order by c.grade")
+    List<Class> findAll();
 
     @Query(value = "select c from Class c where c.giftedClass.giftedClassId = :giftedClassId order by c.giftedClass.giftedClassId asc")
     List<Class> findByGifted(@Param("giftedClassId")Integer giftedClassId);

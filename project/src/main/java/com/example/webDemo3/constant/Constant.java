@@ -81,11 +81,11 @@ public class Constant {
     public static final MessageDTO YEAR_ID_NULL =
             new MessageDTO(1,"Không có năm hiện tại.");
     public static final MessageDTO LIST_WEEK_NULL =
-            new MessageDTO(1,"Không có danh sách tuần trong năm hiện tại.");
+            new MessageDTO(1,"Danh sách tuần đang trống.");
     public static final MessageDTO LIST_YEAR_NULL =
             new MessageDTO(1,"Không có danh sách năm.");
     public static final MessageDTO WEEK_ID_NULL =
-            new MessageDTO(1,"Không có tuần trong năm hiện tại.");
+            new MessageDTO(1,"Hãy chọn tuần.");
     public static final MessageDTO TEACHER_ID_NULL =
             new MessageDTO(1,"Hãy chọn giáo viên.");
     public static final MessageDTO CLASS_ID_NULL =
@@ -219,6 +219,8 @@ public class Constant {
             new MessageDTO(1,"Tên tuần trong năm hiện tại đã tồn tại.");
     public static final MessageDTO SCHOOL_RANK_WEEK_NULL =
             new MessageDTO(1,"Danh sách xếp hạng lớp theo tuần trống.");
+    public static final MessageDTO RANKLIST_EMPTY =
+            new MessageDTO(1,"Danh sách xếp hạng tuần trống.");
     /**
      * Success message
      */

@@ -63,7 +63,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         Date biggestDate = null;
 
         try{
-            biggestDate = violationClassRepository.findBiggestDateWithWeekId();
+            biggestDate = violationClassRepository.findBiggestDateRanked();
             dateList = violationClassRepository.findListDateByCondition(biggestDate);
 
             //check dateList empty or not
