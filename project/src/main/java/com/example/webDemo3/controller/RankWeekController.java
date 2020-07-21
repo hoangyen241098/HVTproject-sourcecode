@@ -8,6 +8,8 @@ import com.example.webDemo3.service.manageSchoolRank.CreateAndEditSchoolRankWeek
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.RankWeekListResponseDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewWeekAndClassListResponseDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.SearchRankWeekRequestDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.UpdateSchoolRankWeekRequestDto;
+import com.example.webDemo3.service.manageSchoolRank.UpdateSchoolRankWeekService;
 import com.example.webDemo3.service.manageSchoolRank.ViewSchoolRankWeekService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +29,9 @@ public class RankWeekController {
 
     @Autowired
     private ViewSchoolRankWeekService viewSchoolRankWeekService;
+
+    @Autowired
+    private UpdateSchoolRankWeekService updateSchoolRankWeekService;
 
     /**
      * lamnt98
@@ -88,5 +93,18 @@ public class RankWeekController {
     public RankWeekListResponseDto searchRankWeekByWeekAndClass(@RequestBody SearchRankWeekRequestDto model)
     {
         return viewSchoolRankWeekService.searchRankWeekByWeekAndClass(model);
+    }
+
+    /**
+     * kimpt142
+     * 21/07
+     * catch request to update school rank week list
+     * @param model include rank week list
+     * @return MessageDTO
+     */
+    @PostMapping("/updatescorerankweek")
+    public MessageDTO updateRankWeek(@RequestBody UpdateSchoolRankWeekRequestDto model)
+    {
+        return updateSchoolRankWeekService.updateSchoolRankWeek(model);
     }
 }

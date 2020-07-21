@@ -101,6 +101,35 @@ $.ajax({
     contentType: "application/json"
 });
 
+/*Download button*/
+$("#download").click(function () {
+    var download = {
+        fromDate: $('#fromDate option:selected').val(),
+        classId: "",
+        redStar: ""
+    }
+    console.log(JSON.stringify(download))
+    $.ajax({
+        url: '/api/assignRedStar/download',
+        type: 'POST',
+        data: JSON.stringify(download),
+        beforeSend: function () {
+            $('body').addClass("loading")
+        },
+        complete: function () {
+            $('body').removeClass("loading")
+        },
+        success: function (data) {
+            console.log(data)
+        },
+        failure: function (errMsg) {
+            $('#myTable tbody').html(`<tr><td colspan="2" class="userlist-result">` + errMsg + `</td></tr>`);
+        },
+        dataType: "binary",
+        contentType: "application/json"
+    });
+});
+
 setTimeout(search, 500);
 
 /*Load data to list*/

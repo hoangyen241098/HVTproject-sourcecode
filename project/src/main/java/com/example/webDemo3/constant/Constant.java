@@ -221,6 +221,14 @@ public class Constant {
             new MessageDTO(1,"Danh sách xếp hạng lớp theo tuần trống.");
     public static final MessageDTO RANKLIST_EMPTY =
             new MessageDTO(1,"Danh sách xếp hạng tuần trống.");
+    public static final MessageDTO LEARNINGGRADE_GREATER =
+            new MessageDTO(1,"Điểm học tập không thể nhập quá số điểm cho phép.");
+    public static final MessageDTO MOVEMENTGRADE_GREATER =
+            new MessageDTO(1,"Điểm phong trào không thể nhập quá số điểm cho phép.");
+    public static final MessageDTO LABORGRADE_GREATER =
+            new MessageDTO(1,"Điểm lao động không thể nhập quá số điểm cho phép.");
+    public static final MessageDTO RANKWEEK_NOT_EDIT =
+            new MessageDTO(1,"Bạn không thể sửa tuần đã được xếp hạng ở tháng.");
     /**
      * Success message
      */

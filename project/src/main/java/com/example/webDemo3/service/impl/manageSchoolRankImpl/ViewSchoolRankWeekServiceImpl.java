@@ -11,7 +11,6 @@ import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.SearchRankWee
 import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.entity.SchoolRankWeek;
 import com.example.webDemo3.entity.SchoolWeek;
-import com.example.webDemo3.repository.ClassRepository;
 import com.example.webDemo3.repository.SchoolRankWeekRepository;
 import com.example.webDemo3.repository.SchoolWeekRepository;
 import com.example.webDemo3.service.manageClassService.ClassService;
@@ -95,12 +94,6 @@ public class ViewSchoolRankWeekServiceImpl implements ViewSchoolRankWeekService 
             return responseDto;
         }
 
-        if (classId == null) {
-            message = Constant.WEEK_ID_NULL;
-            responseDto.setMessage(message);
-            return responseDto;
-        }
-
         rankWeekList = schoolRankWeekRepository.findByWeekIđAndClassId(weekId, classId);
         if(rankWeekList == null || rankWeekList.size() == 0){
             message = Constant.RANKLIST_EMPTY;
@@ -142,6 +135,7 @@ public class ViewSchoolRankWeekServiceImpl implements ViewSchoolRankWeekService 
             response.setLaborGrade(item.getLaborGrade());
             response.setTotalGrade(item.getTotalGrade());
             response.setRank(item.getRank());
+            response.setHistory(item.getHistory());
             responseList.add(response);
         }
         return responseList;
