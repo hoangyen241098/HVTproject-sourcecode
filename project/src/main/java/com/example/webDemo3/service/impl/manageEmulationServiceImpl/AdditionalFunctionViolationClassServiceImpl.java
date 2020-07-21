@@ -65,7 +65,9 @@ public class AdditionalFunctionViolationClassServiceImpl implements AdditionalFu
         //check newClass exists or not
         if(newClass != null){
             responseDto.setClassId(newClass.getClassId());
-            responseDto.setClassName(newClass.getClassIdentifier());
+            Integer grade = newClass.getGrade();
+            String name = newClass.getGiftedClass().getName();
+            responseDto.setClassName(String.valueOf(grade) + " " + name);
         }
 
         Integer dayId = validateEmulationService.getDayIdByDate(violationClass.getDate());
@@ -121,12 +123,12 @@ public class AdditionalFunctionViolationClassServiceImpl implements AdditionalFu
         String strDate = formatter.format(date);
         //check history null or not
         if(history == null){
-            history =  strDate + " - " + username + ".\n";
+            history =  "<ul> <li><span class=\"font-500\">" +strDate + " - " + username + ".</span>";
         }else{
-            history += "\n" + strDate + " - " + username + ".\n";
+            history += "<ul> <li><span class=\"font-500\">" + strDate + " - " + username + ".</span>";
         }
-        history += "Lý do: " + reason + ".\n";
-        history += " Số lần vi phạm trước thay đổi: " + number + ".\n";
+        history += "<ol>Lý do: " + reason + ".</ol>";
+        history += "<ol>Số lần vi phạm trước thay đổi: " + number + ".</ol>";
         return  history;
     }
 }
