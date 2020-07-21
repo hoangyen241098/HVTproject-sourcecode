@@ -250,12 +250,27 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
             message = Constant.REQUEST_ID_NULL;
         }
 
+        ViolationClassRequest violationClassRequest = violationClassRequestRepository.findById(requestId).orElse(null);
+        if(violationClassRequest == null){
+            message = Constant.VIOLATIONREQUEST_DELETED;
+            return message;
+        }
+
+        if(violationClassRequest.getStatusChange() == 2){
+            message = Constant.ACCEPT_REQUEST_DELETE;
+            return message;
+        }
+
+        if(violationClassRequest.getStatusChange() == 1){
+            message = Constant.REJECT_REQUEST_DELETE;
+            return message;
+        }
+
         try {
             violationClassRequestRepository.deleteById(requestId);
         }
         catch (Exception e){
-            message.setMessageCode(1);
-            message.setMessage(e.toString());
+            message = Constant.DELETE_REQUEST_FAIL;
             return message;
         }
 
