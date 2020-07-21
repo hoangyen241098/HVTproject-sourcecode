@@ -229,6 +229,12 @@ public class Constant {
             new MessageDTO(1,"Điểm lao động không thể nhập quá số điểm cho phép.");
     public static final MessageDTO RANKWEEK_NOT_EDIT =
             new MessageDTO(1,"Bạn không thể sửa tuần đã được xếp hạng ở tháng.");
+    public static final MessageDTO VIOLATIONREQUEST_DELETED =
+            new MessageDTO(1,"Yêu cầu thay đổi này đã được xóa.");
+    public static final MessageDTO REJECT_DELETE_REQUEST_FAIL =
+            new MessageDTO(1,"Không thể xóa yêu cầu thay đổi đã được xác nhận.");
+    public static final MessageDTO DELETE_REQUEST_FAIL =
+            new MessageDTO(1,"Không thể xóa yêu cầu thay đổi này.");
     /**
      * Success message
      */
