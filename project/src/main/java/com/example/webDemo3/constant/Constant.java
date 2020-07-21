@@ -208,7 +208,17 @@ public class Constant {
     public static final MessageDTO NOT_ACCEPT_REQUEST_CHANGE =
             new MessageDTO(1,"Bạn không có quyền chấp nhận yêu cầu thay đổi.");
     public static final MessageDTO NOT_REJECT_REQUEST_CHANGE =
-            new MessageDTO(1,"Bạn không có quyền từ chối yêu cầu thay đổi .");
+            new MessageDTO(1,"Bạn không có quyền từ chối yêu cầu thay đổi.");
+    public static final MessageDTO DATE_LIST_EMPTY =
+            new MessageDTO(1,"Không có ngày chưa được xếp hạng.");
+    public static final MessageDTO NOT_ACCEPT_CREATE_RANK_WEEK =
+            new MessageDTO(1,"Bạn không có quyền tạo xếp hạng tuần.");
+    public static final MessageDTO WEEK_NAME_EMPTY =
+            new MessageDTO(1,"Hãy điền tên tuần.");
+    public static final MessageDTO SCHOOL_WEEK_EXISTS =
+            new MessageDTO(1,"Tên tuần trong năm hiện tại đã tồn tại.");
+    public static final MessageDTO SCHOOL_RANK_WEEK_NULL =
+            new MessageDTO(1,"Danh sách xếp hạng lớp theo tuần trống.");
     public static final MessageDTO RANKLIST_EMPTY =
             new MessageDTO(1,"Danh sách xếp hạng tuần trống.");
     public static final MessageDTO LEARNINGGRADE_GREATER =
