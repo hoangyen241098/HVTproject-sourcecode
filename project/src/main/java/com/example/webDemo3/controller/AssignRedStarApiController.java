@@ -33,7 +33,7 @@ public class AssignRedStarApiController {
     }
 
     @PostMapping("/create")
-    public MessageDTO craete(@RequestBody CheckDateRequestDto data)
+    public MessageDTO create(@RequestBody CheckDateRequestDto data)
     {
         return assignRedStarService.create(data.getDate());
     }
