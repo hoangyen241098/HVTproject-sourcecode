@@ -11,6 +11,7 @@ import com.example.webDemo3.dto.request.manageTimeTableRequestDto.TeacherTimeTab
 import com.example.webDemo3.service.manageTimeTableService.AddTimeTableService;
 import com.example.webDemo3.service.manageTimeTableService.TimeTableService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class TimeTableApiController {
                                      @RequestParam("date") Date date, Model model)
     {
         MessageDTO message = new MessageDTO();
-        HSSFWorkbook workbook = null;
+        Workbook workbook = null;
         try {
             workbook = new HSSFWorkbook(reapExcelDataFile.getInputStream());
         }catch (Exception e){

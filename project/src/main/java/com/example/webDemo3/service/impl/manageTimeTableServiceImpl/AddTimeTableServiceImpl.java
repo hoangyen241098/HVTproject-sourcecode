@@ -9,8 +9,8 @@ import com.example.webDemo3.repository.ClassRepository;
 import com.example.webDemo3.repository.TeacherRepository;
 import com.example.webDemo3.repository.TimetableRepository;
 import com.example.webDemo3.service.manageTimeTableService.AddTimeTableService;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,13 +44,13 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
 
     @Override
     @Transactional
-    public MessageDTO addTimetable(HSSFWorkbook workbook, Date applyDate) {
+    public MessageDTO addTimetable(Workbook workbook, Date applyDate) {
         MessageDTO message = new MessageDTO();
         if(checkDateDuplicate(applyDate)){
             timetableRepository.deleteByApplyDate(applyDate);
         }
-        HSSFSheet worksheetMorning = workbook.getSheet("TKB Sang") ;//.getSheetAt(0);
-        HSSFSheet worksheetAfternoon = workbook.getSheet("TKB Chiều");
+        Sheet worksheetMorning = workbook.getSheet("TKB Sang") ;//.getSheetAt(0);
+        Sheet worksheetAfternoon = workbook.getSheet("TKB Chiều");
         if(worksheetMorning == null){
             message.setMessageCode(1);
             message.setMessage("không có sheet TKB Sang");
@@ -72,7 +72,7 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
         return message;
     }
 
-    public MessageDTO addTimetableMorning(HSSFSheet worksheet,Date applyDate) throws TimeTableException
+    public MessageDTO addTimetableMorning(Sheet worksheet,Date applyDate) throws TimeTableException
     {
         MessageDTO message = new MessageDTO();
         List<String> classList = new ArrayList<>();
@@ -170,7 +170,7 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
         return message;
     }
 
-    public MessageDTO addTimetableAfternoon(HSSFSheet worksheet,Date applyDate) throws Exception
+    public MessageDTO addTimetableAfternoon(Sheet worksheet,Date applyDate) throws Exception
     {
         MessageDTO message = new MessageDTO();
         List<String> classList = new ArrayList<>();
@@ -274,7 +274,7 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
 
 
 
-    public String getData(HSSFSheet worksheet, int i, int j) {
+    public String getData(Sheet worksheet, int i, int j) {
         String data = null;
         try {
             data = worksheet.getRow(i).getCell(j).getStringCellValue();
