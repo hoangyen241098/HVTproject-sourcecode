@@ -10,11 +10,11 @@ public class RankWeekResponseDto {
     private Integer weekId;
     private Integer classId;
     private String className;
-    private Float emulationGrade;
-    private Float learningGrade;
-    private Float movementGrade;
-    private Float laborGrade;
-    private Float totalGrade;
+    private Double emulationGrade;
+    private Double learningGrade;
+    private Double movementGrade;
+    private Double laborGrade;
+    private Double totalGrade;
     private Integer rank;
     private String history;
 }

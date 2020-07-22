@@ -61,7 +61,7 @@ public interface ViolationClassRepository extends JpaRepository<ViolationClass, 
     @Query(value="select vc from ViolationClass vc where vc.id = :violationClassId  and vc.weekId = 0")
     ViolationClass findViolationClassByById(@Param("violationClassId")Long violationClassId);
 
-    @Query(value="select distinct vc.date from ViolationClass vc where vc.weekId = 0 and vc.date > :biggestDate")
+    @Query(value="select distinct vc.date from ViolationClass vc where vc.weekId = 0 and (vc.date > :biggestDate or :biggestDate is null)")
     List<Date> findListDateByCondition(@Param("biggestDate")Date biggestDate);
 
     @Query(value="select vc from ViolationClass vc where vc.date = :date and vc.classId = :classId and vc.status = :status")

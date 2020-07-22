@@ -299,10 +299,11 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
                 message = Constant.SCHOOL_WEEK_NOT_EXIST;
                 return message;
             }
+
             newSchoolWeek = schoolWeekRepository.findSchoolWeeksByWeekMonthIdAndYearId(week,schoolWeek.getMonthID(),schoolWeek.getYearId());
 
             //check week exist or not
-            if(newSchoolWeek != null){
+            if(newSchoolWeek != null && schoolWeek.getWeekID() != newSchoolWeek.getWeekID()){
                 message = Constant.SCHOOL_WEEK_EXISTS;
                 return message;
             }
@@ -371,8 +372,8 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
             }
             //check size = 0 or not
             if(size != 0){
-                Float EMULATION_GRADE = allScore / size;
-                Float TOTAL_GRADE = EMULATION_GRADE + Constant.LEARNING_GRADE + Constant.MOVEMENT_GRADE + Constant.LABOR_GRADE;
+                Double EMULATION_GRADE = (double) Math.round((allScore / size)*100) / 100;
+                Double TOTAL_GRADE = EMULATION_GRADE + Constant.LEARNING_GRADE + Constant.MOVEMENT_GRADE + Constant.LABOR_GRADE;
 
                 SchoolRankWeekId schoolRankWeekId = new SchoolRankWeekId();
                 schoolRankWeekId.setSchoolClass(new Class(newClass.getClassId()));
