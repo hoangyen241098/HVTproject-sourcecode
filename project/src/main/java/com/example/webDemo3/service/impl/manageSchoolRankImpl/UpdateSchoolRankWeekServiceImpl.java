@@ -8,12 +8,16 @@ import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.entity.SchoolRankWeek;
 import com.example.webDemo3.entity.SchoolRankWeekId;
 import com.example.webDemo3.entity.SchoolWeek;
+import com.example.webDemo3.exception.MyException;
 import com.example.webDemo3.repository.SchoolRankWeekRepository;
 import com.example.webDemo3.repository.SchoolWeekRepository;
 import com.example.webDemo3.service.manageSchoolRank.SortSchoolRankWeekService;
 import com.example.webDemo3.service.manageSchoolRank.UpdateSchoolRankWeekService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +44,7 @@ public class UpdateSchoolRankWeekServiceImpl implements UpdateSchoolRankWeekServ
      * @return
      */
     @Override
+    @Transactional
     public MessageDTO updateSchoolRankWeek(UpdateSchoolRankWeekRequestDto model) {
         List<RankWeekResponseDto> rankWeekList = model.getRankWeekList();
         MessageDTO message = new MessageDTO();
@@ -73,12 +78,11 @@ public class UpdateSchoolRankWeekServiceImpl implements UpdateSchoolRankWeekServ
             schoolRankWeekList = sortSchoolRankWeekService.arrangeSchoolRankWeek(schoolRankWeekList);
 
             try {
-                for (SchoolRankWeek item : schoolRankWeekList) {
-                    schoolRankWeekRepository.save(item);
-                }
+                message = updateSchoolRankWeek(schoolRankWeekList);
             } catch (Exception e) {
                 message.setMessageCode(1);
                 message.setMessage(e.toString());
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 return message;
             }
         }
@@ -116,5 +120,27 @@ public class UpdateSchoolRankWeekServiceImpl implements UpdateSchoolRankWeekServ
         schoolRankWeek.setHistory(responseDto.getHistory());
 
         return schoolRankWeek;
+    }
+
+    /**
+     * kimpt142
+     * update school rank week with transaction
+     * @param schoolRankWeekList
+     * @return
+     * @throws Exception
+     */
+    private MessageDTO updateSchoolRankWeek(List<SchoolRankWeek> schoolRankWeekList) throws Exception{
+        MessageDTO message = new MessageDTO();
+        try {
+            for (SchoolRankWeek item : schoolRankWeekList) {
+                schoolRankWeekRepository.save(item);
+            }
+        }
+        catch (Exception e){
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            throw new MyException(message.getMessage());
+        }
+        return message;
     }
 }
