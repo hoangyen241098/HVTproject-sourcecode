@@ -240,7 +240,11 @@ public class Constant {
     public static final MessageDTO DELETE_REQUEST_FAIL =
             new MessageDTO(1,"Không thể xóa yêu cầu thay đổi này.");
     public static final MessageDTO INCORRECT_FILE_FORMAT =
-            new MessageDTO(1,"không đúng định dạng file");
+            new MessageDTO(1,"Không đúng định dạng file");
+    public static final MessageDTO UPDATE_SCHOOL_RANK_FAIL =
+            new MessageDTO(1,"Cập nhật điểm xếp hạng cho tuần xảy ra lỗi.");
+    public static final MessageDTO RESET_PASSWORD_FAIL =
+            new MessageDTO(1,"Đặt lại mật khẩu xảy ra lỗi.");
     /**
      * Success message
      */

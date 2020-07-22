@@ -73,8 +73,7 @@ public class ResetPassServiceImpl implements ResetPassService {
             }
         }
         catch (Exception e){
-            message.setMessageCode(1);
-            message.setMessage(e.toString());
+            message = Constant.RESET_PASSWORD_FAIL;
             throw new MyException(message.getMessage());
         }
 
