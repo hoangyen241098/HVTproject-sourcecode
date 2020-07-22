@@ -46,36 +46,34 @@ public class TimeTableServicempl implements TimeTableService {
         MessageDTO messageDTO = new MessageDTO();
         Date currentDate = null;
         Integer classId = null;
-        List<Date> appyDateList;
+        List<Date> appyDateList = null;
         List<Class> classList = null;
 
         try {
             appyDateList = timetableRepository.getAllDate();
 
-            //check dateList empty or not
-            if(appyDateList.size() == 0){
-                messageDTO = Constant.LIST_DATE_EMPTY;
-                timeTabel.setMessage(messageDTO);
-                return timeTabel;
+            //check applyDateList empty or not
+            if(appyDateList.size() != 0){
+                currentDate = appyDateList.get(0);
+                timeTabel.setCurrentDate(currentDate);
+                timeTabel.setAppyDateList(appyDateList);
             }
-
-            currentDate = appyDateList.get(0);
-            timeTabel.setCurrentDate(currentDate);
-
-            timeTabel.setAppyDateList(appyDateList);
 
             classList = classRepository.findAll();
 
             //check classList empty or not
-            if(classList.size() == 0){
-                messageDTO = Constant.LIST_CLASS_EMPTY;
-                timeTabel.setMessage(messageDTO);
-                return timeTabel;
+            if(classList.size() != 0){
+                timeTabel.setClassList(classList);
+                classId = classList.get(0).getClassId();
+                timeTabel.setClassId(classId);
             }
 
-            timeTabel.setClassList(classList);
-            classId = classList.get(0).getClassId();
-            timeTabel.setClassId(classId);
+            //check applyDateList and classTeacher empty or not
+            if(appyDateList.size() == 0 && classList.size() == 0 ){
+                messageDTO.setMessageCode(1);
+                timeTabel.setMessage(messageDTO);
+                return  timeTabel;
+            }
 
             messageDTO = Constant.SUCCESS;
             timeTabel.setMessage(messageDTO);
@@ -103,40 +101,29 @@ public class TimeTableServicempl implements TimeTableService {
         Integer teacherId = null;
         List<Date> appyDateList;
         List<Teacher> teacherList = null;
-        Teacher teacher = null;
 
         try {
             appyDateList = timetableRepository.getAllDate();
 
             //check dateList empty or not
-            if(appyDateList.size() == 0){
-                messageDTO = Constant.LIST_DATE_EMPTY;
-                timeTabel.setMessage(messageDTO);
-                return timeTabel;
+            if(appyDateList.size() != 0){
+                currentDate = appyDateList.get(0);
+                timeTabel.setCurrentDate(currentDate);
+                timeTabel.setAppyDateList(appyDateList);
             }
-
-            currentDate = appyDateList.get(0);
-            timeTabel.setCurrentDate(currentDate);
 
             teacherList = teacherRepository.findAll();
 
-            timeTabel.setAppyDateList(appyDateList);
-            timeTabel.setTeacherList(teacherList);
-
-            //check teacher list empty
-            if(teacherList.size() == 0){
-                messageDTO = Constant.TEACHERLIST_NULL;
-                timeTabel.setMessage(messageDTO);
-                return timeTabel;
+            //check teacher list empty or not
+            if(teacherList.size() != 0){
+                teacherId = teacherList.get(0).getTeacherId();
+                timeTabel.setTeacherId(teacherId);
+                timeTabel.setTeacherList(teacherList);
             }
 
-            teacherId = teacherList.get(0).getTeacherId();
-            timeTabel.setTeacherId(teacherId);
-
-            teacher = teacherRepository.findById(teacherId).orElse(null);
-            //check teacher exists or not
-            if( teacher== null){
-                messageDTO = Constant.TEACHER_NOT_EXIT;
+            //check applyDateList and teacherList empty or not
+            if(appyDateList.size() == 0 && teacherList.size() == 0 ){
+                messageDTO.setMessageCode(1);
                 timeTabel.setMessage(messageDTO);
                 return  timeTabel;
             }
