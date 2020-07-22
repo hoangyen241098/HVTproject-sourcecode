@@ -9,12 +9,15 @@ import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.EditRankWeekR
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewWeekAnDateListRequestDto;
 import com.example.webDemo3.entity.*;
 import com.example.webDemo3.entity.Class;
+import com.example.webDemo3.exception.MyException;
 import com.example.webDemo3.repository.*;
 import com.example.webDemo3.service.manageEmulationService.ValidateEmulationService;
 import com.example.webDemo3.service.manageSchoolRank.CreateAndEditSchoolRankWeekService;
 import com.example.webDemo3.service.manageSchoolRank.SortSchoolRankWeekService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.sql.Date;
 import java.time.DayOfWeek;
@@ -59,6 +62,12 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
     @Autowired
     private SortSchoolRankWeekService sortSchoolRankWeekService;
 
+    /**
+     * lamnt98
+     * 22/07
+     * Load list date which has not rank in month
+     * @return
+     */
     @Override
     public ListDateResponseDto loadListDate() {
         ListDateResponseDto responseDto = new ListDateResponseDto();
@@ -105,8 +114,27 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         return responseDto;
     }
 
+    /**
+     * lamnt98
+     * 22/07
+     * create rank week for class
+     * @return
+     */
     @Override
+    @Transactional
     public MessageDTO createRankWeek(CreateRankWeekRequestDto requestDto) {
+        MessageDTO message = new MessageDTO();
+        try {
+            message = create(requestDto);
+        }catch (Exception e){
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return message;
+    }
+
+    private MessageDTO create(CreateRankWeekRequestDto requestDto) throws Exception{
         MessageDTO message = new MessageDTO();
         String userName = requestDto.getUserName();
         Integer week = requestDto.getWeek();
@@ -122,8 +150,6 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         User user;
 
         try {
-
-
             //check userName empty or not
             if(userName.isEmpty()){
                 message = Constant.USERNAME_EMPTY;
@@ -184,11 +210,17 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         }catch (Exception e){
             message.setMessageCode(1);
             message.setMessage(e.toString());
-            return message;
+            throw new MyException(message.getMessage());
         }
         return message;
     }
 
+    /**
+     * lamnt98
+     * 22/07
+     * load date which hasn't been ranked and date which is rnked follow week
+     * @return
+     */
     @Override
     public ListDateResponseDto loadEditListDate(ViewWeekAnDateListRequestDto requestDto) {
         ListDateResponseDto responseDto = new ListDateResponseDto();
@@ -260,8 +292,27 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         return responseDto;
     }
 
+
+    /**
+     * lamnt98
+     * 22/07
+     * edit rank week
+     * @return
+     */
     @Override
     public MessageDTO editRankWeek(EditRankWeekRequestDto requestDto) {
+        MessageDTO message = new MessageDTO();
+        try {
+            message = edit(requestDto);
+        }catch (Exception e){
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return message;
+    }
+
+    private MessageDTO edit(EditRankWeekRequestDto requestDto) throws Exception{
         Integer weekId = requestDto.getWeekId();
         Integer week = requestDto.getWeek();
         List<DateViolationClassDto> dateList = requestDto.getDateList();
@@ -318,7 +369,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         }catch (Exception e){
             message.setMessageCode(1);
             message.setMessage(e.toString());
-            return message;
+            throw new MyException(message.getMessage());
         }
 
         return message;
@@ -333,7 +384,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         return dayName;
     }
 
-    public MessageDTO createOrEditSchoolRankWeek(List<Class> classList, List<DateViolationClassDto> dateList,Double allTotalGrade, List<SchoolRankWeek> schoolRankWeekList,Integer weekId,boolean edit, MessageDTO message){
+    public MessageDTO createOrEditSchoolRankWeek(List<Class> classList, List<DateViolationClassDto> dateList,Double allTotalGrade, List<SchoolRankWeek> schoolRankWeekList,Integer weekId,boolean edit, MessageDTO message) throws Exception{
         List<ViolationClass> violationClassList = new ArrayList<>();
         Integer newSize = 0;
         Integer sizeDate = 0;
@@ -431,7 +482,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         //check schoolRankWeekList null or not
         if((schoolRankWeekList == null || schoolRankWeekList.size() == 0) && !edit){
             message = Constant.SCHOOL_RANK_WEEK_NULL;
-            return message;
+            throw new MyException(message.getMessage());
         }
         List<SchoolRankWeek> newSchoolRankWeekList = sortSchoolRankWeekService.arrangeSchoolRankWeek(schoolRankWeekList);
 
