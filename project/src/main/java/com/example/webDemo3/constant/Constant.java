@@ -13,8 +13,8 @@ public class Constant {
     public static final Integer ROLEID_MONITOR = 4;
     public static final Integer ROLEID_SUMMERIZEGROUP = 5;
     public static final Integer ROLEID_CLUBLEADER = 6;
-    public static final Double LEARNING_GRADE = Double.valueOf(20);
-    public static final Double MOVEMENT_GRADE =  0.18;
+    public static final Double LEARNING_GRADE = 20.0;
+    public static final Double MOVEMENT_GRADE =  0.2;
     public static final Double LABOR_GRADE = 0.2;
     /**
      * Fail message
