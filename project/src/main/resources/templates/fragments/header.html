@@ -13,6 +13,8 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <script th:src="@{/js/public/popper.min.js}"></script>
     <script th:src="@{/js/public/bootstrap.min.js}"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <!--Font-Awesome-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"/>
 
@@ -35,13 +37,13 @@
                 </div>
             </div>
         </div>
-<!--        <div class="container">-->
-<!--            <div class="navbar-brand">-->
-<!--                <a th:href="@{/}">-->
-<!--                    <img class="logo-img" th:src="@{/img/logo.png}" title=".::Trường THPT Chuyên Hoàng Văn Thụ::."/>-->
-<!--                </a>-->
-<!--            </div>-->
-<!--        </div>-->
+        <!--        <div class="container">-->
+        <!--            <div class="navbar-brand">-->
+        <!--                <a th:href="@{/}">-->
+        <!--                    <img class="logo-img" th:src="@{/img/logo.png}" title=".::Trường THPT Chuyên Hoàng Văn Thụ::."/>-->
+        <!--                </a>-->
+        <!--            </div>-->
+        <!--        </div>-->
         <div class="container justify-content-end">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,6 +74,15 @@
                             <a class="dropdown-item" th:href="@{violationListOfClass}">Xem danh sách lỗi theo ngày</a>
                             <a class="dropdown-item" th:href="@{viewRequest}">Xem yêu cầu thay đổi</a>
                             <a class="dropdown-item" th:href="@{history}">Xem lịch sử</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#">XẾP HẠNG<i class="fa fa-caret-down"></i></a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" th:href="@{rankByWeek}">Xếp hạng theo tuần</a>
+                            <a class="dropdown-item" th:href="@{rankByMonth}">Xếp hạng theo tháng</a>
+                            <a class="dropdown-item" th:href="@{rankBySemester}">Xếp hạng theo học kỳ</a>
+                            <a class="dropdown-item" th:href="@{rankByYear}">Xếp hạng theo năm</a>
                         </div>
                     </li>
 
