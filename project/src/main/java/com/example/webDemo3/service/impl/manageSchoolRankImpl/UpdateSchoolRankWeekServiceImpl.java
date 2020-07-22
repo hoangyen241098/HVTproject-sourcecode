@@ -78,7 +78,7 @@ public class UpdateSchoolRankWeekServiceImpl implements UpdateSchoolRankWeekServ
             schoolRankWeekList = sortSchoolRankWeekService.arrangeSchoolRankWeek(schoolRankWeekList);
 
             try {
-                message = updateSchool(schoolRankWeekList);
+                message = updateSchoolRankWeek(schoolRankWeekList);
             } catch (Exception e) {
                 message.setMessageCode(1);
                 message.setMessage(e.toString());
@@ -129,7 +129,7 @@ public class UpdateSchoolRankWeekServiceImpl implements UpdateSchoolRankWeekServ
      * @return
      * @throws Exception
      */
-    private MessageDTO updateSchool(List<SchoolRankWeek> schoolRankWeekList) throws Exception{
+    private MessageDTO updateSchoolRankWeek(List<SchoolRankWeek> schoolRankWeekList) throws Exception{
         MessageDTO message = new MessageDTO();
         try {
             for (SchoolRankWeek item : schoolRankWeekList) {
@@ -137,7 +137,8 @@ public class UpdateSchoolRankWeekServiceImpl implements UpdateSchoolRankWeekServ
             }
         }
         catch (Exception e){
-            message = Constant.UPDATE_SCHOOL_RANK_FAIL;
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
             throw new MyException(message.getMessage());
         }
         return message;
