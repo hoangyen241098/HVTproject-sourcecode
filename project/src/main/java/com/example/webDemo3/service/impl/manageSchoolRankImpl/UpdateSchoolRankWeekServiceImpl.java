@@ -103,10 +103,10 @@ public class UpdateSchoolRankWeekServiceImpl implements UpdateSchoolRankWeekServ
         schoolRankWeekId.setWEEK_ID(responseDto.getWeekId());
         schoolRankWeekId.setSchoolClass(new Class(responseDto.getClassId()));
 
-        Float learningGrade = responseDto.getLearningGrade();
-        Float movementGrade = responseDto.getMovementGrade();
-        Float laborGrade = responseDto.getLaborGrade();
-        Float newTotalGrade = learningGrade + movementGrade + laborGrade + responseDto.getEmulationGrade();
+        Double learningGrade = responseDto.getLearningGrade();
+        Double movementGrade = responseDto.getMovementGrade();
+        Double laborGrade = responseDto.getLaborGrade();
+        Double newTotalGrade = learningGrade + movementGrade + laborGrade + responseDto.getEmulationGrade();
         schoolRankWeek.setSchoolRankWeekId(schoolRankWeekId);
         schoolRankWeek.setLearningGrade(learningGrade);
         schoolRankWeek.setMovementGrade(movementGrade);
