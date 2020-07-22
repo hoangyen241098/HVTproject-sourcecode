@@ -156,7 +156,7 @@ $('#saveGrading').on('click', function () {
             </tr>                    
             `);
                 }
-                $('#confirm').on('click', function () {
+                $('#confirm').unbind().on('click', function () {
                     var infoSave = {
                         username: username,
                         classId: $('#classList option:selected').val(),
