@@ -300,6 +300,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
      * @return
      */
     @Override
+    @Transactional
     public MessageDTO editRankWeek(EditRankWeekRequestDto requestDto) {
         MessageDTO message = new MessageDTO();
         try {
