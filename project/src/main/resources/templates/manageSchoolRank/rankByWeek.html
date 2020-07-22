@@ -12,9 +12,12 @@
     <script th:src="@{/js/public/select2.min.js}"></script>
     <!--Table-->
     <link rel="stylesheet" th:href="@{/css/dataTables.bootstrap4.min.css}">
+    <link rel="stylesheet" th:href="@{/css/responsive.dataTables.min.css}">
     <script th:src="@{/js/public/jquery.dataTables.min.js}"></script>
     <script th:src="@{/js/public/dataTables.bootstrap4.min.js}"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js"></script>
     <!--Bootstrap 4-->
+
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <script th:src="@{/js/public/popper.min.js}"></script>
     <script th:src="@{/js/public/bootstrap.min.js}"></script>
@@ -55,7 +58,7 @@
                     <input type="button" id="download" class="btn btn-success ml-2" value="Tải xuống"/>
                 </div>
             </div>
-            <table class="table table-bordered table-edit mt-3">
+            <table class="table table-bordered table-edit mt-3 display responsive nowrap" style="width:100%">
                 <thead class="thead-light">
                 <tr class="align-items-center">
                     <th>Lớp</th>

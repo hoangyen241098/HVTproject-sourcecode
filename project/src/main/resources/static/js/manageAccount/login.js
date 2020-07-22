@@ -47,7 +47,6 @@ function login() {
                 var message = data.message.message;
                 var roleID = data.roleid;
                 if (messageCode == 0) {
-                    $('#loginSuccess').modal('show');
                     localStorage.setItem("username", username);
                     localStorage.setItem("loginSuccess", messageCode);
                     localStorage.setItem("roleID", roleID);
@@ -57,6 +56,7 @@ function login() {
                     if (roleID == 1) {
                         $("#admin").addClass("show");
                     }
+                    setTimeout(window.location.replace("/"),500);
                 } else {
                     $('.login-err').text(message);
                 }
