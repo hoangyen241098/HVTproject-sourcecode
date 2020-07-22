@@ -47,7 +47,7 @@ $("#search").click(function () {
 
 /*Get giftedClass in combobox*/
 $.ajax({
-    url: '/api/emulation/liststarclassdate',
+    url: '/api/assignRedStar/liststarclassdate',
     type: 'POST',
     beforeSend: function () {
         $('body').addClass("loading")
@@ -148,7 +148,7 @@ setTimeout(search, 500);
 function search() {
     console.log(JSON.stringify(inforSearch));
     $.ajax({
-        url: '/api/emulation/viewassigntask',
+        url: '/api/assignRedStar/viewassigntask',
         type: 'POST',
         data: JSON.stringify(inforSearch),
         beforeSend: function () {

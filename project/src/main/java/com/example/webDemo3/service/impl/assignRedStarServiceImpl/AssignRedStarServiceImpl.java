@@ -1,17 +1,17 @@
-package com.example.webDemo3.service.impl.manageEmulationServiceImpl;
+package com.example.webDemo3.service.impl.assignRedStarServiceImpl;
 
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ClassRedStarResponseDto;
 import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.dto.manageEmulationResponseDto.ListClassAndDateResponseDto;
-import com.example.webDemo3.dto.manageEmulationResponseDto.ViewAssignTaskResponseDto;
-import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewAssignTaskRequestDto;
+import com.example.webDemo3.dto.manageAssignRedStarResponseDto.ListClassAndDateResponseDto;
+import com.example.webDemo3.dto.manageAssignRedStarResponseDto.ViewAssignTaskResponseDto;
+import com.example.webDemo3.dto.request.assignRedStarRequestDto.ViewAssignTaskRequestDto;
 import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.entity.ClassRedStar;
 import com.example.webDemo3.repository.ClassRedStarRepository;
 import com.example.webDemo3.repository.ClassRepository;
 import com.example.webDemo3.repository.UserRepository;
-import com.example.webDemo3.service.manageEmulationService.TaskService;
+import com.example.webDemo3.service.assignRedStarService.AssignRedStarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,7 +29,7 @@ import java.util.List;
  * View assign task
  */
 @Service
-public class TaskServiceImpl implements TaskService {
+public class AssignRedStarServiceImpl implements AssignRedStarService {
     @Autowired
     private ClassRedStarRepository classRedStarRepository;
 
