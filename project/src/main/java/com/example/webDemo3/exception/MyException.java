@@ -1,12 +1,12 @@
 package com.example.webDemo3.exception;
 
-public class TimeTableException extends Exception{
+public class MyException extends Exception{
     private String message;
 
-    public TimeTableException() {
+    public MyException() {
     }
 
-    public TimeTableException(String message) {
+    public MyException(String message) {
         this.message = message;
     }
 

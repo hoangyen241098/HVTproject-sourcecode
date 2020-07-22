@@ -5,7 +5,7 @@ import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.entity.Teacher;
 import com.example.webDemo3.entity.TimeTable;
-import com.example.webDemo3.exception.TimeTableException;
+import com.example.webDemo3.exception.MyException;
 import com.example.webDemo3.repository.ClassRepository;
 import com.example.webDemo3.repository.TeacherRepository;
 import com.example.webDemo3.repository.TimetableRepository;
@@ -87,7 +87,7 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
         return message;
     }
 
-    public MessageDTO addTimetableMorning(Sheet worksheet,Date applyDate) throws TimeTableException
+    public MessageDTO addTimetableMorning(Sheet worksheet,Date applyDate) throws MyException
     {
         MessageDTO message = new MessageDTO();
         List<String> classList = new ArrayList<>();
@@ -109,7 +109,7 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
             j++;
         }
         if(dataList.size() == 0){
-            throw new TimeTableException(TimeTableBlank);
+            throw new MyException(TimeTableBlank);
         }
 
         String preClass = "";
@@ -121,7 +121,7 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
             Class classTb = classRepository.findClassActiveByClassIdentifier(lop);
             if(classTb == null){
                 System.out.println(notFindClass + lop);
-                throw new TimeTableException(notFindClass+ lop);
+                throw new MyException(notFindClass+ lop);
             }
             // check is adđitional
             if(classTb.getClassIdentifier().equalsIgnoreCase(preClass)){
@@ -153,7 +153,7 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
                     teacherTb = teacherRepository.findTeacherTeacherIdentifier(gv);
                     if(teacherTb == null) {
                         System.out.println(notFindTearcher + gv);
-                        throw new TimeTableException(notFindTearcher + gv);
+                        throw new MyException(notFindTearcher + gv);
                     }
                 }
                 //get slo
@@ -177,7 +177,7 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
                     timetableRepository.save(tb);
                 } catch (Exception e) {
                     day ++;
-                    throw new TimeTableException("không thêm được tkb ở lớp: "
+                    throw new MyException("không thêm được tkb ở lớp: "
                             + lop + ", thứ:" + day + ", tiết: " + slot);
                 }
             }
@@ -209,7 +209,7 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
             j++;
         }
         if(dataList.size() == 0){
-            throw new TimeTableException(TimeTableBlank);
+            throw new MyException(TimeTableBlank);
         }
 
         String preClass = "";
@@ -221,7 +221,7 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
             Class classTb = classRepository.findClassActiveByClassIdentifier(lop);
             if(classTb == null) {
                 System.out.println(notFindClass+ lop);
-                throw new TimeTableException(notFindClass + lop);
+                throw new MyException(notFindClass + lop);
             }
             // check is adđitional
             if(classTb.getClassIdentifier().equalsIgnoreCase(preClass)){
@@ -253,7 +253,7 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
                     teacherTb = teacherRepository.findTeacherTeacherIdentifier(gv);
                     if(teacherTb == null) {
                         System.out.println(notFindTearcher + gv);
-                        throw new TimeTableException(notFindTearcher + gv);
+                        throw new MyException(notFindTearcher + gv);
                     }
                 }
                 //get slot
@@ -281,7 +281,7 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
                     tb.setIsAdditional(isAdd);
                     timetableRepository.save(tb);
                 } catch (Exception e) {
-                    throw new TimeTableException("không thêm được tkb ở lớp: "
+                    throw new MyException("không thêm được tkb ở lớp: "
                             + lop + ", thứ:" + day + ", tiết: " + slot);
                 }
             }

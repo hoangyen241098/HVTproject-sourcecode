@@ -2,17 +2,28 @@ package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListDateResponseDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.*;
+import com.example.webDemo3.dto.request.assignRedStarRequestDto.DownloadAssignRedStarRequestDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.CreateRankWeekRequestDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewWeekAnDateListRequestDto;
 import com.example.webDemo3.service.manageSchoolRank.CreateAndEditSchoolRankWeekService;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.RankWeekListResponseDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewWeekAndClassListResponseDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.SearchRankWeekRequestDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.UpdateSchoolRankWeekRequestDto;
+import com.example.webDemo3.service.manageSchoolRank.DownloadRankWeekService;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.*;
 import com.example.webDemo3.service.manageSchoolRank.UpdateSchoolRankWeekService;
 import com.example.webDemo3.service.manageSchoolRank.ViewSchoolRankWeekService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.ByteArrayInputStream;
 
 /*
 kimpt142 - 21/07
@@ -29,6 +40,9 @@ public class RankWeekController {
 
     @Autowired
     private UpdateSchoolRankWeekService updateSchoolRankWeekService;
+
+    @Autowired
+    private DownloadRankWeekService downloadRankWeekService;
 
     /**
      * lamnt98
@@ -115,5 +129,26 @@ public class RankWeekController {
     public MessageDTO updateRankWeek(@RequestBody UpdateSchoolRankWeekRequestDto model)
     {
         return updateSchoolRankWeekService.updateSchoolRankWeek(model);
+    }
+
+    /**
+     * kimpt142
+     * 21/07
+     * catch request to update school rank week list
+     * @param model include rank week list
+     * @return MessageDTO
+     */
+    @PostMapping("/download")
+    public ResponseEntity<InputStreamResource> download(@RequestBody SearchRankWeekRequestDto model)
+    {
+        ByteArrayInputStream in = downloadRankWeekService.downloadRankWeek(model);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=bangxephangtuan.xls");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .body(new InputStreamResource(in));
+
     }
 }
