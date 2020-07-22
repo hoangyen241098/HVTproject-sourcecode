@@ -89,7 +89,7 @@ public class DownloadRankWeekServiceImpl implements DownloadRankWeekService {
      * @param input
      * @return
      */
-    private double round(Float input) {
+    private double round(Double input) {
         return (double) Math.round(input * 100) / 100;
     }
 }
