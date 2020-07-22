@@ -62,69 +62,81 @@ function search() {
         classId: $('#byClass option:selected').val()
     }
     console.log(JSON.stringify(infoSearch));
-    $.ajax({
-        url: '/api/rankweek/searchrankweek',
-        type: 'POST',
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
-        data: JSON.stringify(infoSearch),
-        success: function (data) {
-            var messageCode = data.message.messageCode;
-            var message = data.message.message;
-            if (messageCode == 0) {
-                if (data.rankWeekList != null) {
-                    $('table tbody').html('');
-                    // $('table').dataTable({
-                    //     destroy: true,
-                    //     searching: false,
-                    //     bInfo: false,
-                    //     paging: false,
-                    //     dataSrc: data.rankWeekList,
-                    //     columns: [
-                    //         {data: "className"},
-                    //         {data: "emulationGrade"},
-                    //         {data: "learningGrade"},
-                    //         {data: "laborGrade"},
-                    //         {data: "totalGrade"},
-                    //         {data: "rank"},
-                    //     ]
-                    // })
-                    $.each(data.rankWeekList, function (i, item) {
-                        $('table tbody').append(`
-                        <tr>
-                            <td>` + item.className + `</td>
-                            <td>` + item.emulationGrade + `</td>
-                            <td contenteditable="false">` + item.learningGrade + `</td>
-                            <td contenteditable="false">` + item.movementGrade + `</td>
-                            <td contenteditable="false">` + item.laborGrade + `</td>
-                            <td>` + item.totalGrade + `</td>
-                            <td><b>` + item.rank + `</b></td>
-                        </tr>
-                        `)
-                    });
-                    // $('table').dataTable({
-                    //     destroy: true,
-                    //     searching: false,
-                    //     bInfo: false,
-                    //     paging: false,
-                    // })
+    $('table').dataTable({
+        destroy: true,
+        searching: false,
+        bInfo: false,
+        paging: false,
+        responsive: true,
+        ajax: {
+            url: "/api/rankweek/searchrankweek",
+            type: "POST",
+            data: function (d) {
+                return JSON.stringify(infoSearch);
+            },
+            dataType: "json",
+            contentType: "application/json",
+            failure: function (errMsg) {
+                $('tbody').append(
+                    `<tr>
+                        <td colspan="7" class="userlist-result"> ` + errMsg + ` </td>
+                    </tr>`
+                )
+            },
+            dataSrc: function (data) {
+                var dataSrc = null;
+                var messageCode = data.message.messageCode;
+                var message = data.message.message;
+                if (messageCode == 0) {
+                    if (data.rankWeekList != null) {
+                        dataSrc = data.rankWeekList;
+                    } else {
+                        return false;
+                    }
                 } else {
-                    $('table tbody').html(`<tr><td colspan="7" class="userlist-result">Danh sách xếp hạng tuần trống.</td></tr>`)
+                    $('tbody').append(
+                        `<tr>
+                            <td colspan="7" class="userlist-result"> ` + message + ` </td>
+                        </tr>`
+                    )
+                    return false;
                 }
-            } else {
-                $('table tbody').html(`<tr><td colspan="7" class="userlist-result">` + message + `</td></tr>`)
+                return dataSrc;
             }
         },
-        failure: function (errMsg) {
-            $('table tbody').html(`<tr><td colspan="7" class="userlist-result">` + errMsg + `</td></tr>`)
-        },
-        dataType: "json",
-        contentType: "application/json"
-    });
+        columns: [
+            {data: "className"},
+            {data: "emulationGrade"},
+            {data: "learningGrade"},
+            {data: "movementGrade"},
+            {data: "laborGrade"},
+            {data: "totalGrade"},
+            {data: "rank"},
+        ],
+        columnDefs: [
+            {
+                targets: 2,
+                createdCell: function (td, cellData, rowData, row, col) {
+                    $(td).attr('contenteditable', 'false');
+                }
+            },
+            {
+                targets: 3,
+                createdCell: function (td, cellData, rowData, row, col) {
+                    $(td).attr('contenteditable', 'false');
+                }
+            },
+            {
+                targets: 4,
+                createdCell: function (td, cellData, rowData, row, col) {
+                    $(td).attr('contenteditable', 'false');
+                }
+            }
+        ],
+        drawCallback: function (settings) {
+            settings.oLanguage.sEmptyTable = "Danh sách xếp hạng tuần trống."
+        }
+    })
 }
 
 /*Search button*/
@@ -393,7 +405,7 @@ $("#download").click(function () {
     }
     console.log(JSON.stringify(download))
     $.ajax({
-        url: '/api/rankweek/updatescorerankweek',
+        url: '/api/rankweek/download',
         type: 'POST',
         data: JSON.stringify(download),
         xhrFields: {
