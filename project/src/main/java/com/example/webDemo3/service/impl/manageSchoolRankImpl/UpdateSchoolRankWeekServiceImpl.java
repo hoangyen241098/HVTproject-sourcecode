@@ -137,8 +137,7 @@ public class UpdateSchoolRankWeekServiceImpl implements UpdateSchoolRankWeekServ
             }
         }
         catch (Exception e){
-            message.setMessageCode(1);
-            message.setMessage(e.toString());
+            message = Constant.UPDATE_SCHOOL_RANK_FAIL;
             throw new MyException(message.getMessage());
         }
         return message;
