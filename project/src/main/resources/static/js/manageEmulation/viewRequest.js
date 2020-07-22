@@ -1,10 +1,9 @@
-$('#inputDate').val(moment().format('YYYY-MM-DD'));
 $('#inputDate').prop('max', moment().format('YYYY-MM-DD'));
 var username = localStorage.getItem('username');
 var roleId = localStorage.getItem('roleID');
-var infoSearch = {
+var inforSearch = {
     classId: null,
-    status: 3,
+    status: 0,
     createDate: $('#inputDate').val(),
     pageNumber: 0
 }
@@ -23,13 +22,13 @@ $("#search").click(function () {
     } else {
         status = $('#status option:selected').val();
     }
-    infoSearch = {
+    inforSearch = {
         classId: classId,
         status: status,
         createDate: createDate,
         pageNumber: 0
     }
-    console.log(JSON.stringify(infoSearch))
+    console.log(JSON.stringify(inforSearch))
     $(".panel-default").html("");
     search();
 
@@ -75,11 +74,11 @@ search();
 
 /*Set data to container*/
 function search() {
-    console.log(JSON.stringify(infoSearch))
+    console.log(JSON.stringify(inforSearch))
     $.ajax({
         url: '/api/emulation/viewrequest',
         type: 'POST',
-        data: JSON.stringify(infoSearch),
+        data: JSON.stringify(inforSearch),
         beforeSend: function () {
             $('body').addClass("loading")
         },
@@ -94,7 +93,7 @@ function search() {
                 if (totalPages > 1) {
                     $('.table-paging').removeClass('hide');
                     $('.table-paging').html('');
-                    paging(infoSearch, totalPages);
+                    paging(inforSearch, totalPages);
                 } else {
                     $('.table-paging').addClass('hide');
                 }
@@ -201,6 +200,18 @@ function search() {
                                     <span class="title">Tổng điểm trừ: </span>
                                     <span class="info ml-4">` + totals
                                 );
+                            }
+                            if (status == "Chưa duyệt") {
+                                var dataTargetID = "#" + dataTarget;
+                                $(dataTargetID).prev().find('.violation-status span:last-child').css('color','#ff0000');
+                            }
+                            if (status == "Chấp nhận") {
+                                var dataTargetID = "#" + dataTarget;
+                                $(dataTargetID).prev().find('.violation-status span:last-child').css('color', '#339933');
+                            }
+                            if (status == "Từ chối") {
+                                var dataTargetID = "#" + dataTarget;
+                                $(dataTargetID).prev().find('.violation-status span:last-child').css('color', '#808080');
                             }
                         }
                     });
@@ -352,13 +363,13 @@ $('.btn-reload').on('click', function () {
     } else {
         status = $('#status option:selected').val();
     }
-    infoSearch = {
+    inforSearch = {
         classId: classId,
         status: status,
         createDate: createDate,
         pageNumber: 0
     }
-    console.log(JSON.stringify(infoSearch))
+    console.log(JSON.stringify(inforSearch))
     $(".panel-default").html("");
     search();
 })
