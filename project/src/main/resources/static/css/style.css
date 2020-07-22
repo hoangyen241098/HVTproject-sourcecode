@@ -1253,13 +1253,26 @@ fieldset .note {
     max-width: 435px;
 
 }
-
+.afternoon .week p:before {
+    content: '(Tuần chẵn)';
+}
+.afternoon.isOdd .week p:before {
+    content: '(Tuần lẻ)';
+}
 /*Responsive table max-width:650px*/
 @media screen and (max-width: 700px) {
     .div-space {
         display: none !important;
     }
-
+    .afternoon .week p{
+        transform: rotate(-90deg);
+    }
+    .afternoon .week p:before {
+        content: 'Chẵn';
+    }
+    .afternoon.isOdd .week p:before {
+        content: 'Lẻ';
+    }
     .modal-body .panel-body,
     .panel-collapse table {
         width: 100%;
@@ -1339,7 +1352,7 @@ fieldset .note {
     }
 
     .saveResult {
-        text-align: center;
+        text-align: center!important;
     }
 
 }
