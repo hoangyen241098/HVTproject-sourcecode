@@ -6,18 +6,16 @@ import com.example.webDemo3.dto.request.manageEmulationRequestDto.*;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViewGradingEmulationResponseDto;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViewViolationClassListResponseDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ChangeRequestDto;
-import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewAssignTaskRequestDto;
+import com.example.webDemo3.dto.request.assignRedStarRequestDto.ViewAssignTaskRequestDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewRequestDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewViolationOfClassRequestDto;
-import com.example.webDemo3.entity.ViolationClass;
+import com.example.webDemo3.service.assignRedStarService.AssignRedStarService;
 import com.example.webDemo3.service.manageEmulationService.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /*
 kimpt142 - 14/07
@@ -30,9 +28,6 @@ public class EmulationController {
     private GradingEmulationService gradingEmulationService;
 
     @Autowired
-    private TaskService taskService;
-
-    @Autowired
     private ViewRequestService viewRequestService;
 
     @Autowired
@@ -40,30 +35,6 @@ public class EmulationController {
 
     @Autowired
     private ViolationOfClassService violationOfClassService;
-
-    /**
-     * lamnt98
-     * 14/07
-     * catch request to get list star, class and date
-     * @return ListClassAndDateResponseDto
-     */
-    @PostMapping("/liststarclassdate")
-    public ListClassAndDateResponseDto getListStarClassDate()
-    {
-        return taskService.listStarClassDate();
-    }
-
-    /**
-     * lamnt98
-     * 14/07
-     * catch request to get list assign task
-     * @return ViewAssignTaskResponseDto
-     */
-    @PostMapping("/viewassigntask")
-    public ViewAssignTaskResponseDto viewAssignTask(@RequestBody ViewAssignTaskRequestDto model)
-    {
-        return taskService.viewTask(model);
-    }
 
     /**
      * lamnt98

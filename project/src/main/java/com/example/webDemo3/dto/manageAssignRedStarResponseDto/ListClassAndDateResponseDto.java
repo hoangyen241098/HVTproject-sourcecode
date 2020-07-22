@@ -1,4 +1,4 @@
-package com.example.webDemo3.dto.manageEmulationResponseDto;
+package com.example.webDemo3.dto.manageAssignRedStarResponseDto;
 
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.entity.Class;

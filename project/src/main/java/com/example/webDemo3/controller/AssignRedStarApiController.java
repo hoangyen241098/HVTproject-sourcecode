@@ -1,8 +1,12 @@
 package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.MessageDTO;
+import com.example.webDemo3.dto.manageAssignRedStarResponseDto.ListClassAndDateResponseDto;
+import com.example.webDemo3.dto.manageAssignRedStarResponseDto.ViewAssignTaskResponseDto;
 import com.example.webDemo3.dto.request.assignRedStarRequestDto.DownloadAssignRedStarRequestDto;
+import com.example.webDemo3.dto.request.assignRedStarRequestDto.ViewAssignTaskRequestDto;
 import com.example.webDemo3.dto.request.manageTimeTableRequestDto.CheckDateRequestDto;
+import com.example.webDemo3.service.assignRedStarService.AssignRedStarService;
 import com.example.webDemo3.service.assignRedStarService.CreateAssignRedStarService;
 import com.example.webDemo3.service.assignRedStarService.DownloadAssignRedStarService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.ByteArrayInputStream;
-import java.sql.Date;
 
 @RestController
 @RequestMapping("/api/assignRedStar")
@@ -38,6 +41,9 @@ public class AssignRedStarApiController {
         return assignRedStarService.create(data.getDate());
     }
 
+    @Autowired
+    private AssignRedStarService taskService;
+
     @PostMapping("/download")
     public ResponseEntity<InputStreamResource> download(@RequestBody DownloadAssignRedStarRequestDto data)
     {
@@ -50,5 +56,29 @@ public class AssignRedStarApiController {
                 .headers(headers)
                 .body(new InputStreamResource(in));
 
+    }
+
+    /**
+     * lamnt98
+     * 14/07
+     * catch request to get list star, class and date
+     * @return ListClassAndDateResponseDto
+     */
+    @PostMapping("/liststarclassdate")
+    public ListClassAndDateResponseDto getListStarClassDate()
+    {
+        return taskService.listStarClassDate();
+    }
+
+    /**
+     * lamnt98
+     * 14/07
+     * catch request to get list assign task
+     * @return ViewAssignTaskResponseDto
+     */
+    @PostMapping("/viewassigntask")
+    public ViewAssignTaskResponseDto viewAssignTask(@RequestBody ViewAssignTaskRequestDto model)
+    {
+        return taskService.viewTask(model);
     }
 }
