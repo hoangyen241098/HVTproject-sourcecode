@@ -13,9 +13,9 @@ public class Constant {
     public static final Integer ROLEID_MONITOR = 4;
     public static final Integer ROLEID_SUMMERIZEGROUP = 5;
     public static final Integer ROLEID_CLUBLEADER = 6;
-    public static final Float LEARNING_GRADE = (float) 20;
-    public static final Float MOVEMENT_GRADE = (float) 0.2;
-    public static final Float LABOR_GRADE = (float) 0.2;
+    public static final Double LEARNING_GRADE = 20.0;
+    public static final Double MOVEMENT_GRADE =  0.2;
+    public static final Double LABOR_GRADE = 0.2;
     /**
      * Fail message
      */

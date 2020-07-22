@@ -13,19 +13,19 @@ public class SchoolRankWeek {
     private SchoolRankWeekId schoolRankWeekId;
 
     @Column(name = "EMULATION_GRADE")
-    private Float emulationGrade;
+    private Double emulationGrade;
 
     @Column(name = "LEARNING_GRADE")
-    private Float learningGrade;
+    private Double learningGrade;
 
     @Column(name = "MOVEMENT_GRADE")
-    private Float movementGrade;
+    private Double movementGrade;
 
     @Column(name = "LABOR_GRADE")
-    private Float laborGrade;
+    private Double laborGrade;
 
     @Column(name = "TOTAL_GRADE")
-    private Float totalGrade;
+    private Double totalGrade;
 
     @Column(name = "RANK")
     private Integer rank;
