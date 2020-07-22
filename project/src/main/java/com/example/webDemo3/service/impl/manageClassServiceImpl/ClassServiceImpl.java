@@ -51,7 +51,7 @@ public class ClassServiceImpl implements ClassService {
     public ClassListResponseDto getClassList() {
         ClassListResponseDto responseDto = new ClassListResponseDto();
         MessageDTO message = new MessageDTO();
-        List<Class> classList = classRepository.findAll();
+        List<Class> classList = classRepository.findAllOrderByClassName();
         List<ClassResponseDto> classResList = new ArrayList<>();
 
         if(classList!=null)
@@ -72,7 +72,6 @@ public class ClassServiceImpl implements ClassService {
                 }
                 classResList.add(classDto);
             }
-            Collections.sort(classResList);
             responseDto.setClassList(classResList);
             message = Constant.SUCCESS;
             responseDto.setMessage(message);

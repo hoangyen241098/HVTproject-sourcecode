@@ -45,4 +45,7 @@ public interface ClassRepository extends JpaRepository<Class,Integer> {
 
     @Query(value = "select c from Class c where c.classIdentifier = :classIdentifier and (c.status <> 1 or c.status is null)")
     Class findClassActiveByClassIdentifier(@Param("classIdentifier") String classIdentifier);
+
+    @Query(value = "select c from Class c order by c.grade, c.giftedClass.giftedClassId asc")
+    List<Class> findAllOrderByClassName();
 }
