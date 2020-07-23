@@ -2,9 +2,7 @@ package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.RankMonthListResposeDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewMonthListResponseDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.CreateRankMonthRequestDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ListWeekSchoolRankRequestDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.SearchRankMonthRequestDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.*;
 import com.example.webDemo3.service.manageSchoolRankMonthService.ViewSchoolRankMonthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -36,13 +34,13 @@ public class RankMonthApiController {
     /**
      * kimpt142
      * 23/07
-     * catch request to get month list
+     * catch request to get month list by year id
      * @return responseDTO with a month list and messagedto
      */
     @PostMapping("/getmonthlist")
-    public ViewMonthListResponseDto getMonthList()
+    public ViewMonthListResponseDto getMonthListByYearId(@RequestBody ViewMonthByYearRequestDto model)
     {
-        return viewSchoolRankMonthService.getMonthList();
+        return viewSchoolRankMonthService.getMonthListByYearId(model);
     }
 
     /**
@@ -98,5 +96,18 @@ public class RankMonthApiController {
     public MessageDTO createRankMonth(@RequestBody CreateRankMonthRequestDto module)
     {
         return createAndEditSchoolRankMonthService.createRankMonth(module);
+    }
+
+
+    /**
+     * kimpt142
+     * 23/07
+     * catch request to get school year list and month list by current year id
+     * @return responseDTO with a month list and messagedto
+     */
+    @PostMapping("/loadrankmonth")
+    public LoadRankMonthResponseDto loadRankMonth(@RequestBody ViewMonthByYearRequestDto model)
+    {
+        return viewSchoolRankMonthService.loadRankMonthPage(model);
     }
 }
