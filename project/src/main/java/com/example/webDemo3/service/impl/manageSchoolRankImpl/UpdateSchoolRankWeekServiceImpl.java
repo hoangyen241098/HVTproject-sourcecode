@@ -108,13 +108,17 @@ public class UpdateSchoolRankWeekServiceImpl implements UpdateSchoolRankWeekServ
         Double laborGrade = responseDto.getLaborGrade();
         Double newTotalGrade = learningGrade + movementGrade + laborGrade + responseDto.getEmulationGrade();
         schoolRankWeek.setSchoolRankWeekId(schoolRankWeekId);
-        schoolRankWeek.setLearningGrade(learningGrade);
-        schoolRankWeek.setMovementGrade(movementGrade);
-        schoolRankWeek.setLaborGrade(laborGrade);
-        schoolRankWeek.setTotalGrade(newTotalGrade);
-        schoolRankWeek.setEmulationGrade(responseDto.getEmulationGrade());
+        schoolRankWeek.setLearningGrade(round(learningGrade));
+        schoolRankWeek.setMovementGrade(round(movementGrade));
+        schoolRankWeek.setLaborGrade(round(laborGrade));
+        schoolRankWeek.setTotalGrade(round(newTotalGrade));
+        schoolRankWeek.setEmulationGrade(round(responseDto.getEmulationGrade()));
         schoolRankWeek.setHistory(responseDto.getHistory());
 
         return schoolRankWeek;
+    }
+
+    private double round(Double input) {
+        return (double) Math.round(input * 100) / 100;
     }
 }

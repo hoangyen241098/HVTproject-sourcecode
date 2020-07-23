@@ -300,6 +300,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
      * @return
      */
     @Override
+    @Transactional
     public MessageDTO editRankWeek(EditRankWeekRequestDto requestDto) {
         MessageDTO message = new MessageDTO();
         try {
@@ -429,8 +430,8 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
             }
             //check size = 0 or not
             if(sizeDate != 0){
-                Double EMULATION_GRADE = (double) Math.round((allScore / sizeDate)*100) / 100;
-                Double TOTAL_GRADE = EMULATION_GRADE + Constant.LEARNING_GRADE + Constant.MOVEMENT_GRADE + Constant.LABOR_GRADE;
+                Double EMULATION_GRADE = round(allScore / sizeDate);
+                Double TOTAL_GRADE = round(EMULATION_GRADE + Constant.LEARNING_GRADE + Constant.MOVEMENT_GRADE + Constant.LABOR_GRADE);
 
                 SchoolRankWeekId schoolRankWeekId = new SchoolRankWeekId();
                 schoolRankWeekId.setSchoolClass(new Class(newClass.getClassId()));
@@ -461,7 +462,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         if(newSize != 0){
             for(Class newClass: classList){
                 Double EMULATION_GRADE = allTotalGrade;
-                Double TOTAL_GRADE = EMULATION_GRADE + Constant.LEARNING_GRADE + Constant.MOVEMENT_GRADE + Constant.LABOR_GRADE;
+                Double TOTAL_GRADE = round(EMULATION_GRADE + Constant.LEARNING_GRADE + Constant.MOVEMENT_GRADE + Constant.LABOR_GRADE);
 
                 SchoolRankWeekId schoolRankWeekId = new SchoolRankWeekId();
                 schoolRankWeekId.setSchoolClass(new Class(newClass.getClassId()));
@@ -493,5 +494,9 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
 
         message = Constant.SUCCESS;
         return message;
+    }
+
+    private double round(Double input) {
+        return (double) Math.round(input * 100) / 100;
     }
 }
