@@ -16,4 +16,7 @@ public interface SchoolWeekRepository extends JpaRepository<SchoolWeek,Integer> 
     List<SchoolWeek> findSchoolWeekExcludeZero();
 
     SchoolWeek findSchoolWeekByWeekID(Integer weekId);
+
+    @Query(value="select sw from SchoolWeek sw where sw.yearId = :yearId and sw.monthID = 0 order by sw.week asc")
+    List<SchoolWeek> findSchoolWeekNotRank(@Param("yearId") Integer yearId);
 }

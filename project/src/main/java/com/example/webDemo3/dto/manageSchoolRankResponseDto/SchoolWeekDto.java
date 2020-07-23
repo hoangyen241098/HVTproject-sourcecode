@@ -1,9 +1,12 @@
 package com.example.webDemo3.dto.manageSchoolRankResponseDto;
 
+import lombok.Data;
+
 /**
  * lamnt98
  * 23/07
  */
+@Data
 public class SchoolWeekDto {
     private Integer weekId;
     private Integer week;
