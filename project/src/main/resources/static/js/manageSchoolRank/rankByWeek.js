@@ -4,10 +4,11 @@ var listEditOld = [];
 var rankOld = [];
 
 /*=============Set data================*/
-/*Load week list and class list*/
+/*Load year, week list and class list*/
 $.ajax({
     url: '/api/rankweek/viewweekandclasslist',
     type: 'POST',
+    data: JSON.stringify({yearId: localStorage.getItem('currentYearId')}),
     beforeSend: function () {
         $('body').addClass("loading")
     },
@@ -18,26 +19,21 @@ $.ajax({
         var messageCode = data.message.messageCode;
         var message = data.message.message;
         if (messageCode == 0) {
-            if (data.schoolWeekList != null) {
-                $('#byWeek').html('');
-                $.each(data.schoolWeekList, function (i, item) {
-                    if (i == 0) {
-                        $('#byWeek').append(`<option value="` + item.weekID + `" selected="selected">Tuần ` + item.week + `</option>`);
+            if (data.schoolYearList != null) {
+                $('#byYear').html('');
+                $.each(data.schoolYearList, function (i, item) {
+                    if (localStorage.getItem('currentYearId') == item.schoolYearId) {
+                        $('#byYear').append(`<option value="` + item.schoolYearId + `" selected="selected">` + item.yearName + `</option>`);
                     } else {
-                        $('#byWeek').append(`<option value="` + item.weekID + `">Tuần ` + item.week + `</option>`);
+                        $('#byYear').append(`<option value="` + item.schoolYearId + `">` + item.yearName + `</option>`);
                     }
-                });
-                if (sessionStorage.getItem('weekName') != null) {
-                    var weekName = 'Tuần ' + sessionStorage.getItem('weekName');
-                    $("#byWeek option").filter(function () {
-                        return $(this).text() == weekName;
-                    }).prop("selected", true);
-                }
-                if (sessionStorage.getItem('weekId') != null) {
-                    $("#byWeek").val(sessionStorage.getItem('weekId')).change();
-                }
+                })
+                var yearId = $('#byYear option:selected').val();
+                loadComboboxYear(yearId);
             } else {
+                $('#byYear').html(`<option value="err">Danh sách năm học trống.</option>`);
                 $('#byWeek').html(`<option value="err">Danh sách tuần trống.</option>`);
+                $('#byWeek').prop('disabled', true);
             }
             if (data.classList != null) {
                 $('#byClass').html(`<option value="" selected="selected">Tất cả</option>`);
@@ -48,7 +44,24 @@ $.ajax({
             } else {
                 $('#byClass').html(`<option value="err">Danh sách lớp trống.</option>`);
             }
+
+            if (sessionStorage.getItem('weekName') != null) {
+                var weekName = 'Tuần ' + sessionStorage.getItem('weekName');
+                $("#byWeek option").filter(function () {
+                    return $(this).text() == weekName;
+                }).prop("selected", true);
+                var yearId = $("#byWeek option:selected").attr('name');
+                $("#byYear").val(yearId).change();
+            }
+            if (sessionStorage.getItem('weekId') != null) {
+                $("#byWeek").val(sessionStorage.getItem('weekId')).change();
+                var yearId = $("#byWeek option:selected").attr('name');
+                $("#byYear").val(yearId).change();
+            }
         } else {
+            if (data.schoolYearList == null) {
+                $('#byYear').html(`<option value="err">` + message + `</option>`);
+            }
             if (data.schoolWeekList == null) {
                 $('#byWeek').html(`<option value="err">` + message + `</option>`);
             }
@@ -64,6 +77,53 @@ $.ajax({
     contentType: "application/json"
 });
 
+/*Get week list combo when change year combo box*/
+function loadComboboxYear(yearId) {
+    $.ajax({
+        url: '/api/rankweek/getweeklist',
+        type: 'POST',
+        data: JSON.stringify({yearId: yearId}),
+        beforeSend: function () {
+            $('body').addClass("loading")
+        },
+        complete: function () {
+            $('body').removeClass("loading")
+        },
+        success: function (data) {
+            var messageCode = data.message.messageCode;
+            var message = data.message.message;
+            if (messageCode == 0) {
+                if (data.schoolWeekList != null) {
+                    $('#byWeek').html('');
+                    $.each(data.schoolWeekList, function (i, item) {
+                        if (i == 0) {
+                            $('#byWeek').append(`<option value="` + item.weekID + `" name="` + item.yearId + `" selected="selected">Tuần ` + item.week + `</option>`);
+                        } else {
+                            $('#byWeek').append(`<option value="` + item.weekID + `" name="` + item.yearId + `">Tuần ` + item.week + `</option>`);
+                        }
+                    });
+                } else {
+                    $('#byWeek').html(`<option value="err">Danh sách tuần đang trống.</option>`);
+                }
+            } else {
+                if (data.schoolWeekList == null) {
+                    $('#byWeek').html(`<option value="err">` + message + `</option>`);
+                }
+            }
+        },
+        failure: function (errMsg) {
+            console.log(errMsg);
+        },
+        dataType: "json",
+        contentType: "application/json"
+    });
+}
+
+$('#byYear').change(function () {
+    var yearId = $('#byYear option:selected').val();
+    loadComboboxYear(yearId);
+})
+
 setTimeout(search, 500);
 
 /*Set data to table*/
@@ -78,8 +138,10 @@ function search() {
         $('#editGrades').addClass('hide');
         $('tbody').append(`<tr><td colspan="7" class="userlist-result">Không có tuần trong dữ liệu.</td></tr>`)
     } else {
-        $('#editRankBtn').removeClass('hide');
-        $('#editGrades').removeClass('hide');
+        if (localStorage.getItem('roleID') == 1) {
+            $('#editRankBtn').removeClass('hide');
+            $('#editGrades').removeClass('hide');
+        }
         $('table').dataTable({
             destroy: true,
             searching: false,
