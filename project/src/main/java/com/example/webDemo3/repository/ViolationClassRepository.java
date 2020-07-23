@@ -72,4 +72,10 @@ public interface ViolationClassRepository extends JpaRepository<ViolationClass, 
 
     @Query(value="select distinct vc.date from ViolationClass vc where vc.weekId = :weekId")
     List<Date> findListDateByWeekId(@Param("weekId")Integer weekId);
+
+    @Query(value="select min (vc.date) from ViolationClass vc where vc.weekId = :weekId")
+    Date findMinDateByWeekId(@Param("weekId")Integer weekId);
+
+    @Query(value="select MAX(vc.date) from ViolationClass vc where vc.weekId <> 0 and vc.date < :minDate")
+    Date findBiggestDateRankedOfEditRank(@Param("minDate")Date minDate);
 }

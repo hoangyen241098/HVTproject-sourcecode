@@ -233,9 +233,18 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         MessageDTO message = new MessageDTO();
 
         Date biggestDate = null;
+        Date minDate = null;
 
         try{
-            biggestDate = violationClassRepository.findBiggestDateRanked();
+
+            //check weekId null or not
+            if(weekId == null){
+                message = Constant.WEEK_ID_NULL;
+                responseDto.setMessage(message);
+            }
+
+            minDate = violationClassRepository.findMinDateByWeekId(weekId);
+            biggestDate = violationClassRepository.findBiggestDateRankedOfEditRank(minDate);
             dateList = violationClassRepository.findListDateByCondition(biggestDate);
 
             for(int i = 0; i < dateList.size(); i++){
