@@ -41,4 +41,7 @@ public interface ViolationClassRequestRepository extends JpaRepository<Violation
     @Query(value = "select vr from ViolationClassRequest vr where vr.violationClass.id = :Id and vr.creatBy = :username and vr.statusChange = 0")
     ViolationClassRequest findNewEditRequest(@Param("Id") Long Id, @Param("username") String username);
 
+    @Query(value = "select vr from ViolationClassRequest vr where vr.violationClass.id = :Id and vr.statusChange = :status")
+    ViolationClassRequest findClassRequestByIdAndStatus(@Param("Id") Long Id, @Param("status") Integer status);
+
 }
