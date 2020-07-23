@@ -1,4 +1,4 @@
-package com.example.webDemo3.dto.request.manageEmulationRequestDto;
+package com.example.webDemo3.dto.request.assignRedStarRequestDto;
 
 import lombok.Data;
 

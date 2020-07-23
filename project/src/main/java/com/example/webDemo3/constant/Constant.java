@@ -245,6 +245,8 @@ public class Constant {
             new MessageDTO(1,"Cập nhật điểm xếp hạng cho tuần xảy ra lỗi.");
     public static final MessageDTO RESET_PASSWORD_FAIL =
             new MessageDTO(1,"Đặt lại mật khẩu xảy ra lỗi.");
+    public static final MessageDTO SCHOOL_WEEK_ID_NULL =
+            new MessageDTO(1,"Tuần này chưa tồn tại.");
     /**
      * Success message
      */

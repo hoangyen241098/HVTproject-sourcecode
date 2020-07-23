@@ -9,6 +9,7 @@ import com.example.webDemo3.entity.SchoolRankWeek;
 import com.example.webDemo3.entity.SchoolRankWeekId;
 import com.example.webDemo3.entity.SchoolWeek;
 import com.example.webDemo3.exception.MyException;
+import com.example.webDemo3.repository.ClassRepository;
 import com.example.webDemo3.repository.SchoolRankWeekRepository;
 import com.example.webDemo3.repository.SchoolWeekRepository;
 import com.example.webDemo3.service.manageSchoolRank.SortSchoolRankWeekService;
@@ -36,6 +37,9 @@ public class UpdateSchoolRankWeekServiceImpl implements UpdateSchoolRankWeekServ
     @Autowired
     private SortSchoolRankWeekService sortSchoolRankWeekService;
 
+    @Autowired
+    private ClassRepository classRepository;
+
     /**
      * kimpt142
      * 21/07
@@ -52,12 +56,23 @@ public class UpdateSchoolRankWeekServiceImpl implements UpdateSchoolRankWeekServ
         if(rankWeekList != null && rankWeekList.size() != 0) {
             Integer weekId = rankWeekList.get(0).getWeekId();
             SchoolWeek schoolWeek = schoolWeekRepository.findSchoolWeekByWeekID(weekId);
-            if(schoolWeek == null || schoolWeek.getMonthID() != 0){
+            if(schoolWeek == null)
+            {
+                message = Constant.SCHOOL_WEEK_ID_NULL;
+                return message;
+            }
+            else if(schoolWeek.getMonthID() != 0){
                 message = Constant.RANKWEEK_NOT_EDIT;
                 return message;
             }
+
             for (RankWeekResponseDto item : rankWeekList) {
-                if(item.getLearningGrade() > Constant.LEARNING_GRADE){
+                Class checkClass = classRepository.findByClassId(item.getClassId());
+                if(checkClass == null){
+                    message = Constant.CLASS_NOT_EXIST;
+                    return message;
+                }
+                else if(item.getLearningGrade() > Constant.LEARNING_GRADE){
                     message = Constant.LEARNINGGRADE_GREATER;
                     return message;
                 }
@@ -112,11 +127,11 @@ public class UpdateSchoolRankWeekServiceImpl implements UpdateSchoolRankWeekServ
         Double laborGrade = responseDto.getLaborGrade();
         Double newTotalGrade = learningGrade + movementGrade + laborGrade + responseDto.getEmulationGrade();
         schoolRankWeek.setSchoolRankWeekId(schoolRankWeekId);
-        schoolRankWeek.setLearningGrade(learningGrade);
-        schoolRankWeek.setMovementGrade(movementGrade);
-        schoolRankWeek.setLaborGrade(laborGrade);
-        schoolRankWeek.setTotalGrade(newTotalGrade);
-        schoolRankWeek.setEmulationGrade(responseDto.getEmulationGrade());
+        schoolRankWeek.setLearningGrade(round(learningGrade));
+        schoolRankWeek.setMovementGrade(round(movementGrade));
+        schoolRankWeek.setLaborGrade(round(laborGrade));
+        schoolRankWeek.setTotalGrade(round(newTotalGrade));
+        schoolRankWeek.setEmulationGrade(round(responseDto.getEmulationGrade()));
         schoolRankWeek.setHistory(responseDto.getHistory());
 
         return schoolRankWeek;
@@ -141,5 +156,9 @@ public class UpdateSchoolRankWeekServiceImpl implements UpdateSchoolRankWeekServ
             throw new MyException(message.getMessage());
         }
         return message;
+    }
+
+    private double round(Double input) {
+        return (double) Math.round(input * 100) / 100;
     }
 }
