@@ -261,6 +261,10 @@ public class Constant {
             new MessageDTO(1,"Không có tuần chưa được xếp hạng.");
     public static final MessageDTO SCHOOL_MONTH_EXISTS =
             new MessageDTO(1,"Tên tháng trong kỳ đã tồn tại.");
+    public static final MessageDTO SCHOOL_MONTH_ID_NULL =
+            new MessageDTO(1,"Hãy nhập tên tháng.");
+    public static final MessageDTO SCHOOL_MONTH_NOT_EXISTS =
+            new MessageDTO(1,"Tên tháng trong kỳ không tồn tại.");
 
     /**
      * Success message

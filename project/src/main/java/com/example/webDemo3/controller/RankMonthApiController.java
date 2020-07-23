@@ -1,16 +1,16 @@
 package com.example.webDemo3.controller;
 
+import com.example.webDemo3.dto.MessageDTO;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListWeekSchoolRankResponseDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.*;
+import com.example.webDemo3.service.manageSchoolRankMonthService.CreateAndEditSchoolRankMonthService;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.RankMonthListResposeDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewMonthListResponseDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.*;
 import com.example.webDemo3.service.manageSchoolRankMonthService.ViewSchoolRankMonthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListWeekSchoolRankResponseDto;
-import com.example.webDemo3.service.manageSchoolRankMonthService.CreateAndEditSchoolRankMonthService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -98,7 +98,6 @@ public class RankMonthApiController {
         return createAndEditSchoolRankMonthService.createRankMonth(module);
     }
 
-
     /**
      * kimpt142
      * 23/07
@@ -106,8 +105,31 @@ public class RankMonthApiController {
      * @return responseDTO with a month list and messagedto
      */
     @PostMapping("/loadrankmonth")
-    public LoadRankMonthResponseDto loadRankMonth(@RequestBody ViewMonthByYearRequestDto model)
-    {
+    public LoadRankMonthResponseDto loadRankMonth(@RequestBody ViewMonthByYearRequestDto model) {
         return viewSchoolRankMonthService.loadRankMonthPage(model);
+    }
+
+    /**
+     * lamnt98
+     * 23/07
+     * catch request to get week list which has no ranked and week list has ranked by mothId
+     * @return ListWeekSchoolRankResponseDto
+     */
+    @PostMapping("/loadeditrankmonth")
+    public ListWeekSchoolRankResponseDto getWeekListEdit(@RequestBody ViewWeekOfEditRankMontRequestDto module)
+    {
+        return createAndEditSchoolRankMonthService.loadEditListWeek(module);
+    }
+
+    /**
+     * lamnt98
+     * 23/07
+     * catch request to edit rank month
+     * @return MessageDTO
+     */
+    @PostMapping("/editrankmonth")
+    public MessageDTO editRankMonth(@RequestBody EditRankMonthRequestDto module)
+    {
+        return createAndEditSchoolRankMonthService.editRankMonth(module);
     }
 }
