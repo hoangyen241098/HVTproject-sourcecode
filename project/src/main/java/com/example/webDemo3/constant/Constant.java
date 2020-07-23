@@ -247,6 +247,8 @@ public class Constant {
             new MessageDTO(1,"Đặt lại mật khẩu xảy ra lỗi.");
     public static final MessageDTO SCHOOL_WEEK_ID_NULL =
             new MessageDTO(1,"Tuần này chưa tồn tại.");
+    public static final MessageDTO RANK_HAS_VIOLATION_CLASS_REQUEST_NOT_EXCEPT_EXIST =
+            new MessageDTO(1,"Vẫn còn yêu cầu thay đổi chưa được xử lý, không thể tạo xếp hạng.");
     /**
      * Success message
      */
