@@ -22,7 +22,6 @@ public class SchoolMonth {
     @Column(name = "MONTH")
     private Integer month;
 
-
     @Column(name = "YEAR_ID")
     private Integer yearId;
 }

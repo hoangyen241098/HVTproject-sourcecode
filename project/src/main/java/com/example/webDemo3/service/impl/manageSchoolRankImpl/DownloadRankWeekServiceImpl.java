@@ -65,10 +65,10 @@ public class DownloadRankWeekServiceImpl implements DownloadRankWeekService {
                 Row row = sheet.createRow(rowIdx++);
                 row.createCell(0).setCellValue(item.getClassName());
                 row.createCell(1).setCellValue(round(item.getEmulationGrade()));
-                row.createCell(2).setCellValue(round(item.getEmulationGrade()));
-                row.createCell(3).setCellValue(round(item.getLearningGrade()));
-                row.createCell(4).setCellValue(round(item.getMovementGrade()));
-                row.createCell(5).setCellValue(round(item.getLaborGrade()));
+                row.createCell(2).setCellValue(round(item.getLearningGrade()));
+                row.createCell(3).setCellValue(round(item.getMovementGrade()));
+                row.createCell(4).setCellValue(round(item.getLaborGrade()));
+                row.createCell(5).setCellValue(round(item.getTotalGrade()));
                 row.createCell(6).setCellValue(item.getRank());
             }
 
