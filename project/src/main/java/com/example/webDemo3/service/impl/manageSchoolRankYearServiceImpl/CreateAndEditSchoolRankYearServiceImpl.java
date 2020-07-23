@@ -1,0 +1,6 @@
+package com.example.webDemo3.service.impl.manageSchoolRankYearServiceImpl;
+
+import com.example.webDemo3.service.manageSchoolRankYearSerivce.CreateAndEditSchoolRankYearService;
+
+public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditSchoolRankYearService {
+}
