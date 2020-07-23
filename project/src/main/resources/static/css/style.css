@@ -1383,3 +1383,8 @@ fieldset .note {
     }
 
 }
+
+/*Post*/
+.post-subtitle {
+    margin: 30px 0;
+}
