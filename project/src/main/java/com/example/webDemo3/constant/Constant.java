@@ -249,6 +249,12 @@ public class Constant {
             new MessageDTO(1,"Tuần này chưa tồn tại.");
     public static final MessageDTO RANK_HAS_VIOLATION_CLASS_REQUEST_NOT_EXCEPT_EXIST =
             new MessageDTO(1,"Vẫn còn yêu cầu thay đổi chưa được xử lý, không thể tạo xếp hạng.");
+    public static final MessageDTO  MONTHLIST_EMPTY=
+            new MessageDTO(1,"Danh sách tháng đang trống.");
+    public static final MessageDTO  MONTHID_EMPTY=
+            new MessageDTO(1,"Hãy chọn tháng cần tìm kiếm.");
+    public static final MessageDTO  RANKMONTHLIST_EMPTY=
+            new MessageDTO(1,"Danh sách xếp hạng của tháng này trống.");
     public static final MessageDTO MONTH_NAME_EMPTY =
             new MessageDTO(1,"Hãy điền tên tháng.");
     public static final MessageDTO WEEK_LIST_EMPTY =
