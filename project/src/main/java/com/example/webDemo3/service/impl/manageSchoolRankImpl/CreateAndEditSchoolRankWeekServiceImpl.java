@@ -491,14 +491,13 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
             }
         }
 
-        //check edit or not
-            //remove class have violation
-            for(SchoolRankWeek schoolRankWeek : schoolRankWeekList){
-                Class newClass = classRepository.findById(schoolRankWeek.getSchoolRankWeekId().getSchoolClass().getClassId()).orElse(null);
-                if(newClass != null){
-                    classList.remove(newClass);
-                }
+        //remove class have violation
+        for(SchoolRankWeek schoolRankWeek : schoolRankWeekList){
+            Class newClass = classRepository.findById(schoolRankWeek.getSchoolRankWeekId().getSchoolClass().getClassId()).orElse(null);
+            if(newClass != null){
+                classList.remove(newClass);
             }
+        }
 
         //check size o 0 or not
         if(newSize != 0){
