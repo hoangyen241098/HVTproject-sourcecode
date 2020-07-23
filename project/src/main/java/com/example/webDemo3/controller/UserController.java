@@ -7,11 +7,18 @@ import com.example.webDemo3.dto.request.manageAccountRequestDto.ChangePasswordRe
 import com.example.webDemo3.dto.request.manageAccountRequestDto.EditPerInforRequestDto;
 import com.example.webDemo3.dto.request.manageAccountRequestDto.LoginRequestDto;
 import com.example.webDemo3.dto.request.manageAccountRequestDto.ViewPerInforRequestDto;
+import com.example.webDemo3.security.CustomUserDetails;
+import com.example.webDemo3.security.JwtTokenProvider;
+import com.example.webDemo3.security.LoginResponse;
 import com.example.webDemo3.service.manageAccountService.ChangePasswordService;
 import com.example.webDemo3.service.manageAccountService.EditPerInforService;
 import com.example.webDemo3.service.manageAccountService.LoginService;
 import com.example.webDemo3.service.manageAccountService.ViewPerInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,6 +69,13 @@ public class UserController {
         return editPerInforService.editUserInformation(model);
     }
 
+
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtTokenProvider tokenProvider;
+
     /**
      * kimpt142
      * 23/6/2020
@@ -70,13 +84,28 @@ public class UserController {
      * @return LoginDto with (1,success) if success
      */
     @PostMapping("/login")
-    public LoginResponseDto login(@RequestBody LoginRequestDto model, HttpSession session)
+    public LoginResponse login(@RequestBody LoginRequestDto loginRequest, HttpSession session)
     {
-        LoginResponseDto responseDto = loginService.checkLoginUser(model);
-        if(responseDto.getMessage().getMessageCode() == 0) {
-            session.setAttribute("username", model.getUsername());
-        }
-        return responseDto;
+//        LoginResponseDto responseDto = loginService.checkLoginUser(model);
+//        if(responseDto.getMessage().getMessageCode() == 0) {
+//            session.setAttribute("username", model.getUsername());
+//        }
+//        return responseDto;
+        // Xác thực từ username và password.
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getUsername(),
+                        loginRequest.getPassword()
+                )
+        );
+
+        // Nếu không xảy ra exception tức là thông tin hợp lệ
+        // Set thông tin authentication vào Security Context
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // Trả về jwt cho người dùng.
+        String jwt = tokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
+        return new LoginResponse(jwt);
     }
 
     /**
