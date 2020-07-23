@@ -399,6 +399,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
 
     public MessageDTO createOrEditSchoolRankWeek(List<Class> classList, List<DateViolationClassDto> dateList,Double allTotalGrade, List<SchoolRankWeek> schoolRankWeekList,Integer weekId,boolean edit, MessageDTO message) throws Exception{
         List<ViolationClass> violationClassList = new ArrayList<>();
+        List<SchoolRankWeek> deleteList = new ArrayList<>();
         Integer newSize = 0;
         Integer sizeDate = 0;
         for(int i = 0; i < dateList.size(); i++){
@@ -441,6 +442,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
                         SchoolRankWeek schoolRankWeek = schoolRankWeekRepository.findSchoolRankWeekByWeekIdAndClassId(violationClass.getWeekId(), violationClass.getClassId());
                         //check schoolRankWeek is not null to delete
                         if(schoolRankWeek != null){
+                            deleteList.add(schoolRankWeek);
                             schoolRankWeekRepository.delete(schoolRankWeek);
                         }
                         violationClass.setWeekId(0);
@@ -450,8 +452,28 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
             }
             //check size = 0 or not
             if(sizeDate != 0){
+                Double learningGrade = Constant.LEARNING_GRADE;
+                Double movementGrade = Constant.MOVEMENT_GRADE;
+                Double laborGrade = Constant.LABOR_GRADE;
                 Double EMULATION_GRADE = round(allScore / sizeDate);
-                Double TOTAL_GRADE = round(EMULATION_GRADE + Constant.LEARNING_GRADE + Constant.MOVEMENT_GRADE + Constant.LABOR_GRADE);
+                SchoolRankWeek newSchoolRankWeek = schoolRankWeekRepository.findSchoolRankWeekByWeekIdAndClassId(weekId,newClass.getClassId());
+
+                //check newSchoolRankWeek null or not to save leanringGrade, movementGrade, laborGrade change
+                if(newSchoolRankWeek != null){
+                    learningGrade = newSchoolRankWeek.getLearningGrade();
+                    movementGrade = newSchoolRankWeek.getMovementGrade();
+                    laborGrade = newSchoolRankWeek.getLaborGrade();
+                }
+
+                //save leanringGrade, movementGrade, laborGrade of which rank class in date change was delete
+                for(SchoolRankWeek schoolRankWeek : deleteList){
+                    if(schoolRankWeek.getSchoolRankWeekId().getWEEK_ID() == weekId && schoolRankWeek.getSchoolRankWeekId().getSchoolClass().getClassId() == newClass.getClassId()){
+                        learningGrade = schoolRankWeek.getLearningGrade();
+                        movementGrade = schoolRankWeek.getMovementGrade();
+                        laborGrade = schoolRankWeek.getLaborGrade();
+                    }
+                }
+                Double TOTAL_GRADE = round(EMULATION_GRADE + learningGrade + movementGrade + laborGrade);
 
                 SchoolRankWeekId schoolRankWeekId = new SchoolRankWeekId();
                 schoolRankWeekId.setSchoolClass(new Class(newClass.getClassId()));
@@ -460,9 +482,9 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
                 SchoolRankWeek schoolRankWeek = new SchoolRankWeek();
                 schoolRankWeek.setSchoolRankWeekId(schoolRankWeekId);
                 schoolRankWeek.setEmulationGrade(EMULATION_GRADE);
-                schoolRankWeek.setLaborGrade(Constant.LABOR_GRADE);
-                schoolRankWeek.setLearningGrade(Constant.LEARNING_GRADE);
-                schoolRankWeek.setMovementGrade(Constant.MOVEMENT_GRADE);
+                schoolRankWeek.setLaborGrade(laborGrade);
+                schoolRankWeek.setLearningGrade(learningGrade);
+                schoolRankWeek.setMovementGrade(movementGrade);
                 schoolRankWeek.setTotalGrade(TOTAL_GRADE);
 
                 schoolRankWeekList.add(schoolRankWeek);
@@ -481,8 +503,29 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         //check size o 0 or not
         if(newSize != 0){
             for(Class newClass: classList){
+                Double learningGrade = Constant.LEARNING_GRADE;
+                Double movementGrade = Constant.MOVEMENT_GRADE;
+                Double laborGrade = Constant.LABOR_GRADE;
+
+                SchoolRankWeek newSchoolRankWeek = schoolRankWeekRepository.findSchoolRankWeekByWeekIdAndClassId(weekId,newClass.getClassId());
+                //check newSchoolRankWeek null or not to save leanringGrade, movementGrade, laborGrade change
+                if(newSchoolRankWeek != null){
+                    learningGrade = newSchoolRankWeek.getLearningGrade();
+                    movementGrade = newSchoolRankWeek.getMovementGrade();
+                    laborGrade = newSchoolRankWeek.getLaborGrade();
+                }
+
+                //save leanringGrade, movementGrade, laborGrade of which rank class in date change was delete
+                for(SchoolRankWeek schoolRankWeek : deleteList){
+                    if(schoolRankWeek.getSchoolRankWeekId().getWEEK_ID() == weekId && schoolRankWeek.getSchoolRankWeekId().getSchoolClass().getClassId() == newClass.getClassId()){
+                        learningGrade = schoolRankWeek.getLearningGrade();
+                        movementGrade = schoolRankWeek.getMovementGrade();
+                        laborGrade = schoolRankWeek.getLaborGrade();
+                    }
+                }
+
                 Double EMULATION_GRADE = allTotalGrade;
-                Double TOTAL_GRADE = round(EMULATION_GRADE + Constant.LEARNING_GRADE + Constant.MOVEMENT_GRADE + Constant.LABOR_GRADE);
+                Double TOTAL_GRADE = round(EMULATION_GRADE + learningGrade + movementGrade + laborGrade);
 
                 SchoolRankWeekId schoolRankWeekId = new SchoolRankWeekId();
                 schoolRankWeekId.setSchoolClass(new Class(newClass.getClassId()));
@@ -491,9 +534,9 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
                 SchoolRankWeek schoolRankWeek = new SchoolRankWeek();
                 schoolRankWeek.setSchoolRankWeekId(schoolRankWeekId);
                 schoolRankWeek.setEmulationGrade(EMULATION_GRADE);
-                schoolRankWeek.setLaborGrade(Constant.LABOR_GRADE);
-                schoolRankWeek.setLearningGrade(Constant.LEARNING_GRADE);
-                schoolRankWeek.setMovementGrade(Constant.MOVEMENT_GRADE);
+                schoolRankWeek.setLaborGrade(laborGrade);
+                schoolRankWeek.setLearningGrade(learningGrade);
+                schoolRankWeek.setMovementGrade(movementGrade);
                 schoolRankWeek.setTotalGrade(TOTAL_GRADE);
 
                 schoolRankWeekList.add(schoolRankWeek);
