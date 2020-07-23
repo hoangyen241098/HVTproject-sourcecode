@@ -78,7 +78,7 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
         List<ViolationClass> violationClassList = violationClassRepository.findVioClassByClassIdAndAndDate(classId, date);
 
         if(violationClassRankedList != null && violationClassRankedList.size() != 0){
-            for(ViolationClass item : violationClassList){
+            for(ViolationClass item : violationClassRankedList){
                 ViolationClassResponseDto violationClassRankedDto = new ViolationClassResponseDto();
                 violationClassRankedDto = additionalFunctionService.convertViolationClassFromEntityToDto(item);
                 violationClassRankedDto.setCheckEdit(1);
