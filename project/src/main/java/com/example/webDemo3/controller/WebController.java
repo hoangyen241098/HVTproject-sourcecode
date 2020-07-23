@@ -211,4 +211,10 @@ public class WebController {
     public String rankByYear(Model model) {
         return "manageSchoolRank/rankByYear";
     }
+
+    /*Module 10: Quản lý bài đăng*/
+    @GetMapping("/createPost")
+    public String createPost(Model model) {
+        return "managePost/createPost";
+    }
 }
