@@ -2,6 +2,7 @@ package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListDateResponseDto;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewWeekListResponseDto;
 import com.example.webDemo3.dto.request.assignRedStarRequestDto.DownloadAssignRedStarRequestDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.CreateRankWeekRequestDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewWeekAnDateListRequestDto;
@@ -100,9 +101,9 @@ public class RankWeekController {
      * @return ViewWeekAndClassListResponseDto
      */
     @PostMapping("/viewweekandclasslist")
-    public ViewWeekAndClassListResponseDto getSchoolYearList()
+    public ViewWeekAndClassListResponseDto getSchoolYearList(@RequestBody ViewWeekByYearRequestDto model)
     {
-        return viewSchoolRankWeekService.getWeekAndClassList();
+        return viewSchoolRankWeekService.loadRankWeekPage(model);
     }
 
     /**
@@ -150,5 +151,18 @@ public class RankWeekController {
                 .headers(headers)
                 .body(new InputStreamResource(in));
 
+    }
+
+    /**
+     * kimpt142
+     * 21/07
+     * catch request to get the week list and class list
+     * @param
+     * @return ViewWeekAndClassListResponseDto
+     */
+    @PostMapping("/getweeklist")
+    public ViewWeekListResponseDto getWeekListByYearId(@RequestBody ViewWeekByYearRequestDto model)
+    {
+        return viewSchoolRankWeekService.getWeekListByYearId(model);
     }
 }
