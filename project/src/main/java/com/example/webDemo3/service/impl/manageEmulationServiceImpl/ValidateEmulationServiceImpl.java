@@ -262,4 +262,21 @@ public class ValidateEmulationServiceImpl implements ValidateEmulationService {
         }
         return false;
     }
+
+    /**
+     * kimpt142
+     * 23/07
+     * check date is ranked or not
+     * @param classId
+     * @param date
+     * @return yes if ranked, no if no ranked
+     */
+    @Override
+    public Boolean checkRankedDate(Integer classId,Date date) {
+        List<ViolationClass> rankedViolationList = violationClassRepository.findViolationClassRankedByClassId(classId, date);
+        if(rankedViolationList !=null && rankedViolationList.size() > 0){
+            return true;
+        }
+        return false;
+    }
 }

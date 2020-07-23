@@ -134,7 +134,7 @@ function search() {
                 {
                     targets: 0,
                     createdCell: function (td, cellData, rowData, row, col) {
-                        $(td).attr('value', rowData.classId);
+                        $(td).attr('data-column', rowData.classId);
                     }
                 },
                 {
@@ -461,7 +461,7 @@ $("#editGrades").on("click", function () {
         $('table tbody tr').each(function () {
             rankWeekList.push({
                 weekId: weekId,
-                classId: $(this).find('td').eq(0).val(),
+                classId: $(this).find('td').eq(0).data('column'),
                 className: $(this).find('td').eq(0).text(),
                 emulationGrade: $(this).find('td').eq(1).text(),
                 learningGrade: $(this).find('td').eq(2).text(),
