@@ -62,6 +62,9 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
     @Autowired
     private SortSchoolRankWeekService sortSchoolRankWeekService;
 
+    @Autowired
+    private ViolationClassRequestRepository violationClassRequestRepository;
+
     /**
      * lamnt98
      * 22/07
@@ -233,9 +236,18 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         MessageDTO message = new MessageDTO();
 
         Date biggestDate = null;
+        Date minDate = null;
 
         try{
-            biggestDate = violationClassRepository.findBiggestDateRanked();
+
+            //check weekId null or not
+            if(weekId == null){
+                message = Constant.WEEK_ID_NULL;
+                responseDto.setMessage(message);
+            }
+
+            minDate = violationClassRepository.findMinDateByWeekId(weekId);
+            biggestDate = violationClassRepository.findBiggestDateRankedOfEditRank(minDate);
             dateList = violationClassRepository.findListDateByCondition(biggestDate);
 
             for(int i = 0; i < dateList.size(); i++){
@@ -406,6 +418,14 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
                     violationClassList = violationClassRepository.findByDateClassAndStatus(date.getDate(),newClass.getClassId(),1);
 
                     for(ViolationClass violationClass: violationClassList){
+                        ViolationClassRequest classRequest = violationClassRequestRepository.findClassRequestByIdAndStatus(Long.valueOf(violationClass.getViolation().getViolationId()),0);
+                        //check violation class request exist or not
+                        if(classRequest != null){
+                            String newMessage = Constant.RANK_HAS_VIOLATION_CLASS_REQUEST_NOT_EXCEPT_EXIST.getMessage();
+                            message.setMessageCode(Constant.RANK_HAS_VIOLATION_CLASS_REQUEST_NOT_EXCEPT_EXIST.getMessageCode());
+                            message.setMessage( "Ngày " + date.getDate() + " " + newMessage);
+                            throw new MyException(message.getMessage());
+                        }
                         violationClass.setWeekId(weekId);
                         totalSubTractGrade = (double)violationClass.getQuantity() * violationClass.getViolation().getSubstractGrade();
                         allScore = allScore - totalSubTractGrade;
