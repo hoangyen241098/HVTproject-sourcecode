@@ -261,7 +261,7 @@ public class Constant {
             new MessageDTO(1,"Không có tuần chưa được xếp hạng.");
     public static final MessageDTO SCHOOL_MONTH_EXISTS =
             new MessageDTO(1,"Tên tháng trong kỳ đã tồn tại.");
-    
+
     /**
      * Success message
      */
