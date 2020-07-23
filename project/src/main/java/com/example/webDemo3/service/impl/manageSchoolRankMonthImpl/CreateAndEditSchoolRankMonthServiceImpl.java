@@ -5,7 +5,9 @@ import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListWeekSchoolRankResponseDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.SchoolWeekDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.CreateRankMonthRequestDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.EditRankMonthRequestDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ListWeekSchoolRankRequestDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewWeekOfEditRankMontRequestDto;
 import com.example.webDemo3.entity.*;
 import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.exception.MyException;
@@ -64,6 +66,7 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
 
             schoolYear = schoolYearRepository.findById(currentYearId).orElse(null);
 
+            //check year exist or not
             if(schoolYear == null){
                 message = Constant.YEAR_ID_NULL;
                 responseDto.setMessage(message);
@@ -111,6 +114,167 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
             message.setMessageCode(1);
             message.setMessage(e.toString());
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return message;
+    }
+
+    @Override
+    public ListWeekSchoolRankResponseDto loadEditListWeek(ViewWeekOfEditRankMontRequestDto requestDto) {
+        ListWeekSchoolRankResponseDto responseDto = new ListWeekSchoolRankResponseDto();
+        List<SchoolWeekDto> weekListDto = new ArrayList<>();
+        List<SchoolWeek> weekList = new ArrayList<>();
+        List<SchoolWeek> newWeekList = new ArrayList<>();
+        MessageDTO message = new MessageDTO();
+
+        Integer monthId = requestDto.getMonthId();
+        Integer currentYearId = requestDto.getCurrentYearId();
+        SchoolMonth schoolMonth = null;
+        SchoolYear schoolYear = null;
+        Integer month = null;
+
+        try{
+            if(currentYearId == null){
+                message = Constant.YEAR_ID_NULL;
+                responseDto.setMessage(message);
+                return  responseDto;
+            }
+
+            schoolYear = schoolYearRepository.findById(currentYearId).orElse(null);
+
+            //check year exist or not
+            if(schoolYear == null){
+                message = Constant.YEAR_ID_NULL;
+                responseDto.setMessage(message);
+                return  responseDto;
+            }
+
+            weekList = schoolWeekRepository.findSchoolWeekNotRank(currentYearId);
+
+            for(SchoolWeek schoolWeek : weekList){
+                SchoolWeekDto schoolWeekDto = new SchoolWeekDto();
+                schoolWeekDto.setWeekId(schoolWeek.getWeekID());
+                schoolWeekDto.setWeek(schoolWeek.getWeek());
+                schoolWeekDto.setMonthId(schoolWeek.getMonthID());
+                schoolWeekDto.setIsCheck(0);
+
+                weekListDto.add(schoolWeekDto);
+            }
+
+            //check weekId null or not
+            if(monthId == null){
+                message = Constant.SCHOOL_MONTH_ID_NULL;
+                responseDto.setMessage(message);
+            }
+
+            schoolMonth = schoolMonthRepository.findById(monthId).orElse(null);
+
+            //check school month exist or not
+            if(schoolMonth == null){
+                message = Constant.SCHOOL_MONTH_NOT_EXISTS;
+                responseDto.setMessage(message);
+                return responseDto;
+            }
+
+            newWeekList = schoolWeekRepository.findSchoolWeekByMonthIdAndYearId(monthId,currentYearId);
+
+            for(SchoolWeek schoolWeek : newWeekList){
+                SchoolWeekDto schoolWeekDto = new SchoolWeekDto();
+                schoolWeekDto.setWeekId(schoolWeek.getWeekID());
+                schoolWeekDto.setWeek(schoolWeek.getWeek());
+                schoolWeekDto.setMonthId(schoolWeek.getMonthID());
+                schoolWeekDto.setIsCheck(1);
+
+                weekListDto.add(schoolWeekDto);
+            }
+
+            //check list week empty or not
+            if(weekListDto == null || weekListDto.size() == 0){
+                message = Constant.WEEK_LIST_EMPTY;
+                responseDto.setMessage(message);
+                return responseDto;
+            }
+
+            message = Constant.SUCCESS;
+            responseDto.setWeekList(weekListDto);
+            responseDto.setMessage(message);
+
+        }catch (Exception e){
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            responseDto.setMessage(message);
+            return  responseDto;
+        }
+
+        return responseDto;
+    }
+
+    @Override
+    @Transactional
+    public MessageDTO editRankMonth(EditRankMonthRequestDto requestDto) {
+        MessageDTO message = new MessageDTO();
+        try {
+            message = editRankMonthTransaction(requestDto);
+        }catch (Exception e){
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return message;
+    }
+
+
+    public MessageDTO editRankMonthTransaction(EditRankMonthRequestDto requestDto) throws Exception{
+
+        Integer monthId = requestDto.getMonthId();
+        Integer month = requestDto.getMonth();
+        List<SchoolWeekDto> weekList = requestDto.getWeekList();
+        List<Class> classList = new ArrayList<>();
+        List<SchoolRankMonth> schoolRankMonthList = new ArrayList<>();
+
+        MessageDTO message = new MessageDTO();
+        SchoolMonth schoolMonth = null;
+        SchoolMonth newSchoolMonth = null;
+
+        if(monthId == null){
+            message = Constant.SCHOOL_MONTH_ID_NULL;
+            return message;
+        }
+
+        if(month == null){
+            message = Constant.MONTH_NAME_EMPTY;
+            return message;
+        }
+
+        if(weekList == null){
+            message = Constant.WEEK_LIST_EMPTY;
+            return message;
+        }
+
+        try{
+            schoolMonth = schoolMonthRepository.findById(monthId).orElse(null);
+
+            //check schoolMonth exist with monthId
+            if(schoolMonth == null){
+                message = Constant.SCHOOL_MONTH_NOT_EXISTS;
+                return message;
+            }
+
+            //check exist schoolMonth with month name
+            newSchoolMonth = schoolMonthRepository.findExistByMonth(month,monthId);
+            if(newSchoolMonth != null){
+                message = Constant.SCHOOL_MONTH_EXISTS;
+                return message;
+            }
+
+            schoolMonth.setMonth(month);
+            schoolMonthRepository.save(schoolMonth);
+            classList = classRepository.findAll();
+
+            message = createOrEditSchoolRankMonth(classList,weekList,schoolRankMonthList,monthId,message);
+        }catch (Exception e){
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            throw new MyException(message.getMessage());
         }
         return message;
     }
@@ -193,13 +357,7 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
     }
 
     private MessageDTO createOrEditSchoolRankMonth(List<Class> classList,List<SchoolWeekDto> weekList,List<SchoolRankMonth> schoolRankMonthList, Integer monthId, MessageDTO message) throws Exception{
-        Integer size = 0;
         boolean check = false;
-        for(SchoolWeekDto schoolWeekDto : weekList){
-            if(schoolWeekDto.getIsCheck() == 1){
-                size ++;
-            }
-        }
 
         for(Class newClass : classList){
             Double totalGrade = 0.0;
@@ -207,9 +365,11 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
 
             for(SchoolWeekDto schoolWeekDto : weekList){
                 Integer isCheck = schoolWeekDto.getIsCheck();
+                //check condition to create and edit rank month or not
                 if(isCheck == 1){
                     check = true;
                     SchoolWeek schoolWeek = schoolWeekRepository.findSchoolWeekByWeekID(schoolWeekDto.getWeekId());
+                    //check schoolWeek exist or not
                     if(schoolWeek != null){
                         schoolWeek.setMonthID(monthId);
                         schoolWeekRepository.save(schoolWeek);
@@ -221,7 +381,17 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
                         }
                     }
                 }
+                //check condition to remove week in month
+                if(isCheck == 0){
+                    SchoolWeek schoolWeek = schoolWeekRepository.findSchoolWeekByWeekID(schoolWeekDto.getWeekId());
+                    //check schoolWeek exist or not
+                    if(schoolWeek != null){
+                        schoolWeek.setMonthID(0);
+                        schoolWeekRepository.save(schoolWeek);
+                    }
+                }
             }
+            //check to start create and edit rank
             if(check){
                 SchoolRankMonth schoolRankMonth = new SchoolRankMonth();
 
@@ -264,7 +434,7 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
         Collections.sort(schoolRankMonthList, new Comparator<SchoolRankMonth>() {
             @Override
             public int compare(SchoolRankMonth o1, SchoolRankMonth o2) {
-                return o2.getTotalRankWeek().compareTo(o1.getTotalRankWeek());
+                return o1.getTotalRankWeek().compareTo(o2.getTotalRankWeek());
             }
         });
         int rank = 1;
