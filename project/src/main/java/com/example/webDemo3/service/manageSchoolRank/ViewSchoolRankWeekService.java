@@ -4,13 +4,13 @@ import com.example.webDemo3.dto.manageSchoolRankResponseDto.RankWeekListResponse
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewWeekAndClassListResponseDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewWeekListResponseDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.SearchRankWeekRequestDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewWeekByYearRequestDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.LoadByYearIdRequestDto;
 
 /*
 kimpt142 - 21/07
  */
 public interface ViewSchoolRankWeekService {
-    ViewWeekAndClassListResponseDto loadRankWeekPage(ViewWeekByYearRequestDto model);
+    ViewWeekAndClassListResponseDto loadRankWeekPage(LoadByYearIdRequestDto model);
     RankWeekListResponseDto searchRankWeekByWeekAndClass(SearchRankWeekRequestDto model);
-    ViewWeekListResponseDto getWeekListByYearId(ViewWeekByYearRequestDto model);
+    ViewWeekListResponseDto getWeekListByYearId(LoadByYearIdRequestDto model);
 }

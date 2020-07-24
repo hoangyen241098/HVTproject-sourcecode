@@ -3,11 +3,10 @@ package com.example.webDemo3.service.impl.manageSchoolRankMonthImpl;
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.*;
-import com.example.webDemo3.dto.manageSchoolYearResponseDto.SchoolYearResponseDto;
 import com.example.webDemo3.dto.manageSchoolYearResponseDto.SchoolYearTableResponseDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.LoadRankMonthResponseDto;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.LoadRankMonthResponseDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.LoadByYearIdRequestDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.SearchRankMonthRequestDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewMonthByYearRequestDto;
 import com.example.webDemo3.entity.SchoolMonth;
 import com.example.webDemo3.entity.SchoolRankMonth;
 import com.example.webDemo3.repository.SchoolMonthRepository;
@@ -46,9 +45,8 @@ public class ViewSchoolRankMonthServiceImpl implements ViewSchoolRankMonthServic
      * @return
      */
     @Override
-    public ViewMonthListResponseDto getMonthListByYearId(ViewMonthByYearRequestDto model) {
+    public ViewMonthListResponseDto getMonthListByYearId(LoadByYearIdRequestDto model) {
         ViewMonthListResponseDto responseDto = new ViewMonthListResponseDto();
-        List<SchoolMonthResponseDto> schoolMonthListDto = new ArrayList<>();
         MessageDTO message;
         Integer yearId = model.getYearId();
 
@@ -60,14 +58,7 @@ public class ViewSchoolRankMonthServiceImpl implements ViewSchoolRankMonthServic
 
         List<SchoolMonth> schoolMonthList = schoolMonthRepository.findSchoolMonthByYearIdExcludeZero(yearId);
         if(schoolMonthList != null && schoolMonthList.size() != 0){
-            for(SchoolMonth item : schoolMonthList)
-            {
-                SchoolMonthResponseDto monthDto = new SchoolMonthResponseDto();
-                monthDto.setMonthId(item.getMonthId());
-                monthDto.setMonthName("Tháng " + item.getMonth());
-                monthDto.setYearId(item.getYearId());
-                schoolMonthListDto.add(monthDto);
-            }
+            responseDto.setSchoolMonthList(schoolMonthList);
         }
         else{
             message = Constant.MONTHLIST_EMPTY;
@@ -76,7 +67,6 @@ public class ViewSchoolRankMonthServiceImpl implements ViewSchoolRankMonthServic
         }
 
         message = Constant.SUCCESS;
-        responseDto.setSchoolMonthList(schoolMonthListDto);
         responseDto.setMessage(message);
         return responseDto;
     }
@@ -187,7 +177,7 @@ public class ViewSchoolRankMonthServiceImpl implements ViewSchoolRankMonthServic
      * get school year list and month list by current year id
      */
     @Override
-    public LoadRankMonthResponseDto loadRankMonthPage(ViewMonthByYearRequestDto model) {
+    public LoadRankMonthResponseDto loadRankMonthPage(LoadByYearIdRequestDto model) {
         LoadRankMonthResponseDto responseDto = new LoadRankMonthResponseDto();
         MessageDTO message;
 

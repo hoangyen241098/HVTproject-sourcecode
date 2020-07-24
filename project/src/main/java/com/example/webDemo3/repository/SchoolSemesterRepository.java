@@ -2,9 +2,15 @@ package com.example.webDemo3.repository;
 
 import com.example.webDemo3.entity.SchoolSemester;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 /*
 kimpt142 - 23/07
  */
 public interface SchoolSemesterRepository extends JpaRepository<SchoolSemester,Integer> {
+    @Query(value="select ss from SchoolSemester ss where ss.semesterId <> 0 and ss.yearId = :yearId")
+    List<SchoolSemester> findSchoolSemesterByYearIdExcludeZero(@Param("yearId") Integer yearId);
 }

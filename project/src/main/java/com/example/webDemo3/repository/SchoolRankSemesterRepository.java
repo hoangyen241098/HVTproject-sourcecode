@@ -1,10 +1,19 @@
 package com.example.webDemo3.repository;
 
+import com.example.webDemo3.entity.SchoolRankMonth;
 import com.example.webDemo3.entity.SchoolRankSemester;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 /*
 kimpt142 - 23/07
  */
 public interface SchoolRankSemesterRepository extends JpaRepository<SchoolRankSemester,Integer> {
+
+    @Query(value="select srs from SchoolRankSemester srs where srs.schoolRankSemesterId.SEMESTER_ID = :semesterId "+
+            "order by srs.schoolRankSemesterId.schoolClass.grade, srs.schoolRankSemesterId.schoolClass.giftedClass.giftedClassId asc")
+    List<SchoolRankSemester> findAllBySchoolRankSemesterId(@Param("semesterId") Integer semesterId);
 }

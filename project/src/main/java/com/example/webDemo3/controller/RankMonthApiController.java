@@ -2,6 +2,7 @@ package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListWeekSchoolRankResponseDto;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.LoadRankMonthResponseDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.*;
 import com.example.webDemo3.service.manageSchoolRankMonthService.CreateAndEditSchoolRankMonthService;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.RankMonthListResposeDto;
@@ -38,7 +39,7 @@ public class RankMonthApiController {
      * @return responseDTO with a month list and messagedto
      */
     @PostMapping("/getmonthlist")
-    public ViewMonthListResponseDto getMonthListByYearId(@RequestBody ViewMonthByYearRequestDto model)
+    public ViewMonthListResponseDto getMonthListByYearId(@RequestBody LoadByYearIdRequestDto model)
     {
         return viewSchoolRankMonthService.getMonthListByYearId(model);
     }
@@ -105,7 +106,7 @@ public class RankMonthApiController {
      * @return responseDTO with a month list and messagedto
      */
     @PostMapping("/loadrankmonth")
-    public LoadRankMonthResponseDto loadRankMonth(@RequestBody ViewMonthByYearRequestDto model) {
+    public LoadRankMonthResponseDto loadRankMonth(@RequestBody LoadByYearIdRequestDto model) {
         return viewSchoolRankMonthService.loadRankMonthPage(model);
     }
 
