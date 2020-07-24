@@ -3,10 +3,12 @@ package com.example.webDemo3.service.impl.manageSchoolRankSemesterServiceImpl;
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListMonthSchoolRankResponseDto;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListWeekSchoolRankResponseDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.SchoolMonthDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.SchoolWeekDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.CreateRankSemesterRequestDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ListMonthSchoolRankRequestDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewMonthOfEditRankSemesterRequestDto;
 import com.example.webDemo3.entity.*;
 import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.exception.MyException;
@@ -18,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -37,6 +41,12 @@ public class CreateAndEditSchoolRankSemesterServiceImpl implements CreateAndEdit
 
     @Autowired
     private ClassRepository classRepository;
+
+    @Autowired
+    private SchoolRankMonthRepository schoolRankMonthRepository;
+
+    @Autowired
+    private SchoolRankSemesterRepository schoolRankSemesterRepository;
 
     @Override
     public ListMonthSchoolRankResponseDto loadListMonth(ListMonthSchoolRankRequestDto requestDto) {
@@ -108,6 +118,96 @@ public class CreateAndEditSchoolRankSemesterServiceImpl implements CreateAndEdit
         return message;
     }
 
+    @Override
+    public ListMonthSchoolRankResponseDto loadEditListMonth(ViewMonthOfEditRankSemesterRequestDto requestDto) {
+        ListMonthSchoolRankResponseDto responseDto = new ListMonthSchoolRankResponseDto();
+        List<SchoolMonthDto> monthListDto = new ArrayList<>();
+        List<SchoolMonth> monthList = new ArrayList<>();
+        List<SchoolMonth> newMonthList = new ArrayList<>();
+        MessageDTO message = new MessageDTO();
+
+        Integer semesterId = requestDto.getSemesterId();
+        Integer currentYearId = requestDto.getCurrentYearId();
+        SchoolSemester schoolSemester = null;
+        SchoolYear schoolYear = null;
+        Integer semester = null;
+
+        try{
+            if(currentYearId == null){
+                message = Constant.YEAR_ID_NULL;
+                responseDto.setMessage(message);
+                return  responseDto;
+            }
+
+            schoolYear = schoolYearRepository.findById(currentYearId).orElse(null);
+
+            //check year exist or not
+            if(schoolYear == null){
+                message = Constant.YEAR_ID_NULL;
+                responseDto.setMessage(message);
+                return  responseDto;
+            }
+
+            monthList = schoolMonthRepository.findSchoolMonthNotRank(currentYearId);
+
+            for(SchoolMonth schoolMonth : monthList){
+                SchoolMonthDto schoolMonthDto = new SchoolMonthDto();
+                schoolMonthDto.setMonthId(schoolMonth.getMonthId());
+                schoolMonthDto.setMonth(schoolMonth.getMonth());
+                schoolMonthDto.setSemesterId(schoolMonth.getSemesterId());
+                schoolMonthDto.setIsCheck(0);
+
+                monthListDto.add(schoolMonthDto);
+            }
+
+            //check weekId null or not
+            if(semesterId == null){
+                message = Constant.SCHOOL_SEMESTER_ID_NULL;
+                responseDto.setMessage(message);
+            }
+
+            schoolSemester = schoolSemesterRepository.findById(semesterId).orElse(null);
+
+            //check school month exist or not
+            if(schoolSemester == null){
+                message = Constant.SCHOOL_SEMESTER_NOT_EXISTS;
+                responseDto.setMessage(message);
+                return responseDto;
+            }
+
+            newMonthList = schoolMonthRepository.findSchoolMonthBySemesterIdAndYearId(semesterId,currentYearId);
+
+            for(SchoolMonth schoolMonth : newMonthList){
+                SchoolMonthDto schoolMonthDto = new SchoolMonthDto();
+                schoolMonthDto.setMonthId(schoolMonth.getMonthId());
+                schoolMonthDto.setMonth(schoolMonth.getMonth());
+                schoolMonthDto.setSemesterId(schoolMonth.getSemesterId());
+                schoolMonthDto.setIsCheck(1);
+
+                monthListDto.add(schoolMonthDto);
+            }
+
+            //check list week empty or not
+            if(monthListDto == null || monthListDto.size() == 0){
+                message = Constant.MONTH_LIST_EMPTY;
+                responseDto.setMessage(message);
+                return responseDto;
+            }
+
+            message = Constant.SUCCESS;
+            responseDto.setMonthList(monthListDto);
+            responseDto.setMessage(message);
+
+        }catch (Exception e){
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            responseDto.setMessage(message);
+            return  responseDto;
+        }
+
+        return responseDto;
+    }
+
     private MessageDTO createRankSemesterTransaction(CreateRankSemesterRequestDto requestDto) throws Exception{
 
         String userName = requestDto.getUserName();
@@ -167,6 +267,7 @@ public class CreateAndEditSchoolRankSemesterServiceImpl implements CreateAndEdit
                 return message;
             }
 
+            schoolSemester = new SchoolSemester();
             schoolSemester.setYearId(currentYearId);
             schoolSemester.setSemester(semester);
             schoolSemesterRepository.save(schoolSemester);
@@ -185,14 +286,116 @@ public class CreateAndEditSchoolRankSemesterServiceImpl implements CreateAndEdit
         return message;
     }
 
-    private MessageDTO createOrEditSchoolRankSemester(List<Class> classList, List<SchoolMonthDto> monthList, List<SchoolRankSemester> schoolRankSemesterList, Integer semesterId, MessageDTO message){
+    private MessageDTO createOrEditSchoolRankSemester(List<Class> classList, List<SchoolMonthDto> monthList, List<SchoolRankSemester> schoolRankSemesterList, Integer semesterId, MessageDTO message) throws Exception{
         Integer size = 0;
-        for(SchoolMonthDto schoolMonth : monthList){
-            if(schoolMonth.getIsCheck() == 1 ){
+        for(SchoolMonthDto schoolMonthDto : monthList){
+            if(schoolMonthDto.getIsCheck() == 1){
                 size ++;
             }
         }
+        boolean check = false;
+        for(Class newClass : classList){
+            Double totalGrade = 0.0;
+            Integer totalRank = 0;
 
+            for(SchoolMonthDto schoolMonthDto : monthList){
+                Integer isCheck = schoolMonthDto.getIsCheck();
+                //check condition to create and edit rank month or not
+                if(isCheck == 1){
+                    check = true;
+                    SchoolMonth schoolMonth = schoolMonthRepository.findSchoolMonthByMonthId(schoolMonthDto.getMonthId());
+                    //check schoolWeek exist or not
+                    if(schoolMonth != null){
+                        schoolMonth.setSemesterId(semesterId);
+                        schoolMonthRepository.save(schoolMonth);
+                        SchoolRankMonth schoolRankMonth = schoolRankMonthRepository.findSchoolRankMonthByMonthIdAndClassId(schoolMonth.getMonthId(),newClass.getClassId());
+
+                        if(schoolRankMonth != null){
+                            totalGrade += schoolRankMonth.getTotalGradeWeek();
+                            totalRank += schoolRankMonth.getTotalRankWeek();
+                        }
+                    }
+                }
+                //check condition to remove week in month
+                if(isCheck == 0){
+                    SchoolMonth schoolMonth = schoolMonthRepository.findSchoolMonthByMonthId(schoolMonthDto.getMonthId());
+                    //check schoolWeek exist or not
+                    if(schoolMonth != null){
+                        schoolMonth.setSemesterId(0);
+                        schoolMonthRepository.save(schoolMonth);
+                    }
+                }
+            }
+            //check to start create and edit rank
+            if(check){
+                SchoolRankSemester schoolRankSemester = new SchoolRankSemester();
+
+                SchoolRankSemesterId schoolRankSemesterId = new SchoolRankSemesterId();
+                schoolRankSemesterId.setSEMESTER_ID(semesterId);
+                schoolRankSemesterId.setSchoolClass(new Class(newClass.getClassId()));
+
+                schoolRankSemester.setSchoolRankSemesterId(schoolRankSemesterId);
+                schoolRankSemester.setTotalGradeMonth(round(totalGrade/size));
+                schoolRankSemester.setTotalRankMonth(totalRank);
+
+                schoolRankSemesterList.add(schoolRankSemester);
+            }
+        }
+
+        for(SchoolRankSemester schoolRankSemester : schoolRankSemesterList){
+            Class newClass = classRepository.findById(schoolRankSemester.getSchoolRankSemesterId().getSchoolClass().getClassId()).orElse(null);
+            if(newClass != null){
+                classList.remove(newClass);
+            }
+        }
+
+        //check schoolRankWeekList null or not
+        if((schoolRankSemesterList == null || schoolRankSemesterList.size() == 0)){
+            message = Constant.SCHOOL_RANK_SEMESTER_NULL;
+            throw new MyException(message.getMessage());
+        }
+
+        List<SchoolRankSemester> newSchoolRankSemesterList1 = arrangeSchoolRankSemester(schoolRankSemesterList);
+
+        for(int i = 0; i < newSchoolRankSemesterList1.size(); i++){
+            SchoolRankSemester schoolRankSemester = newSchoolRankSemesterList1.get(i);
+            schoolRankSemesterRepository.save(schoolRankSemester);
+        }
+
+        message = Constant.SUCCESS;
         return message;
+    }
+    private List<SchoolRankSemester> arrangeSchoolRankSemester(List<SchoolRankSemester> schoolRankSemesterList) {
+        Collections.sort(schoolRankSemesterList, new Comparator<SchoolRankSemester>() {
+            @Override
+            public int compare(SchoolRankSemester o1, SchoolRankSemester o2) {
+                return o2.getTotalGradeMonth().compareTo(o1.getTotalGradeMonth());
+            }
+        });
+        int rank = 1;
+        if(schoolRankSemesterList.size() == 1){
+            schoolRankSemesterList.get(0).setRank(rank);
+            return schoolRankSemesterList;
+        }
+        else {
+            int count = 0;
+            for (int i = 0; i < schoolRankSemesterList.size() - 1; i++) {
+                SchoolRankSemester schoolRankSemester = schoolRankSemesterList.get(i);
+                schoolRankSemesterList.get(i).setRank(rank);
+                SchoolRankSemester schoolRankSemester1 = schoolRankSemesterList.get(i + 1);
+                if (schoolRankSemester1.getTotalGradeMonth().compareTo(schoolRankSemester.getTotalGradeMonth()) == 0) {
+                    schoolRankSemesterList.get(i + 1).setRank(rank);
+                    count++;
+                } else {
+                    rank += count + 1;
+                    count = 0;
+                    schoolRankSemesterList.get(i + 1).setRank(rank);
+                }
+            }
+        }
+        return schoolRankSemesterList;
+    }
+    private double round(Double input) {
+        return (double) Math.round(input * 100) / 100;
     }
 }
