@@ -7,14 +7,17 @@
 
     <!-- jQuery library -->
     <script th:src="@{/js/public/jquery-3.5.1.min.js}"></script>
-
+    <!--Table-->
+    <link rel="stylesheet" th:href="@{/css/dataTables.bootstrap4.min.css}">
+    <link rel="stylesheet" th:href="@{/css/responsive.dataTables.min.css}">
+    <script th:src="@{/js/public/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/js/public/dataTables.bootstrap4.min.js}"></script>
     <!--Bootstrap 4-->
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <script th:src="@{/js/public/popper.min.js}"></script>
     <script th:src="@{/js/public/bootstrap.min.js}"></script>
     <!--Font-Awesome-->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"
-          type="text/css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"/>
     <link th:href="@{/css/style.css}" rel="stylesheet"/>
     <script type="text/javascript" th:src="@{/js/functions.js}"></script>
 
@@ -24,65 +27,40 @@
 <div class="container">
     <div class="table-wrapper">
         <div class="table-title">
-            <h2>Xếp hạng thi đua theo năm học</h2>
-            <div class="search">
-                <div class="col-xl-4 d-inline-block">
-                    <div class="search-line">
-                        <span>Năm học</span>
-                        <select class="combobox searchable" id="byYear">
-                            <option value="0" selected="selected">2019 - 2020</option>
-                            <option value="1">2020 - 2021</option>
-                            <option value="2">2021 - 2022</option>
-                            <option value="3">2022 - 2023</option>
-                        </select>
+            <h2>XẾP HẠNG THI ĐUA THEO NĂM HỌC</h2>
+            <div class="search row align-items-end">
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0">
+                    <div class="form-group text-left mb-1">
+                        <label>Năm học:</label>
+                        <select class="combobox form-control w-75" id="byYear"></select>
                     </div>
                 </div>
-                <div class="col-xl-6 d-inline-block div-space"></div>
-                <div class="d-inline-block ml-2">
-                    <button class="btn btn-search" id="search">Tìm kiếm</button>
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0"></div>
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0 text-right">
+                    <button class="btn btn-search mr-0" id="search">Tìm kiếm</button>
                 </div>
             </div>
         </div>
         <div class="table-title-2">
-            <div class="col-sm-12 d-flex justify-content-end align-items-center">
-                <a href="#editRank" class="btn btn-success" data-toggle="modal">
-                    <span>Sửa xếp hạng năm học</span>
-                </a>
-                <a href="#createNewRank" class="btn btn-success" data-toggle="modal">
-                    <span>Tạo xếp hạng năm học</span>
-                </a>
+            <div class="col-sm-12 px-0 d-flex justify-content-end align-items-center">
+                <input type="button" id="editRankBtn" class="btn btn-success mx-2 manageBtn"
+                       value="Sửa xếp hạng năm"/>
+                <input type="button" id="createRankBtn" class="btn btn-success mx-2 manageBtn"
+                       value="Tạo xếp hạng năm"/>
+                <input type="button" id="download" class="btn btn-success ml-2" value="Tải xuống"/>
             </div>
         </div>
-        <table class="table table-hover">
-            <thead>
+
+        <table class="table table-bordered table-edit mt-3 w-100">
+            <thead class="thead-light">
             <tr class="align-items-center">
                 <th>Lớp</th>
                 <th>Tổng thứ tự</th>
+                <th>Tổng điểm</th>
                 <th>Xếp hạng</th>
             </tr>
             </thead>
-            <tbody>
-            <tr>
-                <td>10 Toán</td>
-                <td>4</td>
-                <td><b>1</b></td>
-            </tr>
-            <tr>
-                <td>10 Tin</td>
-                <td>4</td>
-                <td><b>1</b></td>
-            </tr>
-            <tr>
-                <td>10 Lý</td>
-                <td>6</td>
-                <td><b>3</b></td>
-            </tr>
-            <tr>
-                <td>10 Hóa</td>
-                <td>8</td>
-                <td><b>4</b></td>
-            </tr>
-            </tbody>
+            <tbody></tbody>
         </table>
         <div class="table-paging">
         </div>
@@ -93,53 +71,20 @@
 <div id="createNewRank" class="modal fade">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form>
-                <div class="modal-header">
-                    <h4 class="modal-title">Tạo xếp hạng năm học</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <div class="modal-header">
+                <h4 class="modal-title">Tạo xếp hạng năm học</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body px-5">
+                <div class="search-line">
+                    <span>Tên năm học <span class="text-red">*</span></span>
+                    <select id="yearName" class="searchable combobox"></select>
                 </div>
-                <div class="modal-body px-5">
-                    <div class="search-line">
-                        <span>Tên năm học <span class="text-red">*</span></span>
-                        <input type="text" id="yearName" class="searchable" placeholder="2019 - 2020"/>
-                    </div>
-                    <div class="form-group text-left">
-                        <h6>Các học kỳ áp dụng trong năm học <span class="text-red">*</span></h6>
-                        <div class="form-check text-left">
-                            <span class="custom-checkbox">
-                                <input type="checkbox" name="options">
-                                <label>Học kỳ I</label>
-                            </span>
-                        </div>
-                        <div class="form-check text-left">
-                            <span class="custom-checkbox">
-                                <input type="checkbox" name="options">
-                                <label>Học kỳ II</label>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="error createNewRank-err"></div>
-                </div>
-                <div class="modal-footer">
-                    <input type="submit" class="btn btn-danger" data-toggle="modal" data-target="#createSuccess"
-                           data-dismiss="modal" value="TẠO">
-                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!--    Modal Create New Rank Success-->
-<div class="modal fade" tabindex="-1" role="dialog" id="createSuccess">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-body text-center">
-                <img class="mb-3 mt-3 img-success" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
-                <img class="mb-3 mt-3 img-fail hide" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                <h5 id="message-createSuccess">Tạo xếp hạng năm học thành công!</h5>
+                <div class="form-group text-left" id="semesterList"></div>
+                <div class="error createNewRank-err"></div>
             </div>
             <div class="modal-footer">
+                <input type="button" class="btn btn-danger" data-toggle="modal" id="createNewRankBtn" value="TẠO">
                 <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
             </div>
         </div>
@@ -150,54 +95,34 @@
 <div id="editRank" class="modal fade">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form>
-                <div class="modal-header">
-                    <h4 class="modal-title">Sửa xếp hạng năm học</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <div class="modal-header">
+                <h4 class="modal-title">Sửa xếp hạng năm học</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body px-5">
+                <div class="search-line">
+                    <span>Tên năm học <span class="text-red">*</span></span>
+                    <input type="text" id="newYearName" class="searchable" disabled/>
                 </div>
-                <div class="modal-body px-5">
-                    <div class="search-line">
-                        <span>Tên năm học <span class="text-red">*</span></span>
-                        <input type="text" id="newYearName" class="searchable" placeholder="2019 -2020"/>
-                    </div>
-                    <div class="form-group text-left">
-                        <h6>Các học kỳ áp dụng trong năm học <span class="text-red">*</span></h6>
-                        <div class="form-check text-left">
-                            <span class="custom-checkbox">
-                                <input type="checkbox" name="options">
-                                <label>Học kỳ I</label>
-                            </span>
-                        </div>
-                        <div class="form-check text-left">
-                            <span class="custom-checkbox">
-                                <input type="checkbox" name="options">
-                                <label>Học kỳ II</label>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="error createNewRank-err"></div>
-                </div>
-                <div class="modal-footer">
-                    <input type="submit" class="btn btn-danger" data-toggle="modal" data-target="#editSuccess"
-                           data-dismiss="modal" value="CHỈNH SỬA">
-                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
-                </div>
-            </form>
+                <div class="form-group text-left" id="semesterListEdit"></div>
+                <div class="error editRank-err"></div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-danger" data-toggle="modal" id="editRankBtnModal"
+                       data-dismiss="modal" value="CHỈNH SỬA">
+                <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
+            </div>
         </div>
     </div>
 </div>
 
-<!--    Modal Edit Rank Success-->
-<div class="modal fade" tabindex="-1" role="dialog" id="editSuccess">
+<!--    Modal Message-->
+<div class="modal fade" tabindex="-1" role="dialog" id="messageModal">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-body text-center">
-                <img class="mb-3 mt-3 img-success" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
-                <img class="mb-3 mt-3 img-fail hide" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                <h5 id="message-editSuccess">Sửa xếp hạng năm học thành công!</h5>
-            </div>
+            <div class="modal-body text-center"></div>
             <div class="modal-footer">
-                <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
+                <a href="rankByYear" class="btn btn-primary">ĐÓNG</a>
             </div>
         </div>
     </div>
@@ -205,6 +130,6 @@
 
 <div class="modal-loading"></div>
 <div th:replace="fragments/footer :: footer"></div>
-<script type="text/javascript" th:src="@{/js/manageSchoolRank/rankByWeek.js}"></script>
+<script type="text/javascript" th:src="@{/js/manageSchoolRank/rankByYear.js}"></script>
 </body>
 </html>

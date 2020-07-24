@@ -251,3 +251,6 @@ if (pathname != '/rankByMonth') {
 if (pathname != '/rankBySemester') {
     sessionStorage.removeItem('semesterName');
 }
+if (pathname != '/rankByYear') {
+    sessionStorage.removeItem('yearId');
+}
