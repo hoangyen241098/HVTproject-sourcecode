@@ -65,6 +65,9 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
     @Autowired
     private ViolationClassRequestRepository violationClassRequestRepository;
 
+    @Autowired
+    private SchoolYearRepository schoolYearRepository;
+
     /**
      * lamnt98
      * 22/07
@@ -145,6 +148,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         List<DateViolationClassDto> dateList = requestDto.getDateList();
         List<Class> classList = new ArrayList<>();
         SchoolWeek schoolWeek;
+        SchoolYear schoolYear;
         List<SchoolRankWeek> schoolRankWeekList = new ArrayList<>();
         Integer weekId;
         Double allTotalGrade;
@@ -181,6 +185,14 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
             //check currentYearId null or not
             if(currentYearId == null){
                 message = Constant.YEAR_ID_NULL;
+                return message;
+            }
+
+            schoolYear = schoolYearRepository.findById(currentYearId).orElse(null);
+
+            //check schoolYear exists or not
+            if(schoolYear == null){
+                message = Constant.SCHOOLYEAR_EMPTY;
                 return message;
             }
 
@@ -326,8 +338,12 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
     }
 
     private MessageDTO edit(EditRankWeekRequestDto requestDto) throws Exception{
+
         Integer weekId = requestDto.getWeekId();
         Integer week = requestDto.getWeek();
+        String userName = requestDto.getUserName();
+        User user = null;
+
         List<DateViolationClassDto> dateList = requestDto.getDateList();
         MessageDTO message = new MessageDTO();
         SchoolWeek schoolWeek;
@@ -357,6 +373,25 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         }
 
         try{
+            //check userName empty or not
+            if(userName.isEmpty()){
+                message = Constant.USERNAME_EMPTY;
+                return message;
+            }
+
+            user = userRepository.findUserByUsername(userName);
+            //check user null or not
+            if(user == null){
+                message = Constant.USER_NOT_EXIT;
+                return message;
+            }
+
+            //check user have permisson or not
+            if(user.getRole().getRoleId() != Constant.ROLEID_ADMIN){
+                message = Constant.NOT_ACCEPT_CREATE_RANK_WEEK;
+                return message;
+            }
+
             schoolWeek = schoolWeekRepository.findById(weekId).orElse(null);
             //check schoolWeek exists or not
             if(schoolWeek == null){

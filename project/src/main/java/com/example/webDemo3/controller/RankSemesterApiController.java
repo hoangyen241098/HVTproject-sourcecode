@@ -1,11 +1,10 @@
 package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.MessageDTO;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListMonthSchoolRankResponseDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.*;
+import com.example.webDemo3.service.manageSchoolRankSemesterService.CreateAndEditSchoolRankSemester;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.*;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.LoadByYearIdRequestDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.SearchRankSemesterRequestDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.UpdateSchoolRankWeekRequestDto;
-import com.example.webDemo3.service.manageSchoolRank.ViewSchoolRankWeekService;
 import com.example.webDemo3.service.manageSchoolRankSemesterService.ViewSchoolRankSemesterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -26,7 +25,56 @@ kimpt142 - 23/07
 public class RankSemesterApiController {
 
     @Autowired
+    private CreateAndEditSchoolRankSemester createAndEditSchoolRankSemester;
+
+    @Autowired
     private ViewSchoolRankSemesterService viewSchoolRankSemesterService;
+    /**
+     * lamnt98
+     * 23/07
+     * catch request to get month list which has no ranked
+     * @return ListMonthSchoolRankResponseDto
+     */
+    @PostMapping("/loadmonthlist")
+    public ListMonthSchoolRankResponseDto getMonthList(@RequestBody ListMonthSchoolRankRequestDto module)
+    {
+        return createAndEditSchoolRankSemester.loadListMonth(module);
+    }
+
+    /**
+     * lamnt98
+     * 23/07
+     * catch request to creat rank semester
+     * @return MessageDTO
+     */
+    @PostMapping("/createranksemester")
+    public MessageDTO createRankSemester(@RequestBody CreateRankSemesterRequestDto module)
+    {
+        return createAndEditSchoolRankSemester.createRankSemester(module);
+    }
+
+    /**
+     * lamnt98
+     * 23/07
+     * catch request to get month list which has no ranked and month has ranked by semesterId
+     * @return ListMonthSchoolRankResponseDto
+     */
+    @PostMapping("/loadeditranksemester")
+    public ListMonthSchoolRankResponseDto getMonthList(@RequestBody ViewMonthOfEditRankSemesterRequestDto module) {
+        return createAndEditSchoolRankSemester.loadEditListMonth(module);
+    }
+
+    /**
+     * lamnt98
+     * 23/07
+     * catch request to edit rank semester
+     * @return MessageDTO
+     */
+    @PostMapping("/editranksemester")
+    public MessageDTO editRankSemester(@RequestBody EditRankSemesterRequestDto module)
+    {
+        return createAndEditSchoolRankSemester.editRankSemester(module);
+    }
 
     /**
      * kimpt142

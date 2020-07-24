@@ -1,14 +1,15 @@
 package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.RankYearListResponseDto;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewMonthListResponseDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.LoadByYearIdRequestDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.SearchRankMonthRequestDto;
 import com.example.webDemo3.service.manageSchoolRankYearSerivce.ViewSchoolRankYearService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListSemesterSchoolRankResponseDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewSemesterOfEditRankYearRequestDto;
+import com.example.webDemo3.service.manageSchoolRankYearSerivce.CreateAndEditSchoolRankYearService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,9 @@ public class RankYearApiContoller {
 
     @Autowired
     private ViewSchoolRankYearService viewSchoolRankYearService;
+
+    @Autowired
+    private CreateAndEditSchoolRankYearService createAndEditSchoolRankYearService;
 
     /**
      * kimpt142
@@ -57,4 +61,27 @@ public class RankYearApiContoller {
                 .body(new InputStreamResource(in));
     }
 
+    /**
+     * lamnt98
+     * 24/07
+     * catch request to get semester list which has no ranked
+     * @return ListSemesterSchoolRankResponseDto
+     */
+    @PostMapping("/loadsemesterlist")
+    public ListSemesterSchoolRankResponseDto getSemesterList()
+    {
+        return createAndEditSchoolRankYearService.loadListSemester();
+    }
+
+    /**
+     * lamnt98
+     * 24/07
+     * catch request to get semester list which has no ranked and semester is ranked with yearId
+     * @return ListSemesterSchoolRankResponseDto
+     */
+    @PostMapping("/loadeditrankyear")
+    public ListSemesterSchoolRankResponseDto getEditSemesterList(@RequestBody ViewSemesterOfEditRankYearRequestDto module)
+    {
+        return createAndEditSchoolRankYearService.loadEditListSemester(module);
+    }
 }

@@ -75,7 +75,7 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
 
             weekList = schoolWeekRepository.findSchoolWeekNotRank(currentYearId);
 
-            if(weekList == null){
+            if(weekList == null || weekList.size() == 0){
                 message = Constant.LIST_WEEK_NULL;
                 responseDto.setMessage(message);
                 return  responseDto;
@@ -227,6 +227,8 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
 
         Integer monthId = requestDto.getMonthId();
         Integer month = requestDto.getMonth();
+        String userName = requestDto.getUserName();
+        User user = null;
         List<SchoolWeekDto> weekList = requestDto.getWeekList();
         List<Class> classList = new ArrayList<>();
         List<SchoolRankMonth> schoolRankMonthList = new ArrayList<>();
@@ -251,6 +253,25 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
         }
 
         try{
+            //check userName empty or not
+            if(userName.isEmpty()){
+                message = Constant.USERNAME_EMPTY;
+                return message;
+            }
+
+            user = userRepository.findUserByUsername(userName);
+            //check user null or not
+            if(user == null){
+                message = Constant.USER_NOT_EXIT;
+                return message;
+            }
+
+            //check user have permisson or not
+            if(user.getRole().getRoleId() != Constant.ROLEID_ADMIN){
+                message = Constant.NOT_ACCEPT_CREATE_RANK_MONTH;
+                return message;
+            }
+
             schoolMonth = schoolMonthRepository.findById(monthId).orElse(null);
 
             //check schoolMonth exist with monthId
@@ -290,6 +311,7 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
 
         User user;
         SchoolMonth schoolMonth;
+        SchoolYear schoolYear;
         Integer monthId;
         List<Class> classList = new ArrayList<>();
         try{
@@ -308,11 +330,11 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
 
             //check user have permisson or not
             if(user.getRole().getRoleId() != Constant.ROLEID_ADMIN){
-                message = Constant.NOT_ACCEPT_CREATE_RANK_WEEK;
+                message = Constant.NOT_ACCEPT_CREATE_RANK_MONTH;
                 return message;
             }
 
-            //check userName empty or not
+            //check month empty or not
             if(month == null){
                 message = Constant.MONTH_NAME_EMPTY;
                 return message;
@@ -324,6 +346,14 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
                 return message;
             }
 
+            schoolYear = schoolYearRepository.findById(currentYearId).orElse(null);
+
+            //check schoolYear exists or not
+            if(schoolYear == null){
+                message = Constant.SCHOOLYEAR_EMPTY;
+                return message;
+            }
+
             //check dateList null or not
             if(weekList == null){
                 message = Constant.WEEK_LIST_EMPTY;
@@ -331,9 +361,9 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
             }
 
             schoolMonth = schoolMonthRepository.findSchoolMonthByMonthAndSemesterAndYearId(month,0,currentYearId);
-            //check week exist or not
+            //check month exist or not
             if(schoolMonth != null){
-                message = Constant.SCHOOL_WEEK_EXISTS;
+                message = Constant.SCHOOL_MONTH_EXISTS;
                 return message;
             }
 

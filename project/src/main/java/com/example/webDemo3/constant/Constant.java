@@ -213,6 +213,12 @@ public class Constant {
             new MessageDTO(1,"Không có ngày chưa được xếp hạng.");
     public static final MessageDTO NOT_ACCEPT_CREATE_RANK_WEEK =
             new MessageDTO(1,"Bạn không có quyền tạo xếp hạng tuần.");
+    public static final MessageDTO NOT_ACCEPT_CREATE_RANK_MONTH =
+            new MessageDTO(1,"Bạn không có quyền tạo xếp hạng tháng.");
+    public static final MessageDTO NOT_ACCEPT_CREATE_RANK_SEMESTER =
+            new MessageDTO(1,"Bạn không có quyền tạo xếp hạng kỳ.");
+    public static final MessageDTO NOT_ACCEPT_CREATE_RANK_YEAR =
+            new MessageDTO(1,"Bạn không có quyền tạo xếp hạng năm.");
     public static final MessageDTO WEEK_NAME_EMPTY =
             new MessageDTO(1,"Hãy điền tên tuần.");
     public static final MessageDTO SCHOOL_WEEK_EXISTS =
@@ -265,6 +271,20 @@ public class Constant {
             new MessageDTO(1,"Hãy nhập tên tháng.");
     public static final MessageDTO SCHOOL_MONTH_NOT_EXISTS =
             new MessageDTO(1,"Tên tháng trong kỳ không tồn tại.");
+    public static final MessageDTO LIST_MONTH_NULL =
+            new MessageDTO(1,"Danh sách tháng đang trống.");
+    public static final MessageDTO SEMESTER_NAME_EMPTY =
+            new MessageDTO(1,"Hãy điền tên kỳ.");
+    public static final MessageDTO MONTH_LIST_EMPTY =
+            new MessageDTO(1,"Không có tháng chưa được xếp hạng.");
+    public static final MessageDTO SCHOOL_SEMESTER_EXISTS =
+            new MessageDTO(1,"Tên kỳ trong năm hiện tại đã tồn tại.");
+    public static final MessageDTO SCHOOL_RANK_SEMESTER_NULL =
+            new MessageDTO(1,"Danh sách xếp hạng lớp theo kỳ trống.");
+    public static final MessageDTO SCHOOL_SEMESTER_ID_NULL =
+            new MessageDTO(1,"Hãy nhập tên kỳ.");
+    public static final MessageDTO SCHOOL_SEMESTER_NOT_EXISTS =
+            new MessageDTO(1,"Tên kỳ trong năm không tồn tại.");
     public static final MessageDTO  SEMESTERLIST_EMPTY=
             new MessageDTO(1,"Danh sách học kỳ đang trống.");
     public static final MessageDTO  SEMESTERID_EMPTY=
@@ -273,6 +293,10 @@ public class Constant {
             new MessageDTO(1,"Danh sách xếp hạng của năm học này trống.");
     public static final MessageDTO  RANKSEMESTERLIST_EMPTY=
             new MessageDTO(1,"Danh sách xếp hạng của kỳ này trống.");
+    public static final MessageDTO LIST_SEMESTER_NULL =
+            new MessageDTO(1,"Danh sách kỳ đang trống.");
+    public static final MessageDTO SEMESTER_LIST_EMPTY =
+            new MessageDTO(1,"Không có kỳ chưa được xếp hạng.");
     /**
      * Success message
      */
