@@ -9,4 +9,5 @@ kimp142 - 23/07
 public class SchoolMonthResponseDto {
     private Integer monthId;
     private String monthName;
+    private Integer yearId;
 }

@@ -3,12 +3,17 @@ package com.example.webDemo3.service.impl.manageSchoolRankMonthImpl;
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.*;
+import com.example.webDemo3.dto.manageSchoolYearResponseDto.SchoolYearResponseDto;
+import com.example.webDemo3.dto.manageSchoolYearResponseDto.SchoolYearTableResponseDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.LoadRankMonthResponseDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.SearchRankMonthRequestDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewMonthByYearRequestDto;
 import com.example.webDemo3.entity.SchoolMonth;
 import com.example.webDemo3.entity.SchoolRankMonth;
 import com.example.webDemo3.repository.SchoolMonthRepository;
 import com.example.webDemo3.repository.SchoolRankMonthRepository;
 import com.example.webDemo3.service.manageSchoolRankMonthService.ViewSchoolRankMonthService;
+import com.example.webDemo3.service.manageSchoolYearService.SchoolYearService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +36,9 @@ public class ViewSchoolRankMonthServiceImpl implements ViewSchoolRankMonthServic
     @Autowired
     private SchoolRankMonthRepository schoolRankMonthRepository;
 
+    @Autowired
+    private SchoolYearService schoolYearService;
+
     /**
      * kimpt142
      * 23/07
@@ -38,18 +46,26 @@ public class ViewSchoolRankMonthServiceImpl implements ViewSchoolRankMonthServic
      * @return
      */
     @Override
-    public ViewMonthListResponseDto getMonthList() {
+    public ViewMonthListResponseDto getMonthListByYearId(ViewMonthByYearRequestDto model) {
         ViewMonthListResponseDto responseDto = new ViewMonthListResponseDto();
         List<SchoolMonthResponseDto> schoolMonthListDto = new ArrayList<>();
-        MessageDTO message = new MessageDTO();
+        MessageDTO message;
+        Integer yearId = model.getYearId();
 
-        List<SchoolMonth> schoolMonthList = schoolMonthRepository.findSchoolMonthExcludeZero();
+        if(yearId == null){
+            message = Constant.SCHOOLYEARID_EMPTY;
+            responseDto.setMessage(message);
+            return responseDto;
+        }
+
+        List<SchoolMonth> schoolMonthList = schoolMonthRepository.findSchoolMonthByYearIdExcludeZero(yearId);
         if(schoolMonthList != null && schoolMonthList.size() != 0){
             for(SchoolMonth item : schoolMonthList)
             {
                 SchoolMonthResponseDto monthDto = new SchoolMonthResponseDto();
                 monthDto.setMonthId(item.getMonthId());
-                monthDto.setMonthName("Tuần " + item.getMonth());
+                monthDto.setMonthName("Tháng " + item.getMonth());
+                monthDto.setYearId(item.getYearId());
                 schoolMonthListDto.add(monthDto);
             }
         }
@@ -163,6 +179,42 @@ public class ViewSchoolRankMonthServiceImpl implements ViewSchoolRankMonthServic
         }
 
         return null;
+    }
+
+    /**
+     * kimpt142
+     * 23/07
+     * get school year list and month list by current year id
+     */
+    @Override
+    public LoadRankMonthResponseDto loadRankMonthPage(ViewMonthByYearRequestDto model) {
+        LoadRankMonthResponseDto responseDto = new LoadRankMonthResponseDto();
+        MessageDTO message;
+
+        //get year list
+        SchoolYearTableResponseDto schoolYearListDto = schoolYearService.getSchoolYearTable();
+        if(schoolYearListDto.getMessage().getMessageCode() == 1){
+            message = schoolYearListDto.getMessage();
+            responseDto.setMessage(message);
+            return responseDto;
+        }
+        else{
+            responseDto.setSchoolYearList(schoolYearListDto.getSchoolYearList());
+        }
+
+        //get month list with yearid
+        ViewMonthListResponseDto schoolMonthListDto = getMonthListByYearId(model);
+        if(schoolMonthListDto.getMessage().getMessageCode() == 1){
+            message = schoolMonthListDto.getMessage();
+            responseDto.setMessage(message);
+            return responseDto;
+        }else{
+            responseDto.setSchoolMonthList(schoolMonthListDto.getSchoolMonthList());
+        }
+
+        message = Constant.SUCCESS;
+        responseDto.setMessage(message);
+        return responseDto;
     }
 
     private double round(Double input) {

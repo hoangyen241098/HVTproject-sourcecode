@@ -128,6 +128,13 @@ public class ViewSchoolRankWeekServiceImpl implements ViewSchoolRankWeekService 
         return responseDto;
     }
 
+    /**
+     * kimpt142
+     * 23/07
+     * get week list by year id
+     * @param model
+     * @return week list
+     */
     @Override
     public ViewWeekListResponseDto getWeekListByYearId(ViewWeekByYearRequestDto model) {
         ViewWeekListResponseDto responseDto = new ViewWeekListResponseDto();
