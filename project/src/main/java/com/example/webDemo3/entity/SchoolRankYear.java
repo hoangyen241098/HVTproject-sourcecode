@@ -22,7 +22,7 @@ public class SchoolRankYear {
     private Integer totalRankSemester;
 
     @Column(name = "TOTAL_GRADE_SEMESTER")
-    private Double totalGradeSemesters;
+    private Double totalGradeSemester;
 
     @Column(name = "RANK")
     private Integer rank;
