@@ -386,7 +386,7 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
                 schoolRankYearId.setSchoolClass(new Class(newClass.getClassId()));
 
                 schoolRankYear.setSchoolRankYearId(schoolRankYearId);
-                schoolRankYear.setTotalGradeSemesters(round(totalGrade));
+                schoolRankYear.setTotalGradeSemester(round(totalGrade));
                 schoolRankYear.setTotalRankSemester(totalRank);
 
                 schoolRankYearList.add(schoolRankYear);
@@ -421,7 +421,7 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
         Collections.sort(schoolRankYearList, new Comparator<SchoolRankYear>() {
             @Override
             public int compare(SchoolRankYear o1, SchoolRankYear o2) {
-                return o2.getTotalGradeSemesters().compareTo(o1.getTotalGradeSemesters());
+                return o2.getTotalGradeSemester().compareTo(o1.getTotalGradeSemester());
             }
         });
         int rank = 1;
@@ -435,7 +435,7 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
                 SchoolRankYear schoolRankYear = schoolRankYearList.get(i);
                 schoolRankYearList.get(i).setRank(rank);
                 SchoolRankYear schoolRankYear1 = schoolRankYearList.get(i + 1);
-                if (schoolRankYear1.getTotalGradeSemesters().compareTo(schoolRankYear.getTotalGradeSemesters()) == 0) {
+                if (schoolRankYear1.getTotalGradeSemester().compareTo(schoolRankYear.getTotalGradeSemester()) == 0) {
                     schoolRankYearList.get(i + 1).setRank(rank);
                     count++;
                 } else {

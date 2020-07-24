@@ -79,8 +79,8 @@ public class ViewSchoolRankMonthServiceImpl implements ViewSchoolRankMonthServic
      * @return
      */
     @Override
-    public RankMonthListResposeDto searchRankMonthByMonthId(SearchRankMonthRequestDto model) {
-        RankMonthListResposeDto resposeDto = new RankMonthListResposeDto();
+    public RankMonthListResponseDto searchRankMonthByMonthId(SearchRankMonthRequestDto model) {
+        RankMonthListResponseDto resposeDto = new RankMonthListResponseDto();
         List<RankMonthResponseDto> rankMonthDtoList = new ArrayList<>();
         MessageDTO message;
 
@@ -125,7 +125,7 @@ public class ViewSchoolRankMonthServiceImpl implements ViewSchoolRankMonthServic
      */
     @Override
     public ByteArrayInputStream downloadRankMonth(SearchRankMonthRequestDto model) {
-        //get rank week list
+        //get rank month list
         List<RankMonthResponseDto> rankMonthList = searchRankMonthByMonthId(model).getRankMonthList();
 
         String[] COLUMNs = {"Lớp", "Tổng thứ tự", "Tổng điểm", "Xếp hạng"};

@@ -44,20 +44,6 @@ $.ajax({
             } else {
                 $('#byClass').html(`<option value="err">Danh sách lớp trống.</option>`);
             }
-
-            if (sessionStorage.getItem('weekName') != null) {
-                var weekName = 'Tuần ' + sessionStorage.getItem('weekName');
-                $("#byWeek option").filter(function () {
-                    return $(this).text() == weekName;
-                }).prop("selected", true);
-                var yearId = $("#byWeek option:selected").attr('name');
-                $("#byYear").val(yearId).change();
-            }
-            if (sessionStorage.getItem('weekId') != null) {
-                $("#byWeek").val(sessionStorage.getItem('weekId')).change();
-                var yearId = $("#byWeek option:selected").attr('name');
-                $("#byYear").val(yearId).change();
-            }
         } else {
             if (data.schoolYearList == null) {
                 $('#byYear').html(`<option value="err">` + message + `</option>`);
@@ -102,6 +88,15 @@ function loadComboboxYear(yearId) {
                             $('#byWeek').append(`<option value="` + item.weekID + `" name="` + item.yearId + `">Tuần ` + item.week + `</option>`);
                         }
                     });
+                    if (sessionStorage.getItem('weekName') != null) {
+                        var weekName = 'Tuần ' + sessionStorage.getItem('weekName');
+                        $("#byWeek option").filter(function () {
+                            return $(this).text() == weekName;
+                        }).prop("selected", true);
+                    }
+                    if (sessionStorage.getItem('weekId') != null) {
+                        $("#byWeek").val(sessionStorage.getItem('weekId')).change();
+                    }
                 } else {
                     $('#byWeek').html(`<option value="err">Danh sách tuần đang trống.</option>`);
                 }
@@ -467,6 +462,7 @@ $('#editRankBtnModal').on('click', function () {
         var editRank = {
             weekId: $('#byWeek option:selected').val(),
             week: weekName,
+            userName: localStorage.getItem('username'),
             dateList: listEdit
         }
         console.log(JSON.stringify(editRank));
@@ -729,4 +725,7 @@ function closeModal(weekId) {
 /*Remove checkbox when close modal*/
 $(document).on('hidden.bs.modal', '#createNewRank', '#editRank', function () {
     $('input[name=options]').prop('checked', false);
+    $('input[name=editOptions]').prop('checked', false);
+    $('#weekName').val('');
+    $('#newWeekName').val('');
 });

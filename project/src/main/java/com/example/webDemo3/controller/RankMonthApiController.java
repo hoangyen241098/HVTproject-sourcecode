@@ -5,7 +5,7 @@ import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListWeekSchoolRankRe
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.LoadRankMonthResponseDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.*;
 import com.example.webDemo3.service.manageSchoolRankMonthService.CreateAndEditSchoolRankMonthService;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.RankMonthListResposeDto;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.RankMonthListResponseDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewMonthListResponseDto;
 import com.example.webDemo3.service.manageSchoolRankMonthService.ViewSchoolRankMonthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,11 +47,11 @@ public class RankMonthApiController {
     /**
      * kimpt142
      * 23/07
-     * catch request to get month list
+     * catch request to get month list by month id
      * @return responseDTO with a month list and messagedto
      */
     @PostMapping("/searchrankmonth")
-    public RankMonthListResposeDto searchRankMonthListById(@RequestBody SearchRankMonthRequestDto model)
+    public RankMonthListResponseDto searchRankMonthListById(@RequestBody SearchRankMonthRequestDto model)
     {
         return viewSchoolRankMonthService.searchRankMonthByMonthId(model);
     }
@@ -59,9 +59,9 @@ public class RankMonthApiController {
     /**
      * kimpt142
      * 23/07
-     * catch request to update school rank week list
-     * @param model include rank week list
-     * @return MessageDTO
+     * catch request to download school rank month list
+     * @param model include week id
+     * @return ResponseEntity
      */
     @PostMapping("/download")
     public ResponseEntity<InputStreamResource> download(@RequestBody SearchRankMonthRequestDto model) {

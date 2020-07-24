@@ -297,6 +297,10 @@ public class Constant {
             new MessageDTO(1,"Danh sách học kỳ đang trống.");
     public static final MessageDTO  SEMESTERID_EMPTY=
             new MessageDTO(1,"Hãy chọn học kỳ cần tìm kiếm.");
+    public static final MessageDTO  RANKYEARLIST_EMPTY=
+            new MessageDTO(1,"Danh sách xếp hạng của năm học này trống.");
+    public static final MessageDTO  RANKSEMESTERLIST_EMPTY=
+            new MessageDTO(1,"Danh sách xếp hạng của kỳ này trống.");
     public static final MessageDTO LIST_SEMESTER_NULL =
             new MessageDTO(1,"Danh sách kỳ đang trống.");
     public static final MessageDTO SEMESTER_LIST_EMPTY =

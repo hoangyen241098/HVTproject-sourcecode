@@ -8,7 +8,7 @@ import java.util.List;
 kimpt142 - 23/07
  */
 @Data
-public class RankMonthListResposeDto {
+public class RankMonthListResponseDto {
     private List<RankMonthResponseDto> rankMonthList;
     private MessageDTO message;
 }

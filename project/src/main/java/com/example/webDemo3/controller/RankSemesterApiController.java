@@ -7,10 +7,15 @@ import com.example.webDemo3.service.manageSchoolRankSemesterService.CreateAndEdi
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.*;
 import com.example.webDemo3.service.manageSchoolRankSemesterService.ViewSchoolRankSemesterService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.ByteArrayInputStream;
 
 /*
 kimpt142 - 23/07
@@ -108,5 +113,24 @@ public class RankSemesterApiController {
     public RankSemesterListResponseDto getSemesterByYearId(@RequestBody SearchRankSemesterRequestDto model)
     {
         return viewSchoolRankSemesterService.searchRankSemesterById(model);
+    }
+
+    /**
+     * kimpt142
+     * 24/07
+     * catch request to download school rank semester list
+     * @param model include yearid
+     * @return ResponseEntity
+     */
+    @PostMapping("/download")
+    public ResponseEntity<InputStreamResource> download(@RequestBody SearchRankSemesterRequestDto model) {
+        ByteArrayInputStream in = viewSchoolRankSemesterService.downloadRankSemester(model);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=Bangxephanghocky.xls");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .body(new InputStreamResource(in));
     }
 }

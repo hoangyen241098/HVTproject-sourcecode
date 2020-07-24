@@ -12,8 +12,12 @@ import com.example.webDemo3.repository.SchoolRankSemesterRepository;
 import com.example.webDemo3.repository.SchoolSemesterRepository;
 import com.example.webDemo3.service.manageSchoolRankSemesterService.ViewSchoolRankSemesterService;
 import com.example.webDemo3.service.manageSchoolYearService.SchoolYearService;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,7 +129,7 @@ public class ViewSchoolRankSemesterServiceImpl implements ViewSchoolRankSemester
         List<SchoolRankSemester> schoolRankSemesterList = schoolRankSemesterRepository.findAllBySchoolRankSemesterId(semesterId);
         if(schoolRankSemesterList == null || schoolRankSemesterList.size() == 0)
         {
-            message = Constant.RANKMONTHLIST_EMPTY;
+            message = Constant.RANKSEMESTERLIST_EMPTY;
             resposeDto.setMessage(message);
             return resposeDto;
         }
@@ -147,6 +151,61 @@ public class ViewSchoolRankSemesterServiceImpl implements ViewSchoolRankSemester
         resposeDto.setMessage(message);
         resposeDto.setRankSemesterList(rankSemesterList);
         return resposeDto;
+    }
+
+    /**
+     * kimpt142
+     * 24/07
+     * download file excel with the rank semester using semester id
+     * @param model
+     * @return
+     */
+    @Override
+    public ByteArrayInputStream downloadRankSemester(SearchRankSemesterRequestDto model) {
+        //get rank semester list
+        List<RankSemesterResponseDto> rankSemesterList = searchRankSemesterById(model).getRankSemesterList();
+
+        String[] COLUMNs = {"Lớp", "Tổng thứ tự", "Tổng điểm", "Xếp hạng"};
+
+        try {
+            Workbook workbook = new HSSFWorkbook();
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+            //CreationHelper createHelper = workbook.getCreationHelper();
+            Sheet sheet = workbook.createSheet("Bảng xếp hạng học kỳ");
+
+            Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+            CellStyle headerCellStyle = workbook.createCellStyle();
+            headerCellStyle.setFont(headerFont);
+
+            // Row for Header
+            Row headerRow = sheet.createRow(0);
+
+            // Header
+            for (int col = 0; col < COLUMNs.length; col++) {
+                Cell cell = headerRow.createCell(col);
+                cell.setCellValue(COLUMNs[col]);
+                cell.setCellStyle(headerCellStyle);
+            }
+
+            int rowIdx = 1;
+            for (RankSemesterResponseDto item : rankSemesterList) {
+                Row row = sheet.createRow(rowIdx++);
+                row.createCell(0).setCellValue(item.getClassName());
+                row.createCell(1).setCellValue(item.getTotalRankMonth());
+                row.createCell(2).setCellValue(round(item.getTotalGradeMonth()));
+                row.createCell(3).setCellValue(item.getRank());
+            }
+
+            workbook.write(out);
+            return new ByteArrayInputStream(out.toByteArray());
+
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+        return null;
     }
 
     private double round(Double input) {

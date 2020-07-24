@@ -134,9 +134,9 @@ public class RankWeekController {
     /**
      * kimpt142
      * 21/07
-     * catch request to update school rank week list
-     * @param model include rank week list
-     * @return MessageDTO
+     * catch request to download rank week
+     * @param model include weekid and classid
+     * @return ResponseEntity
      */
     @PostMapping("/download")
     public ResponseEntity<InputStreamResource> download(@RequestBody SearchRankWeekRequestDto model)
@@ -155,9 +155,9 @@ public class RankWeekController {
     /**
      * kimpt142
      * 21/07
-     * catch request to get the week list and class list
-     * @param
-     * @return ViewWeekAndClassListResponseDto
+     * catch request to get the week list by year id
+     * @param model include year id
+     * @return ViewWeekListResponseDto
      */
     @PostMapping("/getweeklist")
     public ViewWeekListResponseDto getWeekListByYearId(@RequestBody LoadByYearIdRequestDto model)
