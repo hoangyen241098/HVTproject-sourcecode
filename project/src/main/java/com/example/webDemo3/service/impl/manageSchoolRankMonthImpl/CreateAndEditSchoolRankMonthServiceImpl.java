@@ -312,7 +312,7 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
                 return message;
             }
 
-            //check userName empty or not
+            //check month empty or not
             if(month == null){
                 message = Constant.MONTH_NAME_EMPTY;
                 return message;
@@ -331,9 +331,9 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
             }
 
             schoolMonth = schoolMonthRepository.findSchoolMonthByMonthAndSemesterAndYearId(month,0,currentYearId);
-            //check week exist or not
+            //check month exist or not
             if(schoolMonth != null){
-                message = Constant.SCHOOL_WEEK_EXISTS;
+                message = Constant.SCHOOL_MONTH_EXISTS;
                 return message;
             }
 

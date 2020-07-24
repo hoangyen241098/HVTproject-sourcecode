@@ -265,7 +265,14 @@ public class Constant {
             new MessageDTO(1,"Hãy nhập tên tháng.");
     public static final MessageDTO SCHOOL_MONTH_NOT_EXISTS =
             new MessageDTO(1,"Tên tháng trong kỳ không tồn tại.");
-
+    public static final MessageDTO LIST_MONTH_NULL =
+            new MessageDTO(1,"Danh sách tháng đang trống.");
+    public static final MessageDTO SEMESTER_NAME_EMPTY =
+            new MessageDTO(1,"Hãy điền tên kỳ.");
+    public static final MessageDTO MONTH_LIST_EMPTY =
+            new MessageDTO(1,"Không có tháng chưa được xếp hạng.");
+    public static final MessageDTO SCHOOL_SEMESTER_EXISTS =
+            new MessageDTO(1,"Tên kỳ trong năm hiện tại đã tồn tại.");
     /**
      * Success message
      */
