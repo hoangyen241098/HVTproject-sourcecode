@@ -2,13 +2,9 @@ package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListMonthSchoolRankResponseDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.CreateRankSemesterRequestDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ListMonthSchoolRankRequestDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewMonthOfEditRankSemesterRequestDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.*;
 import com.example.webDemo3.service.manageSchoolRankSemesterService.CreateAndEditSchoolRankSemester;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.*;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.LoadByYearIdRequestDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.SearchRankSemesterRequestDto;
 import com.example.webDemo3.service.manageSchoolRankSemesterService.ViewSchoolRankSemesterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,6 +57,18 @@ public class RankSemesterApiController {
     @PostMapping("/loadeditranksemester")
     public ListMonthSchoolRankResponseDto getMonthList(@RequestBody ViewMonthOfEditRankSemesterRequestDto module) {
         return createAndEditSchoolRankSemester.loadEditListMonth(module);
+    }
+
+    /**
+     * lamnt98
+     * 23/07
+     * catch request to edit rank semester
+     * @return MessageDTO
+     */
+    @PostMapping("/editranksemester")
+    public MessageDTO editRankSemester(@RequestBody EditRankSemesterRequestDto module)
+    {
+        return createAndEditSchoolRankSemester.editRankSemester(module);
     }
 
     /**

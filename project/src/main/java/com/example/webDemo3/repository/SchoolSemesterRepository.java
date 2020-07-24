@@ -1,5 +1,6 @@
 package com.example.webDemo3.repository;
 
+import com.example.webDemo3.entity.SchoolMonth;
 import com.example.webDemo3.entity.SchoolSemester;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,4 +17,7 @@ public interface SchoolSemesterRepository extends JpaRepository<SchoolSemester,I
 
     @Query(value="select ss from SchoolSemester ss where ss.semesterId <> 0 and ss.yearId = :yearId")
     List<SchoolSemester> findSchoolSemesterByYearIdExcludeZero(@Param("yearId") Integer yearId);
+
+    @Query(value = "select s from SchoolSemester s where s.semester = :semester and s.semesterId <> :semesterId")
+    SchoolSemester findExistBySemester(@Param("semester") Integer semester, @Param("semesterId") Integer semesterId);
 }

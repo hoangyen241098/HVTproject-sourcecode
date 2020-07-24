@@ -290,6 +290,7 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
 
         User user;
         SchoolMonth schoolMonth;
+        SchoolYear schoolYear;
         Integer monthId;
         List<Class> classList = new ArrayList<>();
         try{
@@ -321,6 +322,14 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
             //check currentYearId null or not
             if(currentYearId == null){
                 message = Constant.YEAR_ID_NULL;
+                return message;
+            }
+
+            schoolYear = schoolYearRepository.findById(currentYearId).orElse(null);
+
+            //check schoolYear exists or not
+            if(schoolYear == null){
+                message = Constant.SCHOOLYEAR_EMPTY;
                 return message;
             }
 
