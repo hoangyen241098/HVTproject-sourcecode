@@ -26,4 +26,6 @@ public interface SchoolSemesterRepository extends JpaRepository<SchoolSemester,I
 
     @Query(value="select sw from SchoolSemester sw where sw.yearId = :yearId order by sw.semester asc")
     List<SchoolSemester> findSchoolSemesterByYearId(@Param("yearId") Integer yearId);
+
+    SchoolSemester findSchoolSemesterBySemesterId(Integer semesterId);
 }

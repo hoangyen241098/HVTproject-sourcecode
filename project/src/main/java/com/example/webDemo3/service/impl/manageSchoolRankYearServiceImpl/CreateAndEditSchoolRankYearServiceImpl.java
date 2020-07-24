@@ -3,17 +3,26 @@ package com.example.webDemo3.service.impl.manageSchoolRankYearServiceImpl;
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListSemesterSchoolRankResponseDto;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.SchoolMonthDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.SchoolSemesterDto;
+import com.example.webDemo3.dto.manageSchoolYearResponseDto.SchoolYearResponseDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.CreateRankYearRequestDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.EditRankYearRequestDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewSemesterOfEditRankYearRequestDto;
-import com.example.webDemo3.entity.SchoolSemester;
-import com.example.webDemo3.entity.SchoolYear;
-import com.example.webDemo3.repository.SchoolSemesterRepository;
-import com.example.webDemo3.repository.SchoolYearRepository;
+import com.example.webDemo3.entity.*;
+import com.example.webDemo3.entity.Class;
+import com.example.webDemo3.exception.MyException;
+import com.example.webDemo3.repository.*;
 import com.example.webDemo3.service.manageSchoolRankYearSerivce.CreateAndEditSchoolRankYearService;
+import com.example.webDemo3.service.manageSchoolYearService.SchoolYearService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -25,18 +34,61 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
     @Autowired
     private SchoolYearRepository schoolYearRepository;
 
+    @Autowired
+    private SchoolRankYearRepository schoolRankYearRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ClassRepository classRepository;
+
+    @Autowired
+    private SchoolRankSemesterRepository schoolRankSemesterRepository;
+
     @Override
     public ListSemesterSchoolRankResponseDto loadListSemester() {
         ListSemesterSchoolRankResponseDto responseDto = new ListSemesterSchoolRankResponseDto();
         List<SchoolSemesterDto> semesterListDto = new ArrayList<>();
         List<SchoolSemester> semesterList =new ArrayList<>();
+        List<SchoolYearResponseDto> schoolYearListDto = new ArrayList<>();
+        List<SchoolYear> schoolYearList = new ArrayList<>();
+        List<Integer> yearIdList = new ArrayList<>();
         MessageDTO message = new MessageDTO();
 
 
         try{
+            schoolYearList = schoolYearRepository.findAll();
+            yearIdList = schoolRankYearRepository.getAllDistinctYearId();
+
+            for(SchoolYear schoolYear : schoolYearList){
+                if(yearIdList.contains(schoolYear.getYearID())){
+                    schoolYearList.remove(schoolYear);
+                }
+            }
+
+            //check list school year which is not ranked empty or not
+            if(schoolYearList == null || schoolYearList.size() == 0){
+                message = Constant.SCHOOL_RANK_YEAR_EMPTY;
+                responseDto.setMessage(message);
+                return  responseDto;
+            }
+
+            for(SchoolYear schoolYear : schoolYearList){
+                SchoolYearResponseDto schoolYearResponseDto = new SchoolYearResponseDto();
+                schoolYearResponseDto.setFromDate(schoolYear.getFromDate());
+                schoolYearResponseDto.setToDate(schoolYear.getToDate());
+                schoolYearResponseDto.setSchoolYearId(schoolYear.getYearID());
+                schoolYearResponseDto.setYearName(schoolYear.getFromYear() + " - " + schoolYear.getToYear());
+
+                schoolYearListDto.add(schoolYearResponseDto);
+            }
+
+            responseDto.setSchoolYearList(schoolYearListDto);
 
             semesterList = schoolSemesterRepository.findSchoolSemesterNotRank();
 
+            //check list semester which is not ranked empty or not
             if(semesterList == null || semesterList.size() == 0){
                 message = Constant.SEMESTER_LIST_EMPTY;
                 responseDto.setMessage(message);
@@ -133,6 +185,270 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
             return responseDto;
         }
         return responseDto;
+    }
+
+    @Override
+    @Transactional
+    public MessageDTO createRankYear(CreateRankYearRequestDto requestDto) {
+        MessageDTO message = new MessageDTO();
+        try {
+            message = createRankYearTransaction(requestDto);
+        }catch (Exception e){
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return message;
+    }
+
+    @Override
+    @Transactional
+    public MessageDTO editRankYear(EditRankYearRequestDto requestDto) {
+        MessageDTO message = new MessageDTO();
+        try {
+            message = editRankYearTransaction(requestDto);
+        }catch (Exception e){
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return message;
+    }
+
+    private MessageDTO editRankYearTransaction(EditRankYearRequestDto requestDto) throws Exception{
+
+        Integer yearId = requestDto.getYearId();
+        String userName = requestDto.getUserName();
+        User user = null;
+        List<SchoolSemesterDto> semesterList = requestDto.getSemesterList();
+
+        List<Class> classList = new ArrayList<>();
+        List<SchoolRankYear> schoolRankYearList = new ArrayList<>();
+
+        MessageDTO message = new MessageDTO();
+        SchoolYear schoolYear = null;
+
+        //check yearId null or not
+        if(yearId == null){
+            message = Constant.YEAR_ID_NULL;
+            return message;
+        }
+
+        if(semesterList == null){
+            message = Constant.SEMESTER_LIST_EMPTY;
+            return message;
+        }
+        try{
+            //check userName empty or not
+            if(userName.isEmpty()){
+                message = Constant.USERNAME_EMPTY;
+                return message;
+            }
+
+            user = userRepository.findUserByUsername(userName);
+            //check user null or not
+            if(user == null){
+                message = Constant.USER_NOT_EXIT;
+                return message;
+            }
+
+            //check user have permisson or not
+            if(user.getRole().getRoleId() != Constant.ROLEID_ADMIN){
+                message = Constant.NOT_ACCEPT_EDIT_RANK_YEAR;
+                return message;
+            }
+
+            schoolYear = schoolYearRepository.findById(yearId).orElse(null);
+
+            //check schoolYear exist with yearId
+            if(schoolYear == null){
+                message = Constant.SCHOOLYEAR_EMPTY;
+                return message;
+            }
+
+            classList = classRepository.findAll();
+
+            message = createOrEditSchoolRankYear(classList,semesterList,schoolRankYearList,yearId,message);
+        }catch (Exception e){
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            throw new MyException(message.getMessage());
+        }
+        return message;
+
+    }
+
+    private MessageDTO createRankYearTransaction(CreateRankYearRequestDto requestDto) throws Exception{
+
+        String userName = requestDto.getUserName();
+        Integer yearId = requestDto.getYearId();
+        List<SchoolSemesterDto> semesterList = requestDto.getSemesterList();
+
+        List<SchoolRankYear> schoolRankYearList = new ArrayList<>();
+        List<Class> classList = new ArrayList<>();
+
+        MessageDTO message = new MessageDTO();
+        User user = null;
+        SchoolYear schoolYear = null;
+
+        try {
+            //check userName empty or not
+            if(userName.isEmpty()){
+                message = Constant.USERNAME_EMPTY;
+                return message;
+            }
+
+            user = userRepository.findUserByUsername(userName);
+            //check user null or not
+            if(user == null){
+                message = Constant.USER_NOT_EXIT;
+                return message;
+            }
+
+            //check user have permisson or not
+            if(user.getRole().getRoleId() != Constant.ROLEID_ADMIN){
+                message = Constant.NOT_ACCEPT_CREATE_RANK_SEMESTER;
+                return message;
+            }
+
+            //check currentYearId null or not
+            if(yearId == null){
+                message = Constant.YEAR_ID_NULL;
+                return message;
+            }
+
+            schoolYear = schoolYearRepository.findById(yearId).orElse(null);
+
+            //check schoolYear exists or not
+            if(schoolYear == null){
+                message = Constant.SCHOOLYEAR_EMPTY;
+                return message;
+            }
+
+            //check dateList null or not
+            if(semesterList == null){
+                message = Constant.SEMESTER_LIST_EMPTY;
+                return message;
+            }
+
+            classList = classRepository.findAll();
+
+            message = createOrEditSchoolRankYear(classList,semesterList,schoolRankYearList,yearId,message);
+        }catch (Exception e){
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            throw new MyException(message.getMessage());
+        }
+        return  message;
+    }
+
+    private MessageDTO createOrEditSchoolRankYear(List<Class> classList, List<SchoolSemesterDto> semesterList, List<SchoolRankYear> schoolRankYearList, Integer yearId, MessageDTO message) throws Exception{
+
+        boolean check = false;
+        for(Class newClass : classList){
+            Double totalGrade = 0.0;
+            Integer totalRank = 0;
+
+            for(SchoolSemesterDto schoolSemesterDto : semesterList){
+                Integer isCheck = schoolSemesterDto.getIsCheck();
+                //check condition to create and edit rank month or not
+                if(isCheck == 1){
+                    check = true;
+                    SchoolSemester schoolSemester = schoolSemesterRepository.findSchoolSemesterBySemesterId(schoolSemesterDto.getSemesterId());
+                    //check schoolWeek exist or not
+                    if(schoolSemester != null){
+                        schoolSemester.setYearId(yearId);
+                        schoolSemesterRepository.save(schoolSemester);
+                        SchoolRankSemester schoolRankSemester = schoolRankSemesterRepository.findSchoolRankSemesterBySemesterIdAndClassId(schoolSemester.getSemesterId(),newClass.getClassId());
+
+                        if(schoolRankSemester != null){
+                            totalGrade += schoolRankSemester.getTotalGradeMonth();
+                            totalRank += schoolRankSemester.getTotalRankMonth();
+                        }
+                    }
+                }
+                //check condition to remove week in month
+                if(isCheck == 0){
+                    SchoolSemester schoolSemester = schoolSemesterRepository.findSchoolSemesterBySemesterId(schoolSemesterDto.getSemesterId());
+                    //check schoolWeek exist or not
+                    if(schoolSemester != null){
+                        schoolSemester.setYearId(0);
+                        schoolSemesterRepository.save(schoolSemester);
+                    }
+                }
+            }
+            //check to start create and edit rank
+            if(check){
+                SchoolRankYear schoolRankYear = new SchoolRankYear();
+
+                SchoolRankYearId schoolRankYearId = new SchoolRankYearId();
+                schoolRankYearId.setYEAR_ID(yearId);
+                schoolRankYearId.setSchoolClass(new Class(newClass.getClassId()));
+
+                schoolRankYear.setSchoolRankYearId(schoolRankYearId);
+                schoolRankYear.setTotalGradeSemesters(round(totalGrade));
+                schoolRankYear.setTotalRankSemester(totalRank);
+
+                schoolRankYearList.add(schoolRankYear);
+            }
+        }
+
+        for(SchoolRankYear schoolRankYear : schoolRankYearList){
+            Class newClass = classRepository.findById(schoolRankYear.getSchoolRankYearId().getSchoolClass().getClassId()).orElse(null);
+            if(newClass != null){
+                classList.remove(newClass);
+            }
+        }
+
+        //check schoolRankWeekList null or not
+        if((schoolRankYearList == null || schoolRankYearList.size() == 0)){
+            message = Constant.SCHOOL_RANK_YEAR_NULL;
+            throw new MyException(message.getMessage());
+        }
+
+        List<SchoolRankYear> newSchoolRankYearList1 = arrangeSchoolRankYear(schoolRankYearList);
+
+        for(int i = 0; i < newSchoolRankYearList1.size(); i++){
+            SchoolRankYear schoolRankYear = newSchoolRankYearList1.get(i);
+            schoolRankYearRepository.save(schoolRankYear);
+        }
+
+        message = Constant.SUCCESS;
+        return message;
+    }
+
+    private List<SchoolRankYear> arrangeSchoolRankYear(List<SchoolRankYear> schoolRankYearList) {
+        Collections.sort(schoolRankYearList, new Comparator<SchoolRankYear>() {
+            @Override
+            public int compare(SchoolRankYear o1, SchoolRankYear o2) {
+                return o2.getTotalGradeSemesters().compareTo(o1.getTotalGradeSemesters());
+            }
+        });
+        int rank = 1;
+        if(schoolRankYearList.size() == 1){
+            schoolRankYearList.get(0).setRank(rank);
+            return schoolRankYearList;
+        }
+        else {
+            int count = 0;
+            for (int i = 0; i < schoolRankYearList.size() - 1; i++) {
+                SchoolRankYear schoolRankYear = schoolRankYearList.get(i);
+                schoolRankYearList.get(i).setRank(rank);
+                SchoolRankYear schoolRankYear1 = schoolRankYearList.get(i + 1);
+                if (schoolRankYear1.getTotalGradeSemesters().compareTo(schoolRankYear.getTotalGradeSemesters()) == 0) {
+                    schoolRankYearList.get(i + 1).setRank(rank);
+                    count++;
+                } else {
+                    rank += count + 1;
+                    count = 0;
+                    schoolRankYearList.get(i + 1).setRank(rank);
+                }
+            }
+        }
+        return schoolRankYearList;
+    }
+    private double round(Double input) {
+        return (double) Math.round(input * 100) / 100;
     }
 
 }

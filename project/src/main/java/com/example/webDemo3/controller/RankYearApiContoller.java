@@ -1,9 +1,9 @@
 package com.example.webDemo3.controller;
 
+import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListMonthSchoolRankResponseDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListSemesterSchoolRankResponseDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ListMonthSchoolRankRequestDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewSemesterOfEditRankYearRequestDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.*;
 import com.example.webDemo3.service.manageSchoolRankYearSerivce.CreateAndEditSchoolRankYearService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,5 +43,29 @@ public class RankYearApiContoller {
     public ListSemesterSchoolRankResponseDto getEditSemesterList(@RequestBody ViewSemesterOfEditRankYearRequestDto module)
     {
         return createAndEditSchoolRankYearService.loadEditListSemester(module);
+    }
+
+    /**
+     * lamnt98
+     * 23/07
+     * catch request to creat rank year
+     * @return MessageDTO
+     */
+    @PostMapping("/createrankyear")
+    public MessageDTO createRankYear(@RequestBody CreateRankYearRequestDto module)
+    {
+        return createAndEditSchoolRankYearService.createRankYear(module);
+    }
+
+    /**
+     * lamnt98
+     * 24/07
+     * catch request to edit rank year
+     * @return MessageDTO
+     */
+    @PostMapping("/editrankyear")
+    public MessageDTO editrankyear(@RequestBody EditRankYearRequestDto module)
+    {
+        return createAndEditSchoolRankYearService.editRankYear(module);
     }
 }

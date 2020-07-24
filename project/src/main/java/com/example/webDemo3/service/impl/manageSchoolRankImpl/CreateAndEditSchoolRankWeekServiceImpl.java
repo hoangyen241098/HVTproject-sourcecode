@@ -388,7 +388,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
 
             //check user have permisson or not
             if(user.getRole().getRoleId() != Constant.ROLEID_ADMIN){
-                message = Constant.NOT_ACCEPT_CREATE_RANK_WEEK;
+                message = Constant.NOT_ACCEPT_EDIT_RANK_WEEK;
                 return message;
             }
 
@@ -470,7 +470,6 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
                 }
                 //check isCheck = 0 or not
                 if(isCheck == 0){
-                    //Float totalSubTractGrade = (float) 0;
                     violationClassList = violationClassRepository.findByDateClassAndStatus(date.getDate(),newClass.getClassId(),1);
 
                     for(ViolationClass violationClass: violationClassList){
