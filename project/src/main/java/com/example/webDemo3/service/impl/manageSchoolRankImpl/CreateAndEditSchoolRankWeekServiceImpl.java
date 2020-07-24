@@ -65,6 +65,9 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
     @Autowired
     private ViolationClassRequestRepository violationClassRequestRepository;
 
+    @Autowired
+    private SchoolYearRepository schoolYearRepository;
+
     /**
      * lamnt98
      * 22/07
@@ -145,6 +148,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         List<DateViolationClassDto> dateList = requestDto.getDateList();
         List<Class> classList = new ArrayList<>();
         SchoolWeek schoolWeek;
+        SchoolYear schoolYear;
         List<SchoolRankWeek> schoolRankWeekList = new ArrayList<>();
         Integer weekId;
         Double allTotalGrade;
@@ -181,6 +185,14 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
             //check currentYearId null or not
             if(currentYearId == null){
                 message = Constant.YEAR_ID_NULL;
+                return message;
+            }
+
+            schoolYear = schoolYearRepository.findById(currentYearId).orElse(null);
+
+            //check schoolYear exists or not
+            if(schoolYear == null){
+                message = Constant.SCHOOLYEAR_EMPTY;
                 return message;
             }
 

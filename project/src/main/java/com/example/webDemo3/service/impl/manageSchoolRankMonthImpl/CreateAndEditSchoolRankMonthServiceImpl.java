@@ -290,6 +290,7 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
 
         User user;
         SchoolMonth schoolMonth;
+        SchoolYear schoolYear;
         Integer monthId;
         List<Class> classList = new ArrayList<>();
         try{
@@ -312,7 +313,7 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
                 return message;
             }
 
-            //check userName empty or not
+            //check month empty or not
             if(month == null){
                 message = Constant.MONTH_NAME_EMPTY;
                 return message;
@@ -324,6 +325,14 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
                 return message;
             }
 
+            schoolYear = schoolYearRepository.findById(currentYearId).orElse(null);
+
+            //check schoolYear exists or not
+            if(schoolYear == null){
+                message = Constant.SCHOOLYEAR_EMPTY;
+                return message;
+            }
+
             //check dateList null or not
             if(weekList == null){
                 message = Constant.WEEK_LIST_EMPTY;
@@ -331,9 +340,9 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
             }
 
             schoolMonth = schoolMonthRepository.findSchoolMonthByMonthAndSemesterAndYearId(month,0,currentYearId);
-            //check week exist or not
+            //check month exist or not
             if(schoolMonth != null){
-                message = Constant.SCHOOL_WEEK_EXISTS;
+                message = Constant.SCHOOL_MONTH_EXISTS;
                 return message;
             }
 

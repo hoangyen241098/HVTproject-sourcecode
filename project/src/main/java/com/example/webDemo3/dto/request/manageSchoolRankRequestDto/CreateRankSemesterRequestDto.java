@@ -1,18 +1,18 @@
 package com.example.webDemo3.dto.request.manageSchoolRankRequestDto;
 
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.SchoolWeekDto;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.SchoolMonthDto;
 import lombok.Data;
 
 import java.util.List;
 
 /**
  * lamnt98
- * 23/07
+ * 24/07
  */
 @Data
-public class CreateRankMonthRequestDto {
+public class CreateRankSemesterRequestDto {
     private String userName;
-    private Integer month;
+    private Integer semester;
     private Integer currentYearId;
-    private List<SchoolWeekDto> weekList;
+    private List<SchoolMonthDto> monthList;
 }
