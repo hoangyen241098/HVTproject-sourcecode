@@ -1,16 +1,14 @@
 package com.example.webDemo3.dto.manageSchoolRankResponseDto;
 
 import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.entity.SchoolMonth;
 import lombok.Data;
-
 import java.util.List;
 
 /*
-kimpt142
+kimpt142 - 24/0
  */
 @Data
-public class ViewMonthListResponseDto {
-    private List<SchoolMonth> schoolMonthList;
+public class RankSemesterListResponseDto {
+    private List<RankSemesterResponseDto> rankSemesterList;
     private MessageDTO message;
 }

@@ -279,6 +279,10 @@ public class Constant {
             new MessageDTO(1,"Hãy nhập tên kỳ.");
     public static final MessageDTO SCHOOL_SEMESTER_NOT_EXISTS =
             new MessageDTO(1,"Tên kỳ trong năm không tồn tại.");
+    public static final MessageDTO  SEMESTERLIST_EMPTY=
+            new MessageDTO(1,"Danh sách học kỳ đang trống.");
+    public static final MessageDTO  SEMESTERID_EMPTY=
+            new MessageDTO(1,"Hãy chọn học kỳ cần tìm kiếm.");
     /**
      * Success message
      */

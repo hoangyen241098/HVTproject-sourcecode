@@ -6,6 +6,10 @@ import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.CreateRankSem
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ListMonthSchoolRankRequestDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewMonthOfEditRankSemesterRequestDto;
 import com.example.webDemo3.service.manageSchoolRankSemesterService.CreateAndEditSchoolRankSemester;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.*;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.LoadByYearIdRequestDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.SearchRankSemesterRequestDto;
+import com.example.webDemo3.service.manageSchoolRankSemesterService.ViewSchoolRankSemesterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +25,9 @@ public class RankSemesterApiController {
 
     @Autowired
     private CreateAndEditSchoolRankSemester createAndEditSchoolRankSemester;
+
+    @Autowired
+    private ViewSchoolRankSemesterService viewSchoolRankSemesterService;
     /**
      * lamnt98
      * 23/07
@@ -52,8 +59,46 @@ public class RankSemesterApiController {
      * @return ListMonthSchoolRankResponseDto
      */
     @PostMapping("/loadeditranksemester")
-    public ListMonthSchoolRankResponseDto getMonthList(@RequestBody ViewMonthOfEditRankSemesterRequestDto module)
-    {
+    public ListMonthSchoolRankResponseDto getMonthList(@RequestBody ViewMonthOfEditRankSemesterRequestDto module) {
         return createAndEditSchoolRankSemester.loadEditListMonth(module);
+    }
+
+    /**
+     * kimpt142
+     * 24/07
+     * catch request to get year list and semester list by year id
+     * @param model include current year id
+     * @return MessageDTO
+     */
+    @PostMapping("/loadranksemester")
+    public LoadRankSemesterResponseDto loadRankSemester(@RequestBody LoadByYearIdRequestDto model)
+    {
+        return viewSchoolRankSemesterService.loadRankSemesterPage(model);
+    }
+
+    /**
+     * kimpt142
+     * 24/07
+     * catch request to get semester list by year id
+     * @param model include year id
+     * @return ViewWeekListResponseDto
+     */
+    @PostMapping("/getsemesterlist")
+    public ViewSemesterListResponseDto getSemesterByYearId(@RequestBody LoadByYearIdRequestDto model)
+    {
+        return viewSchoolRankSemesterService.getSemesterListByYearId(model);
+    }
+
+    /**
+     * kimpt142
+     * 24/07
+     * catch request to get rank semester list by semester id
+     * @param model include semester id
+     * @return RankSemesterListResponseDto
+     */
+    @PostMapping("/searchranksemester")
+    public RankSemesterListResponseDto getSemesterByYearId(@RequestBody SearchRankSemesterRequestDto model)
+    {
+        return viewSchoolRankSemesterService.searchRankSemesterById(model);
     }
 }
