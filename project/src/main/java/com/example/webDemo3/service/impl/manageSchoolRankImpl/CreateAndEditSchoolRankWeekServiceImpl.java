@@ -338,8 +338,12 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
     }
 
     private MessageDTO edit(EditRankWeekRequestDto requestDto) throws Exception{
+
         Integer weekId = requestDto.getWeekId();
         Integer week = requestDto.getWeek();
+        String userName = requestDto.getUserName();
+        User user = null;
+
         List<DateViolationClassDto> dateList = requestDto.getDateList();
         MessageDTO message = new MessageDTO();
         SchoolWeek schoolWeek;
@@ -369,6 +373,25 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         }
 
         try{
+            //check userName empty or not
+            if(userName.isEmpty()){
+                message = Constant.USERNAME_EMPTY;
+                return message;
+            }
+
+            user = userRepository.findUserByUsername(userName);
+            //check user null or not
+            if(user == null){
+                message = Constant.USER_NOT_EXIT;
+                return message;
+            }
+
+            //check user have permisson or not
+            if(user.getRole().getRoleId() != Constant.ROLEID_ADMIN){
+                message = Constant.NOT_ACCEPT_CREATE_RANK_WEEK;
+                return message;
+            }
+
             schoolWeek = schoolWeekRepository.findById(weekId).orElse(null);
             //check schoolWeek exists or not
             if(schoolWeek == null){

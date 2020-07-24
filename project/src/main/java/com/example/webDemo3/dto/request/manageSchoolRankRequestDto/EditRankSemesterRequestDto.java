@@ -13,5 +13,6 @@ import java.util.List;
 public class EditRankSemesterRequestDto {
     private Integer semesterId;
     private Integer semester;
+    private String userName;
     private List<SchoolMonthDto> monthList;
 }

@@ -13,5 +13,6 @@ import java.util.List;
 public class EditRankWeekRequestDto {
     private Integer weekId;
     private Integer week;
+    private String userName;
     private List<DateViolationClassDto> dateList;
 }
