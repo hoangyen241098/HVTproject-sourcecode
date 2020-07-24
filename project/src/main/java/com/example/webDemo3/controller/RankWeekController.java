@@ -3,7 +3,6 @@ package com.example.webDemo3.controller;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListDateResponseDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewWeekListResponseDto;
-import com.example.webDemo3.dto.request.assignRedStarRequestDto.DownloadAssignRedStarRequestDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.CreateRankWeekRequestDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewWeekAnDateListRequestDto;
 import com.example.webDemo3.service.manageSchoolRank.CreateAndEditSchoolRankWeekService;
@@ -101,7 +100,7 @@ public class RankWeekController {
      * @return ViewWeekAndClassListResponseDto
      */
     @PostMapping("/viewweekandclasslist")
-    public ViewWeekAndClassListResponseDto getSchoolYearList(@RequestBody ViewWeekByYearRequestDto model)
+    public ViewWeekAndClassListResponseDto getSchoolYearList(@RequestBody LoadByYearIdRequestDto model)
     {
         return viewSchoolRankWeekService.loadRankWeekPage(model);
     }
@@ -161,7 +160,7 @@ public class RankWeekController {
      * @return ViewWeekAndClassListResponseDto
      */
     @PostMapping("/getweeklist")
-    public ViewWeekListResponseDto getWeekListByYearId(@RequestBody ViewWeekByYearRequestDto model)
+    public ViewWeekListResponseDto getWeekListByYearId(@RequestBody LoadByYearIdRequestDto model)
     {
         return viewSchoolRankWeekService.getWeekListByYearId(model);
     }

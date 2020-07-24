@@ -10,7 +10,7 @@ import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewWeekAndClassList
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewWeekListResponseDto;
 import com.example.webDemo3.dto.manageSchoolYearResponseDto.SchoolYearTableResponseDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.SearchRankWeekRequestDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewWeekByYearRequestDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.LoadByYearIdRequestDto;
 import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.entity.SchoolRankWeek;
 import com.example.webDemo3.entity.SchoolWeek;
@@ -50,7 +50,7 @@ public class ViewSchoolRankWeekServiceImpl implements ViewSchoolRankWeekService 
      * @return ViewWeekAndClassListResponseDto
      */
     @Override
-    public ViewWeekAndClassListResponseDto loadRankWeekPage(ViewWeekByYearRequestDto model) {
+    public ViewWeekAndClassListResponseDto loadRankWeekPage(LoadByYearIdRequestDto model) {
         ViewWeekAndClassListResponseDto responseDto = new ViewWeekAndClassListResponseDto();
         List<ClassResponseDto> classList = new ArrayList<>();
         ClassListResponseDto classListDto = classService.getClassList();
@@ -136,7 +136,7 @@ public class ViewSchoolRankWeekServiceImpl implements ViewSchoolRankWeekService 
      * @return week list
      */
     @Override
-    public ViewWeekListResponseDto getWeekListByYearId(ViewWeekByYearRequestDto model) {
+    public ViewWeekListResponseDto getWeekListByYearId(LoadByYearIdRequestDto model) {
         ViewWeekListResponseDto responseDto = new ViewWeekListResponseDto();
         MessageDTO message;
         Integer yearId = model.getYearId();
