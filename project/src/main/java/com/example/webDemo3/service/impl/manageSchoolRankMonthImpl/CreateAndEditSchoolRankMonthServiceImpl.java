@@ -75,7 +75,7 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
 
             weekList = schoolWeekRepository.findSchoolWeekNotRank(currentYearId);
 
-            if(weekList == null){
+            if(weekList == null || weekList.size() == 0){
                 message = Constant.LIST_WEEK_NULL;
                 responseDto.setMessage(message);
                 return  responseDto;
@@ -227,6 +227,8 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
 
         Integer monthId = requestDto.getMonthId();
         Integer month = requestDto.getMonth();
+        String userName = requestDto.getUserName();
+        User user = null;
         List<SchoolWeekDto> weekList = requestDto.getWeekList();
         List<Class> classList = new ArrayList<>();
         List<SchoolRankMonth> schoolRankMonthList = new ArrayList<>();
@@ -251,6 +253,25 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
         }
 
         try{
+            //check userName empty or not
+            if(userName.isEmpty()){
+                message = Constant.USERNAME_EMPTY;
+                return message;
+            }
+
+            user = userRepository.findUserByUsername(userName);
+            //check user null or not
+            if(user == null){
+                message = Constant.USER_NOT_EXIT;
+                return message;
+            }
+
+            //check user have permisson or not
+            if(user.getRole().getRoleId() != Constant.ROLEID_ADMIN){
+                message = Constant.NOT_ACCEPT_CREATE_RANK_MONTH;
+                return message;
+            }
+
             schoolMonth = schoolMonthRepository.findById(monthId).orElse(null);
 
             //check schoolMonth exist with monthId
@@ -309,7 +330,7 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
 
             //check user have permisson or not
             if(user.getRole().getRoleId() != Constant.ROLEID_ADMIN){
-                message = Constant.NOT_ACCEPT_CREATE_RANK_WEEK;
+                message = Constant.NOT_ACCEPT_CREATE_RANK_MONTH;
                 return message;
             }
 

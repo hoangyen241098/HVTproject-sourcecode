@@ -76,7 +76,7 @@ public class CreateAndEditSchoolRankSemesterServiceImpl implements CreateAndEdit
 
             monthList = schoolMonthRepository.findSchoolMonthNotRank(currentYearId);
 
-            if(monthList == null){
+            if(monthList == null || monthList.size() == 0){
                 message = Constant.LIST_MONTH_NULL;
                 responseDto.setMessage(message);
                 return  responseDto;
@@ -222,8 +222,12 @@ public class CreateAndEditSchoolRankSemesterServiceImpl implements CreateAndEdit
         return message;
     }
     private MessageDTO editRankSemesterTransaction(EditRankSemesterRequestDto requestDto)throws Exception{
+
         Integer semesterId = requestDto.getSemesterId();
         Integer semester = requestDto.getSemester();
+        String userName = requestDto.getUserName();
+        User user = null;
+
         List<SchoolMonthDto> monthList = requestDto.getMonthList();
         List<Class> classList = new ArrayList<>();
         List<SchoolRankSemester> schoolRankSemesterList = new ArrayList<>();
@@ -248,6 +252,25 @@ public class CreateAndEditSchoolRankSemesterServiceImpl implements CreateAndEdit
         }
 
         try{
+            //check userName empty or not
+            if(userName.isEmpty()){
+                message = Constant.USERNAME_EMPTY;
+                return message;
+            }
+
+            user = userRepository.findUserByUsername(userName);
+            //check user null or not
+            if(user == null){
+                message = Constant.USER_NOT_EXIT;
+                return message;
+            }
+
+            //check user have permisson or not
+            if(user.getRole().getRoleId() != Constant.ROLEID_ADMIN){
+                message = Constant.NOT_ACCEPT_CREATE_RANK_SEMESTER;
+                return message;
+            }
+
             schoolSemester = schoolSemesterRepository.findById(semesterId).orElse(null);
 
             //check schoolMonth exist with monthId
@@ -307,7 +330,7 @@ public class CreateAndEditSchoolRankSemesterServiceImpl implements CreateAndEdit
 
             //check user have permisson or not
             if(user.getRole().getRoleId() != Constant.ROLEID_ADMIN){
-                message = Constant.NOT_ACCEPT_CREATE_RANK_WEEK;
+                message = Constant.NOT_ACCEPT_CREATE_RANK_SEMESTER;
                 return message;
             }
 

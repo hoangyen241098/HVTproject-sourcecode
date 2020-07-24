@@ -20,4 +20,10 @@ public interface SchoolSemesterRepository extends JpaRepository<SchoolSemester,I
 
     @Query(value = "select s from SchoolSemester s where s.semester = :semester and s.semesterId <> :semesterId")
     SchoolSemester findExistBySemester(@Param("semester") Integer semester, @Param("semesterId") Integer semesterId);
+
+    @Query(value="select sw from SchoolSemester sw where sw.yearId = 0 order by sw.semester asc")
+    List<SchoolSemester> findSchoolSemesterNotRank();
+
+    @Query(value="select sw from SchoolSemester sw where sw.yearId = :yearId order by sw.semester asc")
+    List<SchoolSemester> findSchoolSemesterByYearId(@Param("yearId") Integer yearId);
 }

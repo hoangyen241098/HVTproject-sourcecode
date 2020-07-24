@@ -213,6 +213,12 @@ public class Constant {
             new MessageDTO(1,"Không có ngày chưa được xếp hạng.");
     public static final MessageDTO NOT_ACCEPT_CREATE_RANK_WEEK =
             new MessageDTO(1,"Bạn không có quyền tạo xếp hạng tuần.");
+    public static final MessageDTO NOT_ACCEPT_CREATE_RANK_MONTH =
+            new MessageDTO(1,"Bạn không có quyền tạo xếp hạng tháng.");
+    public static final MessageDTO NOT_ACCEPT_CREATE_RANK_SEMESTER =
+            new MessageDTO(1,"Bạn không có quyền tạo xếp hạng kỳ.");
+    public static final MessageDTO NOT_ACCEPT_CREATE_RANK_YEAR =
+            new MessageDTO(1,"Bạn không có quyền tạo xếp hạng năm.");
     public static final MessageDTO WEEK_NAME_EMPTY =
             new MessageDTO(1,"Hãy điền tên tuần.");
     public static final MessageDTO SCHOOL_WEEK_EXISTS =
@@ -283,6 +289,10 @@ public class Constant {
             new MessageDTO(1,"Danh sách học kỳ đang trống.");
     public static final MessageDTO  SEMESTERID_EMPTY=
             new MessageDTO(1,"Hãy chọn học kỳ cần tìm kiếm.");
+    public static final MessageDTO LIST_SEMESTER_NULL =
+            new MessageDTO(1,"Danh sách kỳ đang trống.");
+    public static final MessageDTO SEMESTER_LIST_EMPTY =
+            new MessageDTO(1,"Không có kỳ chưa được xếp hạng.");
     /**
      * Success message
      */
