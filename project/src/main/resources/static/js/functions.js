@@ -248,3 +248,6 @@ if (pathname != '/rankByWeek') {
 if (pathname != '/rankByMonth') {
     sessionStorage.removeItem('monthName');
 }
+if (pathname != '/rankBySemester') {
+    sessionStorage.removeItem('semesterName');
+}

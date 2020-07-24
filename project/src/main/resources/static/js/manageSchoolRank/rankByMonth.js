@@ -15,7 +15,7 @@ $.ajax({
     success: function (data) {
         var messageCode = data.message.messageCode;
         var message = data.message.message;
-        if (messageCode == 0) {
+        if (messageCode == 0 || messageCode == 1) {
             if (data.schoolYearList != null) {
                 $('#byYear').html('');
                 $.each(data.schoolYearList, function (i, item) {
@@ -29,16 +29,8 @@ $.ajax({
                 loadComboboxYear(yearId);
             } else {
                 $('#byYear').html(`<option value="err">Danh sách năm học trống.</option>`);
-                $('#byWeek').html(`<option value="err">Danh sách tháng đang trống.</option>`);
+                $('#byMonth').html(`<option value="err">Danh sách tháng đang trống.</option>`);
                 $('#byMonth').prop('disabled', true);
-            }
-            if (sessionStorage.getItem('monthName') != null) {
-                var monthName = 'Tháng ' + sessionStorage.getItem('monthName');
-                $("#byMonth option").filter(function () {
-                    return $(this).text() == monthName;
-                }).prop("selected", true);
-                var yearId = $("#byMonth option:selected").attr('name');
-                $("#byYear").val(yearId).change();
             }
         } else {
             if (data.schoolYearList == null) {
@@ -56,7 +48,7 @@ $.ajax({
     contentType: "application/json"
 });
 
-/*Get week list combo when change year combo box*/
+/*Get week list when change year combobox*/
 function loadComboboxYear(yearId) {
     $.ajax({
         url: '/api/rankmonth/getmonthlist',
@@ -76,11 +68,17 @@ function loadComboboxYear(yearId) {
                     $('#byMonth').html('');
                     $.each(data.schoolMonthList, function (i, item) {
                         if (i == 0) {
-                            $('#byMonth').append(`<option value="` + item.monthId + `" name="` + yearId + `" selected="selected">` + item.monthName + `</option>`);
+                            $('#byMonth').append(`<option value="` + item.monthId + `" name="` + item.yearId + `" selected="selected">Tháng ` + item.month + `</option>`);
                         } else {
-                            $('#byMonth').append(`<option value="` + item.monthId + `" name="` + yearId + `">` + item.monthName + `</option>`);
+                            $('#byMonth').append(`<option value="` + item.monthId + `" name="` + item.yearId + `">Tháng ` + item.month + `</option>`);
                         }
                     });
+                    if (sessionStorage.getItem('monthName') != null) {
+                        var monthName = 'Tháng ' + sessionStorage.getItem('monthName');
+                        $("#byMonth option").filter(function () {
+                            return $(this).text() == monthName;
+                        }).prop("selected", true);
+                    }
                 } else {
                     $('#byMonth').html(`<option value="err">Danh sách tuần đang trống.</option>`);
                 }
@@ -109,7 +107,6 @@ function search() {
         monthId: $('#byMonth option:selected').val(),
     }
     console.log(JSON.stringify(infoSearch));
-    console.log($('#byMonth option:selected').val())
     if ($('#byMonth option:selected').val() == 'err') {
         $('tbody').append(`<tr><td colspan="4" class="userlist-result">Không có tháng nào trong dữ liệu.</td></tr>`);
         $('#editRankBtn').addClass('hide');
@@ -197,13 +194,14 @@ $('#search').click(function (e) {
 $('#createRankBtn').on('click', function () {
     $('#createNewRank').modal('show');
     listCreate = [];
-    var currentYearId = {
+    var currentYear = {
         currentYearId: currentYearId,
     }
+    console.log(JSON.stringify(currentYear))
     $.ajax({
         url: '/api/rankmonth/loadweeklist',
         type: 'POST',
-        data: JSON.stringify(currentYearId),
+        data: JSON.stringify(currentYear),
         beforeSend: function () {
             $('body').addClass("loading")
         },
@@ -214,7 +212,8 @@ $('#createRankBtn').on('click', function () {
             var messageCode = data.message.messageCode;
             var message = data.message.message;
             if (messageCode == 0) {
-                if (data.weekList != null) {
+                console.log(data.weekList.length)
+                if (data.weekList.length != 0) {
                     $('#weekList').html('');
                     $('#weekList').append(`<h6>Các tuần áp dụng <span class="text-red">*</span></h6>`);
                     $.each(data.weekList, function (i, item) {
@@ -246,7 +245,7 @@ $('#createRankBtn').on('click', function () {
     });
 })
 
-/*Create rank week*/
+/*Create rank month*/
 $('#createNewRankBtn').on('click', function () {
     $('input[name=options]:checked').each(function (i) {
         listCreate.push({
@@ -306,7 +305,7 @@ $('#createNewRankBtn').on('click', function () {
 })
 
 /*=============Edit Rank=====================*/
-/*Load edit rank week*/
+/*Load edit rank month*/
 $('#editRankBtn').on('click', function () {
     listEdit = [];
     listEditOld = [];
@@ -333,9 +332,9 @@ $('#editRankBtn').on('click', function () {
             var messageCode = data.message.messageCode;
             var message = data.message.message;
             if (messageCode == 0) {
-                if (data.weekList != null) {
+                if (data.weekList.length != 0) {
                     $('#weekListEdit').html('');
-                    $('#weekListEdit').append(`<h6>Các ngày áp dụng <span class="text-red">*</span></h6>`);
+                    $('#weekListEdit').append(`<h6>Các tuần áp dụng <span class="text-red">*</span></h6>`);
                     $.each(data.weekList, function (i, item) {
                         $('#weekListEdit').append(`
                             <div class="form-check text-left my-1">
@@ -350,7 +349,7 @@ $('#editRankBtn').on('click', function () {
                             </div>
                         `);
                         if (item.isCheck == 1) {
-                            $('input[value=' + i + ']').prop('checked', true);
+                            $('input[value=' + item.weekId + ']').prop('checked', true);
                         }
                     });
                     $('input[name=editOptions]:checked').each(function (i) {
@@ -384,7 +383,7 @@ $('#editRankBtn').on('click', function () {
     });
 })
 
-/*Edit rank week*/
+/*Edit rank month*/
 $('#editRankBtnModal').on('click', function () {
     listEdit = [];
     var count = 0;
@@ -428,6 +427,7 @@ $('#editRankBtnModal').on('click', function () {
         var editRank = {
             monthId: $('#byMonth option:selected').val(),
             month: monthName,
+            userName: localStorage.getItem('username'),
             weekList: listEdit
         }
         console.log(JSON.stringify(editRank));
@@ -520,8 +520,10 @@ function dialogModal(modalName, img, message) {
     $('#' + modalName).modal('show');
 }
 
-/*Remove checkbox when close modal*/
+/*Remove checkbox and input when close modal*/
 $(document).on('hidden.bs.modal', '#createNewRank', '#editRank', function () {
     $('input[name=options]').prop('checked', false);
     $('input[name=editOptions]').prop('checked', false);
+    $('#newMonthName').val('');
+    $('#monthName').val('')
 });
