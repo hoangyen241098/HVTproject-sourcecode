@@ -91,7 +91,7 @@ public class AssignRedStarServiceImpl implements AssignRedStarService {
             }
 
             //check fromDate null or not
-            if(fromDate == null){
+            if(fromDate == null && listDate.size() != 0){
                 fromDate = listDate.get(0);
             }
 

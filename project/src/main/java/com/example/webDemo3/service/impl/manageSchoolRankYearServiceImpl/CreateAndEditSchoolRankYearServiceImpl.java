@@ -67,13 +67,6 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
                 }
             }
 
-            //check list school year which is not ranked empty or not
-            if(schoolYearList == null || schoolYearList.size() == 0){
-                message = Constant.SCHOOL_RANK_YEAR_EMPTY;
-                responseDto.setMessage(message);
-                return  responseDto;
-            }
-
             for(SchoolYear schoolYear : schoolYearList){
                 SchoolYearResponseDto schoolYearResponseDto = new SchoolYearResponseDto();
                 schoolYearResponseDto.setFromDate(schoolYear.getFromDate());
@@ -88,13 +81,6 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
 
             semesterList = schoolSemesterRepository.findSchoolSemesterNotRank();
 
-            //check list semester which is not ranked empty or not
-            if(semesterList == null || semesterList.size() == 0){
-                message = Constant.SEMESTER_LIST_EMPTY;
-                responseDto.setMessage(message);
-                return  responseDto;
-            }
-
             for(SchoolSemester schoolSemester : semesterList){
                 SchoolSemesterDto schoolSemesterDto = new SchoolSemesterDto();
                 schoolSemesterDto.setSemesterId(schoolSemester.getSemesterId());
@@ -105,9 +91,23 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
                 semesterListDto.add(schoolSemesterDto);
             }
 
+            responseDto.setSemesterList(semesterListDto);
+
+            //check list school year which is not ranked empty or not
+            if(schoolYearList == null || schoolYearList.size() == 0){
+                message = Constant.SCHOOL_RANK_YEAR_EMPTY;
+                responseDto.setMessage(message);
+                return  responseDto;
+            }
+            //check list semester which is not ranked empty or not
+            if(semesterList == null || semesterList.size() == 0){
+                message = Constant.SEMESTER_LIST_EMPTY;
+                responseDto.setMessage(message);
+                return  responseDto;
+            }
+
             message = Constant.SUCCESS;
             responseDto.setMessage(message);
-            responseDto.setSemesterList(semesterListDto);
         }catch (Exception e){
             message.setMessageCode(1);
             message.setMessage(e.toString());
