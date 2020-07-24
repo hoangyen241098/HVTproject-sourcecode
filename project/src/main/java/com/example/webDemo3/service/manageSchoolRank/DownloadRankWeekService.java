@@ -6,6 +6,6 @@ import java.io.ByteArrayInputStream;
 /*
 kimpt142 - 21/07
  */
-public interface DownloadRankWeekService {
+public interface DownloadRankService {
     ByteArrayInputStream downloadRankWeek(SearchRankWeekRequestDto model);
 }
