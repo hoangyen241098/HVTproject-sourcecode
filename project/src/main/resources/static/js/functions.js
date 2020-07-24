@@ -241,3 +241,10 @@ if (pathname != '/violationListOfClass') {
     sessionStorage.removeItem('classIdGrading');
     sessionStorage.removeItem('dateGrading');
 }
+if (pathname != '/rankByWeek') {
+    sessionStorage.removeItem('weekName');
+    sessionStorage.removeItem('weekId');
+}
+if (pathname != '/rankByMonth') {
+    sessionStorage.removeItem('monthName');
+}
