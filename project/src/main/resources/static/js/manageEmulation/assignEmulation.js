@@ -58,8 +58,8 @@ $.ajax({
     success: function (data) {
         var messageCode = data.message.messageCode;
         var message = data.message.message;
-        if (messageCode == 0) {
-            if (data.listClass != null) {
+        if (messageCode == 0 || messageCode == 1) {
+            if (data.listClass.length != 0) {
                 $("#classList").select2();
                 $("#classList").html(`<option value="0" selected="selected">Tất cả</option>`);
                 $.each(data.listClass, function (i, item) {
@@ -68,9 +68,9 @@ $.ajax({
                     );
                 });
             } else {
-                $("#classList").html(`<option>Danh sách lớp trống.</option>`);
+                $("#classList").html(`<option value="err" selected="selected">Danh sách lớp trống.</option>`);
             }
-            if (data.listDate != null) {
+            if (data.listDate.length != 0) {
                 $("#fromDate").select2();
                 $("#fromDate").html("");
                 $.each(data.listDate, function (i, item) {
@@ -85,17 +85,16 @@ $.ajax({
                     }
                 });
                 inforSearch.fromDate = $('#fromDate option:selected').val();
-                console.log(inforSearch.fromDate);
             } else {
-                $("#fromDate").html(`<option>Danh sách ngày trống.</option>`);
+                $("#fromDate").html(`<option value="err" selected="selected">Danh sách ngày trống.</option>`);
             }
 
         } else {
-            $("#fromDate").html(`<option>` + message + `</option>`);
+            $("#fromDate").html(`<option value="err" selected="selected">` + message + `</option>`);
         }
     },
     failure: function (errMsg) {
-        $("#fromDate").html(`<option>` + errMsg + `</option>`);
+        $("#fromDate").html(`<option value="err" selected="selected">` + errMsg + `</option>`);
     },
     dataType: "json",
     contentType: "application/json"
