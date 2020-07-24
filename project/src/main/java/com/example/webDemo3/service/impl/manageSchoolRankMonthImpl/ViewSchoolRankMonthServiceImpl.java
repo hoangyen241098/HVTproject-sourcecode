@@ -64,7 +64,8 @@ public class ViewSchoolRankMonthServiceImpl implements ViewSchoolRankMonthServic
             {
                 SchoolMonthResponseDto monthDto = new SchoolMonthResponseDto();
                 monthDto.setMonthId(item.getMonthId());
-                monthDto.setMonthName("Tuần " + item.getMonth());
+                monthDto.setMonthName("Tháng " + item.getMonth());
+                monthDto.setYearId(item.getYearId());
                 schoolMonthListDto.add(monthDto);
             }
         }
@@ -190,15 +191,6 @@ public class ViewSchoolRankMonthServiceImpl implements ViewSchoolRankMonthServic
         LoadRankMonthResponseDto responseDto = new LoadRankMonthResponseDto();
         MessageDTO message;
 
-        ViewMonthListResponseDto schoolMonthListDto = getMonthListByYearId(model);
-        if(schoolMonthListDto.getMessage().getMessageCode() == 1){
-            message = schoolMonthListDto.getMessage();
-            responseDto.setMessage(message);
-            return responseDto;
-        }else{
-            responseDto.setSchoolMonthList(schoolMonthListDto.getSchoolMonthList());
-        }
-
         //get year list
         SchoolYearTableResponseDto schoolYearListDto = schoolYearService.getSchoolYearTable();
         if(schoolYearListDto.getMessage().getMessageCode() == 1){
@@ -208,6 +200,16 @@ public class ViewSchoolRankMonthServiceImpl implements ViewSchoolRankMonthServic
         }
         else{
             responseDto.setSchoolYearList(schoolYearListDto.getSchoolYearList());
+        }
+
+        //get month list with yearid
+        ViewMonthListResponseDto schoolMonthListDto = getMonthListByYearId(model);
+        if(schoolMonthListDto.getMessage().getMessageCode() == 1){
+            message = schoolMonthListDto.getMessage();
+            responseDto.setMessage(message);
+            return responseDto;
+        }else{
+            responseDto.setSchoolMonthList(schoolMonthListDto.getSchoolMonthList());
         }
 
         message = Constant.SUCCESS;
