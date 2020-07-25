@@ -1,6 +1,7 @@
 package com.example.webDemo3.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
@@ -14,6 +15,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Value("${url}")
+    String[] url ;
 
     @Autowired
     UserService userService;
@@ -45,14 +49,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http
-                .cors() // Ngăn chặn request từ một domain khác
-                .and()
-                .authorizeRequests()
-                .antMatchers("/").permitAll() // Cho phép tất cả mọi người truy cập vào địa chỉ này
-                .anyRequest().authenticated(); // Tất cả các request khác đều cần phải xác thực mới được truy cập
+//                .cors() // Ngăn chặn request từ một domain khác
+//                .and()
+//                .authorizeRequests()
+//                .antMatchers(url ).permitAll() // Cho phép tất cả mọi người truy cập vào địa chỉ này
+//                .anyRequest().authenticated(); // Tất cả các request khác đều cần phải xác thực mới được truy cập
 
         // Thêm một lớp Filter kiểm tra jwt
+                .csrf()
+                .disable()
+                .antMatcher("/**")
+                .authorizeRequests()
+                .antMatchers(url)
+                .permitAll()
+                .antMatchers("/manageAccount").access("hasRole('ROLE_1')")
+                .anyRequest()
+                .authenticated()
+                .and()
+                .exceptionHandling()
+                .accessDeniedHandler(new CustomAccessDeniedHandler())
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }

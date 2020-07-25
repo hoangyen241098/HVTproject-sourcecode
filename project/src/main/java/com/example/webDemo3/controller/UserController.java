@@ -19,6 +19,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -83,29 +84,38 @@ public class UserController {
      * @param model is User entity include username and password
      * @return LoginDto with (1,success) if success
      */
+
+    @Autowired
+    PasswordEncoder pe;
+
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequestDto loginRequest, HttpSession session)
+    public LoginResponse login(@RequestBody LoginRequestDto model, HttpSession session)
     {
-//        LoginResponseDto responseDto = loginService.checkLoginUser(model);
+        LoginResponseDto responseDto = loginService.checkLoginUser(model);
 //        if(responseDto.getMessage().getMessageCode() == 0) {
 //            session.setAttribute("username", model.getUsername());
 //        }
-//        return responseDto;
-        // Xác thực từ username và password.
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
-                        loginRequest.getPassword()
-                )
-        );
-
-        // Nếu không xảy ra exception tức là thông tin hợp lệ
-        // Set thông tin authentication vào Security Context
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        // Trả về jwt cho người dùng.
-        String jwt = tokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
-        return new LoginResponse(jwt);
+//        String passWord = pe.encode(model.getPassword());
+        LoginResponse output = new LoginResponse(responseDto.getMessage(),
+                                responseDto.getRoleid(),
+                                responseDto.getCurrentYearId());
+        if(responseDto.getMessage().getMessageCode() == 0){
+            // Xác thực từ username và password.
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            model.getUsername(),
+                            model.getPassword()
+                    )
+            );
+            // Nếu không xảy ra exception tức là thông tin hợp lệ
+            // Set thông tin authentication vào Security Context
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            // Trả về jwt cho người dùng.
+            String jwt = tokenProvider.generateToken(
+                    (CustomUserDetails) authentication.getPrincipal());
+            output.setAccessToken(jwt);
+        }
+        return output;
     }
 
     /**

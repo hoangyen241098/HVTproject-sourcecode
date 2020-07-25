@@ -9,6 +9,7 @@ import com.example.webDemo3.entity.User;
 import com.example.webDemo3.repository.UserRepository;
 import com.example.webDemo3.service.manageAccountService.AddAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,9 @@ public class AddAccountServiceImpl implements AddAccountService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     /**
      * kimpt142
@@ -48,7 +52,7 @@ public class AddAccountServiceImpl implements AddAccountService {
             }
 
             if(!passWord.trim().equals("")) {
-                newUser.setPassword(passWord);
+                newUser.setPassword(passwordEncoder.encode(passWord));
             }
             else {
                 message = Constant.PASSWORD_EMPTY;

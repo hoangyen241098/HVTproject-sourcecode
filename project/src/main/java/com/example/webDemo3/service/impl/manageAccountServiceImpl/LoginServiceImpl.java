@@ -10,6 +10,7 @@ import com.example.webDemo3.repository.SchoolYearRepository;
 import com.example.webDemo3.repository.UserRepository;
 import com.example.webDemo3.service.manageAccountService.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -22,6 +23,9 @@ public class LoginServiceImpl implements LoginService {
 
     @Autowired
     private SchoolYearRepository schoolYearRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /**
      * kimpt142
@@ -58,7 +62,8 @@ public class LoginServiceImpl implements LoginService {
         else if(user.getStatus() != null && user.getStatus() == 1){
             message = Constant.USER_INACTIVE;
         }
-        else if(!u.getPassword().equals(user.getPassword())){
+        else if(!passwordEncoder.matches(u.getPassword(),user.getPassword())){
+            //if(!u.getPassword().equals(user.getPassword())){
             message = Constant.WRONG_PASSWORD;
         }
         else{
