@@ -3,7 +3,6 @@ package com.example.webDemo3.service.impl.manageSchoolRankYearServiceImpl;
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListSemesterSchoolRankResponseDto;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.SchoolMonthDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.SchoolSemesterDto;
 import com.example.webDemo3.dto.manageSchoolYearResponseDto.SchoolYearResponseDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.CreateRankYearRequestDto;
@@ -14,16 +13,12 @@ import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.exception.MyException;
 import com.example.webDemo3.repository.*;
 import com.example.webDemo3.service.manageSchoolRankYearSerivce.CreateAndEditSchoolRankYearService;
-import com.example.webDemo3.service.manageSchoolYearService.SchoolYearService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditSchoolRankYearService {
@@ -61,9 +56,20 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
             schoolYearList = schoolYearRepository.findAll();
             yearIdList = schoolRankYearRepository.getAllDistinctYearId();
 
-            for(SchoolYear schoolYear : schoolYearList){
-                if(yearIdList.contains(schoolYear.getYearID())){
-                    schoolYearList.remove(schoolYear);
+            Iterator<SchoolYear> iterator = schoolYearList.iterator();
+            while (iterator.hasNext()) {
+                SchoolYear schoolYear = iterator.next();
+                //check to remove schoolyear has yearId = 0
+                if(schoolYear.getYearID() == 0){
+                    iterator.remove();
+                }
+
+                //check list yearId empty or not
+                if(yearIdList.size() != 0){
+                    //check year has ranked or not
+                    if(yearIdList.contains(schoolYear.getYearID())){
+                        iterator.remove();
+                    }
                 }
             }
 
