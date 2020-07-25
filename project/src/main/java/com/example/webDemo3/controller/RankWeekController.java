@@ -100,9 +100,9 @@ public class RankWeekController {
      * @return ViewWeekAndClassListResponseDto
      */
     @PostMapping("/viewweekandclasslist")
-    public ViewWeekAndClassListResponseDto getSchoolYearList(@RequestBody LoadByYearIdRequestDto model)
+    public ViewWeekAndClassListResponseDto getSchoolYearList()
     {
-        return viewSchoolRankWeekService.loadRankWeekPage(model);
+        return viewSchoolRankWeekService.loadRankWeekPage();
     }
 
     /**

@@ -12,7 +12,7 @@ import java.io.ByteArrayInputStream;
 kimpt142 - 24/07
  */
 public interface ViewSchoolRankSemesterService {
-    LoadRankSemesterResponseDto loadRankSemesterPage(LoadByYearIdRequestDto model);
+    LoadRankSemesterResponseDto loadRankSemesterPage();
     ViewSemesterListResponseDto getSemesterListByYearId(LoadByYearIdRequestDto model);
     RankSemesterListResponseDto searchRankSemesterById(SearchRankSemesterRequestDto model);
     ByteArrayInputStream downloadRankSemester(SearchRankSemesterRequestDto model);

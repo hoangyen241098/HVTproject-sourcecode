@@ -106,8 +106,8 @@ public class RankMonthApiController {
      * @return responseDTO with a month list and messagedto
      */
     @PostMapping("/loadrankmonth")
-    public LoadRankMonthResponseDto loadRankMonth(@RequestBody LoadByYearIdRequestDto model) {
-        return viewSchoolRankMonthService.loadRankMonthPage(model);
+    public LoadRankMonthResponseDto loadRankMonth() {
+        return viewSchoolRankMonthService.loadRankMonthPage();
     }
 
     /**
