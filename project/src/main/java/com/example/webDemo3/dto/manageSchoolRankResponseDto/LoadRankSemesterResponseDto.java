@@ -12,6 +12,7 @@ kimpt142 - 24/07
  */
 @Data
 public class LoadRankSemesterResponseDto {
+    private Integer currentYearId;
     private List<SchoolYearResponseDto> schoolYearList;
     private List<SchoolSemester> schoolSemesterList;
     private MessageDTO message;
