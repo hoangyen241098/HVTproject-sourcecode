@@ -8,7 +8,6 @@ var rankOld = [];
 $.ajax({
     url: '/api/rankweek/viewweekandclasslist',
     type: 'POST',
-    data: JSON.stringify({yearId: localStorage.getItem('currentYearId')}),
     beforeSend: function () {
         $('body').addClass("loading")
     },
@@ -18,11 +17,12 @@ $.ajax({
     success: function (data) {
         var messageCode = data.message.messageCode;
         var message = data.message.message;
+        var currentYearId = data.currentYearId;
         if (messageCode == 0) {
             if (data.schoolYearList != null) {
                 $('#byYear').html('');
                 $.each(data.schoolYearList, function (i, item) {
-                    if (localStorage.getItem('currentYearId') == item.schoolYearId) {
+                    if (currentYearId == item.schoolYearId) {
                         $('#byYear').append(`<option value="` + item.schoolYearId + `" selected="selected">` + item.yearName + `</option>`);
                     } else {
                         $('#byYear').append(`<option value="` + item.schoolYearId + `">` + item.yearName + `</option>`);
@@ -194,27 +194,46 @@ function search() {
                     targets: 0,
                     createdCell: function (td, cellData, rowData, row, col) {
                         $(td).attr('data-column', rowData.classId);
+                        $(td).css('min-width', '150px');
+                    }
+                },
+                {
+                    targets: 1,
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        $(td).addClass('text-right');
                     }
                 },
                 {
                     targets: 2,
                     createdCell: function (td, cellData, rowData, row, col) {
                         $(td).attr('contenteditable', 'false');
-                        $(td).addClass('learningGrade');
+                        $(td).addClass('learningGrade text-right');
                     }
                 },
                 {
                     targets: 3,
                     createdCell: function (td, cellData, rowData, row, col) {
                         $(td).attr('contenteditable', 'false');
-                        $(td).addClass('movementGrade');
+                        $(td).addClass('movementGrade text-right');
                     }
                 },
                 {
                     targets: 4,
                     createdCell: function (td, cellData, rowData, row, col) {
                         $(td).attr('contenteditable', 'false');
-                        $(td).addClass('laborGrade');
+                        $(td).addClass('laborGrade text-right');
+                    }
+                },
+                {
+                    targets: 5,
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        $(td).addClass('text-right');
+                    }
+                },
+                {
+                    targets: 6,
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        $(td).addClass('font-500 text-right');
                     }
                 }
             ],
