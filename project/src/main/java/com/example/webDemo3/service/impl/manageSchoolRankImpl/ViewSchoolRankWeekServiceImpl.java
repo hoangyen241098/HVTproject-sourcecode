@@ -14,14 +14,16 @@ import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.LoadByYearIdR
 import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.entity.SchoolRankWeek;
 import com.example.webDemo3.entity.SchoolWeek;
+import com.example.webDemo3.entity.SchoolYear;
 import com.example.webDemo3.repository.SchoolRankWeekRepository;
 import com.example.webDemo3.repository.SchoolWeekRepository;
+import com.example.webDemo3.repository.SchoolYearRepository;
 import com.example.webDemo3.service.manageClassService.ClassService;
 import com.example.webDemo3.service.manageSchoolRank.ViewSchoolRankWeekService;
 import com.example.webDemo3.service.manageSchoolYearService.SchoolYearService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +45,9 @@ public class ViewSchoolRankWeekServiceImpl implements ViewSchoolRankWeekService 
     @Autowired
     private SchoolYearService schoolYearService;
 
+    @Autowired
+    private SchoolYearRepository schoolYearRepository;
+
     /**
      * kimpt142
      * 21/07
@@ -50,11 +55,12 @@ public class ViewSchoolRankWeekServiceImpl implements ViewSchoolRankWeekService 
      * @return ViewWeekAndClassListResponseDto
      */
     @Override
-    public ViewWeekAndClassListResponseDto loadRankWeekPage(LoadByYearIdRequestDto model) {
+    public ViewWeekAndClassListResponseDto loadRankWeekPage() {
         ViewWeekAndClassListResponseDto responseDto = new ViewWeekAndClassListResponseDto();
         List<ClassResponseDto> classList = new ArrayList<>();
         ClassListResponseDto classListDto = classService.getClassList();
         MessageDTO message;
+        Integer currentYearId = null;
 
         //get class list
         if (classListDto.getMessage().getMessageCode() == 0) {
@@ -72,19 +78,23 @@ public class ViewSchoolRankWeekServiceImpl implements ViewSchoolRankWeekService 
             responseDto.setMessage(message);
             return responseDto;
         }
-        else{
+        else {
             responseDto.setSchoolYearList(schoolYearListDto.getSchoolYearList());
         }
 
-        //get week list by yearid
-        ViewWeekListResponseDto schoolWeekListDto = getWeekListByYearId(model);
-        if (schoolWeekListDto.getMessage().getMessageCode() == 1) {
-            message = schoolWeekListDto.getMessage();
-            responseDto.setMessage(message);
-            return responseDto;
-        } else {
-            responseDto.setSchoolWeekList(schoolWeekListDto.getSchoolWeekList());
+        Date dateCurrent = new Date(System.currentTimeMillis());
+        SchoolYear schoolCurrent = schoolYearRepository.findSchoolYearsByDate(dateCurrent);
+        if(schoolCurrent != null) {
+            currentYearId = schoolCurrent.getYearID();
+            responseDto.setCurrentYearId(currentYearId);
         }
+
+        LoadByYearIdRequestDto yearIdDto = new LoadByYearIdRequestDto();
+        yearIdDto.setYearId(currentYearId);
+
+        //get week list by yearid
+        ViewWeekListResponseDto schoolWeekListDto = getWeekListByYearId(yearIdDto);
+        responseDto.setSchoolWeekList(schoolWeekListDto.getSchoolWeekList());
 
         message = Constant.SUCCESS;
         responseDto.setMessage(message);

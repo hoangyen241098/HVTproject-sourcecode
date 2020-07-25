@@ -10,7 +10,7 @@ import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.LoadByYearIdR
 kimpt142 - 21/07
  */
 public interface ViewSchoolRankWeekService {
-    ViewWeekAndClassListResponseDto loadRankWeekPage(LoadByYearIdRequestDto model);
+    ViewWeekAndClassListResponseDto loadRankWeekPage();
     RankWeekListResponseDto searchRankWeekByWeekAndClass(SearchRankWeekRequestDto model);
     ViewWeekListResponseDto getWeekListByYearId(LoadByYearIdRequestDto model);
 }

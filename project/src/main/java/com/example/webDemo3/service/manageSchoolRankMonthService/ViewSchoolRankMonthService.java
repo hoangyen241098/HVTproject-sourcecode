@@ -14,5 +14,5 @@ public interface ViewSchoolRankMonthService {
     ViewMonthListResponseDto getMonthListByYearId(LoadByYearIdRequestDto model);
     RankMonthListResponseDto searchRankMonthByMonthId(SearchRankMonthRequestDto model);
     ByteArrayInputStream downloadRankMonth(SearchRankMonthRequestDto model);
-    LoadRankMonthResponseDto loadRankMonthPage(LoadByYearIdRequestDto model);
+    LoadRankMonthResponseDto loadRankMonthPage();
 }

@@ -80,13 +80,12 @@ public class RankSemesterApiController {
      * kimpt142
      * 24/07
      * catch request to get year list and semester list by year id
-     * @param model include current year id
      * @return MessageDTO
      */
     @PostMapping("/loadranksemester")
-    public LoadRankSemesterResponseDto loadRankSemester(@RequestBody LoadByYearIdRequestDto model)
+    public LoadRankSemesterResponseDto loadRankSemester()
     {
-        return viewSchoolRankSemesterService.loadRankSemesterPage(model);
+        return viewSchoolRankSemesterService.loadRankSemesterPage();
     }
 
     /**

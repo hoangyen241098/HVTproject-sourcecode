@@ -12,6 +12,7 @@ kimpt142 - 21/07
  */
 @Data
 public class ViewWeekAndClassListResponseDto {
+    private Integer currentYearId;
     private List<SchoolYearResponseDto> schoolYearList;
     private List<SchoolWeek>  schoolWeekList;
     private List<ClassResponseDto> classList;

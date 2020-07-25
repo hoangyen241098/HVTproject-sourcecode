@@ -8,8 +8,10 @@ import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.LoadByYearIdR
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.SearchRankSemesterRequestDto;
 import com.example.webDemo3.entity.SchoolRankSemester;
 import com.example.webDemo3.entity.SchoolSemester;
+import com.example.webDemo3.entity.SchoolYear;
 import com.example.webDemo3.repository.SchoolRankSemesterRepository;
 import com.example.webDemo3.repository.SchoolSemesterRepository;
+import com.example.webDemo3.repository.SchoolYearRepository;
 import com.example.webDemo3.service.manageSchoolRankSemesterService.ViewSchoolRankSemesterService;
 import com.example.webDemo3.service.manageSchoolYearService.SchoolYearService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,17 +39,20 @@ public class ViewSchoolRankSemesterServiceImpl implements ViewSchoolRankSemester
     @Autowired
     private SchoolYearService schoolYearService;
 
+    @Autowired
+    private SchoolYearRepository schoolYearRepository;
+
     /**
      * kimpt142
      * 24/07
      * get year list and semester list by yearid
-     * @param model include yearid
      * @return schoolyearlist, semesterlist and message
      */
     @Override
-    public LoadRankSemesterResponseDto loadRankSemesterPage(LoadByYearIdRequestDto model) {
+    public LoadRankSemesterResponseDto loadRankSemesterPage() {
         LoadRankSemesterResponseDto responseDto = new LoadRankSemesterResponseDto();
         MessageDTO message;
+        Integer currentYearId = null;
 
         //get year list
         SchoolYearTableResponseDto schoolYearListDto = schoolYearService.getSchoolYearTable();
@@ -59,14 +65,19 @@ public class ViewSchoolRankSemesterServiceImpl implements ViewSchoolRankSemester
             responseDto.setSchoolYearList(schoolYearListDto.getSchoolYearList());
         }
 
-        ViewSemesterListResponseDto schoolSemesterListDto = getSemesterListByYearId(model);
-        if(schoolSemesterListDto.getMessage().getMessageCode() == 1){
-            message = schoolSemesterListDto.getMessage();
-            responseDto.setMessage(message);
-            return responseDto;
-        }else{
-            responseDto.setSchoolSemesterList(schoolSemesterListDto.getSchoolSemesterList());
+        Date dateCurrent = new Date(System.currentTimeMillis());
+        SchoolYear schoolCurrent = schoolYearRepository.findSchoolYearsByDate(dateCurrent);
+        if(schoolCurrent != null) {
+            currentYearId = schoolCurrent.getYearID();
+            responseDto.setCurrentYearId(currentYearId);
         }
+
+        LoadByYearIdRequestDto yearIdDto = new LoadByYearIdRequestDto();
+        yearIdDto.setYearId(currentYearId);
+
+        ViewSemesterListResponseDto schoolSemesterListDto = getSemesterListByYearId(yearIdDto);
+        responseDto.setSchoolSemesterList(schoolSemesterListDto.getSchoolSemesterList());
+
 
         message = Constant.SUCCESS;
         responseDto.setMessage(message);
