@@ -20,7 +20,7 @@ $.ajax({
         var messageCode = data.message.messageCode;
         var message = data.message.message;
         if (messageCode == 0) {
-            if (data.classList != null) {
+            if (data.classList.length != 0) {
                 $("#classList").select2();
                 $("#classList").html("");
                 $.each(data.classList, function (i, item) {
@@ -29,7 +29,7 @@ $.ajax({
                     `);
                 });
             } else {
-                $("#classList").html(`<option>Không có lớp nào.</option>`);
+                $("#classList").html(`<option value="err">Không có lớp nào.</option>`);
             }
             if (data.vioTypeAndVioList != null) {
                 $(".panel-default").html("");
@@ -115,10 +115,15 @@ $.ajax({
 
 /*Save Grading*/
 $('#saveGrading').on('click', function () {
+    var classId = $('#classList option:selected').val();
     getValueCheckbox();
     if (violationList.length != 0) {
         for (var i = 0; i < violationList.length; i++) {
-            if (violationList[i].note == "") {
+            if(classId == "err") {
+                dialogErr("/img/img-error.png", "Hãy chọn lớp.");
+                return false;
+            }
+            else if (violationList[i].note == "") {
                 dialogErr("/img/img-error.png", "Hãy điền đủ ghi chú cho các lỗi.");
                 return false;
             } else {
@@ -145,21 +150,21 @@ $('#saveGrading').on('click', function () {
                         }
                     });
                     $('#confirmModal .modal-body tbody').append(`
-            <tr>
-                <td>
-                    <p class="mb-0">` + description + `</p>
-                    <small class="text-red">` + violationList[i].note + `</small>
-                </td>
-                <td class="text-center">` + violationList[i].substractGrade + `</td>
-                <td class="text-center">` + violationList[i].quantity + `</td>
-                <td class="text-center">` + total + `</td>
-            </tr>                    
-            `);
+                        <tr>
+                            <td>
+                                <p class="mb-0">` + description + `</p>
+                                <small class="text-red">` + violationList[i].note + `</small>
+                            </td>
+                            <td class="text-center">` + violationList[i].substractGrade + `</td>
+                            <td class="text-center">` + violationList[i].quantity + `</td>
+                            <td class="text-center">` + total + `</td>
+                        </tr>                    
+                    `);
                 }
                 $('#confirm').unbind().on('click', function () {
                     var infoSave = {
                         username: username,
-                        classId: $('#classList option:selected').val(),
+                        classId: classId,
                         date: $('#datetime').val(),
                         roleId: roleId,
                         yearId: localStorage.getItem('currentYearId'),
@@ -184,7 +189,7 @@ $('#saveGrading').on('click', function () {
                                 $('#saveSuccess .modal-footer').html(`
                                     <a href="violationListOfClass" class="btn btn-danger">XEM VI PHẠM</a> 
                                     <a href="gradingToEmulation" class="btn btn-primary">ĐÓNG</a> `);
-                                sessionStorage.setItem('classIdGrading', $('#classList option:selected').val());
+                                sessionStorage.setItem('classIdGrading', classId);
                                 sessionStorage.setItem('dateGrading', $('#datetime').val());
                             } else {
                                 dialogErr("/img/img-error.png", message);
@@ -262,12 +267,12 @@ function getClass() {
 
                 } else {
                     $("#classList option").remove();
-                    $("#classList").append(`<option selected>` + message + `</option>`);
+                    $("#classList").append(`<option value="err" selected>` + message + `</option>`);
                 }
             },
             failure: function (errMsg) {
                 $("#classList option").remove();
-                $("#classList").append(`<option selected>` + errMsg + `</option>`);
+                $("#classList").append(`<option value="err" selected>` + errMsg + `</option>`);
             },
             dataType: "json",
             contentType: "application/json"

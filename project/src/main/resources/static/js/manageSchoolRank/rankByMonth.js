@@ -5,7 +5,6 @@ var currentYearId = localStorage.getItem('currentYearId');
 $.ajax({
     url: '/api/rankmonth/loadrankmonth',
     type: 'POST',
-    data: JSON.stringify({yearId: currentYearId}),
     beforeSend: function () {
         $('body').addClass("loading")
     },
@@ -15,11 +14,12 @@ $.ajax({
     success: function (data) {
         var messageCode = data.message.messageCode;
         var message = data.message.message;
+        var yearIdCurrent = data.currentYearId;
         if (messageCode == 0 || messageCode == 1) {
             if (data.schoolYearList != null) {
                 $('#byYear').html('');
                 $.each(data.schoolYearList, function (i, item) {
-                    if (currentYearId == item.schoolYearId) {
+                    if (yearIdCurrent == item.schoolYearId || currentYearId == item.schoolYearId) {
                         $('#byYear').append(`<option value="` + item.schoolYearId + `" selected="selected">` + item.yearName + `</option>`);
                     } else {
                         $('#byYear').append(`<option value="` + item.schoolYearId + `">` + item.yearName + `</option>`);
@@ -167,12 +167,25 @@ function search() {
                     targets: 0,
                     createdCell: function (td, cellData, rowData, row, col) {
                         $(td).attr('data-column', rowData.classId);
+                        $(td).css('min-width', '150px');
+                    }
+                },
+                {
+                    targets: 1,
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        $(td).addClass('text-right');
+                    }
+                },
+                {
+                    targets: 2,
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        $(td).addClass('text-right');
                     }
                 },
                 {
                     targets: 3,
                     createdCell: function (td, cellData, rowData, row, col) {
-                        $(td).addClass('font-500');
+                        $(td).addClass('font-500 text-right');
                     }
                 },
             ],

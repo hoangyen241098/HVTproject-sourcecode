@@ -24,7 +24,7 @@ $.ajax({
                         $('#byYear').append(`<option value="` + item.schoolYearId + `">` + item.yearName + `</option>`);
                     }
                 })
-                if(sessionStorage.getItem('yearId') != null) {
+                if (sessionStorage.getItem('yearId') != null) {
                     $('#byYear').val(sessionStorage.getItem('yearId')).change();
                 }
             } else {
@@ -101,12 +101,25 @@ function search() {
                     targets: 0,
                     createdCell: function (td, cellData, rowData, row, col) {
                         $(td).attr('data-column', rowData.classId);
+                        $(td).css('min-width', '150px');
+                    }
+                },
+                {
+                    targets: 1,
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        $(td).addClass('text-right');
+                    }
+                },
+                {
+                    targets: 2,
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        $(td).addClass('text-right');
                     }
                 },
                 {
                     targets: 3,
                     createdCell: function (td, cellData, rowData, row, col) {
-                        $(td).addClass('font-500');
+                        $(td).addClass('font-500 text-right');
                     }
                 },
             ],
@@ -145,7 +158,7 @@ $('#createRankBtn').on('click', function () {
             var messageCode = data.message.messageCode;
             var message = data.message.message;
             if (messageCode == 0 || messageCode == 1) {
-                if (data.schoolYearList.length != 0) {
+                if (data.schoolYearList != null) {
                     $('#yearName').html('');
                     $.each(data.schoolYearList, function (i, item) {
                         if (item.schoolYearId == currentYearId) {
@@ -155,9 +168,9 @@ $('#createRankBtn').on('click', function () {
                         }
                     });
                 } else {
-                    $('#yearName').html(`<option value="err" selected>` + message + `</option>`)
+                    $('#yearName').html(`<option value="err" selected>Không có năm học nào chưa được xếp hạng.</option>`)
                 }
-                if (data.semesterList.length != 0) {
+                if (data.semesterList != null) {
                     $('#semesterList').html('');
                     $('#semesterList').append(`<h6>Các học kỳ áp dụng <span class="text-red">*</span></h6>`);
                     $.each(data.semesterList, function (i, item) {
