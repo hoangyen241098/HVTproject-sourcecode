@@ -12,17 +12,10 @@
             <!-- start .container -->
             <div class="container">
                 <div class="row mt-3">
-                    <div class="col-md-6 col-sm-12">
-                        <div class="footer-widget">
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center">
                             <div class="widget-about">
                                 <img th:src="@{/img/logo.png}" alt="" class="img-fluid">
-                                <div class="copyright-text mt-3">
-                                    <p>© 2020 Bản quyền thuộc về</p>
-                                    <p><a href="#"><b>Trường THPT Chuyên Hoàng Văn Thụ</b></a></p>
-                                    <p><a href="#">Design by Group G24</a></p>
-                                </div>
                             </div>
-                        </div>
                         <!-- Ends: .footer-widget -->
                     </div>
                     <div class="col-md-6 col-sm-12">
@@ -42,7 +35,7 @@
                                 <div class="col-xl-12 col-m-12">
                                     <div class="footer-info d-flex">
                                         <div class="info-icon">
-                                            <i class="fa fa-phone"></i>
+                                            <i class="fa fa-phone" aria-hidden="true"></i>
                                         </div>
                                         <div class="info-text">
                                             <h6>Điện thoại:</h6>
@@ -73,6 +66,11 @@
             <!-- end /.container -->
         </div>
         <!-- end /.footer-big -->
+        <div class="copyright-text">
+            <div class="container">
+                <span>© Trường THPT Chuyên Hoàng Văn Thụ 2020 </span>
+            </div>
+        </div>
     </footer>
 </body>
 
