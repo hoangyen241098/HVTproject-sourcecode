@@ -175,6 +175,7 @@ public class WebController {
     public String viewRequest(Model model) {
         return "manageEmulation/viewRequest";
     }
+
     @GetMapping("/history")
     public String history(Model model) {
         return "manageEmulation/history";
@@ -216,5 +217,15 @@ public class WebController {
     @GetMapping("/createPost")
     public String createPost(Model model) {
         return "managePost/createPost";
+    }
+
+    @GetMapping("/managePost")
+    public String managePost(Model model) {
+        return "managePost/managePost";
+    }
+
+    @GetMapping("/postDetail")
+    public String postDetail(Model model) {
+        return "managePost/postDetail";
     }
 }

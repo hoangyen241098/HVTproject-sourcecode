@@ -326,16 +326,15 @@ body.loading .modal-loading {
 
 .footer-area {
     border-top: 1px solid #4267b2;
-}
-
-.footer-info {
-    align-items: center;
-    padding: 10px;
+    background: #4267b2;
+    color: #fff;
 }
 
 .footer-info i {
     font-size: 20px;
-    margin-right: 20px;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
 }
 
 .info-text h6,
@@ -343,13 +342,21 @@ body.loading .modal-loading {
     margin: 0;
 }
 
-.info-text a,
-.info-text a:hover {
-    color: black;
-}
-
 .info-icon {
     width: 50px;
+    height: 50px;
+}
+
+.info-text a {
+    color: #fff;
+}
+
+.info-icon .fa-phone {
+    transform: scaleX(-1);
+}
+
+.info-icon .fa-phone:before {
+    margin-left: 30px;
 }
 
 .widget-about {
@@ -360,15 +367,17 @@ body.loading .modal-loading {
     max-height: 90px;
 }
 
-.copyright-text p {
-    margin: 0;
+.copyright-text {
+    background-color: #4267b2;
+    filter: brightness(80%);
+    color: #ccc;
+    font-size: 12px;
+    height: 36px !important;
 }
 
-.copyright-text p a,
-.copyright-text p a:hover {
-    color: black;
+.copyright-text .container {
+    padding-top: 8px;
 }
-
 
 /*END Footer*/
 
@@ -1388,3 +1397,273 @@ fieldset .note {
 .post-subtitle {
     margin: 30px 0;
 }
+
+/*Slide Image*/
+.slider {
+    margin: 0 auto;
+    position: relative;
+}
+
+.slide_viewer {
+    height: 400px;
+    overflow: hidden;
+    position: relative;
+}
+
+.slide_group {
+    height: 100%;
+    position: relative;
+    width: 100%;
+}
+
+.slide {
+    display: none;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+}
+
+.slide:first-child {
+    display: block;
+}
+
+.slide img {
+    object-fit: cover;
+    width: 100%;
+    vertical-align: middle;
+    height: 100%;
+}
+
+.slide_buttons {
+    left: 0;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    bottom: 0;
+}
+
+a.slide_btn {
+    color: #474544;
+    font-size: 42px;
+    margin: 0 0.175em;
+    -webkit-transition: all 0.4s ease-in-out;
+    -moz-transition: all 0.4s ease-in-out;
+    -ms-transition: all 0.4s ease-in-out;
+    -o-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+}
+
+.slide_btn.active, .slide_btn:hover {
+    color: #428CC6;
+    cursor: pointer;
+    background: transparent !important;
+}
+
+.directional_nav {
+    margin: 0 auto;
+    position: relative;
+    top: -210px;
+}
+
+.previous_btn {
+    bottom: 0;
+    left: 40px;
+    margin: auto;
+    position: absolute;
+    top: 0;
+}
+
+.next_btn {
+    bottom: 0;
+    margin: auto;
+    position: absolute;
+    right: 40px;
+    top: 0;
+}
+
+.previous_btn, .next_btn {
+    cursor: pointer;
+    opacity: 0.5;
+    -webkit-transition: opacity 0.4s ease-in-out;
+    -moz-transition: opacity 0.4s ease-in-out;
+    -ms-transition: opacity 0.4s ease-in-out;
+    -o-transition: opacity 0.4s ease-in-out;
+    transition: opacity 0.4s ease-in-out;
+}
+
+.previous_btn i, .next_btn i {
+    font-size: 30px;
+}
+
+.previous_btn:hover, .next_btn:hover {
+    opacity: 1;
+}
+
+/*Home page*/
+.content-wrap {
+    padding: 20px;
+    padding-top: 55px;
+    margin: auto;
+}
+
+.post-gird {
+    margin-bottom: 30px;
+}
+
+.content-wrap .module-heading {
+    margin: 20px;
+}
+
+.content-wrap .card {
+    border: none;
+    color: black;
+}
+
+.card .img-post {
+    overflow: hidden;
+
+}
+
+.content-wrap .card img {
+    height: 300px;
+    object-fit: cover;
+    vertical-align: middle;
+    width: 100%;
+}
+
+.content-wrap .module-heading .heading {
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.module-heading .heading a, .module-heading .heading a:hover {
+    color: black;
+}
+
+.card-block .card-title {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+}
+
+.card-block .card-title:hover {
+    color: #388E3C;
+}
+
+.card-block .card-date {
+    font-weight: 300;
+    font-size: 11px;
+    line-height: 15px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.card-block .card-text {
+    font-family: Open Sans;
+    font-style: normal;
+    font-size: 14px;
+    color: #212121;
+    margin-top: 12px;
+}
+
+.card img:hover, .flex-card img:hover {
+    transform: scale(1.1);
+}
+
+.card img, .flex-card img {
+    transition: .3s ease-in-out;
+    transform: scale(1);
+}
+
+.card-120 img {
+    height: 120px !important;
+}
+
+.card-200 img {
+    height: 200px !important;
+}
+
+/*Manage post*/
+.panel-post {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    position: relative;
+}
+
+.panel-post-content {
+    width: calc(100% - 200px);
+    display: flex;
+}
+
+.panel-post-content .post-img {
+    margin-right: 15px;
+    width: 100%;
+}
+
+.panel-post-content img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.post-description .post-title {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+}
+
+.post-description .post-date {
+    font-weight: 300;
+    font-size: 11px;
+    line-height: 15px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.post-description .shortDes {
+    font-family: Open Sans;
+    font-style: normal;
+    font-size: 14px;
+    color: #212121;
+    margin-top: 12px;
+}
+
+.post-description .post-status {
+    color: green;
+}
+
+.panel-btn-view {
+    position: absolute;
+    right: 10px;
+    bottom: 5px;
+}
+/*Post Detail*/
+.post-subtitle-title h5{
+    color: #757575;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 26px;
+}
+.same-content{
+    padding-top: 50px;
+}
+.same-content h2{
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29px;
+    text-transform: uppercase;
+}
+
+

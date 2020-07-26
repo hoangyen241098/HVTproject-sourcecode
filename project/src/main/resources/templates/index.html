@@ -13,74 +13,325 @@
     <script th:src="@{/js/public/popper.min.js}"></script>
     <script th:src="@{/js/public/bootstrap.min.js}"></script>
     <!--Font-Awesome-->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"
-          type="text/css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"/>
     <link th:href="@{/css/style.css}" rel="stylesheet"/>
     <script type="text/javascript" th:src="@{/js/functions.js}"></script>
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
-<div class="container">
-    <br>
-    <h2>Module 1: Quản lý tài khoản</h2>
-    <div><a th:href="@{login}">Đăng nhập</a></div>
-    <div><a th:href="@{forgotPassword}">Quên mật khẩu</a></div>
-    <div><a th:href="@{changePassword}">Thay đổi mật khẩu</a></div>
-    <div><a th:href="@{userInformation}">Thông tin cá nhân</a></div>
-    <div><a th:href="@{manageAccount}">Quản lý tài khoản</a></div>
-    <div><a th:href="@{createAccount}">Tạo tài khoản</a></div>
-    <br>
-    <h2>Module 2: Quản lý giáo viên</h2>
-    <div><a th:href="@{manageTeacher}">Quản lý giáo viên</a></div>
-    <div><a th:href="@{createTeacher}">Thêm giáo viên</a></div>
-    <div><a th:href="@{teacherInformation}">Sửa thông tin giáo viên</a></div>
-    <br>
-    <h2>Module 3: Quản lý lớp</h2>
-    <div><a th:href="@{manageClass}">Quản lý lớp</a></div>
-    <div><a th:href="@{createClass}">Thêm lớp</a></div>
-    <div><a th:href="@{editClass}">Sửa thông tin lớp</a></div>
-    <div><a th:href="@{createGifftedClass}">Thêm hệ chuyên</a></div>
-    <div><a th:href="@{deleteGifftedClass}">Xóa hệ chuyên</a></div>
-    <br>
-    <h2>Module 4: Thời khóa biểu</h2>
-    <div><a th:href="@{timetableClass}">Thời khóa biểu của lớp</a></div>
-    <div><a th:href="@{timetableTeacher}">Thời khóa biểu của giáo viên</a></div>
-    <div><a th:href="@{manageTimetable}">Quản lý thời khóa biểu</a></div>
-    <br>
-    <h2>Module 5: Quản lý lỗi</h2>
-    <div><a th:href="@{violationList}">Danh sách lỗi vi phạm</a></div>
-    <div><a th:href="@{editViolation}">Chỉnh sửa thông tin lỗi vi phạm</a></div>
-    <div><a th:href="@{addViolation}">Thêm thông tin lỗi vi phạm</a></div>
-    <div><a th:href="@{editViolationType}">Chỉnh sửa thông tin nội quy</a></div>
-    <div><a th:href="@{addViolationType}">Thêm thông tin nội quy</a></div>
-    <br>
-    <h2>Module 6: Quản lý năm học</h2>
-    <div><a th:href="@{schoolYearList}">Quản lý năm học</a></div>
-    <div><a th:href="@{addSchoolYear}">Thêm năm học mới</a></div>
-    <div><a th:href="@{editSchoolYear}">Sửa thông tin năm học</a></div>
-    <br>
-    <h2>Module 7: Trực tuần</h2>
-    <div><a th:href="@{assignEmulation}">Xem phân công trực tuần</a></div>
-    <div><a th:href="@{gradingToEmulation}">Chấm điểm thi đua</a></div>
-    <div><a th:href="@{violationListOfClass}">Xem danh sách lỗi theo ngày</a></div>
-    <div><a th:href="@{viewRequest}">Xem yêu cầu thay đổi</a></div>
-    <div><a th:href="@{history}">Xem lịch sử</a></div>
-    <br>
-    <h2>Module 8: Quản lý thời gian</h2>
-    <div><a th:href="@{manageViolationEnteringTime}">Xem thời gian thực thi chấm điểm</a></div>
-    <div><a th:href="@{createViolationEnteringTime}">Thêm thời gian chấm</a></div>
-    <br>
-    <h2>Module 9: Quản lý xếp hạng</h2>
-    <div><a th:href="@{rankByWeek}">Xếp hạng theo tuần</a></div>
-    <div><a th:href="@{rankByMonth}">Xếp hạng theo tháng</a></div>
-    <div><a th:href="@{rankBySemester}">Xếp hạng theo học kỳ</a></div>
-    <div><a th:href="@{rankByYear}">Xếp hạng theo năm</a></div>
-    <br>
-    <h2>Module 10: Quản lý bài đăng</h2>
-    <div><a th:href="@{createPost}">Tạo bài viết</a></div>
-    <br>
+<div class="main-content">
+    <!--Side Photo-->
+    <div class="slider">
+        <div class="slide_viewer">
+            <div class="slide_group">
+                <div class="slide"><img src="https://picsum.photos/1200/800/?random" title="Silde Photo 1"></div>
+                <div class="slide"><img src="https://picsum.photos/1200/800/?random" title="Silde Photo 2"></div>
+                <div class="slide"><img src="https://picsum.photos/1200/800/?random" title="Silde Photo 3"></div>
+            </div>
+        </div>
+        <div class="slide_buttons"></div>
+        <div class="directional_nav">
+            <div class="previous_btn" title="Previous">
+                <i class="fa fa-angle-left"></i>
+            </div>
+            <div class="next_btn" title="Next">
+                <i class="fa fa-angle-right"></i>
+            </div>
+        </div><!-- End // .directional_nav -->
+    </div><!-- End // .slider -->
+
+    <div class="container">
+        <!--Module News-->
+        <div class="content-wrap">
+            <div class="container d-flex row">
+                <div class="post-gird col-md-6 col-sm-12">
+                    <a href="#" class="card">
+                        <div class="img-post">
+                            <img class="card-img-top" src="http://thpt.fpt.edu.vn/wp-content/uploads/THPT_FPT_Thu-cua-me-540x304.jpg">
+                        </div>
+                        <div class="card-block">
+                            <h3 class="card-title">Bức thư mẹ trải lòng sau 1 năm con học nội trú</h3>
+                            <div class="card-date">07.24.2020</div>
+                            <div class="card-text">Viết cho năm học nội trú đầu tiên của con! Mai là ngày tổng kết năm học lớp 10 của con tại THPT FPT, tôi cảm thấy thật nhẹ nhõm vì quyết định đúng đắn của mình khi cho con theo học tại mái trường này. Nhớ lại ngày đầu tiên khi con mới đi…</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 col-sm-12 d-flex flex-wrap">
+                    <div class="post-gird col-md-6">
+                        <a href="#" class="card card-120">
+                            <div class="img-post">
+                            <img class="card-img-top" src="http://thpt.fpt.edu.vn/wp-content/uploads/1-thptfpt-thivao-105-1594396057057-255x143.jpg">
+                            </div>
+                            <div class="card-block">
+                                <h3 class="card-title">“Cửa” nào cho phụ huynh ngoại tỉnh muốn cho con học cấp 3 tại Hà Nội?</h3>
+                                <div class="card-date">07.22.2020</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="post-gird col-md-6">
+                        <a href="#" class="card card-120">
+                            <div class="img-post">
+                                <img class="card-img-top" src="http://thpt.fpt.edu.vn/wp-content/uploads/THPT_FPT_Thi-pathway1-255x143.jpg">
+                            </div>
+                            <div class="card-block">
+                                <h3 class="card-title">Pathways – kỳ thi “đảo chiều thứ hạng” xếp lớp gây xôn xao cộng đồng FSchool ﻿</h3>
+                                <div class="card-date">07.21.2020</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="post-gird col-md-6">
+                        <a href="#" class="card card-120">
+                            <div class="img-post">
+                                <img class="card-img-top" src="http://thpt.fpt.edu.vn/wp-content/uploads/THPT_FPT_BTCT6-255x143.png">
+                            </div>
+                            <div class="card-block">
+                                <h3 class="card-title">Cách để xây dựng suy nghĩ tích cực</h3>
+                                <div class="card-date">07.18.2020</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="post-gird col-md-6">
+                        <a href="#" class="card card-120">
+                            <div class="img-post">
+                                <img class="card-img-top" src="http://thpt.fpt.edu.vn/wp-content/uploads/THPT-FPT-5-2-255x143.jpg">
+                            </div>
+                            <div class="card-block">
+                                <h3 class="card-title">Teen FSchool khoe tài năng trong đêm chung kết Prom Xavia Stella</h3>
+                                <div class="card-date">07.15.2020</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Module News-->
+        <div class="content-wrap pt-0">
+            <div class="container d-flex flex-wrap">
+                <div class="post-gird col-md-4">
+                    <a href="#" class="card card-200">
+                        <div class="img-post">
+                            <img class="card-img-top" src="http://thpt.fpt.edu.vn/wp-content/uploads/1-thptfpt-thivao-105-1594396057057-350x197.jpg">
+                        </div>
+                        <div class="card-block">
+                            <h3 class="card-title">Khốc liệt “cuộc chiến” thi vào lớp 10 công lập</h3>
+                            <div class="card-date">07.14.2020</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="post-gird col-md-4">
+                    <a href="#" class="card card-200">
+                        <div class="img-post">
+                            <img class="card-img-top" src="http://thpt.fpt.edu.vn/wp-content/uploads/thptfp-tkhimohinhtruyenthongkhonghopthoidocx-1593758867543-350x197.jpeg">
+                        </div>
+                        <div class="card-block">
+                            <h3 class="card-title">Mô hình trường “chuyên” mới trong thời đại 4.0</h3>
+                            <div class="card-date">07.14.2020</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="post-gird col-md-4">
+                    <a href="#" class="card card-200">
+                        <div class="img-post">
+                            <img class="card-img-top" src="http://thpt.fpt.edu.vn/wp-content/uploads/THPT_FPT_phuong-phap-3-t-ren-con-tu-lap-tu-tuoi-15-docx-1593000064915-350x197.jpeg">
+                        </div>
+                        <div class="card-block">
+                            <h3 class="card-title">Phương pháp 3T rèn con tự lập từ tuổi 15</h3>
+                            <div class="card-date">07.14.2020</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="post-gird col-md-4">
+                    <a href="#" class="card card-200">
+                        <div class="img-post">
+                            <img class="card-img-top" src="http://thpt.fpt.edu.vn/wp-content/uploads/THPT_FPT_Promm1890-350x197.jpg">
+                        </div>
+                        <div class="card-block">
+                            <h3 class="card-title">Prom THPT FPT: Chúng ta đều là những ngôi sao, toả sáng theo cách riêng của chính mình</h3>
+                            <div class="card-date">07.12.2020</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="post-gird col-md-4">
+                    <a href="#" class="card card-200">
+                        <div class="img-post">
+                            <img class="card-img-top" src="http://thpt.fpt.edu.vn/wp-content/uploads/THPT_FPT_Prom_Erik_sunihalinh6-350x197.jpg">
+                        </div>
+                        <div class="card-block">
+                            <h3 class="card-title">Đã mắt ngắm Teen THPT FPT “lên đồ” đi Prom đẹp hết nấc</h3>
+                            <div class="card-date">07.12.2020</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="post-gird col-md-4">
+                    <a href="#" class="card card-200">
+                        <div class="img-post">
+                            <img class="card-img-top" src="http://thpt.fpt.edu.vn/wp-content/uploads/THPT_FPT_prom-14-350x197.jpg">
+                        </div>
+                        <div class="card-block">
+                            <h3 class="card-title">Chung kết cuộc thi King&Queen Prom FSchool 2020 : Vương miện gọi tên Trần Thành – Lê Phương Anh</h3>
+                            <div class="card-date">07.12.2020</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="load-more text-center pb-5"><a href="#" class="btn btn-customer">Xem thêm</a></div>
+    </div>
+
+    <div class="container hide">
+        <br>
+        <h2>Module 1: Quản lý tài khoản</h2>
+        <div><a th:href="@{login}">Đăng nhập</a></div>
+        <div><a th:href="@{forgotPassword}">Quên mật khẩu</a></div>
+        <div><a th:href="@{changePassword}">Thay đổi mật khẩu</a></div>
+        <div><a th:href="@{userInformation}">Thông tin cá nhân</a></div>
+        <div><a th:href="@{manageAccount}">Quản lý tài khoản</a></div>
+        <div><a th:href="@{createAccount}">Tạo tài khoản</a></div>
+        <br>
+        <h2>Module 2: Quản lý giáo viên</h2>
+        <div><a th:href="@{manageTeacher}">Quản lý giáo viên</a></div>
+        <div><a th:href="@{createTeacher}">Thêm giáo viên</a></div>
+        <div><a th:href="@{teacherInformation}">Sửa thông tin giáo viên</a></div>
+        <br>
+        <h2>Module 3: Quản lý lớp</h2>
+        <div><a th:href="@{manageClass}">Quản lý lớp</a></div>
+        <div><a th:href="@{createClass}">Thêm lớp</a></div>
+        <div><a th:href="@{editClass}">Sửa thông tin lớp</a></div>
+        <div><a th:href="@{createGifftedClass}">Thêm hệ chuyên</a></div>
+        <div><a th:href="@{deleteGifftedClass}">Xóa hệ chuyên</a></div>
+        <br>
+        <h2>Module 4: Thời khóa biểu</h2>
+        <div><a th:href="@{timetableClass}">Thời khóa biểu của lớp</a></div>
+        <div><a th:href="@{timetableTeacher}">Thời khóa biểu của giáo viên</a></div>
+        <div><a th:href="@{manageTimetable}">Quản lý thời khóa biểu</a></div>
+        <br>
+        <h2>Module 5: Quản lý lỗi</h2>
+        <div><a th:href="@{violationList}">Danh sách lỗi vi phạm</a></div>
+        <div><a th:href="@{editViolation}">Chỉnh sửa thông tin lỗi vi phạm</a></div>
+        <div><a th:href="@{addViolation}">Thêm thông tin lỗi vi phạm</a></div>
+        <div><a th:href="@{editViolationType}">Chỉnh sửa thông tin nội quy</a></div>
+        <div><a th:href="@{addViolationType}">Thêm thông tin nội quy</a></div>
+        <br>
+        <h2>Module 6: Quản lý năm học</h2>
+        <div><a th:href="@{schoolYearList}">Quản lý năm học</a></div>
+        <div><a th:href="@{addSchoolYear}">Thêm năm học mới</a></div>
+        <div><a th:href="@{editSchoolYear}">Sửa thông tin năm học</a></div>
+        <br>
+        <h2>Module 7: Trực tuần</h2>
+        <div><a th:href="@{assignEmulation}">Xem phân công trực tuần</a></div>
+        <div><a th:href="@{gradingToEmulation}">Chấm điểm thi đua</a></div>
+        <div><a th:href="@{violationListOfClass}">Xem danh sách lỗi theo ngày</a></div>
+        <div><a th:href="@{viewRequest}">Xem yêu cầu thay đổi</a></div>
+        <div><a th:href="@{history}">Xem lịch sử</a></div>
+        <br>
+        <h2>Module 8: Quản lý thời gian</h2>
+        <div><a th:href="@{manageViolationEnteringTime}">Xem thời gian thực thi chấm điểm</a></div>
+        <div><a th:href="@{createViolationEnteringTime}">Thêm thời gian chấm</a></div>
+        <br>
+        <h2>Module 9: Quản lý xếp hạng</h2>
+        <div><a th:href="@{rankByWeek}">Xếp hạng theo tuần</a></div>
+        <div><a th:href="@{rankByMonth}">Xếp hạng theo tháng</a></div>
+        <div><a th:href="@{rankBySemester}">Xếp hạng theo học kỳ</a></div>
+        <div><a th:href="@{rankByYear}">Xếp hạng theo năm</a></div>
+        <br>
+        <h2>Module 10: Quản lý bài đăng</h2>
+        <div><a th:href="@{createPost}">Tạo bài viết</a></div>
+        <br>
+    </div>
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 <div class="modal-loading"></div>
+<script>
+    /*Slider Image*/
+    $('.slider').each(function () {
+        var $this = $(this);
+        var $group = $this.find('.slide_group');
+        var $slides = $this.find('.slide');
+        var bulletArray = [];
+        var currentIndex = 0;
+        var timeout;
+
+        function move(newIndex) {
+            var animateLeft, slideLeft;
+
+            advance();
+
+            if ($group.is(':animated') || currentIndex === newIndex) {
+                return;
+            }
+
+            bulletArray[currentIndex].removeClass('active');
+            bulletArray[newIndex].addClass('active');
+
+            if (newIndex > currentIndex) {
+                slideLeft = '100%';
+                animateLeft = '-100%';
+            } else {
+                slideLeft = '-100%';
+                animateLeft = '100%';
+            }
+
+            $slides.eq(newIndex).css({
+                display: 'block',
+                left: slideLeft
+            });
+            $group.animate({
+                left: animateLeft
+            }, function () {
+                $slides.eq(currentIndex).css({
+                    display: 'none'
+                });
+                $slides.eq(newIndex).css({
+                    left: 0
+                });
+                $group.css({
+                    left: 0
+                });
+                currentIndex = newIndex;
+            });
+        }
+
+        function advance() {
+            clearTimeout(timeout);
+            timeout = setTimeout(function () {
+                if (currentIndex < ($slides.length - 1)) {
+                    move(currentIndex + 1);
+                } else {
+                    move(0);
+                }
+            }, 4000);
+        }
+
+        $('.next_btn').on('click', function () {
+            if (currentIndex < ($slides.length - 1)) {
+                move(currentIndex + 1);
+            } else {
+                move(0);
+            }
+        });
+
+        $('.previous_btn').on('click', function () {
+            if (currentIndex !== 0) {
+                move(currentIndex - 1);
+            } else {
+                move($slides.length - 1);
+            }
+        });
+
+        $.each($slides, function (index) {
+            var $button = $('<a class="slide_btn">&bull;</a>');
+
+            if (index === currentIndex) {
+                $button.addClass('active');
+            }
+            $button.on('click', function () {
+                move(index);
+            }).appendTo('.slide_buttons');
+            bulletArray.push($button);
+        });
+
+        advance();
+    });
+</script>
 </body>
 </html>
