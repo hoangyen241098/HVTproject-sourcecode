@@ -2,13 +2,19 @@ package com.example.webDemo3.service.impl.manageNewletterServiceImpl;
 
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
+import com.example.webDemo3.dto.manageNewsletterResponseDto.NewsletterListResponseDto;
 import com.example.webDemo3.dto.request.manageNewsletterRequestDto.AddNewsletterRequestDto;
 import com.example.webDemo3.dto.request.manageNewsletterRequestDto.ConfirmRequestNewsletterDto;
 import com.example.webDemo3.dto.request.manageNewsletterRequestDto.EditNewsletterRequestDto;
+import com.example.webDemo3.dto.request.manageNewsletterRequestDto.SearchNewsByStatusAndDateRequestDto;
 import com.example.webDemo3.entity.Newsletter;
 import com.example.webDemo3.repository.NewsletterRepository;
 import com.example.webDemo3.service.manageNewsletterService.HandleNewsletterService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Column;
@@ -147,6 +153,48 @@ public class HandleNewsletterServiceImpl implements HandleNewsletterService {
 
         message = Constant.SUCCESS;
         return message;
+    }
+
+    /**
+     * kimpt142
+     * 27/07
+     * find newsletter list by status and create date
+     * @param model
+     * @return
+     */
+    @Override
+    public NewsletterListResponseDto searchNewsletterByStatusAndDate(SearchNewsByStatusAndDateRequestDto model) {
+        NewsletterListResponseDto responseDto = new NewsletterListResponseDto();
+
+        Integer status = model.getStatus();
+        Date createDate = model.getCreateDate();
+        MessageDTO message;
+
+        Page<Newsletter> pagedResult = null;
+        Pageable paging;
+        Integer pageSize = Constant.PAGE_SIZE;
+        Integer pageNumber = model.getPageNumber();
+
+        //check pageNumber null or not
+        if(pageNumber == null){
+            pageNumber = 0;
+        }
+
+        paging = PageRequest.of(pageNumber, pageSize);
+        pagedResult = newsletterRepository.findByStatusAndCreateDate(status, createDate, paging);
+
+        //check result when get list
+        if(pagedResult==null || pagedResult.getTotalElements() == 0){
+            message = Constant.NEWSLETTERLIST_EMPTY;
+            responseDto.setMessage(message);
+            return responseDto;
+        }
+
+        message = Constant.SUCCESS;
+        responseDto.setListLetter(pagedResult);
+        responseDto.setMessage(message);
+
+        return responseDto;
     }
 
     /**
