@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
+
 /**
  * lamnt98
  * 27/07
@@ -19,4 +21,9 @@ public interface NewsletterRepository extends JpaRepository<Newsletter,Integer> 
 
     @Query(value = "select n from Newsletter n where (:header is NULL or n.header like %:header%) and n.status = 1 ")
     Page<Newsletter> searchLetterbyHeader(@Param("header") String header, Pageable paging);
+
+    @Query(value = "select n from Newsletter n where (n.status = :status or :status is NULL ) "+
+            " and (n.createDate = :createDate or :createDate is NULL )")
+    Page<Newsletter> findByStatusAndCreateDate(@Param("status") Integer status,@Param("createDate") Date createDate ,Pageable paging);
+
 }

@@ -311,14 +311,32 @@ public class Constant {
             new MessageDTO(1,"Danh sách xếp hạng lớp theo năm trống.");
     public static final MessageDTO SCHOOL_YEAR_NOT_EXISTS =
             new MessageDTO(1,"Tên năm không tồn tại.");
+    public static final MessageDTO HEADER_EMPTY =
+            new MessageDTO(1,"Hãy nhập tiêu đề của bài viết.");
+    public static final MessageDTO HEADERIMAGE_EMPTY =
+            new MessageDTO(1,"Hãy nhập ảnh bìa của bài viết.");
+    public static final MessageDTO CONTENT_EMPTY =
+            new MessageDTO(1,"Hãy nhập nội dung của bài viết.");
+    public static final MessageDTO NOROLE_NEWSLETTER =
+            new MessageDTO(1,"Bạn không có quyền thêm/chỉnh sửa bài viết.");
+    public static final MessageDTO NEWSLETTERID_EMPTY =
+            new MessageDTO(1,"Hãy lựa chọn bài viết.");
+    public static final MessageDTO ADD_NEWSLETTER_FAIL =
+            new MessageDTO(1,"Tạo bài viết xảy ra lỗi.");
+    public static final MessageDTO EDIT_NEWSLETTER_FAIL =
+            new MessageDTO(1,"Chỉnh sửa bài viết xảy ra lỗi.");
+    public static final MessageDTO NEWSLETTER_STATUS_NULL =
+            new MessageDTO(1,"Hãy lựa chọn trạng thái.");
+    public static final MessageDTO NEWSLETTER_NULL =
+            new MessageDTO(1,"Không tìm thấy bài viết");
     public static final MessageDTO PAGE_NUMBER_NULL =
             new MessageDTO(1,"Hãy chọn trang.");
-    public static final MessageDTO NEW_LETTER_EMPTY =
-            new MessageDTO(1,"Không có kết quả.");
     public static final MessageDTO NEW_LETTER_ID_NULL =
             new MessageDTO(1,"Hãy chọn bài viết.");
     public static final MessageDTO NEW_LETTER_NOT_EXISTS =
             new MessageDTO(1,"Bài viết không tồn tại.");
+    public static final MessageDTO NEWSLETTERLIST_EMPTY =
+            new MessageDTO(1,"Danh sách bài viết trống.");
     /**
      * Success message
      */
