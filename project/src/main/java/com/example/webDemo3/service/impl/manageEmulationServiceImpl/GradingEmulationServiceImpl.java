@@ -142,7 +142,7 @@ public class GradingEmulationServiceImpl implements GradingEmulationService {
             message = Constant.VIOLATION_ID_NULL;
             return message;
         }
-        status = 0;
+        status = 1;
 
         message = validateEmulationService.checkRoleForAddViolationClass(username,roleId,classId, date);
         if(message.getMessageCode() == 0){
