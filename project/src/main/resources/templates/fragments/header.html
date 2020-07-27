@@ -27,6 +27,14 @@
 <header th:fragment="header">
     <nav class="navbar navbar-expand-lg top-navbar d-block myHeader" data-toggle="sticky-onscroll">
         <div class="container justify-content-end header-hotline">
+            <!--Search-->
+            <div class="widget_search">
+                <form aria-label="Search" role="search" title="Tìm kiếm bài viết" class="m-0">
+                    <input aria-label="Search" type="search" class="form-control form-search" name="s"
+                           value="Tìm kiếm" onfocus="if (this.value === 'Tìm kiếm') { this.value = ''; }"
+                           onblur="if (this.value === '') this.value='Tìm kiếm';">
+                </form>
+            </div>
             <!--Contact Number-->
             <div class="d-flex align-items-center contact-number">
                 <span class="icon">
@@ -56,18 +64,16 @@
                         <a class="nav-link active" th:href="@{/}">TRANG CHỦ</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="#">THỜI KHÓA BIỂU
-                            <i class="fa fa-caret-down"></i>
-                        </a>
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">THỜI KHÓA BIỂU</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" th:href="@{timetableClass}">Thời khóa biểu của lớp</a>
                             <a class="dropdown-item" th:href="@{timetableTeacher}">Thời khóa biểu của giáo viên</a>
-                            <a id="scheduleManagerMenu" class="dropdown-item" th:href="@{manageTimetable}">Quản lý thời
-                                khóa biểu</a>
+                            <a id="scheduleManagerMenu" class="dropdown-item" th:href="@{manageTimetable}">Quản lý thời khóa biểu</a>
                         </div>
                     </li>
+
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="#">TRỰC TUẦN<i class="fa fa-caret-down"></i></a>
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">TRỰC TUẦN</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" th:href="@{assignEmulation}">Xem phân công trực tuần</a>
                             <a class="dropdown-item" th:href="@{gradingToEmulation}">Chấm điểm thi đua</a>
@@ -76,8 +82,9 @@
                             <a class="dropdown-item" th:href="@{history}">Xem lịch sử</a>
                         </div>
                     </li>
+
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="#">XẾP HẠNG<i class="fa fa-caret-down"></i></a>
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">XẾP HẠNG</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" th:href="@{rankByWeek}">Xếp hạng theo tuần</a>
                             <a class="dropdown-item" th:href="@{rankByMonth}">Xếp hạng theo tháng</a>
@@ -172,7 +179,7 @@
                         <a class="nav-link" th:href="@{login}">ĐĂNG NHẬP</a>
                     </li>
                     <li class="nav-item dropdown" id="loginSuccessMenu">
-                        <a class="nav-link" href="#"></a>
+                        <a class="nav-link" href="#" ></a>
                         <div class="dropdown-menu">
                             <a th:href="@{userInformation}" class="dropdown-item">Thông tin tài khoản</a>
                             <a th:href="@{changePassword}" class="dropdown-item">Đổi mật khẩu</a>
