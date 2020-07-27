@@ -315,6 +315,10 @@ public class Constant {
             new MessageDTO(1,"Hãy chọn trang.");
     public static final MessageDTO NEW_LETTER_EMPTY =
             new MessageDTO(1,"Không có kết quả.");
+    public static final MessageDTO NEW_LETTER_ID_NULL =
+            new MessageDTO(1,"Hãy chọn bài viết.");
+    public static final MessageDTO NEW_LETTER_NOT_EXISTS =
+            new MessageDTO(1,"Bài viết không tồn tại.");
     /**
      * Success message
      */
