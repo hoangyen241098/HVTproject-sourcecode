@@ -331,6 +331,10 @@ public class Constant {
             new MessageDTO(1,"Không tìm thấy bài viết");
     public static final MessageDTO PAGE_NUMBER_NULL =
             new MessageDTO(1,"Hãy chọn trang.");
+    public static final MessageDTO NEW_LETTER_ID_NULL =
+            new MessageDTO(1,"Hãy chọn bài viết.");
+    public static final MessageDTO NEW_LETTER_NOT_EXISTS =
+            new MessageDTO(1,"Bài viết không tồn tại.");
     public static final MessageDTO NEWSLETTERLIST_EMPTY =
             new MessageDTO(1,"Danh sách bài viết trống.");
     /**
