@@ -2,10 +2,7 @@ package com.example.webDemo3.entity;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Date;
 
 /**
@@ -18,6 +15,7 @@ public class Newsletter {
 
     @Id
     @Column(name = "NEWSLETTER_ID")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer newsletterId;
 
     @Column(name = "FROM_USER")
@@ -40,6 +38,4 @@ public class Newsletter {
 
     @Column(name = "STATUS")
     private Integer status;
-
-
 }

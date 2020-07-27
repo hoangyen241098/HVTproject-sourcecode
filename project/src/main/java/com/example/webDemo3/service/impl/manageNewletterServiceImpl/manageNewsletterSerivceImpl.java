@@ -49,7 +49,7 @@ public class manageNewsletterSerivceImpl implements manageNewsletterService {
 
             //check result when get list
             if(pagedResult==null || pagedResult.getTotalElements() == 0){
-                message = Constant.NEW_LETTER_EMPTY;
+                message = Constant.NEWSLETTERLIST_EMPTY;
                 responseDto.setMessage(message);
                 return responseDto;
             }
