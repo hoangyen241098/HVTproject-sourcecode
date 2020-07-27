@@ -1,12 +1,13 @@
 package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.RankMonthListResponseDto;
 import com.example.webDemo3.dto.request.manageNewsletterRequestDto.AddNewsletterRequestDto;
 import com.example.webDemo3.dto.request.manageNewsletterRequestDto.ConfirmRequestNewsletterDto;
 import com.example.webDemo3.dto.request.manageNewsletterRequestDto.EditNewsletterRequestDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.SearchRankMonthRequestDto;
 import com.example.webDemo3.service.manageNewsletterService.HandleNewsletterService;
+import com.example.webDemo3.dto.manageNewsletterResponseDto.NewsletterListResponseDto;
+import com.example.webDemo3.dto.request.manageNewsletterRequestDto.LoadHomePageRequestDto;
+import com.example.webDemo3.service.manageNewsletterService.manageNewsletterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +23,9 @@ public class NewsletterApiController {
 
     @Autowired
     private HandleNewsletterService handleNewsletterService;
+
+    @Autowired
+    private manageNewsletterService manageNewsletterService;
 
     /**
      * kimpt142
@@ -54,8 +58,20 @@ public class NewsletterApiController {
      * @return messagedto
      */
     @PostMapping("/confirmnewsletter")
-    public MessageDTO confirmRequestNewsletter(@RequestBody ConfirmRequestNewsletterDto model)
-    {
+    public MessageDTO confirmRequestNewsletter(@RequestBody ConfirmRequestNewsletterDto model) {
         return handleNewsletterService.confirmRequestNewsletter(model);
+    }
+
+    /**
+     * lamnt98
+     * 27/07
+     * catch request from client to get all letter
+     * @param model
+     * @return NewsletterListResponseDto
+     */
+    @PostMapping("/loadhomepage")
+    public NewsletterListResponseDto loadHomePage(@RequestBody LoadHomePageRequestDto model)
+    {
+        return  manageNewsletterService.getAllLetter(model);
     }
 }
