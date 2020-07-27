@@ -177,7 +177,7 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
                     timetableRepository.save(tb);
                 } catch (Exception e) {
                     day ++;
-                    throw new MyException("không thêm được tkb ở lớp: "
+                    throw new MyException("không thêm được tkb sáng ở lớp: "
                             + lop + ", thứ:" + day + ", tiết: " + slot);
                 }
             }
@@ -281,7 +281,7 @@ public class AddTimeTableServiceImpl implements AddTimeTableService {
                     tb.setIsAdditional(isAdd);
                     timetableRepository.save(tb);
                 } catch (Exception e) {
-                    throw new MyException("không thêm được tkb ở lớp: "
+                    throw new MyException("không thêm được tkb chiều ở lớp: "
                             + lop + ", thứ:" + day + ", tiết: " + slot);
                 }
             }
