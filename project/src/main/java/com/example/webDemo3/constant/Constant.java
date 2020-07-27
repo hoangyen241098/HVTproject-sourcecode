@@ -311,6 +311,10 @@ public class Constant {
             new MessageDTO(1,"Danh sách xếp hạng lớp theo năm trống.");
     public static final MessageDTO SCHOOL_YEAR_NOT_EXISTS =
             new MessageDTO(1,"Tên năm không tồn tại.");
+    public static final MessageDTO PAGE_NUMBER_NULL =
+            new MessageDTO(1,"Hãy chọn trang.");
+    public static final MessageDTO NEW_LETTER_EMPTY =
+            new MessageDTO(1,"Không có kết quả.");
     /**
      * Success message
      */
