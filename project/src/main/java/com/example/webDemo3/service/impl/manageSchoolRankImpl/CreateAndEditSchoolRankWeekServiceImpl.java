@@ -359,7 +359,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
      * lamnt98
      * 29/07
      * get history of school week
-     * @return
+     * @return ViewSchoolWeekHistoryResponseDto
      */
     @Override
     public ViewSchoolWeekHistoryResponseDto viewSchoolWeekHistory(ViewSchoolWeekHistoryRequestDto requestDto) {
@@ -392,7 +392,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
             history = schoolWeek.getHistory();
 
             //check history is empty or not
-            if(history.isEmpty() || history == null){
+            if(history == null || history.isEmpty()){
                 message = Constant.HISTORY_IS_EMPTY;
                 responseDto.setMessage(message);
                 return responseDto;
@@ -441,6 +441,8 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
             message = Constant.WEEK_NAME_EMPTY;
             return message;
         }
+
+        //check creaDate null or not
         if(createDate == null){
             message = Constant.CREATE_DATE_NULL;
             return message;
@@ -602,7 +604,6 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
                 schoolRankWeek.setLearningGrade(learningGrade);
                 schoolRankWeek.setMovementGrade(movementGrade);
                 schoolRankWeek.setTotalGrade(TOTAL_GRADE);
-                //schoolRankWeek.setHistory(history);
 
                 schoolRankWeekList.add(schoolRankWeek);
             }
@@ -654,7 +655,6 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
                 schoolRankWeek.setLearningGrade(learningGrade);
                 schoolRankWeek.setMovementGrade(movementGrade);
                 schoolRankWeek.setTotalGrade(TOTAL_GRADE);
-                //schoolRankWeek.setHistory(history);
 
                 schoolRankWeekList.add(schoolRankWeek);
             }
