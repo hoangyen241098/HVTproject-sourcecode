@@ -267,7 +267,7 @@ public class SchoolYearServiceImpl implements SchoolYearService {
                     || oldToDate.before(dateCurrent))
             {
                 //if user change to date, error message
-                if(!sdf.format(fromDate).equalsIgnoreCase(sdf.format(oldFromDate))) {
+                if(!sdf.format(toDate).equalsIgnoreCase(sdf.format(oldToDate))) {
                     message = Constant.NO_EDIT_ENDDATE_SCHOOLYEAR;
                     return message;
                 }
