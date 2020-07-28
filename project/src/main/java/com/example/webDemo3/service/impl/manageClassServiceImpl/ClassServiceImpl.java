@@ -206,7 +206,7 @@ public class ClassServiceImpl implements ClassService {
                 if(userMonitor == null){
                     userMonitor = new User();
                 }
-                
+
                 userMonitor.setUsername(userName);
                 userMonitor.setClassSchool(saveClass);
                 userMonitor.setPassword("123@123a");

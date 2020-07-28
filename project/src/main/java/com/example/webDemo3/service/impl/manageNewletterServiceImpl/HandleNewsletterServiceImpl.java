@@ -2,6 +2,7 @@ package com.example.webDemo3.service.impl.manageNewletterServiceImpl;
 
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
+import com.example.webDemo3.dto.manageNewsletterResponseDto.AddNewsletterResponseDto;
 import com.example.webDemo3.dto.manageNewsletterResponseDto.NewsletterListResponseDto;
 import com.example.webDemo3.dto.request.manageNewsletterRequestDto.AddNewsletterRequestDto;
 import com.example.webDemo3.dto.request.manageNewsletterRequestDto.ConfirmRequestNewsletterDto;
@@ -37,7 +38,8 @@ public class HandleNewsletterServiceImpl implements HandleNewsletterService {
      * @return
      */
     @Override
-    public MessageDTO addNewsletter(AddNewsletterRequestDto model) {
+    public AddNewsletterResponseDto addNewsletter(AddNewsletterRequestDto model) {
+        AddNewsletterResponseDto responseDto = new AddNewsletterResponseDto();
         MessageDTO message;
 
         String username = model.getUsername();
@@ -48,7 +50,8 @@ public class HandleNewsletterServiceImpl implements HandleNewsletterService {
 
         message = checkRequestNewsletter(username, header, headerImage, content, roleId);
         if(message.getMessageCode() == 1){
-            return message;
+            responseDto.setMessage(message);
+            return responseDto;
         }
 
         Date currentDate = new Date(System.currentTimeMillis());
@@ -63,14 +66,17 @@ public class HandleNewsletterServiceImpl implements HandleNewsletterService {
         newsletter.setStatus(2);
 
         try{
-            newsletterRepository.save(newsletter);
+            newsletter = newsletterRepository.save(newsletter);
         }catch (Exception e){
             message = Constant.ADD_NEWSLETTER_FAIL;
-            return message;
+            responseDto.setMessage(message);
+            return responseDto;
         }
 
+        responseDto.setNewsletterId(newsletter.getNewsletterId());
         message = Constant.SUCCESS;
-        return message;
+        responseDto.setMessage(message);
+        return responseDto;
     }
 
     /**
