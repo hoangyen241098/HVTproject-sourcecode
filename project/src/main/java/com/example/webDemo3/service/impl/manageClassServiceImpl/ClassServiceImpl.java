@@ -183,11 +183,15 @@ public class ClassServiceImpl implements ClassService {
             if(model.getIsRedStar()){
                 requestDto = new GenerateNameRequestDto(3, classId);
                 for(int i=0;i<2;i++){
-                    User userRedStar = new User();
+                    User userRedStar;
                     String userName = generateAccountService.generateAccountName(requestDto).getUserName();
+                    userRedStar = userRepository.findUserByUsername(userName);
+                    if(userRedStar == null){
+                        userRedStar = new User();
+                    }
                     userRedStar.setUsername(userName);
                     userRedStar.setClassSchool(saveClass);
-                    userRedStar.setPassword("123@#123a");
+                    userRedStar.setPassword("123@123a");
                     userRedStar.setRole(new Role(3));
                     userRedStar.setStatus(0);
                     userRepository.save(userRedStar);
@@ -197,10 +201,15 @@ public class ClassServiceImpl implements ClassService {
             if(model.getIsMonitor()){
                 requestDto = new GenerateNameRequestDto(4, classId);
                 String userName = generateAccountService.generateAccountName(requestDto).getUserName();
-                User userMonitor = new User();
+                User userMonitor;
+                userMonitor = userRepository.findUserByUsername(userName);
+                if(userMonitor == null){
+                    userMonitor = new User();
+                }
+                
                 userMonitor.setUsername(userName);
                 userMonitor.setClassSchool(saveClass);
-                userMonitor.setPassword("123@#123a");
+                userMonitor.setPassword("123@123a");
                 userMonitor.setRole(new Role(4));
                 userMonitor.setStatus(0);
                 userRepository.save(userMonitor);
