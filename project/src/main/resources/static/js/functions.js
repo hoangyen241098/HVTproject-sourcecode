@@ -220,6 +220,14 @@ function limitedDate() {
     $('#toDate').attr('max', toYear + '-12-31');
 }
 
+/*Limited text*/
+function limitedText(str) {
+    if (str.length > 200) {
+        str = str.substring(0, 200) + '...'
+    }
+    return str;
+}
+
 // /*Clear session when leaving page*/
 var pathname = $(location).attr('pathname');
 if (pathname != '/teacherInformation') {
@@ -253,5 +261,11 @@ if (pathname != '/rankBySemester') {
 }
 if (pathname != '/rankByYear') {
     sessionStorage.removeItem('yearId');
+}
+if (pathname != '/postDetail') {
+    sessionStorage.removeItem('newsletterId');
+}
+if (pathname != '/editPost') {
+    sessionStorage.removeItem('newsletterIdEdit');
 }
 
