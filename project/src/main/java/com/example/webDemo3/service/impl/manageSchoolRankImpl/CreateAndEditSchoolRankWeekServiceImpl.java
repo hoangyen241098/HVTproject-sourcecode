@@ -454,7 +454,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
                     violationClassList = violationClassRepository.findByDateClassAndStatus(date.getDate(),newClass.getClassId(),1);
 
                     for(ViolationClass violationClass: violationClassList){
-                        ViolationClassRequest classRequest = violationClassRequestRepository.findClassRequestByIdAndStatus(Long.valueOf(violationClass.getViolation().getViolationId()),0);
+                        ViolationClassRequest classRequest = violationClassRequestRepository.findClassRequestByIdAndStatus(Long.valueOf(violationClass.getId()),0);
                         //check violation class request exist or not
                         if(classRequest != null){
                             String newMessage = Constant.RANK_HAS_VIOLATION_CLASS_REQUEST_NOT_EXCEPT_EXIST.getMessage();
