@@ -337,6 +337,10 @@ public class Constant {
             new MessageDTO(1,"Bài viết không tồn tại.");
     public static final MessageDTO NEWSLETTERLIST_EMPTY =
             new MessageDTO(1,"Danh sách bài viết trống.");
+    public static final MessageDTO CREATE_DATE_NULL =
+            new MessageDTO(1,"Hãy điền ngày tạo.");
+    public static final MessageDTO HISTORY_IS_EMPTY =
+            new MessageDTO(1,"Không có lịch sử.");
     /**
      * Success message
      */

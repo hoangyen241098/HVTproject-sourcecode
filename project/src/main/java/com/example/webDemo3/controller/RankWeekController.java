@@ -1,13 +1,10 @@
 package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListDateResponseDto;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewWeekListResponseDto;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.*;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.CreateRankWeekRequestDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewWeekAnDateListRequestDto;
 import com.example.webDemo3.service.manageSchoolRank.CreateAndEditSchoolRankWeekService;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.RankWeekListResponseDto;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewWeekAndClassListResponseDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.SearchRankWeekRequestDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.UpdateSchoolRankWeekRequestDto;
 import com.example.webDemo3.service.manageSchoolRank.DownloadRankWeekService;
@@ -163,5 +160,17 @@ public class RankWeekController {
     public ViewWeekListResponseDto getWeekListByYearId(@RequestBody LoadByYearIdRequestDto model)
     {
         return viewSchoolRankWeekService.getWeekListByYearId(model);
+    }
+
+    /**
+     * lamnt98
+     * 21/07
+     * catch request to get history of schoolWeek
+     * @return ViewSchoolWeekHistoryResponseDto
+     */
+    @PostMapping("/viewhistory")
+    public ViewSchoolWeekHistoryResponseDto viewSchoolWeekHistory(@RequestBody ViewSchoolWeekHistoryRequestDto module) {
+
+        return createAndEditSchoolRankWeekService.viewSchoolWeekHistory(module);
     }
 }
