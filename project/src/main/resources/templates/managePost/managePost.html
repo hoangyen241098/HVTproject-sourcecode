@@ -33,9 +33,9 @@
                     <div class="form-group text-left mb-1">
                         <label>Trạng thái:</label>
                         <select class="combobox form-control w-75" id="status">
-                            <option value="3">Tất cả</option>
-                            <option value="0" selected>Chưa duyệt</option>
-                            <option value="1">Đã đăng</option>
+                            <option value="">Tất cả</option>
+                            <option value="0" >Chưa duyệt</option>
+                            <option value="1" selected>Đã đăng</option>
                             <option value="2">Từ chối</option>
                         </select>
                     </div>
@@ -47,62 +47,17 @@
                     </div>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0 text-right">
-                    <button class="btn btn-search mr-0" id="search">Tìm kiếm</button>
+                    <div class="form-group text-left mb-1">
+                        <label>Người viết bài:</label>
+                        <input type="text" class="form-control w-75" id="createBy" placeholder="Người viết bài">
+                    </div>
                 </div>
+            </div>
+            <div class="table-title-2 pb-0">
+                <button class="btn btn-search mr-0" id="search">Tìm kiếm</button>
             </div>
         </div>
-        <div class="panel panel-default">
-            <div class="panel-post mb-3">
-                <div class="panel-post-content">
-                    <div class="post-img">
-                        <img src="http://thpt.fpt.edu.vn/wp-content/uploads/1-thptfpt-thivao-105-1594396057057-255x143.jpg" alt="">
-                    </div>
-                    <div class="post-description">
-                        <div class="post-title">“Cửa” nào cho phụ huynh ngoại tỉnh muốn cho con học cấp 3 tại Hà Nội?</div>
-                        <div class="post-date">07.22.2020</div>
-                        <div class="post-shortDes">Ngày càng nhiều phụ huynh và học sinh lớp 9 các tỉnh đổ dồn về Hà Nội tìm kiếm môi trường học tập mới với chất lượng và trải nghiệm học tập tốt hơn. </div>
-                        <div class="post-status font-500">Đã đăng</div>
-                    </div>
-                </div>
-                <div class="panel-btn-view">
-                    <a href="postDetail" class="btn btn-customer">XEM BÀI VIẾT</a>
-                </div>
-            </div>
-
-            <div class="panel-post mb-3">
-                <div class="panel-post-content">
-                    <div class="post-img">
-                        <img src="http://thpt.fpt.edu.vn/wp-content/uploads/1-thptfpt-thivao-105-1594396057057-255x143.jpg" alt="">
-                    </div>
-                    <div class="post-description">
-                        <div class="post-title">“Cửa” nào cho phụ huynh ngoại tỉnh muốn cho con học cấp 3 tại Hà Nội?</div>
-                        <div class="post-date">07.22.2020</div>
-                        <div class="post-shortDes">Ngày càng nhiều phụ huynh và học sinh lớp 9 các tỉnh đổ dồn về Hà Nội tìm kiếm môi trường học tập mới với chất lượng và trải nghiệm học tập tốt hơn. </div>
-                        <div class="post-status font-500">Đã đăng</div>
-                    </div>
-                </div>
-                <div class="panel-btn-view">
-                    <a href="postDetail" class="btn btn-customer">XEM BÀI VIẾT</a>
-                </div>
-            </div>
-
-            <div class="panel-post mb-3">
-                <div class="panel-post-content">
-                    <div class="post-img">
-                        <img src="http://thpt.fpt.edu.vn/wp-content/uploads/1-thptfpt-thivao-105-1594396057057-255x143.jpg" alt="">
-                    </div>
-                    <div class="post-description">
-                        <div class="post-title">“Cửa” nào cho phụ huynh ngoại tỉnh muốn cho con học cấp 3 tại Hà Nội?</div>
-                        <div class="post-date">07.22.2020</div>
-                        <div class="post-shortDes">Ngày càng nhiều phụ huynh và học sinh lớp 9 các tỉnh đổ dồn về Hà Nội tìm kiếm môi trường học tập mới với chất lượng và trải nghiệm học tập tốt hơn. </div>
-                        <div class="post-status font-500">Đã đăng</div>
-                    </div>
-                </div>
-                <div class="panel-btn-view">
-                    <a href="postDetail" class="btn btn-customer">XEM BÀI VIẾT</a>
-                </div>
-            </div>
-        </div>
+        <div class="panel panel-default pt-4"></div>
         <div class="table-paging">
         </div>
     </div>
