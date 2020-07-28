@@ -44,7 +44,7 @@ a:hover {
 .myHeader {
     background-color: #4267b2;
     position: relative;
-    padding: .5rem 1rem 0 1rem;
+    padding: 0 1rem;
 }
 
 .navbar-brand {
@@ -79,9 +79,19 @@ a:hover {
     border-radius: 0;
 }
 
-.dropdown-menu.show {
+#loginSuccessMenu .dropdown-menu.show {
     opacity: 1;
     visibility: visible;
+}
+
+.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+}
+
+#loginSuccessMenu .dropdown-menu {
+    opacity: 0;
+    visibility: hidden;
 }
 
 .dropdown-item:hover {
@@ -173,12 +183,38 @@ a:hover {
 }
 
 .contact-number {
-    padding-bottom: 10px;
-    padding-right: 20px;
+    padding: 2px 20px;
 }
 
 .header-hotline {
     border-bottom: 1px solid #ffffffb8;
+}
+.widget_search {
+    position: relative;
+}
+.widget_search form:before {
+    content: "\f002";
+    display: inline-block;
+    position: absolute;
+    top: 5px;
+    font-size: 12px;
+    left: 7px;
+    color: rgba(255, 255, 255, 0.7);
+    font-family: "Font Awesome 5 Free";
+    font-weight: bold;
+}
+.widget_search input[type=search] {
+    height: 28px;
+    width: 166px;
+    border-radius: 0;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: none;
+    font-family: Open Sans;
+    font-size: 16px;
+    line-height: 16px;
+    width: 166px;
+    color: rgba(255, 255, 255, 0.7);
+    padding-left: 24px;
 }
 
 .btn-login {
@@ -1647,18 +1683,25 @@ a.slide_btn {
     right: 10px;
     bottom: 5px;
 }
+#imagePreview {
+    max-height: 100px;
+    margin-top: 15px;
+}
+
 /*Post Detail*/
-.post-subtitle-title h5{
+.post-subtitle-title h5 {
     color: #757575;
     font-family: "Open Sans", sans-serif;
     font-weight: 400;
     font-size: 14px;
     line-height: 26px;
 }
-.same-content{
+
+.same-content {
     padding-top: 50px;
 }
-.same-content h2{
+
+.same-content h2 {
     font-family: "Fira Sans", sans-serif;
     font-weight: 700;
     font-size: 24px;
