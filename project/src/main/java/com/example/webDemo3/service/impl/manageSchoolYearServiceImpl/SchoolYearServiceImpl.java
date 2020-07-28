@@ -15,6 +15,7 @@ import com.example.webDemo3.service.manageSchoolYearService.SchoolYearService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -149,6 +150,14 @@ public class SchoolYearServiceImpl implements SchoolYearService {
             return message;
         }
 
+        Date dateCurrent = new Date(System.currentTimeMillis());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if(!sdf.format(dateCurrent).equalsIgnoreCase(sdf.format(fromDate))
+                && fromDate.before(dateCurrent)){
+            message = Constant.ADD_FROMDATE_SMALLER_CURRENT;
+            return message;
+        }
+
         schoolYear.setFromYear(fromYear);
         schoolYear.setToYear(toYear);
         schoolYear.setFromDate(fromDate);
@@ -214,15 +223,6 @@ public class SchoolYearServiceImpl implements SchoolYearService {
             return message;
         }
 
-        Date dateCurrent = new Date(System.currentTimeMillis());
-        SchoolYear schoolCurrent = schoolYearRepository.findSchoolYearsByDate(dateCurrent);
-        if(schoolCurrent!=null && schoolCurrent.getYearID() == schoolYearId){
-            if(fromDate.after(dateCurrent)){
-                message = Constant.FROMDATE_GREATER_CURRENTDATE;
-                return message;
-            }
-        }
-
         SchoolYear schoolYearListByFromDate = schoolYearRepository.findSchoolYearsByDate(fromDate);
         if(schoolYearListByFromDate != null && schoolYearListByFromDate.getYearID() != schoolYearId){
             message = Constant.FROMDATE_EXIST;
@@ -233,6 +233,53 @@ public class SchoolYearServiceImpl implements SchoolYearService {
         if(schoolYearListByToDate != null && schoolYearListByToDate.getYearID() != schoolYearId){
             message = Constant.TODATE_EXIST;
             return message;
+        }
+
+        Date dateCurrent = new Date(System.currentTimeMillis());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        schoolYear = schoolYearRepository.findById(schoolYearId).orElse(null);
+        if(schoolYear != null){
+            Date oldFromDate = schoolYear.getFromDate();
+            Date oldToDate = schoolYear.getToDate();
+
+            //check oldFromDate <= currentDate
+            if(sdf.format(dateCurrent).equalsIgnoreCase(sdf.format(oldFromDate))
+                    || oldFromDate.before(dateCurrent))
+            {
+                //if user change from date, error message
+                if(!sdf.format(fromDate).equalsIgnoreCase(sdf.format(oldFromDate))) {
+                    message = Constant.NO_EDIT_STARTDATE_SCHOOLYEAR;
+                    return message;
+                }
+            }
+            else{
+                //validate new from date must be greater than current date
+                if(!sdf.format(dateCurrent).equalsIgnoreCase(sdf.format(fromDate)) &&
+                        fromDate.before(dateCurrent)){
+                    message = Constant.EDIT_FROMDATE_SMALLER_CURRENT;
+                    return message;
+                }
+            }
+
+            //check oldToDate <= currentDate
+            if(sdf.format(dateCurrent).equalsIgnoreCase(sdf.format(oldToDate))
+                    || oldToDate.before(dateCurrent))
+            {
+                //if user change to date, error message
+                if(!sdf.format(fromDate).equalsIgnoreCase(sdf.format(oldFromDate))) {
+                    message = Constant.NO_EDIT_ENDDATE_SCHOOLYEAR;
+                    return message;
+                }
+            }
+            else{
+                //validate new to date must be greater than current date
+                if(!sdf.format(dateCurrent).equalsIgnoreCase(sdf.format(toDate)) &&
+                        toDate.before(dateCurrent)){
+                    message = Constant.EDIT_TODATE_SMALLER_CURRENT;
+                    return message;
+                }
+            }
         }
 
         schoolYear.setYearID(schoolYearId);

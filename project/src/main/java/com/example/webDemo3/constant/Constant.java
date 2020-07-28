@@ -337,6 +337,16 @@ public class Constant {
             new MessageDTO(1,"Bài viết không tồn tại.");
     public static final MessageDTO NEWSLETTERLIST_EMPTY =
             new MessageDTO(1,"Danh sách bài viết trống.");
+    public static final MessageDTO ADD_FROMDATE_SMALLER_CURRENT =
+            new MessageDTO(1,"Bạn không thể tạo năm với ngày nhỏ hơn hiện tại.");
+    public static final MessageDTO EDIT_FROMDATE_SMALLER_CURRENT =
+            new MessageDTO(1,"Bạn không thể sửa năm với ngày nhỏ hơn hiện tại.");
+    public static final MessageDTO EDIT_TODATE_SMALLER_CURRENT =
+            new MessageDTO(1,"Bạn không thể sửa ngày của năm học nhỏ hơn ngày hôm nay.");
+    public static final MessageDTO NO_EDIT_STARTDATE_SCHOOLYEAR =
+            new MessageDTO(1,"Bạn không thể chỉnh sửa ngày bắt đầu.");
+    public static final MessageDTO NO_EDIT_ENDDATE_SCHOOLYEAR =
+            new MessageDTO(1,"Bạn không thể chỉnh sửa ngày kết thúc.");
     /**
      * Success message
      */
