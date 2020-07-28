@@ -1,6 +1,7 @@
 package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.MessageDTO;
+import com.example.webDemo3.dto.manageNewsletterResponseDto.AddNewsletterResponseDto;
 import com.example.webDemo3.dto.request.manageNewsletterRequestDto.*;
 import com.example.webDemo3.service.manageNewsletterService.HandleNewsletterService;
 import com.example.webDemo3.dto.manageNewsletterResponseDto.NewsletterListResponseDto;
@@ -35,7 +36,7 @@ public class NewsletterApiController {
      * @return messagedto
      */
     @PostMapping("/addnewsletter")
-    public MessageDTO addNewsletter(@RequestBody AddNewsletterRequestDto model)
+    public AddNewsletterResponseDto addNewsletter(@RequestBody AddNewsletterRequestDto model)
     {
         return handleNewsletterService.addNewsletter(model);
     }
