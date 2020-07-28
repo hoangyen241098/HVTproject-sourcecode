@@ -20,7 +20,8 @@ $(document).ready(function () {
         $("#scheduleManagerMenu").removeClass("show");
     }
     $("#logout").click(function () {
-        localStorage.clear();
+        //localStorage.clear();
+        logout();
     })
 
     $('#adminMenu').on('click', function () {
@@ -240,4 +241,32 @@ if (pathname != '/editSchoolYear') {
 if (pathname != '/violationListOfClass') {
     sessionStorage.removeItem('classIdGrading');
     sessionStorage.removeItem('dateGrading');
+}
+
+function logout() {
+    $.ajax({
+        type: 'POST',
+        url: "/api/user/logout",
+       // data: JSON.stringify(user),
+        beforeSend: function () {
+            $('body').addClass("loading")
+        },
+        complete: function () {
+            $('body').removeClass("loading")
+        },
+        success: function (data) {
+            if(data != null && data.messageCode === 0){
+                localStorage.clear();
+                // localStorage.removeItem("userInfo")
+                // this.$cookies.remove("access_token")
+                // this.$cookies.remove("token_provider")
+                // window.location.href = "/"
+            }
+        },
+        failure: function (errMsg) {
+            $('.login-err').text(errMsg);
+        },
+        dataType: "json",
+        contentType: "application/json"
+    });
 }

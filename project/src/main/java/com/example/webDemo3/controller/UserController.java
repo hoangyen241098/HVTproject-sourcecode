@@ -1,5 +1,6 @@
 package com.example.webDemo3.controller;
 
+import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.manageAccountResponseDto.LoginResponseDto;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageAccountResponseDto.ViewPerInforResponseDto;
@@ -20,11 +21,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @RestController
@@ -118,6 +122,21 @@ public class UserController {
         return output;
     }
 
+    @PostMapping(value = "/logout")
+    public MessageDTO logout(HttpServletRequest request, HttpServletResponse response){
+        MessageDTO message = new MessageDTO();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+            message = Constant.SUCCESS;
+            return message;
+        }else {
+            message.setMessageCode(1);
+            message.setMessage("Authentication is not exist");
+            return message;
+        }
+    }
+
     /**
      * kimpt142
      * 23/6/2020
@@ -125,18 +144,18 @@ public class UserController {
      * @param session save username
      * @return message
      */
-    @PostMapping("/logout")
-    public MessageDTO logout(HttpSession session)
-    {
-        MessageDTO message = new MessageDTO();
-        if(session.getAttribute("username") != null){
-            session.removeAttribute("username");
-            message.setMessageCode(0);
-            message.setMessage("Thành công");
-            return message;
-        }
-        return message;
-    }
+//    @PostMapping("/logout")
+//    public MessageDTO logout(HttpSession session)
+//    {
+//        MessageDTO message = new MessageDTO();
+//        if(session.getAttribute("username") != null){
+//            session.removeAttribute("username");
+//            message.setMessageCode(0);
+//            message.setMessage("Thành công");
+//            return message;
+//        }
+//        return message;
+//    }
 
 
     /**
