@@ -30,7 +30,7 @@ $(document).ready(function () {
         $(this).find('.mega-menu').toggleClass('show');
         $(this).find('.fa').toggleClass('up');
     })
-    $('.dropdown').on('click', function () {
+    $('#loginSuccessMenu').on('click', function () {
         $('.mega-menu.show').removeClass('show');
         $('.dropdown-menu.show').not($(this).find('.dropdown-menu')).removeClass('show');
         $('.nav-link .fa').not($(this).find('.fa')).removeClass('up');
@@ -254,3 +254,4 @@ if (pathname != '/rankBySemester') {
 if (pathname != '/rankByYear') {
     sessionStorage.removeItem('yearId');
 }
+
