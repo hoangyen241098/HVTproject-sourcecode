@@ -277,6 +277,9 @@ public class CreateAndEditSchoolRankSemesterServiceImpl implements CreateAndEdit
             if(schoolSemester == null){
                 message = Constant.SCHOOL_SEMESTER_NOT_EXISTS;
                 return message;
+            }else if(schoolSemester.getYearId() != 0){
+                message = Constant.RANKSEMESTER_NOT_EDIT;
+                return message;
             }
 
             //check exist schoolMonth with month name

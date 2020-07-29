@@ -6,6 +6,7 @@ import com.example.webDemo3.dto.manageSchoolRankResponseDto.*;
 import com.example.webDemo3.dto.manageSchoolYearResponseDto.SchoolYearTableResponseDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.LoadByYearIdRequestDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.SearchRankSemesterRequestDto;
+import com.example.webDemo3.entity.SchoolMonth;
 import com.example.webDemo3.entity.SchoolRankSemester;
 import com.example.webDemo3.entity.SchoolSemester;
 import com.example.webDemo3.entity.SchoolYear;
@@ -135,6 +136,15 @@ public class ViewSchoolRankSemesterServiceImpl implements ViewSchoolRankSemester
             message = Constant.SEMESTERID_EMPTY;
             resposeDto.setMessage(message);
             return resposeDto;
+        }
+
+        //check semester ranked or not
+        SchoolSemester checkSchoolSemester =  schoolSemesterRepository.findSchoolSemesterBySemesterId(semesterId);
+        if(checkSchoolSemester != null && checkSchoolSemester.getYearId() != 0){
+            resposeDto.setCheckEdit(1);
+        }
+        else{
+            resposeDto.setCheckEdit(0);
         }
 
         List<SchoolRankSemester> schoolRankSemesterList = schoolRankSemesterRepository.findAllBySchoolRankSemesterId(semesterId);
