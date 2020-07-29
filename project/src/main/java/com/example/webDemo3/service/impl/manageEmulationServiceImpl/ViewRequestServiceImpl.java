@@ -69,6 +69,12 @@ public class ViewRequestServiceImpl implements ViewRequestService {
         Integer classId = viewRequest.getClassId();
         Integer status = viewRequest.getStatus();
         Date createDate = viewRequest.getCreateDate();
+        String createBy = viewRequest.getCreateBy();
+
+        if(createBy == null){
+            createBy = "";
+        }
+
         Class newClass = null;
         Integer pageSize = Constant.PAGE_SIZE;
         Integer pageNumber = viewRequest.getPageNumber();
@@ -90,7 +96,7 @@ public class ViewRequestServiceImpl implements ViewRequestService {
 
             paging = PageRequest.of(pageNumber, pageSize, Sort.by("dateChange").descending());
 
-            pagedResultRequest = getListPageViolationClassRequestWithCondition(createDate, status, classId, paging);
+            pagedResultRequest = getListPageViolationClassRequestWithCondition(createDate, status, classId, createBy, paging);
 
             //check pagedResultRequest null or not
             if(pagedResultRequest != null){
@@ -127,24 +133,24 @@ public class ViewRequestServiceImpl implements ViewRequestService {
         return responseDto;
     }
 
-    public Page<ViolationClassRequest> getListPageViolationClassRequestWithCondition(Date createDate, Integer status, Integer classId, Pageable paging) {
+    public Page<ViolationClassRequest> getListPageViolationClassRequestWithCondition(Date createDate, Integer status, Integer classId, String createBy, Pageable paging) {
         Page<ViolationClassRequest> pagedResultRequest = null;
         try {
             switch (status) {
                 case 0: {
-                    pagedResultRequest = violationClassRequestRepository.findViolationClassRequestByConditionAndStatus(classId, createDate, 0, paging);
+                    pagedResultRequest = violationClassRequestRepository.findViolationClassRequestByConditionAndStatus(classId, createDate, createBy, 0, paging);
                     break;
                 }
                 case 1: {
-                    pagedResultRequest = violationClassRequestRepository.findViolationClassRequestByConditionAndStatus(classId, createDate, 2, paging);
+                    pagedResultRequest = violationClassRequestRepository.findViolationClassRequestByConditionAndStatus(classId, createDate, createBy, 2, paging);
                     break;
                 }
                 case 2: {
-                    pagedResultRequest = violationClassRequestRepository.findViolationClassRequestByConditionAndStatus(classId, createDate, 1, paging);
+                    pagedResultRequest = violationClassRequestRepository.findViolationClassRequestByConditionAndStatus(classId, createDate, createBy, 1, paging);
                     break;
                 }
                 default: {
-                    pagedResultRequest = violationClassRequestRepository.findViolationClassRequestByCondition(classId,createDate, paging);
+                    pagedResultRequest = violationClassRequestRepository.findViolationClassRequestByCondition(classId,createDate,createBy, paging);
                     //pagedResultRequest = violationClassRequestRepository.findAllByCondition(paging);
                 }
             }

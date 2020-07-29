@@ -23,7 +23,10 @@ public interface NewsletterRepository extends JpaRepository<Newsletter,Integer> 
     Page<Newsletter> searchLetterbyHeader(@Param("header") String header, Pageable paging);
 
     @Query(value = "select n from Newsletter n where (n.status = :status or :status is NULL ) "+
-            " and (n.createDate = :createDate or :createDate is NULL )")
-    Page<Newsletter> findByStatusAndCreateDate(@Param("status") Integer status,@Param("createDate") Date createDate ,Pageable paging);
+            " and (n.createDate = :createDate or :createDate is NULL ) "+
+            " and n.userName like %:userName%")
+    Page<Newsletter> findByStatusAndCreateDate(@Param("status") Integer status,
+                                               @Param("createDate") Date createDate,
+                                               @Param("userName") String userName ,Pageable paging);
 
 }

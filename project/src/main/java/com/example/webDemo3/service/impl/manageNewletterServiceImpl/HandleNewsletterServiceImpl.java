@@ -174,6 +174,7 @@ public class HandleNewsletterServiceImpl implements HandleNewsletterService {
 
         Integer status = model.getStatus();
         Date createDate = model.getCreateDate();
+        String userName = model.getUserName();
         MessageDTO message;
 
         Page<Newsletter> pagedResult = null;
@@ -186,8 +187,12 @@ public class HandleNewsletterServiceImpl implements HandleNewsletterService {
             pageNumber = 0;
         }
 
+        if(userName == null){
+            userName = "";
+        }
+
         paging = PageRequest.of(pageNumber, pageSize);
-        pagedResult = newsletterRepository.findByStatusAndCreateDate(status, createDate, paging);
+        pagedResult = newsletterRepository.findByStatusAndCreateDate(status, createDate, userName, paging);
 
         //check result when get list
         if(pagedResult==null || pagedResult.getTotalElements() == 0){

@@ -11,5 +11,6 @@ kimpt142 - 27/07
 public class SearchNewsByStatusAndDateRequestDto {
     private Integer status;
     private Date createDate;
+    private String userName;
     private Integer pageNumber;
 }
