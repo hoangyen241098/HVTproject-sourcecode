@@ -4,20 +4,21 @@ import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListWeekSchoolRankResponseDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.SchoolWeekDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.CreateRankMonthRequestDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.EditRankMonthRequestDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ListWeekSchoolRankRequestDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewWeekOfEditRankMontRequestDto;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewSchoolMonthHistoryResponseDto;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewSchoolWeekHistoryResponseDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.*;
 import com.example.webDemo3.entity.*;
 import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.exception.MyException;
 import com.example.webDemo3.repository.*;
+import com.example.webDemo3.service.impl.manageSchoolRankImpl.AdditionFunctionSchoolRankServiceImpl;
 import com.example.webDemo3.service.manageSchoolRankMonthService.CreateAndEditSchoolRankMonthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -46,6 +47,9 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
 
     @Autowired
     private SchoolRankWeekRepository schoolRankWeekRepository;
+
+    @Autowired
+    private AdditionFunctionSchoolRankServiceImpl additionFunctionSchoolRankService;
 
     @Override
     public ListWeekSchoolRankResponseDto loadListWeek(ListWeekSchoolRankRequestDto requestDto) {
@@ -222,35 +226,99 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
         return message;
     }
 
+    /**
+     * lamnt98
+     * 29/07
+     * get history of school month
+     * @param requestDto
+     * @return ViewSchoolMonthHistoryResponseDto
+     */
+    @Override
+    public ViewSchoolMonthHistoryResponseDto viewSchoolMonthHistory(ViewSchoolMonthHistoryRequestDto requestDto) {
+        ViewSchoolMonthHistoryResponseDto responseDto = new ViewSchoolMonthHistoryResponseDto();
+
+        Integer monthId = requestDto.getMonthId();
+        SchoolMonth schoolMonth;
+        String history = "";
+        MessageDTO message = new MessageDTO();
+
+
+        try{
+
+            //check weekId null or not
+            if(monthId == null){
+                message = Constant.MONTHID_EMPTY;
+                responseDto.setMessage(message);
+                return responseDto;
+            }
+
+            schoolMonth = schoolMonthRepository.findById(monthId).orElse(null);
+            //check schoolWeek exist or not
+            if(schoolMonth == null){
+                message = Constant.SCHOOL_MONTH_NOT_EXISTS;
+                responseDto.setMessage(message);
+                return  responseDto;
+            }
+
+            history = schoolMonth.getHistory();
+
+            //check history is empty or not
+            if(history == null || history.isEmpty()){
+                message = Constant.HISTORY_IS_EMPTY;
+                responseDto.setMessage(message);
+                return responseDto;
+            }
+
+            message = Constant.SUCCESS;
+            responseDto.setMessage(message);
+            responseDto.setHistory(history);
+        }catch (Exception e){
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            responseDto.setMessage(message);
+            return responseDto;
+        }
+
+        return responseDto;
+    }
+
 
     public MessageDTO editRankMonthTransaction(EditRankMonthRequestDto requestDto) throws Exception{
 
         Integer monthId = requestDto.getMonthId();
         Integer month = requestDto.getMonth();
         String userName = requestDto.getUserName();
+        Date createDate = null;
+
         User user = null;
         List<SchoolWeekDto> weekList = requestDto.getWeekList();
         List<Class> classList = new ArrayList<>();
         List<SchoolRankMonth> schoolRankMonthList = new ArrayList<>();
+        String history = "";
 
         MessageDTO message = new MessageDTO();
         SchoolMonth schoolMonth = null;
         SchoolMonth newSchoolMonth = null;
 
+        //check monthId null or not
         if(monthId == null){
             message = Constant.SCHOOL_MONTH_ID_NULL;
             return message;
         }
 
+        //check month null or not
         if(month == null){
             message = Constant.MONTH_NAME_EMPTY;
             return message;
         }
 
+        //check weekList null or not
         if(weekList == null){
             message = Constant.WEEK_LIST_EMPTY;
             return message;
         }
+
+        createDate = additionFunctionSchoolRankService.convertDateInComputerToSqlDate();
 
         try{
             //check userName empty or not
@@ -278,6 +346,9 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
             if(schoolMonth == null){
                 message = Constant.SCHOOL_MONTH_NOT_EXISTS;
                 return message;
+            }else if(schoolMonth.getSemesterId() != 0){
+                message = Constant.RANKMONTH_NOT_EDIT;
+                return message;
             }
 
             //check exist schoolMonth with month name
@@ -288,6 +359,8 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
             }
 
             schoolMonth.setMonth(month);
+            history = additionFunctionSchoolRankService.addHistory(schoolMonth.getHistory(),userName,createDate);
+            schoolMonth.setHistory(history);
             schoolMonthRepository.save(schoolMonth);
             classList = classRepository.findAll();
 
@@ -306,6 +379,8 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
         String userName = requestDto.getUserName();
         Integer month = requestDto.getMonth();
         Integer currentYearId = requestDto.getCurrentYearId();
+        Date createDate = null;
+
         List<SchoolWeekDto> weekList = requestDto.getWeekList();
         List<SchoolRankMonth> schoolRankMonthList = new ArrayList<>();
 
@@ -314,6 +389,7 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
         SchoolYear schoolYear;
         Integer monthId;
         List<Class> classList = new ArrayList<>();
+        String history = "";
         try{
             //check userName empty or not
             if(userName.isEmpty()){
@@ -360,6 +436,8 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
                 return message;
             }
 
+            createDate = additionFunctionSchoolRankService.convertDateInComputerToSqlDate();
+
             schoolMonth = schoolMonthRepository.findSchoolMonthByMonthAndSemesterAndYearId(month,0,currentYearId);
             //check month exist or not
             if(schoolMonth != null){
@@ -367,10 +445,12 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
                 return message;
             }
 
+            history = additionFunctionSchoolRankService.addHistory("",userName,createDate);
             schoolMonth = new SchoolMonth();
             schoolMonth.setMonth(month);
             schoolMonth.setSemesterId(0);
             schoolMonth.setYearId(currentYearId);
+            schoolMonth.setHistory(history);
             schoolMonthRepository.save(schoolMonth);
 
             monthId = schoolMonthRepository.findSchoolMonthByMonthAndSemesterAndYearId(month,0,currentYearId).getMonthId();

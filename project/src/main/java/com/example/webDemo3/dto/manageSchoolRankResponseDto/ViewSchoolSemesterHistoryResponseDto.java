@@ -2,14 +2,13 @@ package com.example.webDemo3.dto.manageSchoolRankResponseDto;
 
 import com.example.webDemo3.dto.MessageDTO;
 import lombok.Data;
-import java.util.List;
 
-/*
-kimpt142 - 21/07
+/**
+ * lamnt98
+ * 29/07
  */
 @Data
-public class RankWeekListResponseDto {
-    private List<RankWeekResponseDto> rankWeekList;
-    private Integer checkEdit;
+public class ViewSchoolSemesterHistoryResponseDto {
+    private String history;
     private MessageDTO message;
 }

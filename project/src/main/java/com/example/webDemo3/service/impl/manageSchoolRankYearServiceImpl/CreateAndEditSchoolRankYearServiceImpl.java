@@ -4,20 +4,25 @@ import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListSemesterSchoolRankResponseDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.SchoolSemesterDto;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewSchoolSemesterHistoryResponseDto;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewSchoolYearHistoryResponseDto;
 import com.example.webDemo3.dto.manageSchoolYearResponseDto.SchoolYearResponseDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.CreateRankYearRequestDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.EditRankYearRequestDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewSchoolYearHistoryRequestDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewSemesterOfEditRankYearRequestDto;
 import com.example.webDemo3.entity.*;
 import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.exception.MyException;
 import com.example.webDemo3.repository.*;
+import com.example.webDemo3.service.manageSchoolRank.AdditionFunctionSchoolRankService;
 import com.example.webDemo3.service.manageSchoolRankYearSerivce.CreateAndEditSchoolRankYearService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.sql.Date;
 import java.util.*;
 
 @Service
@@ -40,6 +45,9 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
 
     @Autowired
     private SchoolRankSemesterRepository schoolRankSemesterRepository;
+
+    @Autowired
+    private AdditionFunctionSchoolRankService additionFunctionSchoolRankService;
 
     @Override
     public ListSemesterSchoolRankResponseDto loadListSemester() {
@@ -221,10 +229,66 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
         return message;
     }
 
+    /**
+     * lamnt98
+     * 29/07
+     * view history of school year
+     * @param requestDto
+     * @return ViewSchoolYearHistoryResponseDto
+     */
+    @Override
+    public ViewSchoolYearHistoryResponseDto viewSchoolYearHistory(ViewSchoolYearHistoryRequestDto requestDto) {
+        ViewSchoolYearHistoryResponseDto responseDto = new ViewSchoolYearHistoryResponseDto();
+
+        Integer yearId = requestDto.getYearId();
+        SchoolYear schoolYear;
+        String history = "";
+        MessageDTO message = new MessageDTO();
+
+
+        try{
+
+            //check yearId null or not
+            if(yearId == null){
+                message = Constant.YEAR_ID_NULL;
+                responseDto.setMessage(message);
+                return responseDto;
+            }
+
+            schoolYear = schoolYearRepository.findById(yearId).orElse(null);
+            //check schoolYear exist or not
+            if(schoolYear == null){
+                message = Constant.SCHOOL_YEAR_NOT_EXISTS;
+                responseDto.setMessage(message);
+                return  responseDto;
+            }
+
+            history = schoolYear.getHistory();
+
+            //check history is empty or not
+            if(history == null || history.isEmpty()){
+                message = Constant.HISTORY_IS_EMPTY;
+                responseDto.setMessage(message);
+                return responseDto;
+            }
+
+            message = Constant.SUCCESS;
+            responseDto.setMessage(message);
+            responseDto.setHistory(history);
+        }catch (Exception e){
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            responseDto.setMessage(message);
+            return responseDto;
+        }
+        return responseDto;
+    }
+
     private MessageDTO editRankYearTransaction(EditRankYearRequestDto requestDto) throws Exception{
 
         Integer yearId = requestDto.getYearId();
         String userName = requestDto.getUserName();
+        Date createDate = null;
         User user = null;
         List<SchoolSemesterDto> semesterList = requestDto.getSemesterList();
 
@@ -233,6 +297,7 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
 
         MessageDTO message = new MessageDTO();
         SchoolYear schoolYear = null;
+        String history = "";
 
         //check yearId null or not
         if(yearId == null){
@@ -240,10 +305,13 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
             return message;
         }
 
+        //check semesterList null or not
         if(semesterList == null){
             message = Constant.SEMESTER_LIST_EMPTY;
             return message;
         }
+
+        createDate = additionFunctionSchoolRankService.convertDateInComputerToSqlDate();
         try{
             //check userName empty or not
             if(userName.isEmpty()){
@@ -272,6 +340,10 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
                 return message;
             }
 
+            history = additionFunctionSchoolRankService.addHistory(schoolYear.getHistory(),userName,createDate);
+            schoolYear.setHistory(history);
+            schoolYearRepository.save(schoolYear);
+
             classList = classRepository.findAll();
 
             message = createOrEditSchoolRankYear(classList,semesterList,schoolRankYearList,yearId,message);
@@ -288,6 +360,7 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
 
         String userName = requestDto.getUserName();
         Integer yearId = requestDto.getYearId();
+        Date createDate = null;
         List<SchoolSemesterDto> semesterList = requestDto.getSemesterList();
 
         List<SchoolRankYear> schoolRankYearList = new ArrayList<>();
@@ -296,6 +369,7 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
         MessageDTO message = new MessageDTO();
         User user = null;
         SchoolYear schoolYear = null;
+        String history = "";
 
         try {
             //check userName empty or not
@@ -336,6 +410,12 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
                 message = Constant.SEMESTER_LIST_EMPTY;
                 return message;
             }
+
+            createDate = additionFunctionSchoolRankService.convertDateInComputerToSqlDate();
+
+            history = additionFunctionSchoolRankService.addHistory("",userName,createDate);
+            schoolYear.setHistory(history);
+            schoolYearRepository.save(schoolYear);
 
             classList = classRepository.findAll();
 

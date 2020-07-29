@@ -132,7 +132,6 @@ public class UpdateSchoolRankWeekServiceImpl implements UpdateSchoolRankWeekServ
         schoolRankWeek.setLaborGrade(round(laborGrade));
         schoolRankWeek.setTotalGrade(round(newTotalGrade));
         schoolRankWeek.setEmulationGrade(round(responseDto.getEmulationGrade()));
-        schoolRankWeek.setHistory(responseDto.getHistory());
 
         return schoolRankWeek;
     }

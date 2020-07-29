@@ -6,6 +6,7 @@ import com.example.webDemo3.dto.manageSchoolRankResponseDto.*;
 import com.example.webDemo3.dto.manageSchoolYearResponseDto.SchoolYearTableResponseDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.LoadByYearIdRequestDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.SearchRankSemesterRequestDto;
+import com.example.webDemo3.entity.SchoolMonth;
 import com.example.webDemo3.entity.SchoolRankSemester;
 import com.example.webDemo3.entity.SchoolSemester;
 import com.example.webDemo3.entity.SchoolYear;
@@ -137,6 +138,15 @@ public class ViewSchoolRankSemesterServiceImpl implements ViewSchoolRankSemester
             return resposeDto;
         }
 
+        //check semester ranked or not
+        SchoolSemester checkSchoolSemester =  schoolSemesterRepository.findSchoolSemesterBySemesterId(semesterId);
+        if(checkSchoolSemester != null && checkSchoolSemester.getYearId() != 0){
+            resposeDto.setCheckEdit(1);
+        }
+        else{
+            resposeDto.setCheckEdit(0);
+        }
+
         List<SchoolRankSemester> schoolRankSemesterList = schoolRankSemesterRepository.findAllBySchoolRankSemesterId(semesterId);
         if(schoolRankSemesterList == null || schoolRankSemesterList.size() == 0)
         {
@@ -153,7 +163,6 @@ public class ViewSchoolRankSemesterServiceImpl implements ViewSchoolRankSemester
                 rankSemesterDto.setTotalGradeMonth(round(item.getTotalGradeMonth()));
                 rankSemesterDto.setTotalRankMonth(item.getTotalRankMonth());
                 rankSemesterDto.setRank(item.getRank());
-                rankSemesterDto.setHistory(item.getHistory());
                 rankSemesterList.add(rankSemesterDto);
             }
         }

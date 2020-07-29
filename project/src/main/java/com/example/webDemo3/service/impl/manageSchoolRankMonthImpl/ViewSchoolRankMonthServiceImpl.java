@@ -97,6 +97,15 @@ public class ViewSchoolRankMonthServiceImpl implements ViewSchoolRankMonthServic
             return resposeDto;
         }
 
+        //check month ranked or not
+        SchoolMonth checkSchoolMonth =  schoolMonthRepository.findSchoolMonthByMonthId(monthId);
+        if(checkSchoolMonth != null && checkSchoolMonth.getSemesterId() != 0){
+            resposeDto.setCheckEdit(1);
+        }
+        else{
+            resposeDto.setCheckEdit(0);
+        }
+
         List<SchoolRankMonth> schoolRankMonthList = schoolRankMonthRepository.findAllBySchoolRankMonthId(monthId);
         if(schoolRankMonthList == null || schoolRankMonthList.size() == 0)
         {
@@ -113,7 +122,6 @@ public class ViewSchoolRankMonthServiceImpl implements ViewSchoolRankMonthServic
                 rankMonthDto.setTotalGradeWeek(round(item.getTotalGradeWeek()));
                 rankMonthDto.setTotalRankWeek(item.getTotalRankWeek());
                 rankMonthDto.setRank(item.getRank());
-                rankMonthDto.setHistory(item.getHistory());
                 rankMonthDtoList.add(rankMonthDto);
             }
         }
