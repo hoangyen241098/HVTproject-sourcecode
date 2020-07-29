@@ -748,3 +748,40 @@ $(document).on('hidden.bs.modal', '#createNewRank', '#editRank', function () {
     $('#weekName').val('');
     $('#newWeekName').val('');
 });
+
+/*===============View History===================*/
+/*View history button*/
+$("#viewHistory").click(function () {
+    var weekId = $('#byWeek option:selected').val();
+    var viewHistory = {
+        weekId: weekId
+    }
+    console.log(JSON.stringify(viewHistory))
+    $.ajax({
+        url: '/api/rankweek/viewhistory',
+        type: 'POST',
+        data: JSON.stringify(viewHistory),
+        beforeSend: function () {
+            $('body').addClass("loading")
+        },
+        complete: function () {
+            $('body').removeClass("loading")
+        },
+        success: function (data) {
+            var messageCode = data.messageCode;
+            var message = data.message;
+            if (messageCode == 0) {
+                $('#historyModal .modal-body').html(data.history);
+                $('#historyModal').modal('show');
+            }
+            else{
+                dialogModal('viewHistory', 'img/img-error.png', message)
+            }
+        },
+        failure: function (errMsg) {
+            dialogModal('viewHistory', 'img/img-error.png', errMsg)
+        },
+        dataType: "binary",
+        contentType: "application/json"
+    });
+});
