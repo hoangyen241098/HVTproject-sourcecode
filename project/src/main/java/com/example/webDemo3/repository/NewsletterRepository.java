@@ -16,10 +16,10 @@ import java.sql.Date;
  */
 @Repository
 public interface NewsletterRepository extends JpaRepository<Newsletter,Integer> {
-    @Query(value = "select n from Newsletter n where n.status = 1 order by n.gim desc")
+    @Query(value = "select n from Newsletter n where n.status = 0 order by n.gim desc")
     Page<Newsletter> loadAllLetter(Pageable paging);
 
-    @Query(value = "select n from Newsletter n where (:header is NULL or n.header like %:header%) and n.status = 1 ")
+    @Query(value = "select n from Newsletter n where (:header is NULL or n.header like %:header%) and n.status = 0 ")
     Page<Newsletter> searchLetterbyHeader(@Param("header") String header, Pageable paging);
 
     @Query(value = "select n from Newsletter n where (n.status = :status or :status is NULL ) "+
