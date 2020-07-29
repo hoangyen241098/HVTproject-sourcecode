@@ -5,13 +5,15 @@ var inforSearch = {
     classId: null,
     status: 0,
     createDate: $('#inputDate').val(),
+    createBy: "",
     pageNumber: 0
 }
 
 /*Search button*/
 $("#search").click(function () {
-    var classId, status, createDate;
+    var classId, status, createDate, createBy;
     createDate = $('#inputDate').val();
+    createBy = $('#createBy').val().trim();
     if ($('#classList option:selected').val() == null || $('#classList option:selected').val() == "" || $('#classList option:selected').val() == 0) {
         classId = null;
     } else {
@@ -26,6 +28,7 @@ $("#search").click(function () {
         classId: classId,
         status: status,
         createDate: createDate,
+        createBy: createBy,
         pageNumber: 0
     }
     console.log(JSON.stringify(inforSearch))
@@ -203,7 +206,7 @@ function search() {
                             }
                             if (status == "Chưa duyệt") {
                                 var dataTargetID = "#" + dataTarget;
-                                $(dataTargetID).prev().find('.violation-status span:last-child').css('color','#ff0000');
+                                $(dataTargetID).prev().find('.violation-status span:last-child').css('color', '#ff0000');
                             }
                             if (status == "Chấp nhận") {
                                 var dataTargetID = "#" + dataTarget;

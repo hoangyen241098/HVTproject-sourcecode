@@ -1,4 +1,7 @@
 var schoolYearId, oldFromYear, oldFromDate, oldToDate;
+var currentDate = moment().format('YYYY-MM-DD');
+var currentYear = moment().format('YYYY');
+console.log(currentYear)
 $(document).ready(function () {
     schoolYearId = sessionStorage.getItem("schoolYearId")
     var info = {
@@ -31,6 +34,15 @@ $(document).ready(function () {
                     $('#toYear').val(oldToYear);
                     $('#fromDate').val(oldFromDate);
                     $("#toDate").val(oldToDate);
+                    if (Date.parse(oldFromDate) <= Date.parse(currentDate)) {
+                        $('#fromDate').prop('disabled', true);
+                    }
+                    if (Date.parse(oldToDate) <= Date.parse(currentDate)) {
+                        $('#toDate').prop('disabled', true);
+                    }
+                    if (oldFromYear <= currentYear) {
+                        $('#fromYear').prop('disabled', true);
+                    }
                 } else {
                     $('#editSchoolYear-err').text(message);
                 }
