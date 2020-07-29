@@ -3,7 +3,6 @@ package com.example.webDemo3.dto.request.manageSchoolRankRequestDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.SchoolMonthDto;
 import lombok.Data;
 
-import java.sql.Date;
 import java.util.List;
 
 /**
