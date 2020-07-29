@@ -472,6 +472,10 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
                 message = Constant.SCHOOL_WEEK_NOT_EXIST;
                 return message;
             }
+            else if(schoolWeek.getMonthID() != 0){
+                message = Constant.RANKWEEK_NOT_EDIT;
+                return message;
+            }
 
             newSchoolWeek = schoolWeekRepository.findSchoolWeeksByWeekMonthIdAndYearId(week,schoolWeek.getMonthID(),schoolWeek.getYearId());
 
