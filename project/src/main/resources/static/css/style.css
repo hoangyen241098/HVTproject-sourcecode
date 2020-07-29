@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500&display=swap');
+
 body {
     margin: auto;
 }
@@ -45,6 +47,8 @@ a:hover {
     background-color: #4267b2;
     position: relative;
     padding: 0 1rem;
+    font-family: 'Fira Sans', sans-serif;
+    font-weight: 300;
 }
 
 .navbar-brand {
@@ -113,7 +117,7 @@ a:hover {
 .nav-link {
     color: #FFF;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 500;
     position: relative;
     z-index: 0;
     cursor: pointer;
@@ -179,7 +183,7 @@ a:hover {
 .contact-number a {
     color: #ffffffb8;
     margin: 0 10px;
-    font-weight: 700;
+    font-weight: 500;
 }
 
 .contact-number {
@@ -189,9 +193,11 @@ a:hover {
 .header-hotline {
     border-bottom: 1px solid #ffffffb8;
 }
+
 .widget_search {
     position: relative;
 }
+
 .widget_search form:before {
     content: "\f002";
     display: inline-block;
@@ -203,6 +209,7 @@ a:hover {
     font-family: "Font Awesome 5 Free";
     font-weight: bold;
 }
+
 .widget_search input[type=search] {
     height: 28px;
     width: 166px;
@@ -515,6 +522,7 @@ body.loading .modal-loading {
 
 .table-title h2 {
     font-size: 1.8rem;
+    font-family: 'Fira Sans', sans-serif;
 }
 
 .table-title-2 {
@@ -1641,7 +1649,7 @@ a.slide_btn {
 .panel-post-content .post-img {
     margin-right: 15px;
     max-width: 250px;
-    max-height: 180px ;
+    max-height: 180px;
 }
 
 .panel-post-content img {
@@ -1684,6 +1692,7 @@ a.slide_btn {
     right: 10px;
     bottom: 5px;
 }
+
 #imagePreview {
     max-height: 100px;
     margin-top: 15px;

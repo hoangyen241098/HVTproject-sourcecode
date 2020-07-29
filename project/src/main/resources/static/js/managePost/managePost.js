@@ -1,6 +1,7 @@
 var inforSearch = {
     status: "",
     createDate: "",
+    userName: "",
     pageNumber: 0
 }
 search();
@@ -14,7 +15,7 @@ $('#search').on('click', function () {
 function search() {
     inforSearch.status = $('#status option:selected').val();
     inforSearch.createDate = $('#inputDate').val();
-    // inforSearch.createBy = $('#createBy').val();
+    inforSearch.userName = $('#createBy').val();
     console.log(JSON.stringify(inforSearch));
     $.ajax({
         url: "/api/newsletter/searchconfirmnews",
