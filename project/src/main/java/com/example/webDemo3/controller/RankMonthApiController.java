@@ -1,12 +1,9 @@
 package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListWeekSchoolRankResponseDto;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.LoadRankMonthResponseDto;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.*;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.*;
 import com.example.webDemo3.service.manageSchoolRankMonthService.CreateAndEditSchoolRankMonthService;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.RankMonthListResponseDto;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewMonthListResponseDto;
 import com.example.webDemo3.service.manageSchoolRankMonthService.ViewSchoolRankMonthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -132,5 +129,17 @@ public class RankMonthApiController {
     public MessageDTO editRankMonth(@RequestBody EditRankMonthRequestDto module)
     {
         return createAndEditSchoolRankMonthService.editRankMonth(module);
+    }
+
+    /**
+     * lamnt98
+     * 29/07
+     * catch request to get history of schoolMonth
+     * @return ViewSchoolWeekHistoryResponseDto
+     */
+    @PostMapping("/viewhistory")
+    public ViewSchoolMonthHistoryResponseDto viewSchoolMonthHistory(@RequestBody ViewSchoolMonthHistoryRequestDto module) {
+
+        return createAndEditSchoolRankMonthService.viewSchoolMonthHistory(module);
     }
 }

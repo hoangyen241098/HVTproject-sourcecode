@@ -1,10 +1,8 @@
 package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListMonthSchoolRankResponseDto;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListSemesterSchoolRankResponseDto;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.*;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.*;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.RankYearListResponseDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.LoadByYearIdRequestDto;
 import com.example.webDemo3.service.manageSchoolRankYearSerivce.ViewSchoolRankYearService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,5 +109,17 @@ public class RankYearApiContoller {
     public MessageDTO editrankyear(@RequestBody EditRankYearRequestDto module)
     {
         return createAndEditSchoolRankYearService.editRankYear(module);
+    }
+
+    /**
+     * lamnt98
+     * 29/07
+     * catch request to get history of school year
+     * @return ViewSchoolWeekHistoryResponseDto
+     */
+    @PostMapping("/viewhistory")
+    public ViewSchoolYearHistoryResponseDto viewSchoolyearHistory(@RequestBody ViewSchoolYearHistoryRequestDto module) {
+
+        return createAndEditSchoolRankYearService.viewSchoolYearHistory(module);
     }
 }
