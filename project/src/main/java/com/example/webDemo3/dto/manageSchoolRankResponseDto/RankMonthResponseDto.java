@@ -12,5 +12,4 @@ public class RankMonthResponseDto {
     private Integer totalRankWeek;
     private Double totalGradeWeek;
     private Integer rank;
-    private String history;
 }

@@ -16,5 +16,4 @@ public class RankWeekResponseDto {
     private Double laborGrade;
     private Double totalGrade;
     private Integer rank;
-    private String history;
 }

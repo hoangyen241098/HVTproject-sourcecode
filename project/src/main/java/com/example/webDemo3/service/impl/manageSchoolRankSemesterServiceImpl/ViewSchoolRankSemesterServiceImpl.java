@@ -153,7 +153,6 @@ public class ViewSchoolRankSemesterServiceImpl implements ViewSchoolRankSemester
                 rankSemesterDto.setTotalGradeMonth(round(item.getTotalGradeMonth()));
                 rankSemesterDto.setTotalRankMonth(item.getTotalRankMonth());
                 rankSemesterDto.setRank(item.getRank());
-                rankSemesterDto.setHistory(item.getHistory());
                 rankSemesterList.add(rankSemesterDto);
             }
         }

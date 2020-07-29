@@ -22,4 +22,7 @@ public class SchoolSemester {
 
     @Column(name = "SEMESTER")
     private Integer semester;
+
+    @Column(name = "HISTORY")
+    private String history;
 }

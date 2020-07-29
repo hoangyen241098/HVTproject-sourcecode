@@ -24,4 +24,7 @@ public class SchoolMonth {
 
     @Column(name = "YEAR_ID")
     private Integer yearId;
+
+    @Column(name = "HISTORY")
+    private String history;
 }

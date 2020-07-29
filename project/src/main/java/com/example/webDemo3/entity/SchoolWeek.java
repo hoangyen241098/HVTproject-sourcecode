@@ -29,4 +29,7 @@ public class SchoolWeek {
 
     @Column(name = "YEAR_ID")
     private Integer yearId;
+
+    @Column(name = "HISTORY")
+    private String history;
 }

@@ -62,7 +62,6 @@ public class ViewSchoolRankYearServiceImpl implements ViewSchoolRankYearService 
                 rankYearDto.setTotalGradeSemester(round(item.getTotalGradeSemester()));
                 rankYearDto.setTotalRankSemester(item.getTotalRankSemester());
                 rankYearDto.setRank(item.getRank());
-                rankYearDto.setHistory(item.getHistory());
                 rankYearList.add(rankYearDto);
             }
         }
