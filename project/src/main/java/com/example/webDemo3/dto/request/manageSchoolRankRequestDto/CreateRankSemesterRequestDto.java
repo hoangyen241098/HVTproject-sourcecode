@@ -16,5 +16,4 @@ public class CreateRankSemesterRequestDto {
     private Integer semester;
     private Integer currentYearId;
     private List<SchoolMonthDto> monthList;
-    private Date createDate;
 }

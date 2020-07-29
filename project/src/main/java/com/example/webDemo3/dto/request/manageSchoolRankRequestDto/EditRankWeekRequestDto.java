@@ -16,5 +16,4 @@ public class EditRankWeekRequestDto {
     private Integer week;
     private String userName;
     private List<DateViolationClassDto> dateList;
-    private Date createDate;
 }

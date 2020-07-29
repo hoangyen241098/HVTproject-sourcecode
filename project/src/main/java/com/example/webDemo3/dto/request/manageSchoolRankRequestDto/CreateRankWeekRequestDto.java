@@ -16,5 +16,4 @@ public class CreateRankWeekRequestDto {
     private Integer week;
     private Integer currentYearId;
     private List<DateViolationClassDto> dateList;
-    private Date createDate;
 }

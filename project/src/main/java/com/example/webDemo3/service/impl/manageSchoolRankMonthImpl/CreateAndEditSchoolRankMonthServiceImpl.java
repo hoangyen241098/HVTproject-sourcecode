@@ -288,7 +288,7 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
         Integer monthId = requestDto.getMonthId();
         Integer month = requestDto.getMonth();
         String userName = requestDto.getUserName();
-        Date createDate = requestDto.getCreateDate();
+        Date createDate = null;
 
         User user = null;
         List<SchoolWeekDto> weekList = requestDto.getWeekList();
@@ -318,10 +318,7 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
             return message;
         }
 
-        //check creaDate null or not
-        if(createDate == null){
-            createDate = additionFunctionSchoolRankService.convertDateInComputerToSqlDate();
-        }
+        createDate = additionFunctionSchoolRankService.convertDateInComputerToSqlDate();
 
         try{
             //check userName empty or not
@@ -379,7 +376,7 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
         String userName = requestDto.getUserName();
         Integer month = requestDto.getMonth();
         Integer currentYearId = requestDto.getCurrentYearId();
-        Date createDate = requestDto.getCreateDate();
+        Date createDate = null;
 
         List<SchoolWeekDto> weekList = requestDto.getWeekList();
         List<SchoolRankMonth> schoolRankMonthList = new ArrayList<>();
@@ -436,10 +433,7 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
                 return message;
             }
 
-            //check createDate null or not
-            if(createDate == null){
-                createDate = additionFunctionSchoolRankService.convertDateInComputerToSqlDate();
-            }
+            createDate = additionFunctionSchoolRankService.convertDateInComputerToSqlDate();
 
             schoolMonth = schoolMonthRepository.findSchoolMonthByMonthAndSemesterAndYearId(month,0,currentYearId);
             //check month exist or not

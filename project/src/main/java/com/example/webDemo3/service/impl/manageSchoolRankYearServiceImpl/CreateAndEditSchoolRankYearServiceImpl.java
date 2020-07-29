@@ -288,7 +288,7 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
 
         Integer yearId = requestDto.getYearId();
         String userName = requestDto.getUserName();
-        Date createDate = requestDto.getCreateDate();
+        Date createDate = null;
         User user = null;
         List<SchoolSemesterDto> semesterList = requestDto.getSemesterList();
 
@@ -311,11 +311,7 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
             return message;
         }
 
-        //check creaDate null or not
-        if(createDate == null){
-            createDate = additionFunctionSchoolRankService.convertDateInComputerToSqlDate();
-        }
-
+        createDate = additionFunctionSchoolRankService.convertDateInComputerToSqlDate();
         try{
             //check userName empty or not
             if(userName.isEmpty()){
@@ -364,7 +360,7 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
 
         String userName = requestDto.getUserName();
         Integer yearId = requestDto.getYearId();
-        Date createDate = requestDto.getCreateDate();
+        Date createDate = null;
         List<SchoolSemesterDto> semesterList = requestDto.getSemesterList();
 
         List<SchoolRankYear> schoolRankYearList = new ArrayList<>();
@@ -415,10 +411,7 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
                 return message;
             }
 
-            //check createDate null or not
-            if(createDate == null){
-                createDate = additionFunctionSchoolRankService.convertDateInComputerToSqlDate();
-            }
+            createDate = additionFunctionSchoolRankService.convertDateInComputerToSqlDate();
 
             history = additionFunctionSchoolRankService.addHistory("",userName,createDate);
             schoolYear.setHistory(history);

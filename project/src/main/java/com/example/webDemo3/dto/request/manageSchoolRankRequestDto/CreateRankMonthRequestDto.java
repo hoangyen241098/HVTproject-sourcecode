@@ -16,5 +16,4 @@ public class CreateRankMonthRequestDto {
     private Integer month;
     private Integer currentYearId;
     private List<SchoolWeekDto> weekList;
-    private Date createDate;
 }

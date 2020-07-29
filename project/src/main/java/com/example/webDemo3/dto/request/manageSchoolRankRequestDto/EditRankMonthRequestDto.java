@@ -16,5 +16,4 @@ public class EditRankMonthRequestDto {
     private Integer month;
     private String userName;
     private List<SchoolWeekDto> weekList;
-    private Date createDate;
 }

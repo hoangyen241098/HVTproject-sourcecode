@@ -151,7 +151,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         String userName = requestDto.getUserName();
         Integer week = requestDto.getWeek();
         Integer currentYearId = requestDto.getCurrentYearId();
-        Date createDate = requestDto.getCreateDate();
+        Date createDate = null;
 
         List<DateViolationClassDto> dateList = requestDto.getDateList();
         List<Class> classList = new ArrayList<>();
@@ -185,10 +185,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
                 return message;
             }
 
-            //check create date null or not
-            if(createDate == null){
-                createDate = additionFunctionSchoolRankService.convertDateInComputerToSqlDate();
-            }
+            createDate = additionFunctionSchoolRankService.convertDateInComputerToSqlDate();
 
             //check userName empty or not
             if(week == null){
@@ -415,7 +412,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         Integer weekId = requestDto.getWeekId();
         Integer week = requestDto.getWeek();
         String userName = requestDto.getUserName();
-        Date createDate =requestDto.getCreateDate();
+        Date createDate = null;
         User user = null;
 
         List<DateViolationClassDto> dateList = requestDto.getDateList();
@@ -441,10 +438,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
             return message;
         }
 
-        //check creaDate null or not
-        if(createDate == null){
-            createDate = additionFunctionSchoolRankService.convertDateInComputerToSqlDate();
-        }
+        createDate = additionFunctionSchoolRankService.convertDateInComputerToSqlDate();
 
         //check dateList null or not
         if(dateList == null || dateList.size() == 0){

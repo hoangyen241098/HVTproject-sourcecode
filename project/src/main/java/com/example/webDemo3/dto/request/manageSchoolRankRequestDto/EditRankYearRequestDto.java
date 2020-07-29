@@ -15,5 +15,4 @@ public class EditRankYearRequestDto {
     private Integer yearId;
     private String userName;
     List<SchoolSemesterDto> semesterList;
-    private Date createDate;
 }

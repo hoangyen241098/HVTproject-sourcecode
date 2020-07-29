@@ -16,5 +16,4 @@ public class EditRankSemesterRequestDto {
     private Integer semester;
     private String userName;
     private List<SchoolMonthDto> monthList;
-    private Date createDate;
 }
