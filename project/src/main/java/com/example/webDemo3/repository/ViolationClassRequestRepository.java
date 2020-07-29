@@ -20,18 +20,22 @@ public interface ViolationClassRequestRepository extends JpaRepository<Violation
     @Query(value = "select v from ViolationClassRequest v " +
             "where (v.violationClass.classId = :classId or :classId is NULL ) " +
             "and (v.dateChange = :creatDate or :creatDate is NULL) " +
+            "and v.creatBy like %:createBy% " +
             "and v.statusChange = :status ")
     Page<ViolationClassRequest> findViolationClassRequestByConditionAndStatus(@Param("classId")Integer classId,
                                                                 @Param("creatDate") Date creatDate,
+                                                                @Param("createBy") String createBy,
                                                                 @Param("status") Integer status,
                                                                 Pageable paging);
 
 
     @Query(value = "select v from ViolationClassRequest v " +
             "where (v.violationClass.classId = :classId or :classId is NULL )" +
-            "and (v.dateChange = :createDate or :createDate is null )")
+            "and (v.dateChange = :createDate or :createDate is NULL )" +
+            "and v.creatBy like %:createBy%")
     Page<ViolationClassRequest> findViolationClassRequestByCondition(@Param("classId") Integer classId,
                                                        @Param("createDate") Date createDate,
+                                                       @Param("createBy") String createBy,
                                                        Pageable paging);
 
 
