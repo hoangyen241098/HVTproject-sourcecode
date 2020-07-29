@@ -13,6 +13,21 @@ var editor = CKEDITOR.replace('post-editor-text-content', {
     extraPlugins: 'easyimage',
 });
 var oldHeader, oldHeaderImage, oldContent, oldGim, createDate, status;
+var imageCover = CKEDITOR.replace('imageCover', {
+    cloudServices_uploadUrl: 'https://73438.cke-cs.com/easyimage/upload/',
+    cloudServices_tokenUrl: 'https://73438.cke-cs.com/token/dev/de62f27633e0ccc284486ba070dbacf5b61e59390a805c23d58fc080b306',
+    width: '100%',
+    height: 100,
+    extraPlugins: 'easyimage',
+    removePlugins: 'image',
+    removeDialogTabs: 'link:advanced',
+    toolbar: [
+        {
+            name: 'insert',
+            items: ['EasyImageUpload']
+        }
+    ],
+});
 
 /*View detail post*/
 $.ajax({
@@ -37,7 +52,8 @@ $.ajax({
                 createDate = data.newsletter.createDate;
                 status = data.newsletter.status;
                 $('#titleName').val(oldHeader);
-                $('#imagePreview').prop('src', oldHeaderImage);
+                // $('#imagePreview').prop('src', oldHeaderImage);
+                $('#imageCover').text(`<figure class="easyimage"><img alt="" sizes="100vw" src="` + oldHeaderImage + `"/></figure>`);
                 $('#post-editor-text-content').text(oldContent);
                 if (oldGim == 1) {
                     $('input[value=pin]').prop('checked', true);
@@ -68,7 +84,9 @@ $.ajax({
 /*Edit post*/
 $('#savePost').on('click', function () {
     var newHeader = $('#titleName').val().trim();
-    var newHeaderImage = $('#imagePreview').attr('src');
+    // var newHeaderImage = $('#imagePreview').attr('src');
+    var newHeaderImage = imageCover.getData();
+    newHeaderImage = newHeaderImage.split('src=')[1].split('"')[1];
     var newContent = editor.getData();
     var newGim, pin;
     if ($('input[type="checkbox"]').prop("checked") == true) {
