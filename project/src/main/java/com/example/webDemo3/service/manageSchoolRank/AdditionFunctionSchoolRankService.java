@@ -4,4 +4,5 @@ import java.sql.Date;
 
 public interface AdditionFunctionSchoolRankService {
     String addHistory(String oldhistory, String userName, Date date);
+    Date convertDateInComputerToSqlDate();
 }

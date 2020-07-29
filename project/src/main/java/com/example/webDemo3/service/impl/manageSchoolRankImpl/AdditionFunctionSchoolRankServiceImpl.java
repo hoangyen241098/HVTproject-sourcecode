@@ -4,6 +4,8 @@ import com.example.webDemo3.service.manageSchoolRank.AdditionFunctionSchoolRankS
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 @Service
 public class AdditionFunctionSchoolRankServiceImpl implements AdditionFunctionSchoolRankService {
@@ -20,5 +22,18 @@ public class AdditionFunctionSchoolRankServiceImpl implements AdditionFunctionSc
         }
 
         return history;
+    }
+
+    @Override
+    public Date convertDateInComputerToSqlDate() {
+        Calendar c = Calendar.getInstance();
+        java.util.Date date = c.getTime();
+
+        String pattern = "yyyy-MM-dd";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
+        String string = simpleDateFormat.format(date);
+        Date newdate = Date.valueOf(string);
+        return newdate;
     }
 }

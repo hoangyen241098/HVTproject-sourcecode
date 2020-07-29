@@ -3,6 +3,7 @@ package com.example.webDemo3.dto.request.manageSchoolRankRequestDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.SchoolSemesterDto;
 import lombok.Data;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -14,4 +15,5 @@ public class CreateRankYearRequestDto {
     private String userName;
     private Integer yearId;
     private List<SchoolSemesterDto> semesterList;
+    private Date createDate;
 }

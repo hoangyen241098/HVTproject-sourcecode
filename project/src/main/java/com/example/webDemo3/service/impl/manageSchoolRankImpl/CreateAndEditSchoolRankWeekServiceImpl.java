@@ -187,8 +187,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
 
             //check create date null or not
             if(createDate == null){
-                message = Constant.CREATE_DATE_NULL;
-                return message;
+                createDate = additionFunctionSchoolRankService.convertDateInComputerToSqlDate();
             }
 
             //check userName empty or not
@@ -444,8 +443,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
 
         //check creaDate null or not
         if(createDate == null){
-            message = Constant.CREATE_DATE_NULL;
-            return message;
+            createDate = additionFunctionSchoolRankService.convertDateInComputerToSqlDate();
         }
 
         //check dateList null or not

@@ -320,8 +320,7 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
 
         //check creaDate null or not
         if(createDate == null){
-            message = Constant.CREATE_DATE_NULL;
-            return message;
+            createDate = additionFunctionSchoolRankService.convertDateInComputerToSqlDate();
         }
 
         try{
@@ -439,8 +438,7 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
 
             //check createDate null or not
             if(createDate == null){
-                message = Constant.CREATE_DATE_NULL;
-                return message;
+                createDate = additionFunctionSchoolRankService.convertDateInComputerToSqlDate();
             }
 
             schoolMonth = schoolMonthRepository.findSchoolMonthByMonthAndSemesterAndYearId(month,0,currentYearId);
