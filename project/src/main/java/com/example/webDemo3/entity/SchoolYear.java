@@ -31,6 +31,9 @@ public class SchoolYear {
     @Column(name = "TO_YEAR")
     private Integer toYear;
 
+    @Column(name = "HISTORY")
+    private String history;
+
     public SchoolYear() {
     }
 
