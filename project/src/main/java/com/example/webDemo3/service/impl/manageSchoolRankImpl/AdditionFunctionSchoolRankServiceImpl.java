@@ -14,7 +14,7 @@ public class AdditionFunctionSchoolRankServiceImpl implements AdditionFunctionSc
     public String addHistory(String oldhistory, String userName, Date date) {
         String history = "";
 
-        if(oldhistory.isEmpty()){
+        if(oldhistory == null || oldhistory.isEmpty()){
             history = "<ul> <li><span class=\"font-500\">" + "Tạo ngày: " + date +  " - " + "bởi: " + userName + ".</span> </li></ul>";
         }else{
             history = oldhistory +
