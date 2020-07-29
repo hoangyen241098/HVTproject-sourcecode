@@ -12,5 +12,4 @@ public class RankYearResponseDto {
     private Integer totalRankSemester;
     private Double totalGradeSemester;
     private Integer rank;
-    private String history;
 }

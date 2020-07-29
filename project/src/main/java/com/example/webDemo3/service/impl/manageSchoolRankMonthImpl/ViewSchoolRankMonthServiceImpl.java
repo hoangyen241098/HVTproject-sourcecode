@@ -113,7 +113,6 @@ public class ViewSchoolRankMonthServiceImpl implements ViewSchoolRankMonthServic
                 rankMonthDto.setTotalGradeWeek(round(item.getTotalGradeWeek()));
                 rankMonthDto.setTotalRankWeek(item.getTotalRankWeek());
                 rankMonthDto.setRank(item.getRank());
-                rankMonthDto.setHistory(item.getHistory());
                 rankMonthDtoList.add(rankMonthDto);
             }
         }

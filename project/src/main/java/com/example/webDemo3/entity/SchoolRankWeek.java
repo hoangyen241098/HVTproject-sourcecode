@@ -29,7 +29,4 @@ public class SchoolRankWeek {
 
     @Column(name = "RANK")
     private Integer rank;
-
-    @Column(name = "HISTORY")
-    private String history;
 }

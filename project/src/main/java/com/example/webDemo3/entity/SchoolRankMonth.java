@@ -26,7 +26,4 @@ public class SchoolRankMonth {
 
     @Column(name = "RANK")
     private Integer rank;
-
-    @Column(name = "HISTORY")
-    private String history;
 }

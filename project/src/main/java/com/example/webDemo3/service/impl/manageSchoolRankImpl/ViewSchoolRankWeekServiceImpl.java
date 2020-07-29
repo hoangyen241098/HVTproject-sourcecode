@@ -197,7 +197,6 @@ public class ViewSchoolRankWeekServiceImpl implements ViewSchoolRankWeekService 
             response.setLaborGrade(item.getLaborGrade());
             response.setTotalGrade(item.getTotalGrade());
             response.setRank(item.getRank());
-            response.setHistory(item.getHistory());
             responseList.add(response);
         }
         return responseList;
