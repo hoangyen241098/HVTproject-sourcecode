@@ -17,7 +17,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <!--Font-Awesome-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"/>
-
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <link th:href="@{/css/style.css}" rel="stylesheet"/>
     <script type="text/javascript" th:src="@{/js/functions.js}"></script>
 </head>
@@ -30,9 +30,7 @@
             <!--Search-->
             <div class="widget_search">
                 <form aria-label="Search" role="search" title="Tìm kiếm bài viết" class="m-0">
-                    <input aria-label="Search" type="search" class="form-control form-search" name="s"
-                           value="Tìm kiếm" onfocus="if (this.value === 'Tìm kiếm') { this.value = ''; }"
-                           onblur="if (this.value === '') this.value='Tìm kiếm';">
+                    <input type="search" class="form-control form-search" placeholder="Tìm kiếm" id="searchLetter">
                 </form>
             </div>
             <!--Contact Number-->
@@ -75,11 +73,13 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">TRỰC TUẦN</a>
                         <div class="dropdown-menu">
+                            <a class="dropdown-item hide" th:href="@{gradingToEmulation}" id="gradingToEmulationMenu">Chấm điểm thi đua</a>
+                            <a class="dropdown-item" th:href="@{violationList}">Xem nội quy trường học</a>
                             <a class="dropdown-item" th:href="@{assignEmulation}">Xem phân công trực tuần</a>
-                            <a class="dropdown-item" th:href="@{gradingToEmulation}">Chấm điểm thi đua</a>
-                            <a class="dropdown-item" th:href="@{violationListOfClass}">Xem danh sách lỗi theo ngày</a>
-                            <a class="dropdown-item" th:href="@{viewRequest}">Xem yêu cầu thay đổi</a>
-                            <a class="dropdown-item" th:href="@{history}">Xem lịch sử</a>
+                            <a class="dropdown-item" th:href="@{manageViolationEnteringTime}">Xem thời gian thực thi chấm điểm</a>
+                            <a class="dropdown-item" th:href="@{violationListOfClass}">Xem danh vi phạm theo ngày</a>
+                            <a class="dropdown-item" th:href="@{viewRequest}">Xem yêu cầu thay đổi vi phạm</a>
+                            <a class="dropdown-item" th:href="@{history}">Xem lịch sử vi phạm</a>
                         </div>
                     </li>
 
@@ -90,6 +90,22 @@
                             <a class="dropdown-item" th:href="@{rankByMonth}">Xếp hạng theo tháng</a>
                             <a class="dropdown-item" th:href="@{rankBySemester}">Xếp hạng theo học kỳ</a>
                             <a class="dropdown-item" th:href="@{rankByYear}">Xếp hạng theo năm</a>
+                        </div>
+                    </li>
+
+                    <li class="nav-item dropdown hide" id="sendPostMenu">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">GỬI BÀI TRUYỀN THÔNG</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" th:href="@{createPost}">Tạo bài viết mới</a>
+                            <a class="dropdown-item" th:href="@{/}">Xem lịch sử đăng bài</a>
+                        </div>
+                    </li>
+
+                    <li class="nav-item dropdown hide" id="createPostMenu">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">TẠO BÀI TRUYỀN THÔNG</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" th:href="@{createPost}">Tạo bài viết mới</a>
+                            <a class="dropdown-item" th:href="@{managePost}">Quản lý bài viết</a>
                         </div>
                     </li>
 
@@ -127,48 +143,11 @@
                                     </ul>
                                 </div>
                                 <div class="col-md-3 position-relative float-left">
-                                    <h4 class="mega-title">Quản lý lỗi</h4>
-                                    <ul class="stander">
-                                        <li><a th:href="@{violationList}">Danh sách lỗi vi phạm</a></li>
-                                        <li><a th:href="@{editViolation}">Chỉnh sửa thông tin lỗi vi phạm</a></li>
-                                        <li><a th:href="@{addViolation}">Thêm thông tin lỗi vi phạm</a></li>
-                                        <li><a th:href="@{editViolationType}">Chỉnh sửa thông tin nội quy</a></li>
-                                        <li><a th:href="@{addViolationType}">Thêm thông tin nội quy</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="row mt-4">
-                                <div class="col-md-3 position-relative float-left">
                                     <h4 class="mega-title">Quản lý năm học</h4>
                                     <ul class="stander">
                                         <li><a th:href="@{schoolYearList}">Quản lý năm học</a></li>
                                         <li><a th:href="@{addSchoolYear}">Thêm năm học mới</a></li>
                                         <li><a th:href="@{editSchoolYear}">Sửa thông tin năm học</a></li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-3 position-relative float-left">
-                                    <h4 class="mega-title">Quản lý thời gian</h4>
-                                    <ul class="stander">
-                                        <li><a th:href="@{manageViolationEnteringTime}">Xem thời gian thực thi chấm
-                                            điểm</a></li>
-                                        <li><a th:href="@{createViolationEnteringTime}">Thêm thời gian chấm</a></li>
-                                    </ul>
-                                </div>
-
-                                <div class="col-md-3 position-relative float-left">
-                                    <h4 class="mega-title">Quản lý xếp hạng</h4>
-                                    <ul class="stander">
-                                        <li><a th:href="@{rankByWeek}">Xếp hạng theo tuần</a></li>
-                                        <li><a th:href="@{rankByMonth}">Xếp hạng theo tháng</a></li>
-                                        <li><a th:href="@{rankBySemester}">Xếp hạng theo học kỳ</a></li>
-                                        <li><a th:href="@{rankByYear}">Xếp hạng theo năm</a></li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-3 position-relative float-left">
-                                    <h4 class="mega-title">Quản lý bài đăng</h4>
-                                    <ul class="stander">
-                                        <li><a th:href="@{createPost}">Tạo bài đăng</a></li>
-                                        <li><a th:href="@{managePost}">Quản lý bài đăng</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -183,7 +162,7 @@
                         <div class="dropdown-menu">
                             <a th:href="@{userInformation}" class="dropdown-item">Thông tin tài khoản</a>
                             <a th:href="@{changePassword}" class="dropdown-item">Đổi mật khẩu</a>
-                            <a th:href="@{/}" id="logout" class="dropdown-item"><b>ĐĂNG XUẤT</b></a>
+                            <a th:href="@{/}" id="logout" class="dropdown-item"><span class="font-500">ĐĂNG XUẤT</span></a>
                         </div>
                     </li>
                 </ul>

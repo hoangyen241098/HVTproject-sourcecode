@@ -14,5 +14,6 @@ public class ViewRequestDto {
     private Integer classId;
     private Integer status;
     private Date createDate;
+    private String createBy;
     private Integer pageNumber;
 }

@@ -47,6 +47,7 @@ public class HandleNewsletterServiceImpl implements HandleNewsletterService {
         String headerImage = model.getHeaderImage();
         String content = model.getContent();
         Integer roleId = model.getRoleId();
+        Integer status = 2;
 
         message = checkRequestNewsletter(username, header, headerImage, content, roleId);
         if(message.getMessageCode() == 1){
@@ -56,6 +57,10 @@ public class HandleNewsletterServiceImpl implements HandleNewsletterService {
 
         Date currentDate = new Date(System.currentTimeMillis());
 
+        if(roleId == Constant.ROLEID_ADMIN){
+            status = 0;
+        }
+
         Newsletter newsletter = new Newsletter();
         newsletter.setUserName(username);
         newsletter.setCreateDate(currentDate);
@@ -63,7 +68,7 @@ public class HandleNewsletterServiceImpl implements HandleNewsletterService {
         newsletter.setHeaderImage(headerImage);
         newsletter.setContent(content);
         newsletter.setGim(0);
-        newsletter.setStatus(2);
+        newsletter.setStatus(status);
 
         try{
             newsletter = newsletterRepository.save(newsletter);
@@ -174,6 +179,7 @@ public class HandleNewsletterServiceImpl implements HandleNewsletterService {
 
         Integer status = model.getStatus();
         Date createDate = model.getCreateDate();
+        String userName = model.getUserName();
         MessageDTO message;
 
         Page<Newsletter> pagedResult = null;
@@ -186,8 +192,12 @@ public class HandleNewsletterServiceImpl implements HandleNewsletterService {
             pageNumber = 0;
         }
 
+        if(userName == null){
+            userName = "";
+        }
+
         paging = PageRequest.of(pageNumber, pageSize);
-        pagedResult = newsletterRepository.findByStatusAndCreateDate(status, createDate, paging);
+        pagedResult = newsletterRepository.findByStatusAndCreateDate(status, createDate, userName, paging);
 
         //check result when get list
         if(pagedResult==null || pagedResult.getTotalElements() == 0){

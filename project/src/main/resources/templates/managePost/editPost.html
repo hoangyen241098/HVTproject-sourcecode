@@ -1,7 +1,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>.::Tạo bài viết::.</title>
+    <title>.::Sửa bài viết::.</title>
     <link th:href="@{/img/logo.png}" rel="shortcut icon" type="image/x-icon"/>
 
     <!-- jQuery library -->
@@ -13,7 +13,6 @@
     <script th:src="@{/js/public/bootstrap.min.js}"></script>
     <!-- CKEditor -->
     <script th:src="@{/js/public/ckeditor/ckeditor.js}"></script>
-    <!--        <script src="https://cdn.ckeditor.com/4.14.1/full/ckeditor.js"></script>-->
     <!--Font-Awesome-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"/>
     <script th:src="@{/js/public/moment.min.js}"></script>
@@ -27,12 +26,12 @@
 <div class="container">
     <div class="table-wrapper">
         <div class="table-title">
-            <h2>TẠO BÀI VIẾT</h2>
+            <h2>SỬA BÀI VIẾT</h2>
         </div>
         <div class="text-editor-layout mt-4">
             <div class="form-group editor-header">
                 <label for="titleName">Tiêu đề bài viết <span class="text-red">*</span></label>
-                <input type="text" class="form-control" id="titleName" placeholder="Tiêu đề bài viết">
+                <input type="text" class="form-control" id="titleName">
             </div>
             <form method="POST" role="form" enctype="multipart/form-data" id="form-post">
                 <div class="form-group">
@@ -42,11 +41,18 @@
                     <img id="imagePreview"/>
                 </div>
             </form>
+            <div class="form-check text-left mb-4 p-0">
+                <span class="custom-checkbox">
+                    <input type="checkbox" name="editOptions" value="pin">
+                    <label for="pin"></label>
+                </span>
+                <span class="ml-3">Ghim bài viết</span>
+            </div>
             <div class="post-content">
                 <textarea id="post-editor-text-content" name="post-editor-text-content" cols="80" rows="10">
                 </textarea>
             </div>
-            <div class="error createPost-err"></div>
+            <div class="error editPost-err"></div>
             <input type="button" class="btn btn-customer mx-0" value="LƯU" id="savePost">
         </div>
     </div>
@@ -56,7 +62,7 @@
 </body>
 
 <!--Modal Save-->
-<div class="modal fade" tabindex="-1" role="dialog" id="saveModal">
+<div class="modal fade" tabindex="-1" role="dialog" id="messageModal">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-body text-center"></div>
@@ -66,5 +72,6 @@
         </div>
     </div>
 </div>
-<script th:src="@{/js/managePost/createPost.js}"></script>
+
+<script th:src="@{/js/managePost/editPost.js}"></script>
 </html>

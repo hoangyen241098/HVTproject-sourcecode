@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>.::Xem yêu cầu thay đổi::.</title>
+    <title>.::Xem yêu cầu thay đổi vi phạm::.</title>
     <link th:href="@{/img/logo.png}" rel="shortcut icon" type="image/x-icon"/>
 
     <!-- jQuery library -->
@@ -27,8 +27,8 @@
 <div class="container">
     <div class="table-wrapper">
         <div class="table-title">
-            <h2>XEM YÊU CẦU THAY ĐỔI</h2>
-            <div class="search row">
+            <h2>XEM YÊU CẦU THAY ĐỔI VI PHẠM</h2>
+            <div class="search row align-items-end" >
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0">
                     <div class="form-group text-left mb-1">
                         <label>Trạng thái:</label>
@@ -39,8 +39,6 @@
                             <option value="2">Từ chối</option>
                         </select>
                     </div>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0">
                     <div class="form-group text-left mb-1">
                         <label>Lớp:</label>
                         <select class="combobox form-control w-75" id="classList"></select>
@@ -51,10 +49,12 @@
                         <label>Ngày:</label>
                         <input type="date" class="form-control w-75" id="inputDate">
                     </div>
+                    <div class="form-group text-left mb-1">
+                        <label>Người yêu cầu thay đổi:</label>
+                        <input type="text" class="form-control w-75" id="createBy" placeholder="Người yêu cầu thay đổi">
+                    </div>
                 </div>
-            </div>
-            <div class="table-title-2 pt-0">
-                <div class="col-sm-12 px-0 d-flex justify-content-end align-items-center">
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0 text-right">
                     <button class="btn btn-search mr-0" id="search">Tìm kiếm</button>
                 </div>
             </div>

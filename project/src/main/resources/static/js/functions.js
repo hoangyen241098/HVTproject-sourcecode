@@ -7,11 +7,31 @@ $(document).ready(function () {
         $("#loginSuccessMenu").addClass("show");
         $("#loginSuccessMenu .nav-link").html(username + `<i class="fa fa-caret-down"></i>`);
         $('#loginMenu').css('display', 'none');
+        //ROLEID_ADMIN
         if (roleID == 1) {
             $("#adminMenu").addClass("show");
+            $('#gradingToEmulationMenu').removeClass('hide');
+            $('#createPostMenu').removeClass('hide');
         }
+        //ROLEID_TIMETABLE_MANAGER
         if (roleID == 2) {
             $("#scheduleManagerMenu").addClass("show");
+        }
+        //ROLEID_REDSTAR
+        if (roleID == 3) {
+            $('#gradingToEmulationMenu').removeClass('hide');
+        }
+        //ROLEID_MONITOR
+        if (roleID == 4) {
+            $('#sendPostMenu').removeClass('hide');
+        }
+        //    ROLEID_SUMMERIZEGROUP
+        if (roleID == 5) {
+            $('#gradingToEmulationMenu').removeClass('hide');
+        }
+        //    ROLEID_CLUBLEADER
+        if (roleID == 6) {
+            $('#sendPostMenu').removeClass('hide');
         }
     } else {
         $('#loginMenu').css('display', 'block');
@@ -220,6 +240,14 @@ function limitedDate() {
     $('#toDate').attr('max', toYear + '-12-31');
 }
 
+/*Limited text*/
+function limitedText(str) {
+    if (str.length > 200) {
+        str = str.substring(0, 200) + '...'
+    }
+    return str;
+}
+
 // /*Clear session when leaving page*/
 var pathname = $(location).attr('pathname');
 if (pathname != '/teacherInformation') {
@@ -253,5 +281,11 @@ if (pathname != '/rankBySemester') {
 }
 if (pathname != '/rankByYear') {
     sessionStorage.removeItem('yearId');
+}
+if (pathname != '/postDetail') {
+    sessionStorage.removeItem('newsletterId');
+}
+if (pathname != '/editPost') {
+    sessionStorage.removeItem('newsletterIdEdit');
 }
 
