@@ -135,7 +135,11 @@ function search() {
                     var dataSrc = null;
                     var messageCode = data.message.messageCode;
                     var message = data.message.message;
+                    var checkEdit = data.checkEdit;
                     if (messageCode == 0) {
+                        if(checkEdit != null && checkEdit == 1 ){
+                            $('#editRankBtn').addClass('hide');
+                        }
                         if (data.rankSemesterList != null) {
                             dataSrc = data.rankSemesterList;
                         } else {
@@ -530,4 +534,40 @@ $(document).on('hidden.bs.modal', '#createNewRank', '#editRank', function () {
     $('input[name=editOptions]').prop('checked', false);
     $('#newSemesterName').val('');
     $('#semesterName').val('')
+});
+
+/*===============View History===================*/
+/*View history button*/
+$("#viewHistory").click(function () {
+    var viewHistory = {
+        semesterId: $('#bySemester option:selected').val(),
+    }
+    $.ajax({
+        url: '/api/ranksemester/viewhistory',
+        type: 'POST',
+        data: JSON.stringify(viewHistory),
+        beforeSend: function () {
+            $('body').addClass("loading")
+        },
+        complete: function () {
+            $('body').removeClass("loading")
+        },
+        success: function (data) {
+            console.log(data)
+            var messageCode = data.message.messageCode;
+            var message = data.message.message;
+            if (messageCode == 0) {
+                $('#historyModal .modal-body').html(data.history);
+                $('#historyModal').modal('show');
+            }
+            else{
+                dialogModal('messageModal', 'img/img-error.png', message)
+            }
+        },
+        failure: function (errMsg) {
+            dialogModal('messageModal', 'img/img-error.png', errMsg)
+        },
+        dataType: "json",
+        contentType: "application/json"
+    });
 });

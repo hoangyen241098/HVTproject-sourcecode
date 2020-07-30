@@ -163,7 +163,12 @@ function search() {
                     var dataSrc = null;
                     var messageCode = data.message.messageCode;
                     var message = data.message.message;
+                    var checkEdit = data.checkEdit;
                     if (messageCode == 0) {
+                        if(checkEdit != null && checkEdit == 1 ){
+                            $('#editGrades').addClass('hide');
+                            $('#editRankBtn').addClass('hide');
+                        }
                         if (data.rankWeekList != null) {
                             dataSrc = data.rankWeekList;
                         } else {
@@ -755,8 +760,7 @@ $("#viewHistory").click(function () {
     var weekId = $('#byWeek option:selected').val();
     var viewHistory = {
         weekId: weekId
-    }
-    console.log(JSON.stringify(viewHistory))
+    };
     $.ajax({
         url: '/api/rankweek/viewhistory',
         type: 'POST',
@@ -768,20 +772,20 @@ $("#viewHistory").click(function () {
             $('body').removeClass("loading")
         },
         success: function (data) {
-            var messageCode = data.messageCode;
-            var message = data.message;
+            var messageCode = data.message.messageCode;
+            var message = data.message.message;
             if (messageCode == 0) {
                 $('#historyModal .modal-body').html(data.history);
                 $('#historyModal').modal('show');
             }
             else{
-                dialogModal('viewHistory', 'img/img-error.png', message)
+                dialogModal('downloadModal', 'img/img-error.png', message)
             }
         },
         failure: function (errMsg) {
-            dialogModal('viewHistory', 'img/img-error.png', errMsg)
+            dialogModal('downloadModal', 'img/img-error.png', errMsg)
         },
-        dataType: "binary",
+        dataType: "json",
         contentType: "application/json"
     });
 });

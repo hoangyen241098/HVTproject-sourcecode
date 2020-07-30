@@ -140,7 +140,8 @@ public class ViewSchoolRankSemesterServiceImpl implements ViewSchoolRankSemester
 
         //check semester ranked or not
         SchoolSemester checkSchoolSemester =  schoolSemesterRepository.findSchoolSemesterBySemesterId(semesterId);
-        if(checkSchoolSemester != null && checkSchoolSemester.getYearId() != 0){
+        if(checkSchoolSemester != null && checkSchoolSemester.getIsRanked() != null
+                && checkSchoolSemester.getIsRanked() != 0){
             resposeDto.setCheckEdit(1);
         }
         else{

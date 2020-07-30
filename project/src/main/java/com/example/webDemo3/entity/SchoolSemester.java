@@ -25,4 +25,7 @@ public class SchoolSemester {
 
     @Column(name = "HISTORY")
     private String history;
+
+    @Column(name = "IS_RANKED")
+    private Integer isRanked;
 }
