@@ -8,6 +8,8 @@ import com.example.webDemo3.dto.request.manageAccountRequestDto.ChangePasswordRe
 import com.example.webDemo3.dto.request.manageAccountRequestDto.EditPerInforRequestDto;
 import com.example.webDemo3.dto.request.manageAccountRequestDto.LoginRequestDto;
 import com.example.webDemo3.dto.request.manageAccountRequestDto.ViewPerInforRequestDto;
+import com.example.webDemo3.entity.User;
+import com.example.webDemo3.repository.UserRepository;
 import com.example.webDemo3.security.CustomUserDetails;
 import com.example.webDemo3.security.JwtTokenProvider;
 import com.example.webDemo3.security.LoginResponse;
@@ -91,6 +93,27 @@ public class UserController {
 
     @Autowired
     PasswordEncoder pe;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @PostMapping("/get-authentication")
+    public LoginResponse getAuthentication(){
+        LoginResponse responseDTO = new LoginResponse();
+        if(SecurityContextHolder.getContext().getAuthentication() instanceof UsernamePasswordAuthenticationToken){
+            CustomUserDetails userDetails = (CustomUserDetails)SecurityContextHolder.getContext()
+                    .getAuthentication().getPrincipal();
+            User userModel = userRepository.findUserByUsername(userDetails.getUsername());
+            //UserDTO userDTO = new UserDTO(userModel);
+//            if(userModel instanceof LandlordModel){
+//                int countRequest = rentalRequestRepository.getRequestNumber(userModel.getUsername(), 7L);
+//                userDTO.setRequestNumber(countRequest);
+//            }
+//            responseDTO.setUserDTO(userDTO);
+            responseDTO.setRoleid(userModel.getRole().getRoleId());
+        }
+        return responseDTO;
+    }
 
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequestDto model, HttpSession session)

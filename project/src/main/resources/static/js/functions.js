@@ -1,5 +1,6 @@
 /*Set navigation bar*/
 $(document).ready(function () {
+    getAuthen();
     var loginSuccess = localStorage.getItem("loginSuccess");
     var roleID = localStorage.getItem("roleID");
     var username = localStorage.getItem("username");
@@ -268,5 +269,40 @@ function logout() {
         },
         dataType: "json",
         contentType: "application/json"
+    });
+}
+
+function getAuthen() {
+    $.ajax({
+        type: 'POST',
+        url: "/api/user/get-authentication",
+        method : 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem("accessToken")
+        },
+
+        // data: JSON.stringify(user),
+        beforeSend: function () {
+            $('body').addClass("loading")
+        },
+        complete: function () {
+            $('body').removeClass("loading")
+        },
+        success: function (data) {
+            if(data != null && data.messageCode === 0){
+                localStorage.clear();
+                // localStorage.removeItem("userInfo")
+                // this.$cookies.remove("access_token")
+                // this.$cookies.remove("token_provider")
+                // window.location.href = "/"
+            }
+        },
+        failure: function (errMsg) {
+            $('.login-err').text(errMsg);
+        },
+        dataType: "json",
+        contentType: "application/json"
+        // Authorization: 'Bearer ' + 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImlhdCI6MTU5NjA5NzYxMSwiZXhwIjoxNTk2NzAyNDExfQ.bCFuTQOk1Kl9ARmrT83HTOQOMOFbFb6aLY_uEXiJTXBMz3tdlh3RMFPz70-sCKzNgTZ8bFJlzGeeHs5PgGAeNQ'
     });
 }
