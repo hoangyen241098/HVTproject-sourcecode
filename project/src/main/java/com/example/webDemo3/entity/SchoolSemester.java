@@ -3,6 +3,7 @@ package com.example.webDemo3.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 /*
 kimpt142 - 23/07
@@ -23,9 +24,12 @@ public class SchoolSemester {
     @Column(name = "SEMESTER")
     private Integer semester;
 
-    @Column(name = "HISTORY")
+    @Column(name = "RANK_HISTORY")
     private String history;
 
     @Column(name = "IS_RANKED")
     private Integer isRanked;
+
+    @Column(name = "RANK_CREATE_DATE")
+    private Date createDate;
 }
