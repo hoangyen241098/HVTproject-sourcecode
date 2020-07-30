@@ -4,6 +4,7 @@ import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.DateViolationClassDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListDateResponseDto;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.SchoolWeekDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewSchoolWeekHistoryResponseDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.CreateRankWeekRequestDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.EditRankWeekRequestDto;
@@ -213,7 +214,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
                 return message;
             }
 
-            schoolWeek = schoolWeekRepository.findSchoolWeeksByWeekMonthIdAndYearId(week,0,currentYearId);
+            schoolWeek = schoolWeekRepository.findSchoolWeeksByWeekAndYearId(week,currentYearId);
             //check week exist or not
             if(schoolWeek != null){
                 message = Constant.SCHOOL_WEEK_EXISTS;
@@ -226,9 +227,10 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
             schoolWeek.setMonthID(monthId);
             schoolWeek.setYearId(currentYearId);
             schoolWeek.setHistory(history);
+            schoolWeek.setCreateDate(createDate);
             schoolWeekRepository.save(schoolWeek);
 
-            weekId = schoolWeekRepository.findSchoolWeeksByWeekMonthIdAndYearId(week,0,currentYearId).getWeekID();
+            weekId = schoolWeekRepository.findSchoolWeeksByWeekAndYearId(week,currentYearId).getWeekID();
 
             classList = classRepository.findAll();
             allTotalGrade = violationTypeRepository.sumAllTotalGradeViolationTypeActive();
@@ -309,6 +311,13 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
 
                 dateResponseList.add(dateResponseDto);
             }
+
+            Collections.sort(dateResponseList, new Comparator<DateViolationClassDto>() {
+                @Override
+                public int compare(DateViolationClassDto o1, DateViolationClassDto o2) {
+                    return o1.getDate().compareTo(o2.getDate());
+                }
+            });
 
             //check dateList empty or not
             if(dateResponseList == null || dateResponseList.size() == 0){
@@ -477,7 +486,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
                 return message;
             }
 
-            newSchoolWeek = schoolWeekRepository.findSchoolWeeksByWeekMonthIdAndYearId(week,schoolWeek.getMonthID(),schoolWeek.getYearId());
+            newSchoolWeek = schoolWeekRepository.findSchoolWeeksByWeekAndYearId(week,schoolWeek.getYearId());
 
             //check week exist or not
             if(newSchoolWeek != null && schoolWeek.getWeekID() != newSchoolWeek.getWeekID()){

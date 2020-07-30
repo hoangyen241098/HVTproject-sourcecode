@@ -2,6 +2,8 @@ package com.example.webDemo3.dto.manageSchoolRankResponseDto;
 
 import lombok.Data;
 
+import java.sql.Date;
+
 /**
  * lamnt98
  * 24/07
@@ -12,4 +14,5 @@ public class SchoolSemesterDto {
     private Integer semester;
     private Integer yearId;
     private Integer isCheck;
+    private Date rankCreateDate;
 }

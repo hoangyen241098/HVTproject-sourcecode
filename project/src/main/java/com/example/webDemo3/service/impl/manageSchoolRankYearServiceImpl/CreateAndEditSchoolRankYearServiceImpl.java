@@ -165,18 +165,20 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
                 schoolSemesterDto.setSemesterId(schoolSemester.getSemesterId());
                 schoolSemesterDto.setSemester(schoolSemester.getSemester());
                 schoolSemesterDto.setYearId(schoolSemester.getYearId());
+                schoolSemesterDto.setRankCreateDate(schoolSemester.getCreateDate());
                 schoolSemesterDto.setIsCheck(0);
 
                 semesterListDto.add(schoolSemesterDto);
             }
 
-            newSemesterList = schoolSemesterRepository.findSchoolSemesterByYearId(yearId);
+            newSemesterList = schoolSemesterRepository.findSchoolSemesterRank(yearId);
 
             for (SchoolSemester schoolSemester : newSemesterList) {
                 SchoolSemesterDto schoolSemesterDto = new SchoolSemesterDto();
                 schoolSemesterDto.setSemesterId(schoolSemester.getSemesterId());
                 schoolSemesterDto.setSemester(schoolSemester.getSemester());
                 schoolSemesterDto.setYearId(schoolSemester.getYearId());
+                schoolSemesterDto.setRankCreateDate(schoolSemester.getCreateDate());
                 schoolSemesterDto.setIsCheck(1);
 
                 semesterListDto.add(schoolSemesterDto);
@@ -187,6 +189,13 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
                 responseDto.setMessage(message);
                 return responseDto;
             }
+
+            Collections.sort(semesterListDto, new Comparator<SchoolSemesterDto>() {
+                @Override
+                public int compare(SchoolSemesterDto o1, SchoolSemesterDto o2) {
+                    return o1.getRankCreateDate().compareTo(o2.getRankCreateDate());
+                }
+            });
 
             message = Constant.SUCCESS;
             responseDto.setSemesterList(semesterListDto);
@@ -415,6 +424,7 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
 
             history = additionFunctionSchoolRankService.addHistory("",userName,createDate);
             schoolYear.setHistory(history);
+            schoolYear.setCreateDate(createDate);
             schoolYearRepository.save(schoolYear);
 
             classList = classRepository.findAll();
@@ -444,6 +454,7 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
                     //check schoolWeek exist or not
                     if(schoolSemester != null){
                         schoolSemester.setYearId(yearId);
+                        schoolSemester.setIsRanked(1);
                         schoolSemesterRepository.save(schoolSemester);
                         SchoolRankSemester schoolRankSemester = schoolRankSemesterRepository.findSchoolRankSemesterBySemesterIdAndClassId(schoolSemester.getSemesterId(),newClass.getClassId());
 
@@ -458,7 +469,7 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
                     SchoolSemester schoolSemester = schoolSemesterRepository.findSchoolSemesterBySemesterId(schoolSemesterDto.getSemesterId());
                     //check schoolWeek exist or not
                     if(schoolSemester != null){
-                        schoolSemester.setYearId(0);
+                        schoolSemester.setIsRanked(0);
                         schoolSemesterRepository.save(schoolSemester);
                     }
                 }
