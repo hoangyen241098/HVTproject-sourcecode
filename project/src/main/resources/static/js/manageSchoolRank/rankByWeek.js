@@ -255,12 +255,12 @@ function search() {
                 settings.oLanguage.sEmptyTable = "Danh sách xếp hạng tuần trống."
             }
         })
-        viewHistory();
-        dowload();
-        createRank();
-        editRankBtn();
-        editGrade();
     }
+    viewHistory();
+    dowload();
+    createRank();
+    editRankBtn();
+    editGrade();
 }
 
 /*Search button*/
