@@ -4,6 +4,7 @@ import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.DateViolationClassDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListDateResponseDto;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.SchoolWeekDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewSchoolWeekHistoryResponseDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.CreateRankWeekRequestDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.EditRankWeekRequestDto;
@@ -310,6 +311,13 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
 
                 dateResponseList.add(dateResponseDto);
             }
+
+            Collections.sort(dateResponseList, new Comparator<DateViolationClassDto>() {
+                @Override
+                public int compare(DateViolationClassDto o1, DateViolationClassDto o2) {
+                    return o1.getDate().compareTo(o2.getDate());
+                }
+            });
 
             //check dateList empty or not
             if(dateResponseList == null || dateResponseList.size() == 0){
