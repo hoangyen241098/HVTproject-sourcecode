@@ -171,7 +171,7 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
                 semesterListDto.add(schoolSemesterDto);
             }
 
-            newSemesterList = schoolSemesterRepository.findSchoolSemesterRank();
+            newSemesterList = schoolSemesterRepository.findSchoolSemesterRank(yearId);
 
             for (SchoolSemester schoolSemester : newSemesterList) {
                 SchoolSemesterDto schoolSemesterDto = new SchoolSemesterDto();

@@ -213,7 +213,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
                 return message;
             }
 
-            schoolWeek = schoolWeekRepository.findSchoolWeeksByWeekMonthIdAndYearId(week,0,currentYearId);
+            schoolWeek = schoolWeekRepository.findSchoolWeeksByWeekAndYearId(week,currentYearId);
             //check week exist or not
             if(schoolWeek != null){
                 message = Constant.SCHOOL_WEEK_EXISTS;
@@ -229,7 +229,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
             schoolWeek.setCreateDate(createDate);
             schoolWeekRepository.save(schoolWeek);
 
-            weekId = schoolWeekRepository.findSchoolWeeksByWeekMonthIdAndYearId(week,0,currentYearId).getWeekID();
+            weekId = schoolWeekRepository.findSchoolWeeksByWeekAndYearId(week,currentYearId).getWeekID();
 
             classList = classRepository.findAll();
             allTotalGrade = violationTypeRepository.sumAllTotalGradeViolationTypeActive();
@@ -478,7 +478,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
                 return message;
             }
 
-            newSchoolWeek = schoolWeekRepository.findSchoolWeeksByWeekMonthIdAndYearId(week,schoolWeek.getMonthID(),schoolWeek.getYearId());
+            newSchoolWeek = schoolWeekRepository.findSchoolWeeksByWeekAndYearId(week,schoolWeek.getYearId());
 
             //check week exist or not
             if(newSchoolWeek != null && schoolWeek.getWeekID() != newSchoolWeek.getWeekID()){

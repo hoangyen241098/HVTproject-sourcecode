@@ -9,8 +9,8 @@ import java.util.List;
 
 @Repository
 public interface SchoolWeekRepository extends JpaRepository<SchoolWeek,Integer> {
-    @Query(value = "select s from SchoolWeek s where s.week = :week and s.monthID = :monthId and s.yearId = :yearId")
-    SchoolWeek findSchoolWeeksByWeekMonthIdAndYearId(@Param("week") Integer week, @Param("monthId") Integer monthId, @Param("yearId") Integer yearId);
+    @Query(value = "select s from SchoolWeek s where s.week = :week and s.yearId = :yearId")
+    SchoolWeek findSchoolWeeksByWeekAndYearId(@Param("week") Integer week, @Param("yearId") Integer yearId);
 
     @Query(value="select sw from SchoolWeek sw where sw.weekID <> 0 and sw.yearId = :yearId")
     List<SchoolWeek> findSchoolWeekByYearIdExcludeZero(@Param("yearId") Integer yearId);

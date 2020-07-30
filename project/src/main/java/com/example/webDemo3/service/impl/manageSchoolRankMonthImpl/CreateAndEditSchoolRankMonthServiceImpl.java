@@ -447,7 +447,7 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
 
             createDate = additionFunctionSchoolRankService.convertDateInComputerToSqlDate();
 
-            schoolMonth = schoolMonthRepository.findSchoolMonthByMonthAndSemesterAndYearId(month,0,currentYearId);
+            schoolMonth = schoolMonthRepository.findSchoolMonthByMonthAndYearId(month,currentYearId);
             //check month exist or not
             if(schoolMonth != null){
                 message = Constant.SCHOOL_MONTH_EXISTS;
@@ -463,7 +463,7 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
             schoolMonth.setCreateDate(createDate);
             schoolMonthRepository.save(schoolMonth);
 
-            monthId = schoolMonthRepository.findSchoolMonthByMonthAndSemesterAndYearId(month,0,currentYearId).getMonthId();
+            monthId = schoolMonthRepository.findSchoolMonthByMonthAndYearId(month,currentYearId).getMonthId();
 
             classList = classRepository.findAll();
 

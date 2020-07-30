@@ -26,6 +26,6 @@ public interface SchoolSemesterRepository extends JpaRepository<SchoolSemester,I
 
     SchoolSemester findSchoolSemesterBySemesterId(Integer semesterId);
 
-    @Query(value="select sw from SchoolSemester sw where sw.isRanked = 1 order by sw.semester asc")
-    List<SchoolSemester> findSchoolSemesterRank();
+    @Query(value="select sw from SchoolSemester sw where sw.yearId = :yearId and sw.isRanked = 1 order by sw.semester asc")
+    List<SchoolSemester> findSchoolSemesterRank(@Param("yearId") Integer yearId);
 }
