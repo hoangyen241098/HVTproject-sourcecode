@@ -11,11 +11,16 @@ var editor = CKEDITOR.replace('post-editor-text-content', {
 var imageCover = CKEDITOR.replace('imageCover', {
     cloudServices_uploadUrl: 'https://73438.cke-cs.com/easyimage/upload/',
     cloudServices_tokenUrl: 'https://73438.cke-cs.com/token/dev/de62f27633e0ccc284486ba070dbacf5b61e59390a805c23d58fc080b306',
-    width: '100%',
-    height: 100,
+    width: 250,
+    height: 70,
     extraPlugins: 'easyimage',
+    extraPlugins: 'autogrow',
     removePlugins: 'image',
     removeDialogTabs: 'link:advanced',
+    autoGrow_minHeight: 50,
+    autoGrow_maxHeight: 600,
+    autoGrow_bottomSpace: 0,
+    removePlugins: 'resize',
     toolbar: [
         {
             name: 'insert',
@@ -23,6 +28,10 @@ var imageCover = CKEDITOR.replace('imageCover', {
         }
     ],
 });
+
+if(roleID == 1) {
+    $('.form-check').removeClass('hide');
+}
 
 /*Save button*/
 $('#savePost').on('click', function () {
@@ -32,6 +41,12 @@ $('#savePost').on('click', function () {
     image = image.split('src=')[1].split('"')[1];
     var data = editor.getData();
     console.log(image);
+    var gim;
+    if ($('input[type="checkbox"]').prop("checked") == true) {
+        gim = 1;
+    } else {
+        gim = 0;
+    }
     if (titleName == "") {
         $('.createPost-err').text('Hãy nhập tiêu đề của bài viết.');
         return false;
@@ -47,6 +62,7 @@ $('#savePost').on('click', function () {
             header: titleName,
             headerImage: image,
             content: data,
+            gim: gim,
             roleId: roleID,
         }
         console.log(JSON.stringify(request))

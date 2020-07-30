@@ -3,21 +3,21 @@ Copyright (c) 2003-2020, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 
-body
-{
-	/* Font */
-	/* Emoji fonts are added to visualise them nicely in Internet Explorer. */
-	font-family: sans-serif, Arial, Verdana, "Trebuchet MS", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-	font-size: 12px;
+/*body*/
+/*{*/
+/*	!* Font *!*/
+/*	!* Emoji fonts are added to visualise them nicely in Internet Explorer. *!*/
+/*	font-family: sans-serif, Arial, Verdana, "Trebuchet MS", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";*/
+/*	font-size: 12px;*/
 
-	/* Text color */
-	color: #333;
+/*	!* Text color *!*/
+/*	color: #333;*/
 
-	/* Remove the background color to make it transparent. */
-	background-color: #fff;
+/*	!* Remove the background color to make it transparent. *!*/
+/*	background-color: #fff;*/
 
-	margin: 20px;
-}
+/*	margin: 20px;*/
+/*}*/
 
 .cke_editable
 {
@@ -52,24 +52,24 @@ blockquote
 	border-right-width: 5px;
 }
 
-a
-{
-	color: #0782C1;
-}
+/*a*/
+/*{*/
+/*	color: #0782C1;*/
+/*}*/
 
-ol,ul,dl
-{
-	/* IE7: reset rtl list margin. (#7334) */
-	*margin-right: 0px;
-	/* Preserved spaces for list items with text direction different than the list. (#6249,#8049)*/
-	padding: 0 40px;
-}
+/*ol,ul,dl*/
+/*{*/
+/*	!* IE7: reset rtl list margin. (#7334) *!*/
+/*	*margin-right: 0px;*/
+/*	!* Preserved spaces for list items with text direction different than the list. (#6249,#8049)*!*/
+/*	padding: 0 40px;*/
+/*}*/
 
-h1,h2,h3,h4,h5,h6
-{
-	font-weight: normal;
-	line-height: 1.2;
-}
+/*h1,h2,h3,h4,h5,h6*/
+/*{*/
+/*	font-weight: normal;*/
+/*	line-height: 1.2;*/
+/*}*/
 
 hr
 {
