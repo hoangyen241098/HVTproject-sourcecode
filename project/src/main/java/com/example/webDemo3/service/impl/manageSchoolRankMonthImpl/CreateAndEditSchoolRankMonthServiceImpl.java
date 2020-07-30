@@ -362,7 +362,7 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
 
             //check exist schoolMonth with month name
             newSchoolMonth = schoolMonthRepository.findSchoolMonthByMonthAndYearId(month,schoolMonth.getYearId());
-            if(newSchoolMonth != null){
+            if(newSchoolMonth != null && schoolMonth.getMonthId() != newSchoolMonth.getMonthId()){
                 message = Constant.SCHOOL_MONTH_EXISTS;
                 return message;
             }

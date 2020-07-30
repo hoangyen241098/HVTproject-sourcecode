@@ -352,7 +352,7 @@ public class CreateAndEditSchoolRankSemesterServiceImpl implements CreateAndEdit
 
             //check exist schoolMonth with month name
             newSchoolSemester = schoolSemesterRepository.findSchoolSemesterBySemesterAndYearId(semester,schoolSemester.getYearId());
-            if(newSchoolSemester != null){
+            if(newSchoolSemester != null && schoolSemester.getSemesterId() != newSchoolSemester.getSemesterId()){
                 message = Constant.SCHOOL_SEMESTER_EXISTS;
                 return message;
             }
