@@ -4,6 +4,14 @@ var inforSearch = {
     userName: "",
     pageNumber: 0
 }
+var roleID = localStorage.getItem("roleID");
+var username = localStorage.getItem("username");
+if (roleID != 1) {
+    inforSearch.userName = username;
+    $('#createBy').val(username);
+    $('#createBy').prop('disabled', true);
+}
+
 search();
 
 $('#search').on('click', function () {
@@ -36,34 +44,45 @@ function search() {
                 if (data.listLetter != null) {
                     var totalPages = data.listLetter.totalPages;
                     paging(inforSearch, totalPages);
-                    $.each(data.listLetter.content, function (i, item) {
-                        var status = item.status;
-                        if (status == 1) {
-                            status = "Đã xóa";
-                        } else if (status == 2) {
-                            status = "Chưa duyệt";
-                        } else if (status == 0) {
-                            status = "Đã duyệt";
-                        }
-                        $('.panel-default').append(`
-                        <div class="panel-post mb-3">
-                            <div class="panel-post-content">
-                                <div class="post-img">
-                                    <img src="` + item.headerImage + `">
-                                </div>
-                                <div class="post-description">
-                                    <div class="post-title">` + item.header + `</div>
-                                    <div class="post-date">` + item.createDate + `</div>
-                                    <div class="post-shortDes">` + limitedText(item.content) + `</div>
-                                    <div class="post-status font-500">` + status + `</div>
-                                </div>
-                            </div>
-                            <div class="panel-btn-view">
-                                <a href="postDetail" class="btn btn-customer" id="` + item.newsletterId + `">XEM BÀI VIẾT</a>
-                            </div>
-                        </div>
-                        `);
-                    });
+                    if (data.listLetter.content.length != 0) {
+                        $.each(data.listLetter.content, function (i, item) {
+                            var status = item.status;
+                            if (status == 1) {
+                                status = "Đã ẩn";
+                            } else if (status == 2) {
+                                status = "Chờ duyệt";
+                            } else if (status == 0) {
+                                status = "Đã đăng";
+                            }
+                            $('.panel-default').append(`
+                            <div class="panel-post mb-3">
+                                <a href="postDetail" id="` + item.newsletterId + `">
+                                    <div class="panel-post-content">
+                                        <div class="post-img">
+                                            <img src="` + item.headerImage + `">
+                                        </div>
+                                        <div class="post-description">
+                                            <div class="post-title">` + item.header + `</div>
+                                            <div class="post-date">` + item.createDate + `</div>
+                                            <div class="post-shortDes"><span class="font-500">Tạo bởi: </span>` + item.userName + `</div>
+                                            <div class="post-status font-500">Trạng thái: <span>` + status + `</span></div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>`);
+                            if (status == "Chờ duyệt") {
+                                $('#' + item.newsletterId).find('.post-status span').css('color', '#ff0000');
+                            }
+                            if (status == "Đã đăng") {
+                                $('#' + item.newsletterId).find('.post-status span').css('color', '#339933');
+                            }
+                            if (status == "Đã ẩn") {
+                                $('#' + item.newsletterId).find('.post-status span').css('color', '#808080');
+                            }
+                        });
+                    } else {
+                        $('.panel-default').html('<h3 class="text-center">Danh sách bài viết trống.</h3>');
+                    }
                     pagingClick();
                     getNewsletterId();
                 } else {
@@ -84,7 +103,7 @@ function search() {
 
 /*Get newsletterId */
 function getNewsletterId() {
-    var newsletterId = $('.panel-btn-view a');
+    var newsletterId = $('.panel-post a');
     $(newsletterId).on('click', function (e) {
         newsletterId = $(this).prop('id');
         sessionStorage.setItem("newsletterId", newsletterId);

@@ -88,47 +88,34 @@ $('.slider').each(function () {
 
     advance();
 });
-var inforSearch = {
-    header: "",
-    pageNumber: 0
-}
-search();
-
-$('#searchLetter').keypress(function (e) {
-    if (e.which == 13) {
-        search();
-        return false;
-    }
-});
 
 /*Load Homepage*/
-function search() {
-    inforSearch.header = $('#searchLetter').val();
-    console.log(JSON.stringify(inforSearch));
-    $.ajax({
-        url: "/api/newsletter/searchletter",
-        type: "POST",
-        data: JSON.stringify(inforSearch),
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
-        success: function (data) {
-            var messageCode = data.message.messageCode;
-            var message = data.message.message;
-            $('.table-paging').html('')
-            if (messageCode == 0) {
-                if (data.listLetter != null) {
-                    var totalPages = data.listLetter.totalPages;
-                    paging(inforSearch, totalPages);
-                    var count = 0;
-                    $('.container-header .flex-wrap').html('')
-                    $('.container-paging .flex-wrap').html('');
-                    $('.homepage-message').text('');
-                    $('.container .content-wrap').removeClass('hide');
+$.ajax({
+    url: "/api/newsletter/loadhomepage",
+    type: "POST",
+    data: JSON.stringify({pageNumber: 0}),
+    beforeSend: function () {
+        $('body').addClass("loading")
+    },
+    complete: function () {
+        $('body').removeClass("loading")
+    },
+    success: function (data) {
+        var messageCode = data.message.messageCode;
+        var message = data.message.message;
+        if (messageCode == 0) {
+            if (data.listLetter != null) {
+                var totalPages = data.listLetter.totalPages;
+                if (totalPages > 1) {
                     $('.table-paging').removeClass('hide');
+                    paging(inforSearch, totalPages);
+                }
+                var count = 0;
+                $('.container-header .flex-wrap').html('')
+                $('.container-paging .flex-wrap').html('');
+                $('.homepage-message').text('');
+                $('.container .content-wrap').removeClass('hide');
+                if (data.listLetter.content.length != 0) {
                     $.each(data.listLetter.content, function (i, item) {
                         if (item.gim == 1) {
                             $('.container-header .card-pin').html(`
@@ -185,6 +172,129 @@ function search() {
                     $('.table-paging').addClass('hide');
                 }
             } else {
+                $('.homepage-message').text('Danh sách bài viết trống.');
+                $('.container .content-wrap').addClass('hide');
+                $('.table-paging').addClass('hide');
+            }
+        } else {
+            $('.container .content-wrap').addClass('hide');
+            $('.table-paging').addClass('hide');
+            $('.homepage-message').text(message);
+        }
+    },
+    failure: function (errMsg) {
+        $('.container .content-wrap').addClass('hide');
+        $('.table-paging').addClass('hide');
+        $('.homepage-message').text(errMsg);
+    },
+    dataType: "json",
+    contentType: "application/json"
+});
+
+var inforSearch = {
+    header: "",
+    pageNumber: 0
+}
+
+$('#searchLetter').keypress(function (e) {
+    if (e.which == 13) {
+        search();
+        return false;
+    }
+});
+
+/*Search*/
+function search() {
+    inforSearch.header = $('#searchLetter').val();
+    console.log(JSON.stringify(inforSearch));
+    $.ajax({
+        url: "/api/newsletter/searchletter",
+        type: "POST",
+        data: JSON.stringify(inforSearch),
+        beforeSend: function () {
+            $('body').addClass("loading")
+        },
+        complete: function () {
+            $('body').removeClass("loading")
+        },
+        success: function (data) {
+            var messageCode = data.message.messageCode;
+            var message = data.message.message;
+            $('.table-paging').html('')
+            if (messageCode == 0) {
+                if (data.listLetter != null) {
+                    var totalPages = data.listLetter.totalPages;
+                    if (totalPages > 1) {
+                        $('.table-paging').removeClass('hide');
+                        paging(inforSearch, totalPages);
+                    }
+                    var count = 0;
+                    $('.container-header .flex-wrap').html('')
+                    $('.container-paging .flex-wrap').html('');
+                    $('.homepage-message').text('');
+                    $('.container .content-wrap').removeClass('hide');
+                    if (data.listLetter.content.length != 0) {
+                        $.each(data.listLetter.content, function (i, item) {
+                            if (item.gim == 1) {
+                                $('.container-header .card-pin').html(`
+                            <a href="postDetail" class="card" id="` + item.newsletterId + `">
+                                <div class="img-post">
+                                    <img class="card-img-top" src="` + item.headerImage + `">
+                                </div>
+                                <div class="card-block">
+                                    <h3 class="card-title">` + item.header + `</h3>
+                                    <div class="card-date">` + item.createDate + `</div>
+                                    <div class="card-text">` + limitedText(item.content) + `</div>
+                                </div>
+                            </a>
+                        `);
+                            } else {
+                                console.log(item.gim)
+                                count++;
+                                if (count <= 4) {
+                                    $('.container-header .flex-wrap').append(`
+                            <div class="post-gird col-md-6">
+                                <a href="postDetail" class="card card-120" id="` + item.newsletterId + `">
+                                    <div class="img-post">
+                                    <img class="card-img-top" src="` + item.headerImage + `">
+                                    </div>
+                                    <div class="card-block">
+                                        <h3 class="card-title">` + item.header + `</h3>
+                                        <div class="card-date">` + item.createDate + `</div>
+                                    </div>
+                                </a>
+                            </div>
+                        `);
+                                } else {
+                                    $('.container-paging .flex-wrap').append(`
+                            <div class="post-gird col-md-4">
+                                <a href="postDetail" class="card card-200" id="` + item.newsletterId + `">
+                                    <div class="img-post">
+                                        <img class="card-img-top" src="` + item.headerImage + `">
+                                    </div>
+                                    <div class="card-block">
+                                        <h3 class="card-title">` + item.header + `</h3>
+                                        <div class="card-date">` + item.createDate + `</div>
+                                    </div>
+                                </a>
+                            </div>
+                            `);
+                                }
+                            }
+                        });
+                        pagingClick();
+                        getNewsletterId();
+                    } else {
+                        $('.homepage-message').text('Danh sách bài viết trống.');
+                        $('.container .content-wrap').addClass('hide');
+                        $('.table-paging').addClass('hide');
+                    }
+                } else {
+                    $('.homepage-message').text('Danh sách bài viết trống.');
+                    $('.container .content-wrap').addClass('hide');
+                    $('.table-paging').addClass('hide');
+                }
+            } else {
                 $('.container .content-wrap').addClass('hide');
                 $('.table-paging').addClass('hide');
                 $('.homepage-message').text(message);
@@ -200,91 +310,6 @@ function search() {
     });
 }
 
-/*Search*/
-// function search() {
-//     inforSearch.header = $('#searchletter').val();
-//     console.log(JSON.stringify(inforSearch));
-//     $.ajax({
-//         url: "/api/newsletter/searchletter",
-//         type: "POST",
-//         data: JSON.stringify(inforSearch),
-//         beforeSend: function () {
-//             $('body').addClass("loading")
-//         },
-//         complete: function () {
-//             $('body').removeClass("loading")
-//         },
-//         success: function (data) {
-//             var messageCode = data.message.messageCode;
-//             var message = data.message.message;
-//             if (messageCode == 0) {
-//                 if (data.listLetter != null) {
-//                     var totalPages = data.listLetter.totalPages;
-//                     paging(inforSearch, totalPages);
-//                     var count = 0;
-//                     $.each(data.listLetter.content, function (i, item) {
-//                         if (item.gim == 1) {
-//                             $('.container-header .post-gird').html(`
-//                                 <a href="postDetail" class="card card-pin">
-//                                     <div class="img-post">
-//                                         <img class="card-img-top" src="` + item.headerImage + `">
-//                                     </div>
-//                                     <div class="card-block">
-//                                         <h3 class="card-title">` + item.header + `</h3>
-//                                         <div class="card-date">` + item.createDate + `</div>
-//                                         <div class="card-text">` + limitedText(item.content) + `</div>
-//                                     </div>
-//                                 </a>
-//                         `);
-//                         } else {
-//                             count++;
-//                             if (count <= 4) {
-//                                 $('.container-header .flex-wrap').append(`
-//                             <div class="post-gird col-md-6">
-//                                 <a href="postDetail" class="card card-120">
-//                                     <div class="img-post">
-//                                     <img class="card-img-top" src="` + item.headerImage + `">
-//                                     </div>
-//                                     <div class="card-block">
-//                                         <h3 class="card-title">` + item.header + `</h3>
-//                                         <div class="card-date">` + item.createDate + `</div>
-//                                     </div>
-//                                 </a>
-//                             </div>
-//                         `);
-//                             } else {
-//                                 $('.container-paging .flex-wrap').append(`
-//                             <div class="post-gird col-md-4">
-//                                 <a href="postDetail" class="card card-200">
-//                                     <div class="img-post">
-//                                         <img class="card-img-top" src="` + item.headerImage + `">
-//                                     </div>
-//                                     <div class="card-block">
-//                                         <h3 class="card-title">` + item.header + `</h3>
-//                                         <div class="card-date">` + item.createDate + `</div>
-//                                     </div>
-//                                 </a>
-//                             </div>
-//                             `);
-//                             }
-//                         }
-//                     });
-//                     pagingClick();
-//                 } else {
-//
-//                 }
-//             } else {
-//
-//             }
-//         },
-//         failure: function (errMsg) {
-//
-//         },
-//         dataType: "json",
-//         contentType: "application/json"
-//     });
-// }
-
 /*Limited text*/
 function limitedText(str) {
     if (str.length > 200) {
@@ -298,6 +323,7 @@ function getNewsletterId() {
     var newsletterId = $('.card');
     $(newsletterId).on('click', function (e) {
         newsletterId = $(this).prop('id');
+        console.log(newsletterId)
         sessionStorage.setItem("newsletterId", newsletterId);
     });
 }

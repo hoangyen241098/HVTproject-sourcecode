@@ -1,4 +1,13 @@
 var list = [];
+$(function () {
+    $('#timeToStart').datetimepicker({
+        format: 'HH:mm'
+    });
+
+    $('#timeToEnd').datetimepicker({
+        format: 'HH:mm'
+    });
+});
 
 /*Get roleName list*/
 $.ajax({
@@ -17,7 +26,7 @@ $.ajax({
             if (data.listRole != null) {
                 $('#roleName').html('');
                 $('#roleName').append(`
-                    <option value="0" selected>Tất cả</option>
+                    <option value="0" selected>Chọn chức vụ</option>
                 `);
                 $.each(data.listRole, function (i, list) {
                     $('#roleName').append(`
@@ -102,9 +111,10 @@ $.ajax({
 
 /*Add Entering Time*/
 $('#submit').on('click', function () {
+    list = [];
     var roleId = $('#roleName option:selected').val();
-    var startTime = $('#timeToStart').val().trim();
-    var endTime = $('#timeToEnd').val().trim();
+    var startTime = $('#timeToStart input').val().trim();
+    var endTime = $('#timeToEnd input').val().trim();
     $('input[name=options]:checked').map(function () {
         list.push(parseInt($(this).val()));
     });
@@ -120,6 +130,9 @@ $('#submit').on('click', function () {
         return false;
     } else if (endTime == "") {
         $('.createTime-err').text('Hãy điền thời gian kết thúc.')
+        return false;
+    } else if (startTime >= endTime) {
+        $('.createTime-err').text('Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc.')
         return false;
     } else if (list.length == 0) {
         $('.createTime-err').text('Hãy chọn ngày áp dụng.')

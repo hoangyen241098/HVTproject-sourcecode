@@ -7,48 +7,35 @@ var editor = CKEDITOR.replace('post-editor-text-content', {
     width: '100%',
     height: 500,
     extraPlugins: 'easyimage',
-    // removePlugins: 'image',
-    // removeDialogTabs: 'link:advanced',
-    // toolbar: [
-    //     {
-    //         name: 'document',
-    //         items: ['Undo', 'Redo']
-    //     },
-    //     {
-    //         name: 'styles',
-    //         items: ['Format']
-    //     },
-    //     {
-    //         name: 'basicstyles',
-    //         items: ['Bold', 'Italic', 'Strike', '-', 'RemoveFormat']
-    //     },
-    //     {
-    //         name: 'paragraph',
-    //         items: ['NumberedList', 'BulletedList']
-    //     },
-    //     {
-    //         name: 'links',
-    //         items: ['Link', 'Unlink']
-    //     },
-    //     {
-    //         name: 'insert',
-    //         items: ['EasyImageUpload']
-    //     }
-    // ],
+});
+var imageCover = CKEDITOR.replace('imageCover', {
+    cloudServices_uploadUrl: 'https://73438.cke-cs.com/easyimage/upload/',
+    cloudServices_tokenUrl: 'https://73438.cke-cs.com/token/dev/de62f27633e0ccc284486ba070dbacf5b61e59390a805c23d58fc080b306',
+    width: '100%',
+    height: 100,
+    extraPlugins: 'easyimage',
+    removePlugins: 'image',
+    removeDialogTabs: 'link:advanced',
+    toolbar: [
+        {
+            name: 'insert',
+            items: ['EasyImageUpload']
+        }
+    ],
 });
 
 /*Save button*/
 $('#savePost').on('click', function () {
     var titleName = $('#titleName').val().trim();
-    var imageCover = $('#imagePreview').attr('src');
+    // var image = $('#imagePreview').attr('src');
+    var image = imageCover.getData();
+    image = image.split('src=')[1].split('"')[1];
     var data = editor.getData();
-    console.log(titleName);
-    console.log(imageCover);
-    console.log(data);
+    console.log(image);
     if (titleName == "") {
         $('.createPost-err').text('Hãy nhập tiêu đề của bài viết.');
         return false;
-    } else if (imageCover == undefined) {
+    } else if (image == undefined) {
         $('.createPost-err').text('Hãy nhập ảnh bìa của bài viết.');
         return false;
     } else if (data == "") {
@@ -58,7 +45,7 @@ $('#savePost').on('click', function () {
         var request = {
             username: username,
             header: titleName,
-            headerImage: imageCover,
+            headerImage: image,
             content: data,
             roleId: roleID,
         }
@@ -101,20 +88,22 @@ var loadFile = function (event) {
     var form = $('#form-post');
     var formData = new FormData(form[0]);
     formData.append('ckCsrfToken', 'CKJl3IP2xVAP5q9s6O86yt3C6fCzO4ChvpHIaj53');
-    console.log(JSON.stringify(formData))
+
     $.ajax({
         type: "POST",
         url: "https://73438.cke-cs.com/easyimage/upload/",
         data: formData,
         async: false,
         headers: {
-            authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoIjp7ImNvbGxhYm9yYXRpb24iOnsiKiI6eyJyb2xlIjoid3JpdGVyIn19fSwidXNlciI6eyJlbWFpbCI6ImthbUBleGFtcGxlLmNvbSIsIm5hbWUiOiJBZGVsYWlkZSBMZW9uYXJkIn0sInN1YiI6ImRldi11c2VyLUJwQW9jY0FFNWhWU1RFVGFidkYxIiwiaXNEZXZUb2tlbiI6dHJ1ZSwidGltZXN0YW1wIjoxNTk1ODgwNDk5ODA4LCJzaWduYXR1cmUiOiIwMWUyN2E5ZDE4NWU4YjA5OTA2NDc2NDI1Y2EzYmRjY2U1MzZjZWY1OGNiN2QwNDcyMzk1NjYwYzc5YmI0NDRmIiwiYXVkIjoiQnBBb2NjQUU1aFZTVEVUYWJ2RjEiLCJqdGkiOiJpNkZFSXpUcTNxNkxjY1VsMTBRVDZ2LXNZOHpEYm1BXyIsImlhdCI6MTU5NTg4MDQ5OX0.8Lx-n16iyCkRW2ay7Afihgl94sylo6HZJSEByiKKcdU',
+            authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoIjp7ImNvbGxhYm9yYXRpb24iOnsiKiI6eyJyb2xlIjoid3JpdGVyIn19fSwidXNlciI6eyJlbWFpbCI6InZlYXplbWVAZXhhbXBsZS5jb20iLCJuYW1lIjoiTHVyYSBXYWxrZXIifSwic3ViIjoiZGV2LXVzZXItQnBBb2NjQUU1aFZTVEVUYWJ2RjEiLCJpc0RldlRva2VuIjp0cnVlLCJ0aW1lc3RhbXAiOjE1OTYwMTAyMTc5NjcsInNpZ25hdHVyZSI6IjA5NDk3OWU4ODVkOWY5NzlhOWJmMDk0NDZmZjg2ZjBhYzIzYmZmMzhlNzdhNzRiYjQ4ZDM3OGYyNGU4YTY1YTUiLCJhdWQiOiJCcEFvY2NBRTVoVlNURVRhYnZGMSIsImp0aSI6ImluYkYtUnJySWU3eDkxc212dDdWSXBjZWh3X2xmNWdYIiwiaWF0IjoxNTk2MDEwMjE3fQ.teiHdZp-YsLlsGU0lTu5k3-sVFBFrv_Od8640h4g9Ic',
         },
         beforeSend: function () {
             $('body').addClass("loading")
         },
-        complete: function () {
-            $('body').removeClass("loading")
+        complete: function (resp) {
+            $('body').removeClass("loading");
+            console.log(resp);
+            // temp1[0].object["a"].authorization
         },
         success: function (data) {
             $('#imagePreview').prop('src', data.default);
