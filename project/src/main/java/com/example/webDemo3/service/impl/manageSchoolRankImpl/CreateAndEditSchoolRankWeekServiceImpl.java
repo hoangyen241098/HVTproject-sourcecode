@@ -226,6 +226,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
             schoolWeek.setMonthID(monthId);
             schoolWeek.setYearId(currentYearId);
             schoolWeek.setHistory(history);
+            schoolWeek.setCreateDate(createDate);
             schoolWeekRepository.save(schoolWeek);
 
             weekId = schoolWeekRepository.findSchoolWeeksByWeekMonthIdAndYearId(week,0,currentYearId).getWeekID();
