@@ -103,17 +103,15 @@ setTimeout(search, 500);
 
 /*Set data to table*/
 function search() {
+    var semesterId = $('#bySemester option:selected').val();
     var infoSearch = {
-        semesterId: $('#bySemester option:selected').val(),
+        semesterId: semesterId,
     }
     console.log(JSON.stringify(infoSearch));
     if ($('#bySemester option:selected').val() == 'err') {
         $('tbody').append(`<tr><td colspan="4" class="userlist-result">Không có học kỳ nào trong dữ liệu.</td></tr>`);
         $('#editRankBtn').addClass('hide');
     } else {
-        if (localStorage.getItem('roleID') == 1) {
-            $('#editRankBtn').removeClass('hide');
-        }
         $('table').dataTable({
             destroy: true,
             searching: false,
@@ -136,12 +134,21 @@ function search() {
                     var messageCode = data.message.messageCode;
                     var message = data.message.message;
                     var checkEdit = data.checkEdit;
+                    if(semesterId != null || semesterId != "" ) {
+                        $('#viewHistory').removeClass('hide');
+                    }
                     if (messageCode == 0) {
-                        if(checkEdit != null && checkEdit == 1 ){
-                            $('#editRankBtn').addClass('hide');
+                        if(localStorage.getItem('roleID') == 1) {
+                            if (checkEdit != null && checkEdit == 0) {
+                                $('#editRankBtn').removeClass('hide');
+                            } else {
+                                $('#editRankBtn').addClass('hide');
+                            }
+                            $('#createRankBtn').removeClass('hide');
                         }
                         if (data.rankSemesterList != null) {
                             dataSrc = data.rankSemesterList;
+                            $('#download').removeClass('hide');
                         } else {
                             return false;
                         }
@@ -189,43 +196,56 @@ function search() {
                 settings.oLanguage.sEmptyTable = "Danh sách xếp hạng của học kỳ này trống."
             }
         })
+        createRankBtn();
+        editRankBtn();
+        download();
+        viewHistory();
     }
 }
 
 /*Search button*/
 $('#search').click(function (e) {
     $('table tbody').html('');
+    $('#searchGroupButton').html(`                
+        <input type="button" id="editRankBtn" class="btn btn-success mx-2 manageBtn hide"
+               value="Sửa xếp hạng kỳ"/>
+        <input type="button" id="createRankBtn" class="btn btn-success mx-2 manageBtn hide"
+               value="Tạo xếp hạng kỳ"/>
+        <input type="button" id="viewHistory" class="btn btn-success ml-2 hide" value="Xem lịch sử"/>
+        <input type="button" id="download" class="btn btn-success ml-2 hide" value="Tải xuống"/>
+    `);
     search();
 });
 
 /*==========Create rank===========*/
 /*Load month list*/
-$('#createRankBtn').on('click', function () {
-    $('#createNewRank').modal('show');
-    listCreate = [];
-    var currentYear = {
-        currentYearId: currentYearId,
-    }
-    console.log(JSON.stringify(currentYear))
-    $.ajax({
-        url: '/api/ranksemester/loadmonthlist',
-        type: 'POST',
-        data: JSON.stringify(currentYear),
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
-        success: function (data) {
-            var messageCode = data.message.messageCode;
-            var message = data.message.message;
-            if (messageCode == 0) {
-                if (data.monthList.length != 0) {
-                    $('#monthList').html('');
-                    $('#monthList').append(`<h6>Các tháng áp dụng <span class="text-red">*</span></h6>`);
-                    $.each(data.monthList, function (i, item) {
-                        $('#monthList').append(`
+function createRankBtn() {
+    $('#createRankBtn').on('click', function () {
+        $('#createNewRank').modal('show');
+        listCreate = [];
+        var currentYear = {
+            currentYearId: currentYearId,
+        }
+        console.log(JSON.stringify(currentYear))
+        $.ajax({
+            url: '/api/ranksemester/loadmonthlist',
+            type: 'POST',
+            data: JSON.stringify(currentYear),
+            beforeSend: function () {
+                $('body').addClass("loading")
+            },
+            complete: function () {
+                $('body').removeClass("loading")
+            },
+            success: function (data) {
+                var messageCode = data.message.messageCode;
+                var message = data.message.message;
+                if (messageCode == 0) {
+                    if (data.monthList.length != 0) {
+                        $('#monthList').html('');
+                        $('#monthList').append(`<h6>Các tháng áp dụng <span class="text-red">*</span></h6>`);
+                        $.each(data.monthList, function (i, item) {
+                            $('#monthList').append(`
                         <div class="form-check text-left my-1">
                             <span class="custom-checkbox">
                                 <input type="checkbox" name="options" value="` + item.monthId + `">
@@ -237,22 +257,22 @@ $('#createRankBtn').on('click', function () {
                             <span class="hide isCheck">` + item.isCheck + `</span>
                         </div>
                     `);
-                    });
+                        });
+                    } else {
+                        $('#monthList').html(`<h6 class="text-red">Không có tháng áp dụng nào!</h6>`);
+                    }
                 } else {
-                    $('#monthList').html(`<h6 class="text-red">Không có tháng áp dụng nào!</h6>`);
+                    $('#monthList').html(`<h6 class="text-red">` + message + `</h6>`);
                 }
-            } else {
-                $('#monthList').html(`<h6 class="text-red">` + message + `</h6>`);
-            }
-        },
-        failure: function (errMsg) {
-            $('#monthList').html(`<h6 class="text-red">` + errMsg + `</h6>`);
-        },
-        dataType: "json",
-        contentType: "application/json"
-    });
-})
-
+            },
+            failure: function (errMsg) {
+                $('#monthList').html(`<h6 class="text-red">` + errMsg + `</h6>`);
+            },
+            dataType: "json",
+            contentType: "application/json"
+        });
+    })
+}
 /*Create rank semester*/
 $('#createNewRankBtn').on('click', function () {
     $('input[name=options]:checked').each(function (i) {
@@ -314,37 +334,38 @@ $('#createNewRankBtn').on('click', function () {
 
 /*=============Edit Rank=====================*/
 /*Load edit rank semester*/
-$('#editRankBtn').on('click', function () {
-    listEdit = [];
-    listEditOld = [];
-    $('#editRank').modal('show');
-    var semesterName = $('#bySemester option:selected').text().slice(7);
-    $('#newSemesterName').val(semesterName);
-    var semesterId = $('#bySemester option:selected').val();
-    var data = {
-        semesterId: semesterId,
-        currentYearId: currentYearId,
-    }
-    console.log(JSON.stringify(data));
-    $.ajax({
-        url: '/api/ranksemester/loadeditranksemester',
-        type: 'POST',
-        data: JSON.stringify(data),
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
-        success: function (data) {
-            var messageCode = data.message.messageCode;
-            var message = data.message.message;
-            if (messageCode == 0) {
-                if (data.monthList.length != 0) {
-                    $('#monthListEdit').html('');
-                    $('#monthListEdit').append(`<h6>Các tháng áp dụng <span class="text-red">*</span></h6>`);
-                    $.each(data.monthList, function (i, item) {
-                        $('#monthListEdit').append(`
+function editRankBtn() {
+    $('#editRankBtn').on('click', function () {
+        listEdit = [];
+        listEditOld = [];
+        $('#editRank').modal('show');
+        var semesterName = $('#bySemester option:selected').text().slice(7);
+        $('#newSemesterName').val(semesterName);
+        var semesterId = $('#bySemester option:selected').val();
+        var data = {
+            semesterId: semesterId,
+            currentYearId: currentYearId,
+        }
+        console.log(JSON.stringify(data));
+        $.ajax({
+            url: '/api/ranksemester/loadeditranksemester',
+            type: 'POST',
+            data: JSON.stringify(data),
+            beforeSend: function () {
+                $('body').addClass("loading")
+            },
+            complete: function () {
+                $('body').removeClass("loading")
+            },
+            success: function (data) {
+                var messageCode = data.message.messageCode;
+                var message = data.message.message;
+                if (messageCode == 0) {
+                    if (data.monthList.length != 0) {
+                        $('#monthListEdit').html('');
+                        $('#monthListEdit').append(`<h6>Các tháng áp dụng <span class="text-red">*</span></h6>`);
+                        $.each(data.monthList, function (i, item) {
+                            $('#monthListEdit').append(`
                             <div class="form-check text-left my-1">
                                 <span class="custom-checkbox">
                                     <input type="checkbox" name="editOptions" value="` + item.monthId + `">
@@ -356,40 +377,41 @@ $('#editRankBtn').on('click', function () {
                                 <span class="hide isCheck">` + item.isCheck + `</span>
                             </div>
                         `);
-                        if (item.isCheck == 1) {
-                            $('input[value=' + item.monthId + ']').prop('checked', true);
-                        }
-                    });
-                    $('input[name=editOptions]:checked').each(function (i) {
-                        listEditOld.push({
-                            monthId: $(this).val(),
-                            month: $(this).parent().parent().find('.monthName').text(),
-                            semesterId: $(this).parent().parent().find('.semesterId').text(),
-                            isCheck: 1
+                            if (item.isCheck == 1) {
+                                $('input[value=' + item.monthId + ']').prop('checked', true);
+                            }
                         });
-                    });
-                    $('input[name=editOptions]:not(:checked)').each(function (i) {
-                        listEditOld.push({
-                            monthId: $(this).val(),
-                            month: $(this).parent().parent().find('.monthName').text(),
-                            semesterId: $(this).parent().parent().find('.semesterId').text(),
-                            isCheck: 0
+                        $('input[name=editOptions]:checked').each(function (i) {
+                            listEditOld.push({
+                                monthId: $(this).val(),
+                                month: $(this).parent().parent().find('.monthName').text(),
+                                semesterId: $(this).parent().parent().find('.semesterId').text(),
+                                isCheck: 1
+                            });
                         });
-                    });
+                        $('input[name=editOptions]:not(:checked)').each(function (i) {
+                            listEditOld.push({
+                                monthId: $(this).val(),
+                                month: $(this).parent().parent().find('.monthName').text(),
+                                semesterId: $(this).parent().parent().find('.semesterId').text(),
+                                isCheck: 0
+                            });
+                        });
+                    } else {
+                        $('#monthListEdit').html(`<h6 class="text-red">Không có tháng áp dụng nào!</h6>`);
+                    }
                 } else {
-                    $('#monthListEdit').html(`<h6 class="text-red">Không có tháng áp dụng nào!</h6>`);
+                    $('#monthListEdit').html(`<h6 class="text-red">` + message + `</h6>`);
                 }
-            } else {
-                $('#monthListEdit').html(`<h6 class="text-red">` + message + `</h6>`);
-            }
-        },
-        failure: function (errMsg) {
-            $('#monthListEdit').html(`<h6 class="text-red">` + errMsg + `</h6>`);
-        },
-        dataType: "json",
-        contentType: "application/json"
-    });
-})
+            },
+            failure: function (errMsg) {
+                $('#monthListEdit').html(`<h6 class="text-red">` + errMsg + `</h6>`);
+            },
+            dataType: "json",
+            contentType: "application/json"
+        });
+    })
+}
 
 /*Edit rank semester*/
 $('#editRankBtnModal').on('click', function () {
@@ -474,44 +496,46 @@ $('#editRankBtnModal').on('click', function () {
 
 /*===============Download===================*/
 /*Download button*/
-$("#download").click(function () {
-    var download = {
-        semesterId: $('#bySemester option:selected').val(),
-    }
-    console.log(JSON.stringify(download))
-    $.ajax({
-        url: '/api/ranksemester/download',
-        type: 'POST',
-        data: JSON.stringify(download),
-        xhrFields: {
-            responseType: 'blob'
-        },
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
-        success: function (data) {
-            var a = document.createElement('a');
-            var url = window.URL.createObjectURL(data);
-            var name = 'XẾP-HẠNG-THI-ĐUA-THEO-HỌC-KỲ.xls';
-            a.href = url;
-            a.download = name;
-            document.body.append(a);
-            a.click();
-            a.remove();
-            window.URL.revokeObjectURL(url);
-        },
-        statusCode: {
-            400: function (errMsg) {
-                dialogModal('messageModal', 'img/img-error.png', 'Không thể tải được tập tin!')
-            }
-        },
-        dataType: "binary",
-        contentType: "application/json"
+function download() {
+    $("#download").click(function () {
+        var download = {
+            semesterId: $('#bySemester option:selected').val(),
+        }
+        console.log(JSON.stringify(download))
+        $.ajax({
+            url: '/api/ranksemester/download',
+            type: 'POST',
+            data: JSON.stringify(download),
+            xhrFields: {
+                responseType: 'blob'
+            },
+            beforeSend: function () {
+                $('body').addClass("loading")
+            },
+            complete: function () {
+                $('body').removeClass("loading")
+            },
+            success: function (data) {
+                var a = document.createElement('a');
+                var url = window.URL.createObjectURL(data);
+                var name = 'XẾP-HẠNG-THI-ĐUA-THEO-HỌC-KỲ.xls';
+                a.href = url;
+                a.download = name;
+                document.body.append(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+            },
+            statusCode: {
+                400: function (errMsg) {
+                    dialogModal('messageModal', 'img/img-error.png', 'Không thể tải được tập tin!')
+                }
+            },
+            dataType: "binary",
+            contentType: "application/json"
+        });
     });
-});
+}
 
 /*=====================================*/
 /*Set role*/
@@ -538,36 +562,37 @@ $(document).on('hidden.bs.modal', '#createNewRank', '#editRank', function () {
 
 /*===============View History===================*/
 /*View history button*/
-$("#viewHistory").click(function () {
-    var viewHistory = {
-        semesterId: $('#bySemester option:selected').val(),
-    }
-    $.ajax({
-        url: '/api/ranksemester/viewhistory',
-        type: 'POST',
-        data: JSON.stringify(viewHistory),
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
-        success: function (data) {
-            console.log(data)
-            var messageCode = data.message.messageCode;
-            var message = data.message.message;
-            if (messageCode == 0) {
-                $('#historyModal .modal-body').html(data.history);
-                $('#historyModal').modal('show');
-            }
-            else{
-                dialogModal('messageModal', 'img/img-error.png', message)
-            }
-        },
-        failure: function (errMsg) {
-            dialogModal('messageModal', 'img/img-error.png', errMsg)
-        },
-        dataType: "json",
-        contentType: "application/json"
+function viewHistory() {
+    $("#viewHistory").click(function () {
+        var viewHistory = {
+            semesterId: $('#bySemester option:selected').val(),
+        }
+        $.ajax({
+            url: '/api/ranksemester/viewhistory',
+            type: 'POST',
+            data: JSON.stringify(viewHistory),
+            beforeSend: function () {
+                $('body').addClass("loading")
+            },
+            complete: function () {
+                $('body').removeClass("loading")
+            },
+            success: function (data) {
+                console.log(data)
+                var messageCode = data.message.messageCode;
+                var message = data.message.message;
+                if (messageCode == 0) {
+                    $('#historyModal .modal-body').html(data.history);
+                    $('#historyModal').modal('show');
+                } else {
+                    dialogModal('messageModal', 'img/img-error.png', message)
+                }
+            },
+            failure: function (errMsg) {
+                dialogModal('messageModal', 'img/img-error.png', errMsg)
+            },
+            dataType: "json",
+            contentType: "application/json"
+        });
     });
-});
+}

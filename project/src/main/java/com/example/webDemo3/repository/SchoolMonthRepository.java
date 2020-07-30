@@ -14,7 +14,7 @@ kimpt142 - 23/07
  */
 public interface SchoolMonthRepository extends JpaRepository<SchoolMonth,Integer> {
 
-    @Query(value="select sm from SchoolMonth sm where sm.monthId <> 0 and sm.yearId = :yearId")
+    @Query(value="select sm from SchoolMonth sm where sm.monthId <> 0 and sm.yearId = :yearId order by sm.createDate desc")
     List<SchoolMonth> findSchoolMonthByYearIdExcludeZero(@Param("yearId") Integer yearId);
 
     @Query(value = "select s from SchoolMonth s where s.month = :month and s.semesterId = :semesterId and s.yearId = :yearId")
