@@ -117,28 +117,28 @@ $.ajax({
                 $('.container .content-wrap').removeClass('hide');
                 if (data.listLetter.content.length != 0) {
                     $.each(data.listLetter.content, function (i, item) {
-                        if (item.gim == 1) {
+                        if (i == 0) {
                             $('.container-header .card-pin').html(`
                             <a href="postDetail" class="card" id="` + item.newsletterId + `">
                                 <div class="img-post">
-                                    <img class="card-img-top" src="` + item.headerImage + `">
+                                    <img class="lazy card-img-top" data-original="` + item.headerImage + `">
                                 </div>
                                 <div class="card-block">
                                     <h3 class="card-title">` + item.header + `</h3>
                                     <div class="card-date">` + item.createDate + `</div>
+                                    <div class="card-text hide content-hide">` + item.content + `</div>
                                     <div class="card-text">` + limitedText(item.content) + `</div>
                                 </div>
                             </a>
                         `);
                         } else {
-                            console.log(item.gim)
                             count++;
                             if (count <= 4) {
                                 $('.container-header .flex-wrap').append(`
                             <div class="post-gird col-md-6">
                                 <a href="postDetail" class="card card-120" id="` + item.newsletterId + `">
                                     <div class="img-post">
-                                    <img class="card-img-top" src="` + item.headerImage + `">
+                                    <img class="lazy card-img-top" data-original="` + item.headerImage + `">
                                     </div>
                                     <div class="card-block">
                                         <h3 class="card-title">` + item.header + `</h3>
@@ -152,7 +152,7 @@ $.ajax({
                             <div class="post-gird col-md-4">
                                 <a href="postDetail" class="card card-200" id="` + item.newsletterId + `">
                                     <div class="img-post">
-                                        <img class="card-img-top" src="` + item.headerImage + `">
+                                        <img class="lazy card-img-top" data-original="` + item.headerImage + `">
                                     </div>
                                     <div class="card-block">
                                         <h3 class="card-title">` + item.header + `</h3>
@@ -166,6 +166,7 @@ $.ajax({
                     });
                     pagingClick();
                     getNewsletterId();
+                    lazyLoad();
                 } else {
                     $('.homepage-message').text('Danh sách bài viết trống.');
                     $('.container .content-wrap').addClass('hide');
@@ -235,11 +236,11 @@ function search() {
                     $('.container .content-wrap').removeClass('hide');
                     if (data.listLetter.content.length != 0) {
                         $.each(data.listLetter.content, function (i, item) {
-                            if (item.gim == 1) {
+                            if (i == 0) {
                                 $('.container-header .card-pin').html(`
                             <a href="postDetail" class="card" id="` + item.newsletterId + `">
                                 <div class="img-post">
-                                    <img class="card-img-top" src="` + item.headerImage + `">
+                                    <img class="lazy card-img-top" data-original="` + item.headerImage + `">
                                 </div>
                                 <div class="card-block">
                                     <h3 class="card-title">` + item.header + `</h3>
@@ -249,14 +250,13 @@ function search() {
                             </a>
                         `);
                             } else {
-                                console.log(item.gim)
                                 count++;
                                 if (count <= 4) {
                                     $('.container-header .flex-wrap').append(`
                             <div class="post-gird col-md-6">
                                 <a href="postDetail" class="card card-120" id="` + item.newsletterId + `">
                                     <div class="img-post">
-                                    <img class="card-img-top" src="` + item.headerImage + `">
+                                    <img class="lazy card-img-top" data-original="` + item.headerImage + `">
                                     </div>
                                     <div class="card-block">
                                         <h3 class="card-title">` + item.header + `</h3>
@@ -270,7 +270,7 @@ function search() {
                             <div class="post-gird col-md-4">
                                 <a href="postDetail" class="card card-200" id="` + item.newsletterId + `">
                                     <div class="img-post">
-                                        <img class="card-img-top" src="` + item.headerImage + `">
+                                        <img class="lazy card-img-top" data-original="` + item.headerImage + `">
                                     </div>
                                     <div class="card-block">
                                         <h3 class="card-title">` + item.header + `</h3>
@@ -284,6 +284,7 @@ function search() {
                         });
                         pagingClick();
                         getNewsletterId();
+                        lazyLoad();
                     } else {
                         $('.homepage-message').text('Danh sách bài viết trống.');
                         $('.container .content-wrap').addClass('hide');
@@ -310,14 +311,6 @@ function search() {
     });
 }
 
-/*Limited text*/
-function limitedText(str) {
-    if (str.length > 200) {
-        str = str.substring(0, 200) + '...'
-    }
-    return str;
-}
-
 /*Get newsletterId */
 function getNewsletterId() {
     var newsletterId = $('.card');
@@ -327,3 +320,5 @@ function getNewsletterId() {
         sessionStorage.setItem("newsletterId", newsletterId);
     });
 }
+
+lazyLoad();
