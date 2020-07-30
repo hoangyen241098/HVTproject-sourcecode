@@ -2,6 +2,8 @@ package com.example.webDemo3.dto.manageSchoolRankResponseDto;
 
 import lombok.Data;
 
+import java.sql.Date;
+
 /**
  * lamnt98
  * 23/07
@@ -12,4 +14,5 @@ public class SchoolWeekDto {
     private Integer week;
     private Integer monthId;
     private Integer isCheck;
+    private Date rankCreateDate;
 }

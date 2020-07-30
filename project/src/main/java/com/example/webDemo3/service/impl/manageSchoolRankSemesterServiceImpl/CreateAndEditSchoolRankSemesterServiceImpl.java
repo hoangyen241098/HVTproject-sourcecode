@@ -155,6 +155,7 @@ public class CreateAndEditSchoolRankSemesterServiceImpl implements CreateAndEdit
                 schoolMonthDto.setMonthId(schoolMonth.getMonthId());
                 schoolMonthDto.setMonth(schoolMonth.getMonth());
                 schoolMonthDto.setSemesterId(schoolMonth.getSemesterId());
+                schoolMonthDto.setRankCreateDate(schoolMonth.getCreateDate());
                 schoolMonthDto.setIsCheck(0);
 
                 monthListDto.add(schoolMonthDto);
@@ -182,6 +183,7 @@ public class CreateAndEditSchoolRankSemesterServiceImpl implements CreateAndEdit
                 schoolMonthDto.setMonthId(schoolMonth.getMonthId());
                 schoolMonthDto.setMonth(schoolMonth.getMonth());
                 schoolMonthDto.setSemesterId(schoolMonth.getSemesterId());
+                schoolMonthDto.setRankCreateDate(schoolMonth.getCreateDate());
                 schoolMonthDto.setIsCheck(1);
 
                 monthListDto.add(schoolMonthDto);
@@ -193,6 +195,13 @@ public class CreateAndEditSchoolRankSemesterServiceImpl implements CreateAndEdit
                 responseDto.setMessage(message);
                 return responseDto;
             }
+
+            Collections.sort(monthListDto, new Comparator<SchoolMonthDto>() {
+                @Override
+                public int compare(SchoolMonthDto o1, SchoolMonthDto o2) {
+                    return o1.getRankCreateDate().compareTo(o2.getRankCreateDate());
+                }
+            });
 
             message = Constant.SUCCESS;
             responseDto.setMonthList(monthListDto);
@@ -342,7 +351,7 @@ public class CreateAndEditSchoolRankSemesterServiceImpl implements CreateAndEdit
             }
 
             //check exist schoolMonth with month name
-            newSchoolSemester = schoolSemesterRepository.findExistBySemester(semester,semesterId);
+            newSchoolSemester = schoolSemesterRepository.findSchoolSemesterBySemesterAndYearId(semester,schoolSemester.getYearId());
             if(newSchoolSemester != null){
                 message = Constant.SCHOOL_SEMESTER_EXISTS;
                 return message;
@@ -439,7 +448,9 @@ public class CreateAndEditSchoolRankSemesterServiceImpl implements CreateAndEdit
             schoolSemester = new SchoolSemester();
             schoolSemester.setYearId(currentYearId);
             schoolSemester.setSemester(semester);
+            schoolSemester.setIsRanked(0);
             schoolSemester.setHistory(history);
+            schoolSemester.setCreateDate(createDate);
             schoolSemesterRepository.save(schoolSemester);
 
             semesterId = schoolSemesterRepository.findSchoolSemesterBySemesterAndYearId(semester,currentYearId).getSemesterId();
