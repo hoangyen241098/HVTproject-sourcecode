@@ -198,11 +198,11 @@ function search() {
                 settings.oLanguage.sEmptyTable = "Danh sách xếp hạng của học kỳ này trống."
             }
         })
-        createRankBtn();
-        editRankBtn();
-        download();
-        viewHistory();
     }
+    createRankBtn();
+    editRankBtn();
+    download();
+    viewHistory();
 }
 
 /*Search button*/
