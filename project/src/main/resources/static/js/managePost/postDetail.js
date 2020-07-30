@@ -65,18 +65,28 @@ $.ajax({
 
 /*Display button action*/
 function displayButton() {
+    var status = $('.post-action .status').text();
     if (roleID == 1) {
-        var status = $('.post-action .status').text();
         if (status == 2) {
             $('.btn-delete').addClass('hide');
             $('.btn-edit').addClass('hide');
             $('.btn-reject').removeClass('hide');
             $('.btn-accept').removeClass('hide');
-        } else if (status == 0 || status == 1) {
+        } else if (status == 0) {
             $('.btn-delete').removeClass('hide');
             $('.btn-edit').removeClass('hide');
             $('.btn-reject').addClass('hide');
             $('.btn-accept').addClass('hide');
+        } else if( status == 1) {
+            $('.btn-delete').addClass('hide');
+            $('.btn-edit').addClass('hide');
+            $('.btn-reject').addClass('hide');
+            $('.btn-accept').removeClass('hide');
+        }
+    } else {
+        if (status == 2) {
+            $('.btn-delete').removeClass('hide');
+            $('.btn-edit').removeClass('hide');
         }
     }
 }
@@ -129,7 +139,7 @@ function confirmRequest(status, messageSuccess) {
             var messageCode = data.messageCode;
             var message = data.message;
             if (messageCode == 0) {
-                $('#modalSuccess .modal-footer').html(`<a href="postDetail" class="btn btn-primary">ĐÓNG</a>`);
+                $('#modalSuccess .modal-footer').html(`<a href="managePost" class="btn btn-primary">ĐÓNG</a>`);
                 messageModal('modalSuccess', 'img/img-success.png', messageSuccess)
             } else {
                 messageModal('modalSuccess', 'img/img-error.png', message);

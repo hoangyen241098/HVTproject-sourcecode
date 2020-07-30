@@ -1640,7 +1640,8 @@ a.slide_btn {
     border-radius: 10px;
     position: relative;
 }
-.panel-post a{
+
+.panel-post a {
     color: #212529;
 }
 
@@ -1716,11 +1717,17 @@ a.slide_btn {
     line-height: 29px;
     text-transform: uppercase;
 }
+
+.post-content-text {
+    overflow: auto;
+}
+
 /*Button upload image*/
 #cke_imageCover .cke_bottom {
     display: none;
 }
-#cke_imageCover .cke_top  {
+
+#cke_imageCover .cke_top {
     padding: 0;
 }
 
@@ -1732,14 +1739,15 @@ a.slide_btn {
     width: 68px;
 }
 
-#cke_imageCover .cke_button_icon.cke_button__easyimageupload_icon  {
-    background: transparent!important;
+#cke_imageCover .cke_button_icon.cke_button__easyimageupload_icon {
+    background: transparent !important;
     width: auto;
     height: auto;
     float: none;
     text-align: center;
 }
-#cke_imageCover .cke_button_icon.cke_button__easyimageupload_icon:before{
+
+#cke_imageCover .cke_button_icon.cke_button__easyimageupload_icon:before {
     content: 'Tải tệp';
     font-size: 0.9rem;
     margin-left: 8px;

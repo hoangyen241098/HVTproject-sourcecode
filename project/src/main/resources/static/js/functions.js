@@ -242,10 +242,18 @@ function limitedDate() {
 
 /*Limited text*/
 function limitedText(str) {
+    str = $(str).text();
     if (str.length > 200) {
         str = str.substring(0, 200) + '...'
     }
     return str;
+}
+
+/*Lazy Load*/
+function lazyLoad() {
+    $("img.lazy").lazyload({
+        effect: "fadeIn"
+    });
 }
 
 // /*Clear session when leaving page*/
