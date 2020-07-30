@@ -163,7 +163,12 @@ function search() {
                     var dataSrc = null;
                     var messageCode = data.message.messageCode;
                     var message = data.message.message;
+                    var checkEdit = data.checkEdit;
                     if (messageCode == 0) {
+                        if(checkEdit != null && checkEdit == 1 ){
+                            $('#editGrades').addClass('hide');
+                            $('#editRankBtn').addClass('hide');
+                        }
                         if (data.rankWeekList != null) {
                             dataSrc = data.rankWeekList;
                         } else {
@@ -747,4 +752,40 @@ $(document).on('hidden.bs.modal', '#createNewRank', '#editRank', function () {
     $('input[name=editOptions]').prop('checked', false);
     $('#weekName').val('');
     $('#newWeekName').val('');
+});
+
+/*===============View History===================*/
+/*View history button*/
+$("#viewHistory").click(function () {
+    var weekId = $('#byWeek option:selected').val();
+    var viewHistory = {
+        weekId: weekId
+    };
+    $.ajax({
+        url: '/api/rankweek/viewhistory',
+        type: 'POST',
+        data: JSON.stringify(viewHistory),
+        beforeSend: function () {
+            $('body').addClass("loading")
+        },
+        complete: function () {
+            $('body').removeClass("loading")
+        },
+        success: function (data) {
+            var messageCode = data.message.messageCode;
+            var message = data.message.message;
+            if (messageCode == 0) {
+                $('#historyModal .modal-body').html(data.history);
+                $('#historyModal').modal('show');
+            }
+            else{
+                dialogModal('downloadModal', 'img/img-error.png', message)
+            }
+        },
+        failure: function (errMsg) {
+            dialogModal('downloadModal', 'img/img-error.png', errMsg)
+        },
+        dataType: "json",
+        contentType: "application/json"
+    });
 });

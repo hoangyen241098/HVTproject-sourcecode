@@ -52,6 +52,7 @@
                        value="Sửa xếp hạng kỳ"/>
                 <input type="button" id="createRankBtn" class="btn btn-success mx-2 manageBtn"
                        value="Tạo xếp hạng kỳ"/>
+                <input type="button" id="viewHistory" class="btn btn-success ml-2" value="Xem lịch sử"/>
                 <input type="button" id="download" class="btn btn-success ml-2" value="Tải xuống"/>
             </div>
         </div>
@@ -128,6 +129,22 @@
             <div class="modal-body text-center"></div>
             <div class="modal-footer">
                 <a href="rankBySemester" class="btn btn-primary">ĐÓNG</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- History Modal HTML -->
+<div id="historyModal" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Lịch sử chỉnh sửa</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
             </div>
         </div>
     </div>

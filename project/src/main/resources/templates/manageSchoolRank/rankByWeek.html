@@ -58,15 +58,16 @@
             <button class="btn btn-search mr-0" id="search">Tìm kiếm</button>
         </div>
         <div class="table-title-2 rankWeekBtn p-0 search row">
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 px-0">
+            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 px-0">
                 <input type="button" class="btn btn-success mr-2 manageBtn" id="editGrades" value="Sửa điểm"/>
                 <input type="button" class="btn btn-success mx-2 manageBtn hide" id="closeEditGrades" value="Hủy"/>
             </div>
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 px-0 text-right">
+            <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 px-0 text-right">
                 <input type="button" id="editRankBtn" class="btn btn-success mx-2 manageBtn"
                        value="Sửa xếp hạng tuần"/>
                 <input type="button" id="createRank" class="btn btn-success mx-2 manageBtn"
                        value="Tạo xếp hạng tuần"/>
+                <input type="button" id="viewHistory" class="btn btn-success ml-2" value="Xem lịch sử"/>
                 <input type="button" id="download" class="btn btn-success ml-2" value="Tải xuống"/>
             </div>
         </div>
@@ -171,6 +172,22 @@
             <div class="modal-body text-center"></div>
             <div class="modal-footer">
                 <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- History Modal HTML -->
+<div id="historyModal" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Lịch sử chỉnh sửa</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
             </div>
         </div>
     </div>

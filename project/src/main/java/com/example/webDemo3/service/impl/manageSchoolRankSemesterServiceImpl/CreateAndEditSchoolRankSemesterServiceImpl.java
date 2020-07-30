@@ -336,7 +336,7 @@ public class CreateAndEditSchoolRankSemesterServiceImpl implements CreateAndEdit
             if(schoolSemester == null){
                 message = Constant.SCHOOL_SEMESTER_NOT_EXISTS;
                 return message;
-            }else if(schoolSemester.getYearId() != 0){
+            }else if(schoolSemester.getIsRanked() != null && schoolSemester.getIsRanked() != 0){
                 message = Constant.RANKSEMESTER_NOT_EDIT;
                 return message;
             }
