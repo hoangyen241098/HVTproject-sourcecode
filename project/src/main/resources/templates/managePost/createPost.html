@@ -13,7 +13,8 @@
     <script th:src="@{/js/public/bootstrap.min.js}"></script>
     <!-- CKEditor -->
     <script th:src="@{/js/public/ckeditor/ckeditor.js}"></script>
-    <!--        <script src="https://cdn.ckeditor.com/4.14.1/full/ckeditor.js"></script>-->
+    <script th:src="@{/js/public/ckeditor/config.js}"></script>
+    <!--            <script src="https://cdn.ckeditor.com/4.14.1/full/ckeditor.js"></script>-->
     <!--Font-Awesome-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"/>
     <script th:src="@{/js/public/moment.min.js}"></script>
@@ -37,9 +38,10 @@
             <form method="POST" role="form" enctype="multipart/form-data" id="form-post">
                 <div class="form-group">
                     <label for="imageCover">Ảnh bìa bài viết <span class="text-red">*</span></label>
-                    <input type="file" th:name="file" class="form-control-file" id="imageCover" accept="image/*"
-                           onchange="loadFile(event)"/>
-                    <img id="imagePreview"/>
+                    <textarea id="imageCover" name="imageCover" cols="80" rows="1"></textarea>
+<!--                    <input type="file" th:name="file" class="form-control-file" id="imageCover" accept="image/*"-->
+<!--                           onchange="loadFile(event)"/>-->
+<!--                    <img id="imagePreview"/>-->
                 </div>
             </form>
             <div class="post-content">
