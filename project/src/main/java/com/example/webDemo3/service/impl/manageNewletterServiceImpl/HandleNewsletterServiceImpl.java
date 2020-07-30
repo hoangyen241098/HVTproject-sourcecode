@@ -47,6 +47,7 @@ public class HandleNewsletterServiceImpl implements HandleNewsletterService {
         String headerImage = model.getHeaderImage();
         String content = model.getContent();
         Integer roleId = model.getRoleId();
+        Integer gim = model.getGim();
         Integer status = 2;
 
         message = checkRequestNewsletter(username, header, headerImage, content, roleId);
@@ -61,13 +62,17 @@ public class HandleNewsletterServiceImpl implements HandleNewsletterService {
             status = 0;
         }
 
+        if(gim == null){
+            gim = 0;
+        }
+
         Newsletter newsletter = new Newsletter();
         newsletter.setUserName(username);
         newsletter.setCreateDate(currentDate);
         newsletter.setHeader(header);
         newsletter.setHeaderImage(headerImage);
         newsletter.setContent(content);
-        newsletter.setGim(0);
+        newsletter.setGim(gim);
         newsletter.setStatus(status);
 
         try{

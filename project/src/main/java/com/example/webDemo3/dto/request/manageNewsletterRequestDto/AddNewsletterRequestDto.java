@@ -12,5 +12,6 @@ public class AddNewsletterRequestDto {
     private String header;
     private String headerImage;
     private String content;
+    private Integer gim;
     private Integer roleId;
 }

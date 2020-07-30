@@ -103,17 +103,18 @@ setTimeout(search, 500);
 
 /*Set data to table*/
 function search() {
+    var monthId = $('#byMonth option:selected').val();
     var infoSearch = {
-        monthId: $('#byMonth option:selected').val(),
+        monthId: monthId,
     }
     console.log(JSON.stringify(infoSearch));
     if ($('#byMonth option:selected').val() == 'err') {
         $('tbody').append(`<tr><td colspan="4" class="userlist-result">Không có tháng nào trong dữ liệu.</td></tr>`);
         $('#editRankBtn').addClass('hide');
     } else {
-        if (localStorage.getItem('roleID') == 1) {
-            $('#editRankBtn').removeClass('hide');
-        }
+        // if () {
+        //     $('#editRankBtn').removeClass('hide');
+        // }
         $('table').dataTable({
             destroy: true,
             searching: false,
@@ -140,12 +141,21 @@ function search() {
                     var messageCode = data.message.messageCode;
                     var message = data.message.message;
                     var checkEdit = data.checkEdit;
+                    if(monthId != null || monthId != "" || monthId == "err" ) {
+                        $('#viewHistory').removeClass('hide');
+                    }
                     if (messageCode == 0) {
-                        if(checkEdit != null && checkEdit == 1 ){
-                            $('#editRankBtn').addClass('hide');
+                        if(localStorage.getItem('roleID') == 1) {
+                            if (checkEdit != null && checkEdit == 0) {
+                                $('#editRankBtn').removeClass('hide');
+                            } else {
+                                $('#editRankBtn').addClass('hide');
+                            }
+                            $('#createRankBtn').removeClass('hide');
                         }
                         if (data.rankMonthList != null) {
                             dataSrc = data.rankMonthList;
+                            $('#download').removeClass('hide');
                         } else {
                             return false;
                         }
@@ -197,44 +207,57 @@ function search() {
                 settings.oLanguage.sEmptyTable = "Danh sách xếp hạng của tháng này trống."
             }
         })
+        createRankBtn();
+        editRankBtn();
+        download();
+        viewHistory();
     }
 }
 
 /*Search button*/
 $('#search').click(function (e) {
     $('table tbody').html('');
+    $('#searchGroupButton').html(`                
+        <input type="button" id="editRankBtn" class="btn btn-success mx-2 manageBtn hide"
+               value="Sửa xếp hạng tháng"/>
+        <input type="button" id="createRankBtn" class="btn btn-success mx-2 manageBtn hide"
+               value="Tạo xếp hạng tháng"/>
+        <input type="button" id="viewHistory" class="btn btn-success ml-2 hide" value="Xem lịch sử"/>
+        <input type="button" id="download" class="btn btn-success ml-2 hide" value="Tải xuống"/>
+    `);
     search();
 });
 
 /*==========Create rank===========*/
 /*Load week list*/
-$('#createRankBtn').on('click', function () {
-    $('#createNewRank').modal('show');
-    listCreate = [];
-    var currentYear = {
-        currentYearId: currentYearId,
-    }
-    console.log(JSON.stringify(currentYear))
-    $.ajax({
-        url: '/api/rankmonth/loadweeklist',
-        type: 'POST',
-        data: JSON.stringify(currentYear),
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
-        success: function (data) {
-            var messageCode = data.message.messageCode;
-            var message = data.message.message;
-            if (messageCode == 0) {
-                console.log(data.weekList.length)
-                if (data.weekList.length != 0) {
-                    $('#weekList').html('');
-                    $('#weekList').append(`<h6>Các tuần áp dụng <span class="text-red">*</span></h6>`);
-                    $.each(data.weekList, function (i, item) {
-                        $('#weekList').append(`
+function createRankBtn() {
+    $('#createRankBtn').on('click', function () {
+        $('#createNewRank').modal('show');
+        listCreate = [];
+        var currentYear = {
+            currentYearId: currentYearId,
+        }
+        console.log(JSON.stringify(currentYear))
+        $.ajax({
+            url: '/api/rankmonth/loadweeklist',
+            type: 'POST',
+            data: JSON.stringify(currentYear),
+            beforeSend: function () {
+                $('body').addClass("loading")
+            },
+            complete: function () {
+                $('body').removeClass("loading")
+            },
+            success: function (data) {
+                var messageCode = data.message.messageCode;
+                var message = data.message.message;
+                if (messageCode == 0) {
+                    console.log(data.weekList.length)
+                    if (data.weekList.length != 0) {
+                        $('#weekList').html('');
+                        $('#weekList').append(`<h6>Các tuần áp dụng <span class="text-red">*</span></h6>`);
+                        $.each(data.weekList, function (i, item) {
+                            $('#weekList').append(`
                         <div class="form-check text-left my-1">
                             <span class="custom-checkbox">
                                 <input type="checkbox" name="options" value="` + item.weekId + `">
@@ -246,21 +269,22 @@ $('#createRankBtn').on('click', function () {
                             <span class="hide isCheck">` + item.isCheck + `</span>
                         </div>
                     `);
-                    });
+                        });
+                    } else {
+                        $('#weekList').html(`<h6 class="text-red">Không có tuần áp dụng nào!</h6>`);
+                    }
                 } else {
-                    $('#weekList').html(`<h6 class="text-red">Không có tuần áp dụng nào!</h6>`);
+                    $('#weekList').html(`<h6 class="text-red">` + message + `</h6>`);
                 }
-            } else {
-                $('#weekList').html(`<h6 class="text-red">` + message + `</h6>`);
-            }
-        },
-        failure: function (errMsg) {
-            $('#weekList').html(`<h6 class="text-red">` + errMsg + `</h6>`);
-        },
-        dataType: "json",
-        contentType: "application/json"
-    });
-})
+            },
+            failure: function (errMsg) {
+                $('#weekList').html(`<h6 class="text-red">` + errMsg + `</h6>`);
+            },
+            dataType: "json",
+            contentType: "application/json"
+        });
+    })
+}
 
 /*Create rank month*/
 $('#createNewRankBtn').on('click', function () {
@@ -323,37 +347,38 @@ $('#createNewRankBtn').on('click', function () {
 
 /*=============Edit Rank=====================*/
 /*Load edit rank month*/
-$('#editRankBtn').on('click', function () {
-    listEdit = [];
-    listEditOld = [];
-    $('#editRank').modal('show');
-    var monthName = $('#byMonth option:selected').text().slice(6);
-    $('#newMonthName').val(monthName);
-    var monthId = $('#byMonth option:selected').val();
-    var data = {
-        monthId: monthId,
-        currentYearId: currentYearId,
-    }
-    console.log(JSON.stringify(data));
-    $.ajax({
-        url: '/api/rankmonth/loadeditrankmonth',
-        type: 'POST',
-        data: JSON.stringify(data),
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
-        success: function (data) {
-            var messageCode = data.message.messageCode;
-            var message = data.message.message;
-            if (messageCode == 0) {
-                if (data.weekList.length != 0) {
-                    $('#weekListEdit').html('');
-                    $('#weekListEdit').append(`<h6>Các tuần áp dụng <span class="text-red">*</span></h6>`);
-                    $.each(data.weekList, function (i, item) {
-                        $('#weekListEdit').append(`
+function editRankBtn() {
+    $('#editRankBtn').on('click', function () {
+        listEdit = [];
+        listEditOld = [];
+        $('#editRank').modal('show');
+        var monthName = $('#byMonth option:selected').text().slice(6);
+        $('#newMonthName').val(monthName);
+        var monthId = $('#byMonth option:selected').val();
+        var data = {
+            monthId: monthId,
+            currentYearId: currentYearId,
+        }
+        console.log(JSON.stringify(data));
+        $.ajax({
+            url: '/api/rankmonth/loadeditrankmonth',
+            type: 'POST',
+            data: JSON.stringify(data),
+            beforeSend: function () {
+                $('body').addClass("loading")
+            },
+            complete: function () {
+                $('body').removeClass("loading")
+            },
+            success: function (data) {
+                var messageCode = data.message.messageCode;
+                var message = data.message.message;
+                if (messageCode == 0) {
+                    if (data.weekList.length != 0) {
+                        $('#weekListEdit').html('');
+                        $('#weekListEdit').append(`<h6>Các tuần áp dụng <span class="text-red">*</span></h6>`);
+                        $.each(data.weekList, function (i, item) {
+                            $('#weekListEdit').append(`
                             <div class="form-check text-left my-1">
                                 <span class="custom-checkbox">
                                     <input type="checkbox" name="editOptions" value="` + item.weekId + `">
@@ -365,40 +390,41 @@ $('#editRankBtn').on('click', function () {
                                 <span class="hide isCheck">` + item.isCheck + `</span>
                             </div>
                         `);
-                        if (item.isCheck == 1) {
-                            $('input[value=' + item.weekId + ']').prop('checked', true);
-                        }
-                    });
-                    $('input[name=editOptions]:checked').each(function (i) {
-                        listEditOld.push({
-                            weekId: $(this).val(),
-                            week: $(this).parent().parent().find('.week').text(),
-                            monthId: $(this).parent().parent().find('.monthId').text(),
-                            isCheck: 1
+                            if (item.isCheck == 1) {
+                                $('input[value=' + item.weekId + ']').prop('checked', true);
+                            }
                         });
-                    });
-                    $('input[name=editOptions]:not(:checked)').each(function (i) {
-                        listEditOld.push({
-                            weekId: $(this).val(),
-                            week: $(this).parent().parent().find('.week').text(),
-                            monthId: $(this).parent().parent().find('.monthId').text(),
-                            isCheck: 0
+                        $('input[name=editOptions]:checked').each(function (i) {
+                            listEditOld.push({
+                                weekId: $(this).val(),
+                                week: $(this).parent().parent().find('.week').text(),
+                                monthId: $(this).parent().parent().find('.monthId').text(),
+                                isCheck: 1
+                            });
                         });
-                    });
+                        $('input[name=editOptions]:not(:checked)').each(function (i) {
+                            listEditOld.push({
+                                weekId: $(this).val(),
+                                week: $(this).parent().parent().find('.week').text(),
+                                monthId: $(this).parent().parent().find('.monthId').text(),
+                                isCheck: 0
+                            });
+                        });
+                    } else {
+                        $('#weekListEdit').html(`<h6 class="text-red">Không có tuần áp dụng nào!</h6>`);
+                    }
                 } else {
-                    $('#weekListEdit').html(`<h6 class="text-red">Không có tuần áp dụng nào!</h6>`);
+                    $('#weekListEdit').html(`<h6 class="text-red">` + message + `</h6>`);
                 }
-            } else {
-                $('#weekListEdit').html(`<h6 class="text-red">` + message + `</h6>`);
-            }
-        },
-        failure: function (errMsg) {
-            $('#weekListEdit').html(`<h6 class="text-red">` + errMsg + `</h6>`);
-        },
-        dataType: "json",
-        contentType: "application/json"
-    });
-})
+            },
+            failure: function (errMsg) {
+                $('#weekListEdit').html(`<h6 class="text-red">` + errMsg + `</h6>`);
+            },
+            dataType: "json",
+            contentType: "application/json"
+        });
+    })
+}
 
 /*Edit rank month*/
 $('#editRankBtnModal').on('click', function () {
@@ -483,44 +509,46 @@ $('#editRankBtnModal').on('click', function () {
 
 /*===============Download===================*/
 /*Download button*/
-$("#download").click(function () {
-    var download = {
-        monthId: $('#byMonth option:selected').val(),
-    }
-    console.log(JSON.stringify(download))
-    $.ajax({
-        url: '/api/rankmonth/download',
-        type: 'POST',
-        data: JSON.stringify(download),
-        xhrFields: {
-            responseType: 'blob'
-        },
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
-        success: function (data) {
-            var a = document.createElement('a');
-            var url = window.URL.createObjectURL(data);
-            var name = 'XẾP-HẠNG-THI-ĐUA-THEO-THÁNG.xls';
-            a.href = url;
-            a.download = name;
-            document.body.append(a);
-            a.click();
-            a.remove();
-            window.URL.revokeObjectURL(url);
-        },
-        statusCode: {
-            400: function (errMsg) {
-                dialogModal('messageModal', 'img/img-error.png', 'Không thể tải được tập tin!')
-            }
-        },
-        dataType: "binary",
-        contentType: "application/json"
+function download() {
+    $("#download").click(function () {
+        var download = {
+            monthId: $('#byMonth option:selected').val(),
+        }
+        console.log(JSON.stringify(download))
+        $.ajax({
+            url: '/api/rankmonth/download',
+            type: 'POST',
+            data: JSON.stringify(download),
+            xhrFields: {
+                responseType: 'blob'
+            },
+            beforeSend: function () {
+                $('body').addClass("loading")
+            },
+            complete: function () {
+                $('body').removeClass("loading")
+            },
+            success: function (data) {
+                var a = document.createElement('a');
+                var url = window.URL.createObjectURL(data);
+                var name = 'XẾP-HẠNG-THI-ĐUA-THEO-THÁNG.xls';
+                a.href = url;
+                a.download = name;
+                document.body.append(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+            },
+            statusCode: {
+                400: function (errMsg) {
+                    dialogModal('messageModal', 'img/img-error.png', 'Không thể tải được tập tin!')
+                }
+            },
+            dataType: "binary",
+            contentType: "application/json"
+        });
     });
-});
+}
 
 /*=====================================*/
 /*Set role*/
@@ -547,36 +575,37 @@ $(document).on('hidden.bs.modal', '#createNewRank', '#editRank', function () {
 
 /*===============View History===================*/
 /*View history button*/
-$("#viewHistory").click(function () {
-    var viewHistory = {
-        monthId : $('#byMonth option:selected').val(),
-    };
-    $.ajax({
-        url: '/api/rankmonth/viewhistory',
-        type: 'POST',
-        data: JSON.stringify(viewHistory),
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
-        success: function (data) {
-            console.log(data)
-            var messageCode = data.message.messageCode;
-            var message = data.message.message;
-            if (messageCode == 0) {
-                $('#historyModal .modal-body').html(data.history);
-                $('#historyModal').modal('show');
-            }
-            else{
-                dialogModal('messageModal', 'img/img-error.png', message)
-            }
-        },
-        failure: function (errMsg) {
-            dialogModal('messageModal', 'img/img-error.png', errMsg)
-        },
-        dataType: "json",
-        contentType: "application/json"
+function viewHistory() {
+    $("#viewHistory").click(function () {
+        var viewHistory = {
+            monthId: $('#byMonth option:selected').val(),
+        };
+        $.ajax({
+            url: '/api/rankmonth/viewhistory',
+            type: 'POST',
+            data: JSON.stringify(viewHistory),
+            beforeSend: function () {
+                $('body').addClass("loading")
+            },
+            complete: function () {
+                $('body').removeClass("loading")
+            },
+            success: function (data) {
+                console.log(data)
+                var messageCode = data.message.messageCode;
+                var message = data.message.message;
+                if (messageCode == 0) {
+                    $('#historyModal .modal-body').html(data.history);
+                    $('#historyModal').modal('show');
+                } else {
+                    dialogModal('messageModal', 'img/img-error.png', message)
+                }
+            },
+            failure: function (errMsg) {
+                dialogModal('messageModal', 'img/img-error.png', errMsg)
+            },
+            dataType: "json",
+            contentType: "application/json"
+        });
     });
-});
+}
