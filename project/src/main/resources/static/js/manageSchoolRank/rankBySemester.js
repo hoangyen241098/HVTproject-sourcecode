@@ -107,6 +107,12 @@ function search() {
     var infoSearch = {
         semesterId: semesterId,
     }
+    if(semesterId != null && semesterId != "" && semesterId != "err") {
+        $('#viewHistory').removeClass('hide');
+    }
+    if(localStorage.getItem('roleID') == 1) {
+        $('#createRankBtn').removeClass('hide');
+    }
     console.log(JSON.stringify(infoSearch));
     if ($('#bySemester option:selected').val() == 'err') {
         $('tbody').append(`<tr><td colspan="4" class="userlist-result">Không có học kỳ nào trong dữ liệu.</td></tr>`);
@@ -134,9 +140,6 @@ function search() {
                     var messageCode = data.message.messageCode;
                     var message = data.message.message;
                     var checkEdit = data.checkEdit;
-                    if(semesterId != null || semesterId != "" ) {
-                        $('#viewHistory').removeClass('hide');
-                    }
                     if (messageCode == 0) {
                         if(localStorage.getItem('roleID') == 1) {
                             if (checkEdit != null && checkEdit == 0) {
@@ -144,7 +147,6 @@ function search() {
                             } else {
                                 $('#editRankBtn').addClass('hide');
                             }
-                            $('#createRankBtn').removeClass('hide');
                         }
                         if (data.rankSemesterList != null) {
                             dataSrc = data.rankSemesterList;

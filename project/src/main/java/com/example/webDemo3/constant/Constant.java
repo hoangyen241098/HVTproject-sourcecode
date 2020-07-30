@@ -355,8 +355,10 @@ public class Constant {
             new MessageDTO(1,"Bạn không thể sửa tháng đã được xếp hạng ở học kỳ.");
     public static final MessageDTO RANKSEMESTER_NOT_EDIT =
             new MessageDTO(1,"Bạn không thể sửa học kỳ đã được xếp hạng ở năm học.");
-    public static final MessageDTO RANKYEAR_NOT_EDIT =
-            new MessageDTO(1,"Bạn không thể sửa năm học đã được xếp hạng.");
+    public static final MessageDTO ADD_HISTORY_WEEK_FAIL =
+            new MessageDTO(1,"Thêm lịch sử cho chỉnh sửa xảy ra lỗi.");
+    public static final MessageDTO UPDATE_GIM_FAIL =
+            new MessageDTO(1,"Cập nhật bài đăng ghim xảy ra lỗi.");
     /**
      * Success message
      */

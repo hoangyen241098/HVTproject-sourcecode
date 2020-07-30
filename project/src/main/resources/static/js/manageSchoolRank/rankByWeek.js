@@ -128,6 +128,12 @@ function search() {
         weekId: weekId,
         classId: $('#byClass option:selected').val()
     }
+    if(weekId != null && weekId != "" && weekId != "err" ) {
+        $('#viewHistory').removeClass('hide');
+    }
+    if(localStorage.getItem('roleID') == 1) {
+        $('#createRank').removeClass('hide');
+    }
     console.log(JSON.stringify(infoSearch));
     if ($('#byWeek option:selected').val() == 'err') {
         $('#editRankBtn').addClass('hide');
@@ -161,10 +167,6 @@ function search() {
                     var messageCode = data.message.messageCode;
                     var message = data.message.message;
                     var checkEdit = data.checkEdit;
-                    console.log(weekId)
-                    if(weekId != null || weekId != "" ) {
-                        $('#viewHistory').removeClass('hide');
-                    }
                     if (messageCode == 0) {
                         if(localStorage.getItem('roleID') == 1) {
                             if (checkEdit != null && checkEdit == 0) {
@@ -174,7 +176,6 @@ function search() {
                                 $('#editGrades').addClass('hide');
                                 $('#editRankBtn').addClass('hide');
                             }
-                            $('#createRank').removeClass('hide');
                         }
                         if (data.rankWeekList != null) {
                             dataSrc = data.rankWeekList;
@@ -605,7 +606,8 @@ function editGrade() {
                 })
             });
             var newData = {
-                rankWeekList: rankWeekList
+                rankWeekList: rankWeekList,
+                userName: localStorage.getItem('username')
             }
 
             rankWeekList.sort(function (a, b) {

@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
+import java.util.List;
 
 /**
  * lamnt98
@@ -29,4 +30,6 @@ public interface NewsletterRepository extends JpaRepository<Newsletter,Integer> 
                                                @Param("createDate") Date createDate,
                                                @Param("userName") String userName ,Pageable paging);
 
+    @Query(value = "select n from Newsletter n where n.gim = 1 ")
+    List<Newsletter> findAllNewsletterGim();
 }
