@@ -114,7 +114,7 @@ function search() {
                         var classId = item.classId;
                         var className = item.className;
                         var createDate = item.createDate;
-                        var violationDate = item.dayName + " - " + convertDate(createDate);
+                        var violationDate = item.dayName + " - " + convertDate(createDate,'/');
                         var description = item.description;
                         var quantity = item.quantity;
                         var checkEdit = item.checkEdit;

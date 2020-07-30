@@ -76,11 +76,11 @@ $.ajax({
                 $.each(data.listDate, function (i, item) {
                     if (i == 0) {
                         $('#fromDate').append(
-                            `<option value="` + item + `" selected="selected">` + convertDate(item) + `</option>
+                            `<option value="` + item + `" selected="selected">` + convertDate(item,'/') + `</option>
                         `);
                     } else {
                         $('#fromDate').append(
-                            `<option value="` + item + `">` + convertDate(item) + `</option>
+                            `<option value="` + item + `">` + convertDate(item,'/') + `</option>
                     `);
                     }
                 });
