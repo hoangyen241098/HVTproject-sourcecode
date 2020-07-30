@@ -16,11 +16,16 @@ var oldHeader, oldHeaderImage, oldContent, oldGim, createDate, status;
 var imageCover = CKEDITOR.replace('imageCover', {
     cloudServices_uploadUrl: 'https://73438.cke-cs.com/easyimage/upload/',
     cloudServices_tokenUrl: 'https://73438.cke-cs.com/token/dev/de62f27633e0ccc284486ba070dbacf5b61e59390a805c23d58fc080b306',
-    width: '100%',
-    height: 100,
+    width: 250,
+    height: 250,
     extraPlugins: 'easyimage',
+    extraPlugins: 'autogrow',
     removePlugins: 'image',
     removeDialogTabs: 'link:advanced',
+    autoGrow_minHeight: 50,
+    autoGrow_maxHeight: 600,
+    autoGrow_bottomSpace: 0,
+    removePlugins: 'resize',
     toolbar: [
         {
             name: 'insert',
@@ -53,7 +58,7 @@ $.ajax({
                 status = data.newsletter.status;
                 $('#titleName').val(oldHeader);
                 // $('#imagePreview').prop('src', oldHeaderImage);
-                $('#imageCover').text(`<figure class="easyimage"><img alt="" sizes="100vw" src="` + oldHeaderImage + `"/></figure>`);
+                $('#imageCover').text(`<figure class="easyimage" ><img alt="" src="` + oldHeaderImage + `"/></figure>`);
                 $('#post-editor-text-content').text(oldContent);
                 if (oldGim == 1) {
                     $('input[value=pin]').prop('checked', true);
