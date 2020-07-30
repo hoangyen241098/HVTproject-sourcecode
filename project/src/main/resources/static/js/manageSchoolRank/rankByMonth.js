@@ -107,6 +107,12 @@ function search() {
     var infoSearch = {
         monthId: monthId,
     }
+    if(monthId != null && monthId != "" && monthId != "err" ) {
+        $('#viewHistory').removeClass('hide');
+    }
+    if(localStorage.getItem('roleID') == 1) {
+        $('#createRankBtn').removeClass('hide');
+    }
     console.log(JSON.stringify(infoSearch));
     if ($('#byMonth option:selected').val() == 'err') {
         $('tbody').append(`<tr><td colspan="4" class="userlist-result">Không có tháng nào trong dữ liệu.</td></tr>`);
@@ -141,9 +147,6 @@ function search() {
                     var messageCode = data.message.messageCode;
                     var message = data.message.message;
                     var checkEdit = data.checkEdit;
-                    if(monthId != null || monthId != "" || monthId == "err" ) {
-                        $('#viewHistory').removeClass('hide');
-                    }
                     if (messageCode == 0) {
                         if(localStorage.getItem('roleID') == 1) {
                             if (checkEdit != null && checkEdit == 0) {
@@ -151,7 +154,6 @@ function search() {
                             } else {
                                 $('#editRankBtn').addClass('hide');
                             }
-                            $('#createRankBtn').removeClass('hide');
                         }
                         if (data.rankMonthList != null) {
                             dataSrc = data.rankMonthList;

@@ -9,6 +9,7 @@ import com.example.webDemo3.dto.request.manageNewsletterRequestDto.ConfirmReques
 import com.example.webDemo3.dto.request.manageNewsletterRequestDto.EditNewsletterRequestDto;
 import com.example.webDemo3.dto.request.manageNewsletterRequestDto.SearchNewsByStatusAndDateRequestDto;
 import com.example.webDemo3.entity.Newsletter;
+import com.example.webDemo3.exception.MyException;
 import com.example.webDemo3.repository.NewsletterRepository;
 import com.example.webDemo3.service.manageNewsletterService.HandleNewsletterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.persistence.Column;
 import java.sql.Date;
+import java.util.List;
 
 /*
 kimpt142 - 27/07
@@ -38,6 +42,7 @@ public class HandleNewsletterServiceImpl implements HandleNewsletterService {
      * @return
      */
     @Override
+    @Transactional
     public AddNewsletterResponseDto addNewsletter(AddNewsletterRequestDto model) {
         AddNewsletterResponseDto responseDto = new AddNewsletterResponseDto();
         MessageDTO message;
@@ -76,9 +81,14 @@ public class HandleNewsletterServiceImpl implements HandleNewsletterService {
         newsletter.setStatus(status);
 
         try{
-            newsletter = newsletterRepository.save(newsletter);
+            if(gim == 1){
+                message = updateGimTransaction();
+            }
+            responseDto = addNewsletterWithTran(newsletter);
         }catch (Exception e){
-            message = Constant.ADD_NEWSLETTER_FAIL;
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             responseDto.setMessage(message);
             return responseDto;
         }
@@ -118,9 +128,14 @@ public class HandleNewsletterServiceImpl implements HandleNewsletterService {
         }
 
         try{
-            newsletterRepository.save(newsletter);
+            if(newsletter.getGim() == 1){
+                message = updateGimTransaction();
+            }
+            message = addNewsletterWithTran(newsletter).getMessage();
         }catch (Exception e){
-            message = Constant.EDIT_NEWSLETTER_FAIL;
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return message;
         }
 
@@ -259,5 +274,53 @@ public class HandleNewsletterServiceImpl implements HandleNewsletterService {
         }
 
         return Constant.SUCCESS;
+    }
+
+    /**
+     * kimpt142
+     * 30/07
+     * add/edit a newsletter into db
+     * @param newsletter
+     * @return
+     * @throws Exception
+     */
+    private AddNewsletterResponseDto addNewsletterWithTran(Newsletter newsletter) throws Exception{
+        AddNewsletterResponseDto responseDto = new AddNewsletterResponseDto();
+        MessageDTO message;
+        try {
+            newsletter = newsletterRepository.save(newsletter);
+        }
+        catch (Exception e){
+            message = Constant.ADD_NEWSLETTER_FAIL;
+            throw new MyException(message.getMessage());
+        }
+        message = Constant.SUCCESS;
+        responseDto.setNewsletterId(newsletter.getNewsletterId());
+        responseDto.setMessage(message);
+        return responseDto;
+    }
+
+    /**
+     * kimpt142
+     * 30/07
+     * update all newsletter with 1 is 0
+     * @return
+     * @throws Exception
+     */
+    private MessageDTO updateGimTransaction() throws Exception{
+        MessageDTO message;
+        List<Newsletter> newsletterList = newsletterRepository.findAllNewsletterGim();
+        try {
+            for(Newsletter item : newsletterList){
+                item.setGim(0);
+                newsletterRepository.save(item);
+            }
+        }
+        catch (Exception e){
+            message = Constant.UPDATE_GIM_FAIL;
+            throw new MyException(message.getMessage());
+        }
+        message = Constant.SUCCESS;
+        return message;
     }
 }
