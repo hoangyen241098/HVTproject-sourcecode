@@ -15,7 +15,7 @@ public interface SchoolSemesterRepository extends JpaRepository<SchoolSemester,I
     @Query(value = "select s from SchoolSemester s where s.semester = :semester and s.yearId = :yearId")
     SchoolSemester findSchoolSemesterBySemesterAndYearId(@Param("semester") Integer semester, @Param("yearId") Integer yearId);
 
-    @Query(value="select ss from SchoolSemester ss where ss.semesterId <> 0 and ss.yearId = :yearId")
+    @Query(value="select ss from SchoolSemester ss where ss.semesterId <> 0 and ss.yearId = :yearId order by ss.createDate")
     List<SchoolSemester> findSchoolSemesterByYearIdExcludeZero(@Param("yearId") Integer yearId);
 
     @Query(value = "select s from SchoolSemester s where s.semester = :semester and s.semesterId <> :semesterId")
