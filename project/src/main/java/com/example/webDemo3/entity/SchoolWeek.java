@@ -30,6 +30,9 @@ public class SchoolWeek {
     @Column(name = "YEAR_ID")
     private Integer yearId;
 
-    @Column(name = "HISTORY")
+    @Column(name = "RANK_HISTORY")
     private String history;
+
+    @Column(name = "RANK_CREATE_DATE")
+    private Date createDate;
 }
