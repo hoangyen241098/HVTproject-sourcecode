@@ -2,17 +2,21 @@ package com.example.webDemo3.service.impl.manageSchoolRankYearServiceImpl;
 
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.RankYearListResponseDto;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.RankYearResponseDto;
+import com.example.webDemo3.dto.manageClassResponseDto.ClassListResponseDto;
+import com.example.webDemo3.dto.manageClassResponseDto.ClassResponseDto;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.*;
+import com.example.webDemo3.dto.manageSchoolYearResponseDto.SchoolYearTableResponseDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.LoadByYearIdRequestDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.SearchRankYearRequestDto;
 import com.example.webDemo3.entity.SchoolRankYear;
 import com.example.webDemo3.repository.SchoolRankYearRepository;
+import com.example.webDemo3.service.manageClassService.ClassService;
 import com.example.webDemo3.service.manageSchoolRankYearSerivce.ViewSchoolRankYearService;
+import com.example.webDemo3.service.manageSchoolYearService.SchoolYearService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -27,6 +31,12 @@ public class ViewSchoolRankYearServiceImpl implements ViewSchoolRankYearService 
     @Autowired
     private SchoolRankYearRepository schoolRankYearRepository;
 
+    @Autowired
+    private ClassService classService;
+
+    @Autowired
+    private SchoolYearService schoolYearService;
+
     /**
      * kimpt142 - 24/07
      * get the rank year list by year id
@@ -34,19 +44,21 @@ public class ViewSchoolRankYearServiceImpl implements ViewSchoolRankYearService 
      * @return RankYearListResponseDto
      */
     @Override
-    public RankYearListResponseDto searchRankYearById(LoadByYearIdRequestDto model) {
+    public RankYearListResponseDto searchRankYearById(SearchRankYearRequestDto model) {
         RankYearListResponseDto resposeDto = new RankYearListResponseDto();
         List<RankYearResponseDto> rankYearList = new ArrayList<>();
         MessageDTO message;
 
         Integer yearId = model.getYearId();
+        Integer classId = model.getClassId();
+
         if(yearId == null){
             message = Constant.SCHOOLYEARID_EMPTY;
             resposeDto.setMessage(message);
             return resposeDto;
         }
 
-        List<SchoolRankYear> schoolRankYearList = schoolRankYearRepository.findAllByYearId(yearId);
+        List<SchoolRankYear> schoolRankYearList = schoolRankYearRepository.findAllByYearId(yearId, classId);
         if(schoolRankYearList == null || schoolRankYearList.size() == 0)
         {
             message = Constant.RANKYEARLIST_EMPTY;
@@ -80,7 +92,7 @@ public class ViewSchoolRankYearServiceImpl implements ViewSchoolRankYearService 
      * @return
      */
     @Override
-    public ByteArrayInputStream downloadRankYear(LoadByYearIdRequestDto model) {
+    public ByteArrayInputStream downloadRankYear(SearchRankYearRequestDto model) {
         //get rank semester list
         List<RankYearResponseDto> rankYearList = searchRankYearById(model).getRankYearList();
 
@@ -125,6 +137,44 @@ public class ViewSchoolRankYearServiceImpl implements ViewSchoolRankYearService 
         }
 
         return null;
+    }
+
+    /**
+     * kimpt142
+     * 31/07
+     * load school year list and class list
+     * @return
+     */
+    @Override
+    public LoadRankYearResponseDto loadRankYear() {
+        LoadRankYearResponseDto responseDto = new LoadRankYearResponseDto();
+        MessageDTO message;
+        List<ClassResponseDto> classList;
+
+        ClassListResponseDto classListDto = classService.getClassList();
+        //get year list
+        SchoolYearTableResponseDto schoolYearListDto = schoolYearService.getSchoolYearTable();
+        if(schoolYearListDto.getMessage().getMessageCode() == 1){
+            message = schoolYearListDto.getMessage();
+            responseDto.setMessage(message);
+            return responseDto;
+        }
+        else{
+            responseDto.setSchoolYearList(schoolYearListDto.getSchoolYearList());
+        }
+
+        //get class list
+        if (classListDto.getMessage().getMessageCode() == 0) {
+            classList = classListDto.getClassList();
+            responseDto.setClassList(classList);
+        } else {
+            responseDto.setMessage(classListDto.getMessage());
+            return responseDto;
+        }
+
+        message = Constant.SUCCESS;
+        responseDto.setMessage(message);
+        return responseDto;
     }
 
     private double round(Double input) {
