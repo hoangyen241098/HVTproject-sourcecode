@@ -214,9 +214,9 @@ function paging(inforSearch, totalPages) {
 };
 
 /*Convert string to form date*/
-function convertDate(str) {
+function convertDate(str, value) {
     str = str.split("-");
-    str = str[2].concat("/" + str[1] + "/" + str[0]);
+    str = str[2].concat(value + str[1] + value + str[0]);
     return str;
 }
 

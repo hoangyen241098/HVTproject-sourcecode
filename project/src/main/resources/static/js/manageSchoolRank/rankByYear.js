@@ -18,7 +18,7 @@ $.ajax({
             if (data.schoolYearList != null) {
                 $('#byYear').html('');
                 $.each(data.schoolYearList, function (i, item) {
-                    if (currentYearId == item.schoolYearId) {
+                    if (item.schoolYearId == currentYearId) {
                         $('#byYear').append(`<option value="` + item.schoolYearId + `" selected="selected">` + item.yearName + `</option>`);
                     } else {
                         $('#byYear').append(`<option value="` + item.schoolYearId + `">` + item.yearName + `</option>`);
@@ -158,7 +158,9 @@ $('#createRankBtn').on('click', function () {
             var messageCode = data.message.messageCode;
             var message = data.message.message;
             if (messageCode == 0 || messageCode == 1) {
-                if (data.schoolYearList != null) {
+                if (data.schoolYearList == null ||  data.schoolYearList.length == 0) {
+                    $('#yearName').html(`<option value="err" selected>Không có năm học nào chưa được xếp hạng.</option>`)
+                } else {
                     $('#yearName').html('');
                     $.each(data.schoolYearList, function (i, item) {
                         if (item.schoolYearId == currentYearId) {
@@ -167,10 +169,8 @@ $('#createRankBtn').on('click', function () {
                             $('#yearName').append(`<option value="` + item.schoolYearId + `">` + item.yearName + `</option>`);
                         }
                     });
-                } else {
-                    $('#yearName').html(`<option value="err" selected>Không có năm học nào chưa được xếp hạng.</option>`)
                 }
-                if (data.semesterList != null) {
+                if (data.semesterList.length != 0) {
                     $('#semesterList').html('');
                     $('#semesterList').append(`<h6>Các học kỳ áp dụng <span class="text-red">*</span></h6>`);
                     $.each(data.semesterList, function (i, item) {

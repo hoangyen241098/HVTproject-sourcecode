@@ -106,7 +106,7 @@ function search() {
                         if (item.violationClassRequest != null) {
                             var status, requestId, dataTarget, createBy, totals, quantityNew,
                                 totalsNew, reason;
-                            var violationDate = item.dayName + " - " + convertDate(item.createDate);
+                            var violationDate = item.dayName + " - " + convertDate(item.createDate,'/');
                             var substractGrade = item.substractGrade;
                             var quantity = item.violationClassRequest.quantityOld;
                             totals = parseFloat(parseFloat(substractGrade) * parseInt(quantity)).toFixed(1);
