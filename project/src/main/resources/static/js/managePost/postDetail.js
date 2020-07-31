@@ -27,6 +27,15 @@ $.ajax({
                 $('.post-content-text').html(data.newsletter.content);
                 $('.post-action .newsletterId').text(data.newsletter.newsletterId);
                 $('.post-action .status').text(data.newsletter.status);
+                var imgContent = $('.post-content-text img');
+                imgContent.each(function () {
+                    $(this).addClass('lazy');
+                    var src = $(this).attr('src')
+                    $(this).prop('src', 'http://placehold.it/600x350&text=Chờ ảnh');
+                    $(this).prop('srcset', '');
+                    $(this).attr('data-original', src);
+                })
+                lazyLoad();
             } else {
                 $('.table-title h2').text('');
                 $('.table-title .post-subtitle-title').text('');
@@ -77,7 +86,7 @@ function displayButton() {
             $('.btn-edit').removeClass('hide');
             $('.btn-reject').addClass('hide');
             $('.btn-accept').addClass('hide');
-        } else if( status == 1) {
+        } else if (status == 1) {
             $('.btn-delete').addClass('hide');
             $('.btn-edit').addClass('hide');
             $('.btn-reject').addClass('hide');

@@ -12,15 +12,15 @@ var imageCover = CKEDITOR.replace('imageCover', {
     cloudServices_uploadUrl: 'https://73438.cke-cs.com/easyimage/upload/',
     cloudServices_tokenUrl: 'https://73438.cke-cs.com/token/dev/de62f27633e0ccc284486ba070dbacf5b61e59390a805c23d58fc080b306',
     width: 250,
-    height: 70,
+    height: 200,
     extraPlugins: 'easyimage',
-    extraPlugins: 'autogrow',
+    // extraPlugins: 'autogrow',
     removePlugins: 'image',
     removeDialogTabs: 'link:advanced',
-    autoGrow_minHeight: 50,
-    autoGrow_maxHeight: 600,
-    autoGrow_bottomSpace: 0,
-    removePlugins: 'resize',
+    // autoGrow_minHeight: 50,
+    // autoGrow_maxHeight: 600,
+    // autoGrow_bottomSpace: 0,
+    // removePlugins: 'resize',
     toolbar: [
         {
             name: 'insert',
@@ -29,7 +29,7 @@ var imageCover = CKEDITOR.replace('imageCover', {
     ],
 });
 
-if(roleID == 1) {
+if (roleID == 1) {
     $('.form-check').removeClass('hide');
 }
 
@@ -38,9 +38,7 @@ $('#savePost').on('click', function () {
     var titleName = $('#titleName').val().trim();
     // var image = $('#imagePreview').attr('src');
     var image = imageCover.getData();
-    image = image.split('src=')[1].split('"')[1];
     var data = editor.getData();
-    console.log(image);
     var gim;
     if ($('input[type="checkbox"]').prop("checked") == true) {
         gim = 1;
@@ -57,6 +55,8 @@ $('#savePost').on('click', function () {
         $('.createPost-err').text('Hãy nhập nội dung của bài viết.');
         return false;
     } else {
+        image = image.split('src=')[1].split('"')[1];
+        console.log(image);
         var request = {
             username: username,
             header: titleName,
@@ -65,39 +65,56 @@ $('#savePost').on('click', function () {
             gim: gim,
             roleId: roleID,
         }
-        console.log(JSON.stringify(request))
-        $.ajax({
-            url: "/api/newsletter/addnewsletter",
-            type: "POST",
-            data: JSON.stringify(request),
-            beforeSend: function () {
-                $('body').addClass("loading")
-            },
-            complete: function () {
-                $('body').removeClass("loading")
-            },
-            success: function (data) {
-                var messageCode = data.message.messageCode;
-                var message = data.message.message;
-                sessionStorage.setItem('newsletterId', data.newsletterId);
-                if (messageCode == 0) {
-                    $('#saveModal .modal-footer').html(`
-                        <a href="postDetail" class="btn btn-danger" id="viewPost">XEM BÀI VIẾT</a>
-                        <a href="createPost" class="btn btn-primary">ĐÓNG</a>
-                    `)
-                    messageModal('saveModal', 'img/img-success.png', "Tạo bài viết thành công!");
-                } else {
-                    messageModal('saveModal', 'img/img-error.png', message);
-                }
-            },
-            failure: function (errMsg) {
-                messageModal('saveModal', 'img/img-error.png', errMsg);
-            },
-            dataType: "json",
-            contentType: "application/json"
-        });
+        if (gim == 1) {
+            request.gim = 0;
+            $('#saveModal .modal-footer').html(`
+                    <input type="button" class="btn btn-danger" id="newGim" value="XÁC NHẬN">
+                    <input type="button" class="btn btn-primary" id="closeBtn" data-dismiss="modal" value="ĐÓNG">
+                `);
+            messageModal('saveModal', 'img/img-question.png', 'Bạn có muốn <b>GHIM</b> bài viết này không?<h6>Bài viết được ghim trước đó sẽ bị bỏ ghim!</h6>');
+            $('#newGim').on('click', function () {
+                request.gim = 1;
+                addNewPost(request);
+            })
+        } else {
+            addNewPost(request);
+        }
     }
 })
+
+function addNewPost(request) {
+    console.log(JSON.stringify(request))
+    $.ajax({
+        url: "/api/newsletter/addnewsletter",
+        type: "POST",
+        data: JSON.stringify(request),
+        beforeSend: function () {
+            $('body').addClass("loading")
+        },
+        complete: function () {
+            $('body').removeClass("loading")
+        },
+        success: function (data) {
+            var messageCode = data.message.messageCode;
+            var message = data.message.message;
+            sessionStorage.setItem('newsletterId', data.newsletterId);
+            if (messageCode == 0) {
+                $('#saveModal .modal-footer').html(`
+                    <a href="postDetail" class="btn btn-danger" id="viewPost">XEM BÀI VIẾT</a>
+                    <a href="createPost" class="btn btn-primary">ĐÓNG</a>
+                `)
+                messageModal('saveModal', 'img/img-success.png', "Tạo bài viết thành công!");
+            } else {
+                messageModal('saveModal', 'img/img-error.png', message);
+            }
+        },
+        failure: function (errMsg) {
+            messageModal('saveModal', 'img/img-error.png', errMsg);
+        },
+        dataType: "json",
+        contentType: "application/json"
+    });
+}
 
 /*Upload image*/
 var loadFile = function (event) {
