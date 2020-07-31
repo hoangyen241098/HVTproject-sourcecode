@@ -29,9 +29,11 @@ $.ajax({
                     <option value="0" selected>Chọn chức vụ</option>
                 `);
                 $.each(data.listRole, function (i, list) {
-                    $('#roleName').append(`
+                    if (list.roleId == 3 || list.roleId == 5) {
+                        $('#roleName').append(`
                         <option value="` + list.roleId + `" name="` + list.roleName + `">` + list.roleName + `</option>
                     `);
+                    }
                 });
             } else {
                 $('#roleName').html('');

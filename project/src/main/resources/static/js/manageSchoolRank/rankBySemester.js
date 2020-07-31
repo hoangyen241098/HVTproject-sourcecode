@@ -32,12 +32,24 @@ $.ajax({
                 $('#bySemester').html(`<option value="err">Danh sách học kỳ đang trống.</option>`);
                 $('#bySemester').prop('disabled', true);
             }
+            if (data.classList != null) {
+                $('#byClass').html(`<option value="" selected="selected">Tất cả</option>`);
+                $("#byClass").select2();
+                $.each(data.classList, function (i, item) {
+                    $('#byClass').append(`<option value="` + item.classID + `">` + item.className + `</option>`);
+                })
+            } else {
+                $('#byClass').html(`<option value="err">Danh sách lớp trống.</option>`);
+            }
         } else {
             if (data.schoolYearList == null) {
                 $('#byYear').html(`<option value="err">` + message + `</option>`);
             }
             if (data.schoolSemesterList == null) {
                 $('#bySemester').html(`<option value="err">` + message + `</option>`);
+            }
+            if (data.classList == null) {
+                $('#byClass').html(`<option value="err">` + message + `</option>`);
             }
         }
     },
@@ -106,6 +118,7 @@ function search() {
     var semesterId = $('#bySemester option:selected').val();
     var infoSearch = {
         semesterId: semesterId,
+        classId: $('#byClass option:selected').val()
     }
     if(semesterId != null && semesterId != "" && semesterId != "err") {
         $('#viewHistory').removeClass('hide');
@@ -209,13 +222,16 @@ function search() {
 $('#search').click(function (e) {
     $('table tbody').html('');
     $('#searchGroupButton').html(`                
-        <input type="button" id="editRankBtn" class="btn btn-success mx-2 manageBtn hide"
-               value="Sửa xếp hạng kỳ"/>
-        <input type="button" id="createRankBtn" class="btn btn-success mx-2 manageBtn hide"
-               value="Tạo xếp hạng kỳ"/>
-        <input type="button" id="viewHistory" class="btn btn-success ml-2 hide" value="Xem lịch sử"/>
-        <input type="button" id="download" class="btn btn-success ml-2 hide" value="Tải xuống"/>
-    `);
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 px-0">
+                <input type="button" id="viewHistory" class="btn btn-success mr-2 hide" value="Xem lịch sử"/>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 px-0 text-right">
+                <input type="button" id="editRankBtn" class="btn btn-success ml-2 manageBtn hide"
+                       value="Sửa xếp hạng kỳ"/>
+                <input type="button" id="createRankBtn" class="btn btn-success ml-2 manageBtn hide"
+                       value="Tạo xếp hạng kỳ"/>
+                <input type="button" id="download" class="btn btn-success ml-2 hide" value="Tải xuống"/>
+            </div>`);
     search();
 });
 
@@ -502,6 +518,7 @@ function download() {
     $("#download").click(function () {
         var download = {
             semesterId: $('#bySemester option:selected').val(),
+            classId: $('#byClass option:selected').val()
         }
         console.log(JSON.stringify(download))
         $.ajax({

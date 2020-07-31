@@ -3,7 +3,7 @@ var currentYearId = localStorage.getItem('currentYearId');
 /*=============Set data================*/
 /*Load year list*/
 $.ajax({
-    url: '/api/admin/schoolyearlist',
+    url: '/api/rankyear/loadrankyear',
     type: 'POST',
     beforeSend: function () {
         $('body').addClass("loading")
@@ -30,8 +30,22 @@ $.ajax({
             } else {
                 $('#byYear').html(`<option value="err">Danh sách năm học trống.</option>`);
             }
+            if (data.classList != null) {
+                $('#byClass').html(`<option value="" selected="selected">Tất cả</option>`);
+                $("#byClass").select2();
+                $.each(data.classList, function (i, item) {
+                    $('#byClass').append(`<option value="` + item.classID + `">` + item.className + `</option>`);
+                })
+            } else {
+                $('#byClass').html(`<option value="err">Danh sách lớp trống.</option>`);
+            }
         } else {
-            $('#byYear').html(`<option value="err">` + message + `</option>`);
+            if (data.schoolYearList == null) {
+                $('#byYear').html(`<option value="err">` + message + `</option>`);
+            }
+            if (data.classList == null) {
+                $('#byClass').html(`<option value="err">` + message + `</option>`);
+            }
         }
     },
     failure: function (errMsg) {
@@ -47,6 +61,7 @@ setTimeout(search, 500);
 function search() {
     var infoSearch = {
         yearId: $('#byYear option:selected').val(),
+        classId: $('#byClass option:selected').val()
     }
     console.log(JSON.stringify(infoSearch));
     if ($('#byYear option:selected').val() == 'err') {
@@ -414,6 +429,7 @@ $('#editRankBtnModal').on('click', function () {
 $("#download").click(function () {
     var download = {
         yearId: $('#byYear option:selected').val(),
+        classId: $('#byClass option:selected').val()
     }
     console.log(JSON.stringify(download))
     $.ajax({

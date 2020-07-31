@@ -5,7 +5,7 @@ var inforSearch = {
     classId: null,
     status: 0,
     createDate: $('#inputDate').val(),
-    createBy: "",
+    createBy: $('#createBy').val(),
     pageNumber: 0
 }
 
@@ -77,6 +77,11 @@ search();
 
 /*Set data to container*/
 function search() {
+    if (roleId == 4) {
+        inforSearch.createBy = username;
+        $('#createBy').val(username);
+        $('#createBy').prop('disabled', true);
+    }
     console.log(JSON.stringify(inforSearch))
     $.ajax({
         url: '/api/emulation/viewrequest',
@@ -106,7 +111,7 @@ function search() {
                         if (item.violationClassRequest != null) {
                             var status, requestId, dataTarget, createBy, totals, quantityNew,
                                 totalsNew, reason;
-                            var violationDate = item.dayName + " - " + convertDate(item.createDate,'/');
+                            var violationDate = item.dayName + " - " + convertDate(item.createDate, '/');
                             var substractGrade = item.substractGrade;
                             var quantity = item.violationClassRequest.quantityOld;
                             totals = parseFloat(parseFloat(substractGrade) * parseInt(quantity)).toFixed(1);

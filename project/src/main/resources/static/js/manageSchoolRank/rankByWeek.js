@@ -2,6 +2,7 @@ var listCreate = [];
 var listEdit = [];
 var listEditOld = [];
 var rankOld = [];
+var rankWeekList = [];
 
 /*=============Set data================*/
 /*Load year, week list and class list*/
@@ -128,10 +129,10 @@ function search() {
         weekId: weekId,
         classId: $('#byClass option:selected').val()
     }
-    if(weekId != null && weekId != "" && weekId != "err" ) {
+    if (weekId != null && weekId != "" && weekId != "err") {
         $('#viewHistory').removeClass('hide');
     }
-    if(localStorage.getItem('roleID') == 1) {
+    if (localStorage.getItem('roleID') == 1) {
         $('#createRank').removeClass('hide');
     }
     console.log(JSON.stringify(infoSearch));
@@ -168,7 +169,7 @@ function search() {
                     var message = data.message.message;
                     var checkEdit = data.checkEdit;
                     if (messageCode == 0) {
-                        if(localStorage.getItem('roleID') == 1) {
+                        if (localStorage.getItem('roleID') == 1) {
                             if (checkEdit != null && checkEdit == 0) {
                                 $('#editGrades').removeClass('hide');
                                 $('#editRankBtn').removeClass('hide');
@@ -267,22 +268,23 @@ function search() {
 $('#search').click(function (e) {
     $('table tbody').html('');
     $('#searchGroupButton').html(`            
-            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 px-0">
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 px-0">
+                <input type="button" id="viewHistory" class="btn btn-success mr-2 hide" value="Xem lịch sử"/>
                 <input type="button" class="btn btn-success mr-2 manageBtn hide" id="editGrades" value="Sửa điểm"/>
-                <input type="button" class="btn btn-success mx-2 manageBtn hide" id="closeEditGrades" value="Hủy"/>
+                <input type="button" class="btn btn-success mr-2 manageBtn hide" id="closeEditGrades" value="Hủy"/>
             </div>
-            <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 px-0 text-right">
-                <input type="button" id="editRankBtn" class="btn btn-success mx-2 manageBtn hide"
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 px-0 text-right">
+                <input type="button" id="editRankBtn" class="btn btn-success ml-2 manageBtn hide"
                        value="Sửa xếp hạng tuần"/>
-                <input type="button" id="createRank" class="btn btn-success mx-2 manageBtn hide"
+                <input type="button" id="createRank" class="btn btn-success ml-2 manageBtn hide"
                        value="Tạo xếp hạng tuần"/>
-                <input type="button" id="viewHistory" class="btn btn-success ml-2 hide" value="Xem lịch sử"/>
                 <input type="button" id="download" class="btn btn-success ml-2 hide" value="Tải xuống"/>
             </div>`);
     search();
 })
 
 /*==========Create rank===========*/
+
 /*Load date list*/
 function createRank() {
     $('#createRank').on('click', function () {
@@ -313,7 +315,7 @@ function createRank() {
                                 <input type="checkbox" name="options" value="` + i + `">
                                 <label for="` + i + `"></label>
                             </span>
-                            <span class="ml-3">` + item.dayName + ` - ` + item.date + `</span>
+                            <span class="ml-3">` + item.dayName + ` - ` + convertDate(item.date, '/') + `</span>
                             <span class="hide dayName">` + item.dayName + `</span>
                             <span class="hide date">` + item.date + `</span>
                         </div>
@@ -392,6 +394,7 @@ $('#createNewRankBtn').on('click', function () {
 })
 
 /*=============Edit Rank=====================*/
+
 /*Load edit rank week*/
 function editRankBtn() {
     $('#editRankBtn').on('click', function () {
@@ -431,7 +434,7 @@ function editRankBtn() {
                                     <input type="checkbox" name="editOptions" value="` + i + `">
                                     <label for="` + i + `"></label>
                                 </span>
-                                <span class="ml-3">` + item.dayName + ` - ` + item.date + `</span>
+                                <span class="ml-3">` + item.dayName + ` - ` + convertDate(item.date, '/') + `</span>
                                 <span class="hide dayName">` + item.dayName + `</span>
                                 <span class="hide date">` + item.date + `</span>
                                 <span class="hide week">` + item.week + `</span>
@@ -553,13 +556,14 @@ $('#editRankBtnModal').on('click', function () {
 })
 
 /*=============Edit Grade=====================*/
+
 /*Button Edit table*/
 function editGrade() {
-    $("#editGrades").on("click", function () {
+    $("#editGrades").unbind().click(function () {
         var row = $('tbody tr td[contenteditable]');
         var editOn = $('#editGrades').hasClass("editMode");
         var weekId = $('#byWeek option:selected').val();
-
+        rankWeekList = [];
 
         if (editOn == false) {
             $(row).attr('contenteditable', 'true');
@@ -589,8 +593,8 @@ function editGrade() {
                 return a.classId - b.classId;
             });
             console.log(rankOld);
-        } else if (editOn == true) {
-            var rankWeekList = [];
+        } else {
+            console.log(rankWeekList);
             $('table tbody tr').each(function () {
                 rankWeekList.push({
                     weekId: weekId,
@@ -605,11 +609,6 @@ function editGrade() {
                     history: null
                 })
             });
-            var newData = {
-                rankWeekList: rankWeekList,
-                userName: localStorage.getItem('username')
-            }
-
             rankWeekList.sort(function (a, b) {
                 return a.classId - b.classId;
             });
@@ -623,6 +622,10 @@ function editGrade() {
                 $('#editGrades').attr('value', 'Sửa điểm');
                 $('#editGrades').removeClass('editMode');
                 $('#closeEditGrades').addClass('hide');
+                var newData = {
+                    rankWeekList: rankWeekList,
+                    userName: localStorage.getItem('username')
+                }
                 $.ajax({
                     url: '/api/rankweek/updatescorerankweek',
                     type: 'POST',
@@ -659,15 +662,18 @@ function editGrade() {
                 });
             }
         }
-        $('#closeEditGrades').click(function () {
-            $(row).attr('contenteditable', 'false');
-            $(row).css('background-color', 'transparent');
-            $('#editGrades').attr('value', 'Sửa điểm');
-            $('#editGrades').removeClass('editMode');
-            $('#closeEditGrades').addClass('hide');
-            search();
-        })
     });
+    $('#closeEditGrades').unbind().click(function () {
+        var row = $('tbody tr td[contenteditable]');
+        $(row).attr('contenteditable', 'false');
+        $(row).css('background-color', 'transparent');
+        $('#editGrades').attr('value', 'Sửa điểm');
+        $('#editGrades').removeClass('editMode');
+        $('#closeEditGrades').addClass('hide');
+        rankWeekList.length = 0;
+        rankOld.length = 0;
+        search();
+    })
 }
 
 /*Validate input*/
@@ -709,6 +715,7 @@ function validateInput(className, max) {
 }
 
 /*===============Download===================*/
+
 /*Download button*/
 function dowload() {
     $("#download").click(function () {
@@ -772,16 +779,6 @@ function dialogModal(modalName, img, message) {
     $('#' + modalName).modal('show');
 }
 
-function closeModal(weekId) {
-    $('.isClosed').on('click', function () {
-        $('#editSuccess').modal('hide');
-        $('#createSuccess').modal('hide');
-        $('#byWeek option:selected').val(weekId);
-        $('table tbody').html('');
-        search();
-    })
-}
-
 /*Remove checkbox when close modal*/
 $(document).on('hidden.bs.modal', '#createNewRank', '#editRank', function () {
     $('input[name=options]').prop('checked', false);
@@ -791,6 +788,7 @@ $(document).on('hidden.bs.modal', '#createNewRank', '#editRank', function () {
 });
 
 /*===============View History===================*/
+
 /*View history button*/
 function viewHistory() {
     $("#viewHistory").click(function () {
@@ -814,8 +812,7 @@ function viewHistory() {
                 if (messageCode == 0) {
                     $('#historyModal .modal-body').html(data.history);
                     $('#historyModal').modal('show');
-                }
-                else{
+                } else {
                     dialogModal('downloadModal', 'img/img-error.png', message)
                 }
             },
