@@ -315,7 +315,7 @@ function createRank() {
                                 <input type="checkbox" name="options" value="` + i + `">
                                 <label for="` + i + `"></label>
                             </span>
-                            <span class="ml-3">` + item.dayName + ` - ` + item.date + `</span>
+                            <span class="ml-3">` + item.dayName + ` - ` + convertDate(item.date, '/') + `</span>
                             <span class="hide dayName">` + item.dayName + `</span>
                             <span class="hide date">` + item.date + `</span>
                         </div>
@@ -434,7 +434,7 @@ function editRankBtn() {
                                     <input type="checkbox" name="editOptions" value="` + i + `">
                                     <label for="` + i + `"></label>
                                 </span>
-                                <span class="ml-3">` + item.dayName + ` - ` + item.date + `</span>
+                                <span class="ml-3">` + item.dayName + ` - ` + convertDate(item.date, '/') + `</span>
                                 <span class="hide dayName">` + item.dayName + `</span>
                                 <span class="hide date">` + item.date + `</span>
                                 <span class="hide week">` + item.week + `</span>
@@ -559,7 +559,7 @@ $('#editRankBtnModal').on('click', function () {
 
 /*Button Edit table*/
 function editGrade() {
-    $("#editGrades").on("click", function () {
+    $("#editGrades").unbind().click(function () {
         var row = $('tbody tr td[contenteditable]');
         var editOn = $('#editGrades').hasClass("editMode");
         var weekId = $('#byWeek option:selected').val();
@@ -594,6 +594,7 @@ function editGrade() {
             });
             console.log(rankOld);
         } else {
+            console.log(rankWeekList);
             $('table tbody tr').each(function () {
                 rankWeekList.push({
                     weekId: weekId,
@@ -661,15 +662,18 @@ function editGrade() {
                 });
             }
         }
-        $('#closeEditGrades').click(function () {
-            $(row).attr('contenteditable', 'false');
-            $(row).css('background-color', 'transparent');
-            $('#editGrades').attr('value', 'Sửa điểm');
-            $('#editGrades').removeClass('editMode');
-            $('#closeEditGrades').addClass('hide');
-            search();
-        })
     });
+    $('#closeEditGrades').unbind().click(function () {
+        var row = $('tbody tr td[contenteditable]');
+        $(row).attr('contenteditable', 'false');
+        $(row).css('background-color', 'transparent');
+        $('#editGrades').attr('value', 'Sửa điểm');
+        $('#editGrades').removeClass('editMode');
+        $('#closeEditGrades').addClass('hide');
+        rankWeekList.length = 0;
+        rankOld.length = 0;
+        search();
+    })
 }
 
 /*Validate input*/
@@ -773,16 +777,6 @@ function dialogModal(modalName, img, message) {
         <h5>` + message + `</h5>
     `)
     $('#' + modalName).modal('show');
-}
-
-function closeModal(weekId) {
-    $('.isClosed').on('click', function () {
-        $('#editSuccess').modal('hide');
-        $('#createSuccess').modal('hide');
-        $('#byWeek option:selected').val(weekId);
-        $('table tbody').html('');
-        search();
-    })
 }
 
 /*Remove checkbox when close modal*/

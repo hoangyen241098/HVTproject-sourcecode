@@ -32,12 +32,24 @@ $.ajax({
                 $('#byMonth').html(`<option value="err">Danh sách tháng đang trống.</option>`);
                 $('#byMonth').prop('disabled', true);
             }
+            if (data.classList != null) {
+                $('#byClass').html(`<option value="" selected="selected">Tất cả</option>`);
+                $("#byClass").select2();
+                $.each(data.classList, function (i, item) {
+                    $('#byClass').append(`<option value="` + item.classID + `">` + item.className + `</option>`);
+                })
+            } else {
+                $('#byClass').html(`<option value="err">Danh sách lớp trống.</option>`);
+            }
         } else {
             if (data.schoolYearList == null) {
                 $('#byYear').html(`<option value="err">` + message + `</option>`);
             }
             if (data.schoolMonthList == null) {
                 $('#byMonth').html(`<option value="err">` + message + `</option>`);
+            }
+            if (data.classList == null) {
+                $('#byClass').html(`<option value="err">` + message + `</option>`);
             }
         }
     },
@@ -106,6 +118,7 @@ function search() {
     var monthId = $('#byMonth option:selected').val();
     var infoSearch = {
         monthId: monthId,
+        classId: $('#byClass option:selected').val(),
     }
     if(monthId != null && monthId != "" && monthId != "err" ) {
         $('#viewHistory').removeClass('hide');
@@ -118,9 +131,6 @@ function search() {
         $('tbody').append(`<tr><td colspan="4" class="userlist-result">Không có tháng nào trong dữ liệu.</td></tr>`);
         $('#editRankBtn').addClass('hide');
     } else {
-        // if () {
-        //     $('#editRankBtn').removeClass('hide');
-        // }
         $('table').dataTable({
             destroy: true,
             searching: false,
@@ -519,6 +529,7 @@ function download() {
     $("#download").click(function () {
         var download = {
             monthId: $('#byMonth option:selected').val(),
+            classId: $('#byClass option:selected').val()
         }
         console.log(JSON.stringify(download))
         $.ajax({

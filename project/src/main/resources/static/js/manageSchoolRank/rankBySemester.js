@@ -32,12 +32,24 @@ $.ajax({
                 $('#bySemester').html(`<option value="err">Danh sách học kỳ đang trống.</option>`);
                 $('#bySemester').prop('disabled', true);
             }
+            if (data.classList != null) {
+                $('#byClass').html(`<option value="" selected="selected">Tất cả</option>`);
+                $("#byClass").select2();
+                $.each(data.classList, function (i, item) {
+                    $('#byClass').append(`<option value="` + item.classID + `">` + item.className + `</option>`);
+                })
+            } else {
+                $('#byClass').html(`<option value="err">Danh sách lớp trống.</option>`);
+            }
         } else {
             if (data.schoolYearList == null) {
                 $('#byYear').html(`<option value="err">` + message + `</option>`);
             }
             if (data.schoolSemesterList == null) {
                 $('#bySemester').html(`<option value="err">` + message + `</option>`);
+            }
+            if (data.classList == null) {
+                $('#byClass').html(`<option value="err">` + message + `</option>`);
             }
         }
     },
@@ -106,6 +118,7 @@ function search() {
     var semesterId = $('#bySemester option:selected').val();
     var infoSearch = {
         semesterId: semesterId,
+        classId: $('#byClass option:selected').val()
     }
     if(semesterId != null && semesterId != "" && semesterId != "err") {
         $('#viewHistory').removeClass('hide');
@@ -505,6 +518,7 @@ function download() {
     $("#download").click(function () {
         var download = {
             semesterId: $('#bySemester option:selected').val(),
+            classId: $('#byClass option:selected').val()
         }
         console.log(JSON.stringify(download))
         $.ajax({
