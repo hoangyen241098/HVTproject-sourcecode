@@ -120,10 +120,10 @@ function search() {
         monthId: monthId,
         classId: $('#byClass option:selected').val(),
     }
-    if(monthId != null && monthId != "" && monthId != "err" ) {
+    if (monthId != null && monthId != "" && monthId != "err") {
         $('#viewHistory').removeClass('hide');
     }
-    if(localStorage.getItem('roleID') == 1) {
+    if (localStorage.getItem('roleID') == 1) {
         $('#createRankBtn').removeClass('hide');
     }
     console.log(JSON.stringify(infoSearch));
@@ -158,7 +158,7 @@ function search() {
                     var message = data.message.message;
                     var checkEdit = data.checkEdit;
                     if (messageCode == 0) {
-                        if(localStorage.getItem('roleID') == 1) {
+                        if (localStorage.getItem('roleID') == 1) {
                             if (checkEdit != null && checkEdit == 0) {
                                 $('#editRankBtn').removeClass('hide');
                             } else {
@@ -231,20 +231,19 @@ $('#search').click(function (e) {
     $('table tbody').html('');
     $('#searchGroupButton').html(`                
         <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 px-0">
-                <input type="button" id="viewHistory" class="btn btn-success mr-2 hide" value="Xem lịch sử"/>
-            </div>
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 px-0 text-right">
-                <input type="button" id="editRankBtn" class="btn btn-success ml-2 manageBtn hide"
-                       value="Sửa xếp hạng tháng"/>
-                <input type="button" id="createRankBtn" class="btn btn-success ml-2 manageBtn hide"
-                       value="Tạo xếp hạng tháng"/>
-                <input type="button" id="download" class="btn btn-success ml-2 hide" value="Tải xuống"/>
-            </div>
+            <input type="button" id="download" class="btn btn-success mr-2 hide" value="Tải xuống"/>
+            <input type="button" id="viewHistory" class="btn btn-success mr-2 hide" value="Xem lịch sử"/>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 px-0 text-right">
+            <input type="button" id="editRankBtn" class="btn btn-success ml-2 manageBtn hide" value="Sửa xếp hạng tháng"/>
+            <input type="button" id="createRankBtn" class="btn btn-success ml-2 manageBtn hide" value="Tạo xếp hạng tháng"/>
+        </div>
     `);
     search();
 });
 
 /*==========Create rank===========*/
+
 /*Load week list*/
 function createRankBtn() {
     $('#createRankBtn').on('click', function () {
@@ -347,8 +346,7 @@ $('#createNewRankBtn').on('click', function () {
                     sessionStorage.removeItem('monthName');
                     sessionStorage.setItem('monthName', monthName);
                 } else {
-                    $('#createNewRank').modal('hide');
-                    dialogModal('messageModal', 'img/img-error.png', message)
+                    $('.createNewRank-err').text(message);
                 }
             },
             failure: function (errMsg) {
@@ -362,6 +360,7 @@ $('#createNewRankBtn').on('click', function () {
 })
 
 /*=============Edit Rank=====================*/
+
 /*Load edit rank month*/
 function editRankBtn() {
     $('#editRankBtn').on('click', function () {
@@ -509,8 +508,7 @@ $('#editRankBtnModal').on('click', function () {
                     sessionStorage.setItem('monthName', monthName);
                     dialogModal('messageModal', 'img/img-success.png', 'Sửa xếp hạng tháng thành công!');
                 } else {
-                    $('#editRank').modal('hide');
-                    dialogModal('messageModal', 'img/img-error.png', message)
+                    $('.editRank-err').text(message);
                 }
             },
             failure: function (errMsg) {
@@ -524,6 +522,7 @@ $('#editRankBtnModal').on('click', function () {
 })
 
 /*===============Download===================*/
+
 /*Download button*/
 function download() {
     $("#download").click(function () {
@@ -583,14 +582,19 @@ function dialogModal(modalName, img, message) {
 }
 
 /*Remove checkbox and input when close modal*/
-$(document).on('hidden.bs.modal', '#createNewRank', '#editRank', function () {
+$(document).on('hidden.bs.modal', '#createNewRank', function () {
     $('input[name=options]').prop('checked', false);
+    $('#monthName').val('');
+    $('.createNewRank-err').text('');
+});
+$(document).on('hidden.bs.modal', '#editRank', function () {
     $('input[name=editOptions]').prop('checked', false);
     $('#newMonthName').val('');
-    $('#monthName').val('')
+    $('.editRank-err').text('');
 });
 
 /*===============View History===================*/
+
 /*View history button*/
 function viewHistory() {
     $("#viewHistory").click(function () {

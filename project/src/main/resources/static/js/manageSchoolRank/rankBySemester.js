@@ -120,10 +120,10 @@ function search() {
         semesterId: semesterId,
         classId: $('#byClass option:selected').val()
     }
-    if(semesterId != null && semesterId != "" && semesterId != "err") {
+    if (semesterId != null && semesterId != "" && semesterId != "err") {
         $('#viewHistory').removeClass('hide');
     }
-    if(localStorage.getItem('roleID') == 1) {
+    if (localStorage.getItem('roleID') == 1) {
         $('#createRankBtn').removeClass('hide');
     }
     console.log(JSON.stringify(infoSearch));
@@ -154,7 +154,7 @@ function search() {
                     var message = data.message.message;
                     var checkEdit = data.checkEdit;
                     if (messageCode == 0) {
-                        if(localStorage.getItem('roleID') == 1) {
+                        if (localStorage.getItem('roleID') == 1) {
                             if (checkEdit != null && checkEdit == 0) {
                                 $('#editRankBtn').removeClass('hide');
                             } else {
@@ -223,19 +223,18 @@ $('#search').click(function (e) {
     $('table tbody').html('');
     $('#searchGroupButton').html(`                
         <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 px-0">
-                <input type="button" id="viewHistory" class="btn btn-success mr-2 hide" value="Xem lịch sử"/>
-            </div>
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 px-0 text-right">
-                <input type="button" id="editRankBtn" class="btn btn-success ml-2 manageBtn hide"
-                       value="Sửa xếp hạng kỳ"/>
-                <input type="button" id="createRankBtn" class="btn btn-success ml-2 manageBtn hide"
-                       value="Tạo xếp hạng kỳ"/>
-                <input type="button" id="download" class="btn btn-success ml-2 hide" value="Tải xuống"/>
-            </div>`);
+            <input type="button" id="download" class="btn btn-success mr-2 hide" value="Tải xuống"/>
+            <input type="button" id="viewHistory" class="btn btn-success mr-2 hide" value="Xem lịch sử"/>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 px-0 text-right">
+            <input type="button" id="editRankBtn" class="btn btn-success ml-2 manageBtn hide" value="Sửa xếp hạng kỳ"/>
+            <input type="button" id="createRankBtn" class="btn btn-success ml-2 manageBtn hide" value="Tạo xếp hạng kỳ"/>
+        </div>`);
     search();
 });
 
 /*==========Create rank===========*/
+
 /*Load month list*/
 function createRankBtn() {
     $('#createRankBtn').on('click', function () {
@@ -291,6 +290,7 @@ function createRankBtn() {
         });
     })
 }
+
 /*Create rank semester*/
 $('#createNewRankBtn').on('click', function () {
     $('input[name=options]:checked').each(function (i) {
@@ -336,8 +336,7 @@ $('#createNewRankBtn').on('click', function () {
                     sessionStorage.removeItem('semesterName');
                     sessionStorage.setItem('semesterName', semesterName);
                 } else {
-                    $('#createNewRank').modal('hide');
-                    dialogModal('messageModal', 'img/img-error.png', message)
+                    $('.createNewRank-err').text(message);
                 }
             },
             failure: function (errMsg) {
@@ -351,6 +350,7 @@ $('#createNewRankBtn').on('click', function () {
 })
 
 /*=============Edit Rank=====================*/
+
 /*Load edit rank semester*/
 function editRankBtn() {
     $('#editRankBtn').on('click', function () {
@@ -498,8 +498,7 @@ $('#editRankBtnModal').on('click', function () {
                     sessionStorage.setItem('semesterName', semesterName);
                     dialogModal('messageModal', 'img/img-success.png', 'Sửa xếp hạng học kỳ thành công!');
                 } else {
-                    $('#editRank').modal('hide');
-                    dialogModal('messageModal', 'img/img-error.png', message)
+                    $('.editRank-err').text(message);
                 }
             },
             failure: function (errMsg) {
@@ -513,6 +512,7 @@ $('#editRankBtnModal').on('click', function () {
 })
 
 /*===============Download===================*/
+
 /*Download button*/
 function download() {
     $("#download").click(function () {
@@ -572,14 +572,19 @@ function dialogModal(modalName, img, message) {
 }
 
 /*Remove checkbox and input when close modal*/
-$(document).on('hidden.bs.modal', '#createNewRank', '#editRank', function () {
+$(document).on('hidden.bs.modal', '#createNewRank', function () {
     $('input[name=options]').prop('checked', false);
+    $('#semesterName').val('');
+    $('.createNewRank-err').text('');
+});
+$(document).on('hidden.bs.modal', '#editRank', function () {
     $('input[name=editOptions]').prop('checked', false);
     $('#newSemesterName').val('');
-    $('#semesterName').val('')
+    $('.editRank-err').text('');
 });
 
 /*===============View History===================*/
+
 /*View history button*/
 function viewHistory() {
     $("#viewHistory").click(function () {

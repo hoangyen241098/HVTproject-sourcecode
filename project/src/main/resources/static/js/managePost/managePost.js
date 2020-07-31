@@ -59,25 +59,25 @@ function search() {
                                 <a href="postDetail" id="` + item.newsletterId + `">
                                     <div class="panel-post-content">
                                         <div class="post-img">
-                                            <img src="` + item.headerImage + `">
+                                            <img class="lazy" data-original="` + item.headerImage + `">
                                         </div>
                                         <div class="post-description">
                                             <div class="post-title">` + item.header + `</div>
                                             <div class="post-date">` + item.createDate + `</div>
                                             <div class="post-shortDes"><span class="font-500">Tạo bởi: </span>` + item.userName + `</div>
-                                            <div class="post-status font-500">Trạng thái: <span>` + status + `</span></div>
+                                            <div class="post-status font-500">Trạng thái: <span class="badge">` + status + `</span></div>
                                         </div>
                                     </div>
                                 </a>
                             </div>`);
                             if (status == "Chờ duyệt") {
-                                $('#' + item.newsletterId).find('.post-status span').css('color', '#ff0000');
+                                $('#' + item.newsletterId).find('.post-status .badge').addClass('badge-danger');
                             }
                             if (status == "Đã đăng") {
-                                $('#' + item.newsletterId).find('.post-status span').css('color', '#339933');
+                                $('#' + item.newsletterId).find('.post-status .badge').addClass('badge-success');
                             }
                             if (status == "Đã ẩn") {
-                                $('#' + item.newsletterId).find('.post-status span').css('color', '#808080');
+                                $('#' + item.newsletterId).find('.post-status .badge').addClass('badge-secondary');
                             }
                         });
                     } else {
@@ -85,6 +85,7 @@ function search() {
                     }
                     pagingClick();
                     getNewsletterId();
+                    lazyLoad();
                 } else {
                     $('.panel-default').html('<h3 class="text-center">Danh sách bài viết trống.</h3>');
                 }
@@ -99,7 +100,6 @@ function search() {
         contentType: "application/json"
     });
 }
-
 
 /*Get newsletterId */
 function getNewsletterId() {

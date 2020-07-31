@@ -1,12 +1,127 @@
-var fromDate;
-var inforSearch = {
-    fromDate: $('#fromDate option:selected').val(),
-    orderBy: "1",
-    sortBy: "0",
-    classId: "",
-    redStar: "",
-    pageNumber: 0
-};
+/*Get giftedClass in combobox*/
+$.ajax({
+    url: '/api/assignRedStar/liststarclassdate',
+    type: 'POST',
+    beforeSend: function () {
+        $('body').addClass("loading")
+    },
+    complete: function () {
+        $('body').removeClass("loading")
+    },
+    success: function (data) {
+        var messageCode = data.message.messageCode;
+        var message = data.message.message;
+        if (messageCode == 0 || messageCode == 1) {
+            if (data.listClass.length != 0) {
+                $("#classList").select2();
+                $("#classList").html(`<option value="" selected="selected">Tất cả</option>`);
+                $.each(data.listClass, function (i, item) {
+                    $('#classList').append(
+                        `<option value="` + item.classId + `">` + item.grade + ` ` + item.giftedClass.name + `</option>`
+                    );
+                });
+            } else {
+                $("#classList").html(`<option value="err" selected="selected">Danh sách lớp trống.</option>`);
+            }
+            if (data.listDate.length != 0) {
+                $("#fromDate").select2();
+                $("#fromDate").html("");
+                $.each(data.listDate, function (i, item) {
+                    if (i == 0) {
+                        $('#fromDate').append(
+                            `<option value="` + item + `" selected="selected">` + convertDate(item, '/') + `</option>
+                        `);
+                    } else {
+                        $('#fromDate').append(
+                            `<option value="` + item + `">` + convertDate(item, '/') + `</option>
+                    `);
+                    }
+                });
+            } else {
+                $("#fromDate").html(`<option value="err" selected="selected">Danh sách ngày trống.</option>`);
+            }
+        } else {
+            if (data.listClass.length != 0) {
+                $("#classList").html(`<option value="err" selected="selected">` + message + `</option>`);
+            } else {
+                $("#fromDate").html(`<option value="err" selected="selected">` + message + `</option>`);
+            }
+        }
+    },
+    failure: function (errMsg) {
+        if (data.listClass.length != 0) {
+            $("#classList").html(`<option value="err" selected="selected">` + errMsg + `</option>`);
+        } else {
+            $("#fromDate").html(`<option value="err" selected="selected">` + errMsg + `</option>`);
+        }
+    },
+    dataType: "json",
+    contentType: "application/json"
+});
+
+setTimeout(search, 500);
+
+/*Load data to list*/
+function search() {
+    var fromDate = $('#fromDate option:selected').val();
+    var classId = $('#classList option:selected').val();
+    var redStar = $('#redStarList').val().trim();
+    var inforSearch = {
+        fromDate: fromDate,
+        classId: classId,
+        redStar: redStar,
+    };
+    console.log(JSON.stringify(inforSearch));
+    if (fromDate == 'err' || classId == 'err') {
+        $('tbody').append(`<tr><td colspan="3" class="userlist-result">Danh sách trống.</td></tr>`);
+        $('table').dataTable();
+    } else {
+        $('table').dataTable({
+            destroy: true,
+            searching: false,
+            bInfo: false,
+            paging: false,
+            order: [],
+            ajax: {
+                url: "/api/assignRedStar/viewassigntask",
+                type: "POST",
+                data: function (d) {
+                    return JSON.stringify(inforSearch);
+                },
+                dataType: "json",
+                contentType: "application/json",
+                failure: function (errMsg) {
+                    $('tbody').append(`<tr><td colspan="3" class="userlist-result"> ` + errMsg + ` </td></tr>`)
+                },
+                dataSrc: function (data) {
+                    var dataSrc = null;
+                    var messageCode = data.message.messageCode;
+                    var message = data.message.message;
+                    if (messageCode == 0) {
+                        if (data.listAssignTask.length != 0) {
+                            dataSrc = data.listAssignTask;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        $('tbody').append(`<tr><td colspan="3" class="userlist-result"> ` + message + ` </td></tr>`)
+                        return false;
+                    }
+                    return dataSrc;
+                }
+            },
+            columns: [
+                {data: "className"},
+                {data: "redStar1"},
+                {data: "redStar2"},
+            ],
+            drawCallback: function (settings) {
+                settings.oLanguage.sEmptyTable = "Danh sách trống."
+            }
+        })
+
+    }
+}
 
 $("#search").click(function () {
     var classId, redStar, sortBy, orderBy;
@@ -43,61 +158,6 @@ $("#search").click(function () {
     $('#violationList').html("");
     search();
 
-});
-
-/*Get giftedClass in combobox*/
-$.ajax({
-    url: '/api/assignRedStar/liststarclassdate',
-    type: 'POST',
-    beforeSend: function () {
-        $('body').addClass("loading")
-    },
-    complete: function () {
-        $('body').removeClass("loading")
-    },
-    success: function (data) {
-        var messageCode = data.message.messageCode;
-        var message = data.message.message;
-        if (messageCode == 0 || messageCode == 1) {
-            if (data.listClass.length != 0) {
-                $("#classList").select2();
-                $("#classList").html(`<option value="0" selected="selected">Tất cả</option>`);
-                $.each(data.listClass, function (i, item) {
-                    $('#classList').append(
-                        `<option value="` + item.classId + `">` + item.grade + ` ` + item.giftedClass.name + `</option>`
-                    );
-                });
-            } else {
-                $("#classList").html(`<option value="err" selected="selected">Danh sách lớp trống.</option>`);
-            }
-            if (data.listDate.length != 0) {
-                $("#fromDate").select2();
-                $("#fromDate").html("");
-                $.each(data.listDate, function (i, item) {
-                    if (i == 0) {
-                        $('#fromDate').append(
-                            `<option value="` + item + `" selected="selected">` + convertDate(item,'/') + `</option>
-                        `);
-                    } else {
-                        $('#fromDate').append(
-                            `<option value="` + item + `">` + convertDate(item,'/') + `</option>
-                    `);
-                    }
-                });
-                inforSearch.fromDate = $('#fromDate option:selected').val();
-            } else {
-                $("#fromDate").html(`<option value="err" selected="selected">Danh sách ngày trống.</option>`);
-            }
-
-        } else {
-            $("#fromDate").html(`<option value="err" selected="selected">` + message + `</option>`);
-        }
-    },
-    failure: function (errMsg) {
-        $("#fromDate").html(`<option value="err" selected="selected">` + errMsg + `</option>`);
-    },
-    dataType: "json",
-    contentType: "application/json"
 });
 
 /*Download button*/
@@ -140,71 +200,6 @@ $("#download").click(function () {
         contentType: "application/json"
     });
 });
-
-setTimeout(search, 500);
-
-/*Load data to list*/
-function search() {
-    console.log(JSON.stringify(inforSearch));
-    $.ajax({
-        url: '/api/assignRedStar/viewassigntask',
-        type: 'POST',
-        data: JSON.stringify(inforSearch),
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
-        success: function (data) {
-            var messageCode = data.message.messageCode;
-            var message = data.message.message;
-            var totalPage = data.totalPage;
-            if (totalPage == 0 || totalPage == null) {
-                $('.table-paging').addClass('hide');
-            } else {
-                $('.table-paging').removeClass('hide');
-                $('.table-paging').html('');
-                paging(inforSearch, totalPage);
-            }
-            if (messageCode == 0) {
-                if (data.listAssignTask.length != 0) {
-                    $('#myTable tbody').html("");
-                    $.each(data.listAssignTask, function (i, item) {
-                        var classIdentifier, redStar;
-                        if (item.className == "" || item.className == null) {
-                            classIdentifier = "-";
-                        } else {
-                            classIdentifier = item.className;
-                        }
-                        if (item.redStar == "" || item.redStar == null) {
-                            redStar = "-";
-                        } else {
-                            redStar = item.redStar;
-                        }
-
-                        $('#myTable tbody').append(`
-                        <tr>
-                            <td>` + classIdentifier + `</td>
-                            <td>` + redStar + `</td>
-                        </tr>
-                        `);
-                    });
-                    pagingClick();
-                } else {
-                    $('#myTable tbody').html(`<tr><td colspan="2" class="userlist-result">Danh sách trống.</td></tr>`);
-                }
-            } else {
-                $('#myTable tbody').html(`<tr><td colspan="2" class="userlist-result">` + message + `</td></tr>`);
-            }
-        },
-        failure: function (errMsg) {
-            $('#myTable tbody').html(`<tr><td colspan="2" class="userlist-result">` + errMsg + `</td></tr>`);
-        },
-        dataType: "json",
-        contentType: "application/json"
-    });
-}
 
 /*Dialog Modal*/
 function dialogModal(modalName, img, message) {

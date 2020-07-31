@@ -173,7 +173,7 @@ $('#createRankBtn').on('click', function () {
             var messageCode = data.message.messageCode;
             var message = data.message.message;
             if (messageCode == 0 || messageCode == 1) {
-                if (data.schoolYearList == null ||  data.schoolYearList.length == 0) {
+                if (data.schoolYearList == null || data.schoolYearList.length == 0) {
                     $('#yearName').html(`<option value="err" selected>Không có năm học nào chưa được xếp hạng.</option>`)
                 } else {
                     $('#yearName').html('');
@@ -258,8 +258,7 @@ $('#createNewRankBtn').on('click', function () {
                     sessionStorage.removeItem('yearId');
                     sessionStorage.setItem('yearId', yearId);
                 } else {
-                    $('#createNewRank').modal('hide');
-                    dialogModal('messageModal', 'img/img-error.png', message)
+                    $('.createNewRank-err').text(message);
                 }
             },
             failure: function (errMsg) {
@@ -410,8 +409,7 @@ $('#editRankBtnModal').on('click', function () {
                     sessionStorage.setItem('yearId', $('#byYear option:selected').val());
                     dialogModal('messageModal', 'img/img-success.png', 'Sửa xếp hạng năm học thành công!');
                 } else {
-                    $('#editRank').modal('hide');
-                    dialogModal('messageModal', 'img/img-error.png', message)
+                    $('.editRank-err').text(message);
                 }
             },
             failure: function (errMsg) {
@@ -482,13 +480,15 @@ function dialogModal(modalName, img, message) {
 }
 
 /*Remove checkbox and input when close modal*/
-$(document).on('hidden.bs.modal', '#createNewRank', '#editRank', function () {
+$(document).on('hidden.bs.modal', '#createNewRank', function () {
     $('input[name=options]').prop('checked', false);
+    $('#yearName').val('')
+    $('.createNewRank-err').val('');
+});
+$(document).on('hidden.bs.modal', '#editRank', function () {
     $('input[name=editOptions]').prop('checked', false);
     $('#newYearName').val('');
-    $('#yearName').val('')
     $('.editRank-err').val('');
-    $('.createNewRank-err').val('');
 });
 
 /*===============View History===================*/
@@ -514,8 +514,7 @@ $("#viewHistory").click(function () {
             if (messageCode == 0) {
                 $('#historyModal .modal-body').html(data.history);
                 $('#historyModal').modal('show');
-            }
-            else{
+            } else {
                 dialogModal('messageModal', 'img/img-error.png', message)
             }
         },

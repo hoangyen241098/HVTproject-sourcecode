@@ -148,7 +148,7 @@ function search() {
                                         </div>
                                         <div class="violation-status violationTypeName">
                                             <span class="font-500">Trạng thái: </span>
-                                            <span>` + status + `</span>
+                                            <span class="badge">` + status + `</span>
                                         </div>
                                     </div>
                                     <button class="violation-btn"><i class="fa fa-chevron-down rotate up"></i></button>
@@ -211,15 +211,19 @@ function search() {
                             }
                             if (status == "Chưa duyệt") {
                                 var dataTargetID = "#" + dataTarget;
-                                $(dataTargetID).prev().find('.violation-status span:last-child').css('color', '#ff0000');
+                                // $(dataTargetID).prev().find('.violation-status span:last-child').css('color', '#ff0000');
+                                $(dataTargetID).prev().find('.violation-status .badge').addClass('badge-danger');
                             }
                             if (status == "Chấp nhận") {
                                 var dataTargetID = "#" + dataTarget;
-                                $(dataTargetID).prev().find('.violation-status span:last-child').css('color', '#339933');
+                                // $(dataTargetID).prev().find('.violation-status span:last-child').css('color', '#339933');
+                                $(dataTargetID).prev().find('.violation-status .badge').addClass('badge-success');
+
                             }
                             if (status == "Từ chối") {
                                 var dataTargetID = "#" + dataTarget;
-                                $(dataTargetID).prev().find('.violation-status span:last-child').css('color', '#808080');
+                                // $(dataTargetID).prev().find('.violation-status span:last-child').css('color', '#808080');
+                                $(dataTargetID).prev().find('.violation-status .badge').addClass('badge-secondary');
                             }
                         }
                     });

@@ -52,12 +52,15 @@
             </div>
         </div>
         <div class="violation-by-date"></div>
+        <div class="violation-total-grade mt-3 text-left">
+            <h5 class="d-inline-block mr-2">Tổng điểm trừ:</h5><h5 class="d-inline-block text-red totalGrade"></h5>
+        </div>
     </div>
 </div>
 
 <!-- Confirm Modal HTML -->
 <div id="editModal" class="modal fade">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Trang chỉnh sửa</h4>
@@ -75,7 +78,7 @@
 
 <!-- History Modal HTML -->
 <div id="historyModal" class="modal fade">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Lịch sử chỉnh sửa</h4>
@@ -91,7 +94,7 @@
 
 <!--    Modal Confirm Edit-->
 <div class="modal fade" tabindex="-1" role="dialog" id="confirmEdit">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Xác nhận thay đổi</h4>
@@ -109,7 +112,7 @@
 
 <!--    Modal Save Success-->
 <div class="modal fade" tabindex="-1" role="dialog" id="saveSuccess">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-body text-center"></div>
             <div class="modal-footer">
