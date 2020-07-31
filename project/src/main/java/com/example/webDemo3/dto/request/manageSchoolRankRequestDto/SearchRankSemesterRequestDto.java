@@ -8,4 +8,5 @@ kimpt142 - 24/07
 @Data
 public class SearchRankSemesterRequestDto {
     private Integer semesterId;
+    private Integer classId;
 }
