@@ -8,6 +8,8 @@ import lombok.Data;
  */
 @Data
 public class ClassRedStarResponseDto {
+    private Integer classId;
     private String className;
-    private String redStar;
+    private String redStar1;
+    private String redStar2;
 }
