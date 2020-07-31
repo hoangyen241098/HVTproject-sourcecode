@@ -197,7 +197,7 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
                     if(roleId == Constant.ROLEID_ADMIN || roleId == Constant.ROLEID_REDSTAR){
                         ViolationClass violationClass = violationClassRepository.findViolationClassByById(violationClassId);
                         String history = violationClass.getHistory();
-                        String newHistory = additionalFunctionService.addHistory(history, reason, username, newQuantity);
+                        String newHistory = additionalFunctionService.addHistory(history, reason, username, violationClass.getQuantity());
                         if (newQuantity == 0) {
                             violationClass.setStatus(0);
                             violationClass.setHistory(newHistory);
