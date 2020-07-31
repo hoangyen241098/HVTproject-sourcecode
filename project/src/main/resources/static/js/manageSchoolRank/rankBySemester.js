@@ -209,13 +209,16 @@ function search() {
 $('#search').click(function (e) {
     $('table tbody').html('');
     $('#searchGroupButton').html(`                
-        <input type="button" id="editRankBtn" class="btn btn-success mx-2 manageBtn hide"
-               value="Sửa xếp hạng kỳ"/>
-        <input type="button" id="createRankBtn" class="btn btn-success mx-2 manageBtn hide"
-               value="Tạo xếp hạng kỳ"/>
-        <input type="button" id="viewHistory" class="btn btn-success ml-2 hide" value="Xem lịch sử"/>
-        <input type="button" id="download" class="btn btn-success ml-2 hide" value="Tải xuống"/>
-    `);
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 px-0">
+                <input type="button" id="viewHistory" class="btn btn-success mr-2 hide" value="Xem lịch sử"/>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 px-0 text-right">
+                <input type="button" id="editRankBtn" class="btn btn-success ml-2 manageBtn hide"
+                       value="Sửa xếp hạng kỳ"/>
+                <input type="button" id="createRankBtn" class="btn btn-success ml-2 manageBtn hide"
+                       value="Tạo xếp hạng kỳ"/>
+                <input type="button" id="download" class="btn btn-success ml-2 hide" value="Tải xuống"/>
+            </div>`);
     search();
 });
 
