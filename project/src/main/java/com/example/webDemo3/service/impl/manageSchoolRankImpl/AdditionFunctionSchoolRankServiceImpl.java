@@ -4,6 +4,7 @@ import com.example.webDemo3.service.manageSchoolRank.AdditionFunctionSchoolRankS
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -13,12 +14,12 @@ public class AdditionFunctionSchoolRankServiceImpl implements AdditionFunctionSc
     @Override
     public String addHistory(String oldhistory, String userName, Date date) {
         String history = "";
-
+        String newDate = convertSqlDateToString(date);
         if(oldhistory == null || oldhistory.isEmpty()){
-            history = "<ul> <li><span class=\"font-500\">" + "Tạo ngày: " + date +  " - " + "bởi: " + userName + ".</span> </li></ul>";
+            history = "<ul> <li><span class=\"font-500\">" + "Tạo ngày: " + newDate +  " - " + "bởi: " + userName + ".</span> </li></ul>";
         }else{
             history = oldhistory +
-                    "<ul> <li><span class=\"font-500\">" + "Sửa ngày: " + date +  " - " + "bởi: " + userName + ".</span> </li></ul>";
+                    "<ul> <li><span class=\"font-500\">" + "Sửa ngày: " + newDate +  " - " + "bởi: " + userName + ".</span> </li></ul>";
         }
 
         return history;
@@ -35,5 +36,13 @@ public class AdditionFunctionSchoolRankServiceImpl implements AdditionFunctionSc
         String string = simpleDateFormat.format(date);
         Date newdate = Date.valueOf(string);
         return newdate;
+    }
+
+    @Override
+    public String convertSqlDateToString(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String dateInString = formatter.format(date);
+
+        return dateInString;
     }
 }
