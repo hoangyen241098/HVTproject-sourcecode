@@ -16,6 +16,7 @@ public interface SchoolRankYearRepository extends JpaRepository<SchoolRankYear,I
     List<Integer> getAllDistinctYearId();
 
     @Query(value="select sry from SchoolRankYear sry where sry.schoolRankYearId.YEAR_ID = :yearId "+
+            " and (sry.schoolRankYearId.schoolClass.classId = :classId or :classId is NULL) " +
             "order by sry.schoolRankYearId.schoolClass.grade, sry.schoolRankYearId.schoolClass.giftedClass.giftedClassId asc")
-    List<SchoolRankYear> findAllByYearId(@Param("yearId") Integer yearId);
+    List<SchoolRankYear> findAllByYearId(@Param("yearId") Integer yearId, @Param("classId") Integer classId);
 }

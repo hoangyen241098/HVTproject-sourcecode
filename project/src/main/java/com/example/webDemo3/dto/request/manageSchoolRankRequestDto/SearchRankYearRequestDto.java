@@ -3,10 +3,10 @@ package com.example.webDemo3.dto.request.manageSchoolRankRequestDto;
 import lombok.Data;
 
 /*
-kimpt142 - 23/07
+kimpt142 - 31/07
  */
 @Data
-public class SearchRankMonthRequestDto {
-    private Integer monthId;
+public class SearchRankYearRequestDto {
+    private Integer yearId;
     private Integer classId;
 }

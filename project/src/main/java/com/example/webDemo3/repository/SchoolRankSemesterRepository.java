@@ -14,8 +14,9 @@ kimpt142 - 23/07
 public interface SchoolRankSemesterRepository extends JpaRepository<SchoolRankSemester,Integer> {
 
     @Query(value="select srs from SchoolRankSemester srs where srs.schoolRankSemesterId.SEMESTER_ID = :semesterId "+
+            " and (srs.schoolRankSemesterId.schoolClass.classId = :classId or :classId is NULL) " +
             "order by srs.schoolRankSemesterId.schoolClass.grade, srs.schoolRankSemesterId.schoolClass.giftedClass.giftedClassId asc")
-    List<SchoolRankSemester> findAllBySchoolRankSemesterId(@Param("semesterId") Integer semesterId);
+    List<SchoolRankSemester> findAllBySchoolRankSemesterId(@Param("semesterId") Integer semesterId, @Param("classId") Integer classId);
 
     @Query(value = "select srw from SchoolRankSemester srw where srw.schoolRankSemesterId.SEMESTER_ID = :semesterId and srw.schoolRankSemesterId.schoolClass.classId = :classId")
     SchoolRankSemester findSchoolRankSemesterBySemesterIdAndClassId(@Param("semesterId")Integer semesterId, @Param("classId") Integer classId);
