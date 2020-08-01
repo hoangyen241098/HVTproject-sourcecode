@@ -6,6 +6,7 @@ import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.entity.ClassRedStar;
 import com.example.webDemo3.entity.ClassRedStarId;
 import com.example.webDemo3.entity.User;
+import com.example.webDemo3.exception.MyException;
 import com.example.webDemo3.repository.ClassRedStarRepository;
 import com.example.webDemo3.repository.ClassRepository;
 import com.example.webDemo3.repository.UserRepository;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +39,7 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
     private List<Integer>[] indexRedStarOfClass;
     private int[][] flag;
     private Random ran = new Random();
-    private static int n = 100;
+    private static int n = 1000;
     int[][] population;
     int[][] populationFlag;
     int[] costValue;
@@ -45,11 +47,35 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
     int[] outputData;
 
     @Override
+    public MessageDTO delete(Date fromDate) {
+        MessageDTO message = new MessageDTO();
+        Date dateCurrent = new Date(System.currentTimeMillis());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if(sdf.format(dateCurrent).equalsIgnoreCase(sdf.format(fromDate))
+                || fromDate.before(dateCurrent)){
+            message.setMessageCode(1);
+            message.setMessage("không thể xóa phân công có ngày áp dụng nhỏ hơn hoạc bằng ngày hiện tại");
+            return message;
+        }
+        try {
+            classRedStarRepository.deleteByFromDate(fromDate);
+        } catch (Exception e) {
+            System.out.println(e);
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+        }
+        message = Constant.SUCCESS;
+        return message;
+    }
+
+    @Override
     public MessageDTO checkDate(Date fromDate) {
-        MessageDTO message = Constant.SUCCESS;
-        Date date = classRedStarRepository.findByDate(fromDate);
-        if(date != null){
-            message = Constant.CONFIRM_UPDATE_TIMTABLE;
+        MessageDTO message = new MessageDTO();
+        message.setMessageCode(0);
+        List<Date> date = classRedStarRepository.findByDate(fromDate);
+        if (date != null && date.size() > 0) {
+            message.setMessageCode(2);
+            message.setMessage("Phân công sau ngày " + fromDate + " sẽ bị xóa.\n Bạn có muốn tiếp tục ghi đè?");
         }
         return message;
     }
@@ -58,67 +84,72 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
     @Override
     public MessageDTO create(Date fromDate) {
         MessageDTO message = Constant.SUCCESS;
-        // delete if fromdate exit
-        MessageDTO messageCheckDate = checkDate(fromDate);
-        if(messageCheckDate.getMessageCode() == Constant.CONFIRM_UPDATE_TIMTABLE.getMessageCode()){
-            classRedStarRepository.deleteByFromDate(fromDate);
+        Date dateCurrent = new Date(System.currentTimeMillis());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if(sdf.format(dateCurrent).equalsIgnoreCase(sdf.format(fromDate))
+                || fromDate.before(dateCurrent)){
+            message = new MessageDTO();
+            message.setMessageCode(1);
+            message.setMessage("không thể thêm phân công có ngày áp dụng nhỏ hơn hoạc bằng ngày hiện tại");
+            return message;
         }
-
-        List<Class> classList = classRepository.findAll();
-        List<User> redStarList = userRepository.findRedStar();
-        Date beforDate = classRedStarRepository.getBiggestClosetDate(fromDate);
-        List<ClassRedStar> assignList = new ArrayList<>();
-        User[] assignUser = new User[0];
-        if (beforDate != null) {
-            assignList = classRedStarRepository.findAllByDate(beforDate);
-            assignUser = new User[assignList.size()];
-            for (int k = 0; k < assignList.size(); k++) {
-                ClassRedStar data = assignList.get(k);
-                User userData = userRepository.findUserByUsername(data.getClassRedStarId().getRED_STAR());
-                assignUser[k] = userData;
+        try {
+            // delete if fromdate exit
+            MessageDTO messageCheckDate = checkDate(fromDate);
+            if (messageCheckDate.getMessageCode() == 2) {
+                classRedStarRepository.deleteByFromDate(fromDate);
             }
-        }
-        getIndex(classList, redStarList, assignList, assignUser);
-
-//genertic
-        khoitao(redStarList.size());
-//        khoitaoTest(redStarList.size());
-        for (int i = 0; i < 1000; i++) {
-            danhgia(classList.size() * 2,redStarList.size());
-            if(Print()){
-                break;
+            List<Class> classList = classRepository.findAll();
+            List<User> redStarList = userRepository.findRedStar();
+            Date beforDate = classRedStarRepository.getBiggestClosetDate(fromDate);
+            List<ClassRedStar> assignList = new ArrayList<>();
+            User[] assignUser = new User[0];
+            if (beforDate != null) {
+                assignList = classRedStarRepository.findAllByDate(beforDate);
+                assignUser = new User[assignList.size()];
+                for (int k = 0; k < assignList.size(); k++) {
+                    ClassRedStar data = assignList.get(k);
+                    User userData = userRepository.findUserByUsername(data.getClassRedStarId().getRED_STAR());
+                    assignUser[k] = userData;
+                }
             }
-            chonloc();
-//            laighep();
-            dotbien();
-        }
+            getIndex(classList, redStarList, assignList, assignUser);
 
-//random with condition
-//        int kq = 0;
-//        int[] output = null;
-//        for (int i = 0; i < 10000; i++) {
-//            int[][] flagCopy = copyflag(classList.size() * 2, redStarList.size());
-//            output = test(redStarList.size(), flagCopy);
-//            if (output != null && output[size - 1] != -1) {
-//                System.out.println(i);
-//                break;
-//            }
-//        }
-//
-//        message = insertClassRedStar(message,fromDate,classList,redStarList,output);
-        int l = danhgiaOne(classList.size() * 2,redStarList.size(),outputData);
-        System.out.println(l);
-        message = insertClassRedStar(message,fromDate,classList,redStarList,outputData);
+            //genertic
+            khoitao(redStarList.size());
+//          khoitaoTest(redStarList.size());
+//          laighep();
+            while (true){
+                danhgia(classList.size() * 2, redStarList.size());
+                if (Print()) {
+                    break;
+                }
+                chonloc();
+                dotbien();
+            }
+
+            int l = danhgiaOne(classList.size() * 2, redStarList.size(), outputData);
+            System.out.println(l);
+//            outputData[outputData.length-1] =1000;
+            insertClassRedStar(message, fromDate, classList, redStarList, outputData);
+
+        } catch (Exception e) {
+            System.out.println(e);
+            message = new MessageDTO();
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
         return message;
     }
 
-    private MessageDTO insertClassRedStar(MessageDTO message,Date fromDate,
-                                          List<Class> classList, List<User> redStarList, int[] output){
+    private void insertClassRedStar(MessageDTO message, Date fromDate,
+                                          List<Class> classList, List<User> redStarList, int[] output) throws Exception {
         int i;
         try {
             for (i = 0; i < size; i++) {
                 int indexClass = i;
-                if(indexClass != 0) indexClass = indexClass/2;
+                if (indexClass != 0) indexClass = indexClass / 2;
                 Class classi = classList.get(indexClass);
                 User redStar = redStarList.get(output[i]);
                 ClassRedStar data = new ClassRedStar();
@@ -131,11 +162,9 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
             }
         } catch (Exception e) {
             System.out.println(e);
-            message.setMessageCode(1);
-            message.setMessage(e.toString());
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            throw new MyException(e.toString());
         }
-        return message;
+       // return message;
     }
 
     private int[][] copyflag(int d,int c){
@@ -219,10 +248,6 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
                 max--;
                 copyData[value] = copyData[max];
             }
-//            for (int j=0;j<size;j++) {
-//                System.out.print(population[i][j] + " ,");
-//            }
-//            System.out.println();
         }
     }
 
@@ -236,9 +261,11 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
                     costValue[i]++;
                     populationFlag[i][classIndex] = -1;
                 }
+                //nếu data đúng
                 else {
                     populationFlag[i][classIndex] = 0;
                     flagCopy[classIndex][redStar] = 1;
+                    //2 sao đỏ cùng lớp không chấm cùng 1 lớp
                     if(classIndex%2 == 0){
                         flagCopy[classIndex+1][redStar] = 1;
                         int classOfRedstar = indexClassOfRedStar[redStar];
@@ -248,6 +275,7 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
                     }
                     int k = 0;
                     if (classIndex != 0) k = classIndex/2;
+                    //sao đỏ của 2 lớp không chấm chéo nhau
                     for (int redStarOfClass : indexRedStarOfClass[k]){
                         flagCopy[indexClassOfRedStar[redStar]*2][redStarOfClass] = 1;
                         flagCopy[indexClassOfRedStar[redStar]*2+1][redStarOfClass] = 1;
@@ -545,18 +573,18 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
             }
             else {
                 flagCopy[classIndex][redStar] = 1;
-                if(classIndex%2 == 0){
-                    flagCopy[classIndex+1][redStar] = 1;
+                if (classIndex % 2 == 0) {
+                    flagCopy[classIndex + 1][redStar] = 1;
                     int classOfRedstar = indexClassOfRedStar[redStar];
                     for (int redStarOfClass : indexRedStarOfClass[classOfRedstar]) {
                         flagCopy[classIndex + 1][redStarOfClass] = 1;
                     }
                 }
                 int k = 0;
-                if (classIndex != 0) k = classIndex/2;
-                for (int redStarOfClass : indexRedStarOfClass[k]){
-                    flagCopy[indexClassOfRedStar[redStar]*2][redStarOfClass] = 1;
-                    flagCopy[indexClassOfRedStar[redStar]*2+1][redStarOfClass] = 1;
+                if (classIndex != 0) k = classIndex / 2;
+                for (int redStarOfClass : indexRedStarOfClass[k]) {
+                    flagCopy[indexClassOfRedStar[redStar] * 2][redStarOfClass] = 1;
+                    flagCopy[indexClassOfRedStar[redStar] * 2 + 1][redStarOfClass] = 1;
                 }
             }
         }
@@ -564,3 +592,16 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
     }
 
 }
+//random with condition
+//        int kq = 0;
+//        int[] output = null;
+//        for (int i = 0; i < 10000; i++) {
+//            int[][] flagCopy = copyflag(classList.size() * 2, redStarList.size());
+//            output = test(redStarList.size(), flagCopy);
+//            if (output != null && output[size - 1] != -1) {
+//                System.out.println(i);
+//                break;
+//            }
+//        }
+//
+//        message = insertClassRedStar(message,fromDate,classList,redStarList,output);

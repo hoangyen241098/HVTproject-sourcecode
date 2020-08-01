@@ -29,6 +29,12 @@ public class AssignRedStarApiController {
     @Autowired
     private DownloadAssignRedStarService downloadAssignRedStarService;
 
+    @PostMapping("/delete")
+    public MessageDTO delete(@RequestBody CheckDateRequestDto data)
+    {
+        return assignRedStarService.delete(data.getDate());
+    }
+
     @PostMapping("/checkDate")
     public MessageDTO checkDate(@RequestBody CheckDateRequestDto data)
     {
