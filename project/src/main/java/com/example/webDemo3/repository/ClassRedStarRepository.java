@@ -29,11 +29,11 @@ public interface ClassRedStarRepository extends JpaRepository<ClassRedStar, Clas
 
     @Transactional
     @Modifying
-    @Query(value = "DELETE from ClassRedStar c where c.classRedStarId.FROM_DATE = :fromDate")
+    @Query(value = "DELETE from ClassRedStar c where c.classRedStarId.FROM_DATE >= :fromDate")
     void deleteByFromDate(@Param("fromDate") Date fromDate);
 
-    @Query(value = "select distinct c.classRedStarId.FROM_DATE from ClassRedStar c where c.classRedStarId.FROM_DATE = :fromDate")
-    Date findByDate(@Param("fromDate") Date fromDate);
+    @Query(value = "select distinct c.classRedStarId.FROM_DATE from ClassRedStar c where c.classRedStarId.FROM_DATE >= :fromDate")
+    List<Date> findByDate(@Param("fromDate") Date fromDate);
 
     @Query(value = "select c from ClassRedStar c where c.classRedStarId.FROM_DATE = :fromDate")
     List<ClassRedStar> findAllByDate(@Param("fromDate") Date fromDate);
