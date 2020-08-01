@@ -1698,7 +1698,7 @@ a.slide_btn {
 }
 
 /*Post Detail*/
-.post-subtitle-title h5 {
+.post-date {
     color: #757575;
     font-family: "Open Sans", sans-serif;
     font-weight: 400;
@@ -1720,6 +1720,12 @@ a.slide_btn {
 
 .post-content-text {
     overflow: auto;
+}
+
+.post-action {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #aaaaaa;
 }
 
 /*Button upload image*/

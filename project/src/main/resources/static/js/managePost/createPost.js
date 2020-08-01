@@ -48,7 +48,7 @@ $('#savePost').on('click', function () {
     if (titleName == "") {
         $('.createPost-err').text('Hãy nhập tiêu đề của bài viết.');
         return false;
-    } else if (image == undefined) {
+    } else if (image.trim() == "") {
         $('.createPost-err').text('Hãy nhập ảnh bìa của bài viết.');
         return false;
     } else if (data == "") {

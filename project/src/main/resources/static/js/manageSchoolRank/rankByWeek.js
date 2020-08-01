@@ -268,18 +268,16 @@ function search() {
 $('#search').click(function (e) {
     $('table tbody').html('');
     $('#searchGroupButton').html(`            
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 px-0">
-                <input type="button" id="viewHistory" class="btn btn-success mr-2 hide" value="Xem lịch sử"/>
-                <input type="button" class="btn btn-success mr-2 manageBtn hide" id="editGrades" value="Sửa điểm"/>
-                <input type="button" class="btn btn-success mr-2 manageBtn hide" id="closeEditGrades" value="Hủy"/>
-            </div>
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 px-0 text-right">
-                <input type="button" id="editRankBtn" class="btn btn-success ml-2 manageBtn hide"
-                       value="Sửa xếp hạng tuần"/>
-                <input type="button" id="createRank" class="btn btn-success ml-2 manageBtn hide"
-                       value="Tạo xếp hạng tuần"/>
-                <input type="button" id="download" class="btn btn-success ml-2 hide" value="Tải xuống"/>
-            </div>`);
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 px-0">
+            <input type="button" id="download" class="btn btn-success mr-2 hide" value="Tải xuống"/>
+            <input type="button" id="viewHistory" class="btn btn-success mr-2 hide" value="Xem lịch sử"/>
+            <input type="button" class="btn btn-success mr-2 manageBtn hide" id="editGrades" value="Sửa điểm"/>
+            <input type="button" class="btn btn-danger mr-2 manageBtn hide" id="closeEditGrades" value="Hủy"/>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 px-0 text-right">
+            <input type="button" id="editRankBtn" class="btn btn-success ml-2 manageBtn hide" value="Sửa xếp hạng tuần"/>
+            <input type="button" id="createRank" class="btn btn-success ml-2 manageBtn hide" value="Tạo xếp hạng tuần"/>
+        </div>`);
     search();
 })
 
@@ -376,12 +374,13 @@ $('#createNewRankBtn').on('click', function () {
                 var messageCode = data.messageCode;
                 var message = data.message;
                 if (messageCode == 0) {
+                    $('#createNewRank').modal('hide');
                     dialogModal('createSuccess', 'img/img-success.png', 'Tạo xếp hạng tuần thành công!');
                     sessionStorage.removeItem('weekId');
                     sessionStorage.removeItem('weekName');
                     sessionStorage.setItem('weekName', weekName);
                 } else {
-                    dialogModal('createSuccess', 'img/img-error.png', message)
+                    $('.createNewRank-err').text(message);
                 }
             },
             failure: function (errMsg) {
@@ -538,12 +537,13 @@ $('#editRankBtnModal').on('click', function () {
                 var messageCode = data.messageCode;
                 var message = data.message;
                 if (messageCode == 0) {
+                    $('#editRank').modal('hide');
                     sessionStorage.removeItem('weekId');
                     sessionStorage.removeItem('weekName');
                     sessionStorage.setItem('weekName', weekName);
                     dialogModal('editSuccess', 'img/img-success.png', 'Sửa xếp hạng tuần thành công!');
                 } else {
-                    dialogModal('editSuccess', 'img/img-error.png', message)
+                    $('.editRank-err').text(message);
                 }
             },
             failure: function (errMsg) {
@@ -780,11 +780,15 @@ function dialogModal(modalName, img, message) {
 }
 
 /*Remove checkbox when close modal*/
-$(document).on('hidden.bs.modal', '#createNewRank', '#editRank', function () {
+$(document).on('hidden.bs.modal', '#createNewRank', function () {
     $('input[name=options]').prop('checked', false);
-    $('input[name=editOptions]').prop('checked', false);
     $('#weekName').val('');
+    $('.createNewRank-err').text('');
+});
+$(document).on('hidden.bs.modal', '#editRank', function () {
+    $('input[name=editOptions]').prop('checked', false);
     $('#newWeekName').val('');
+    $('.editRank-err').text('');
 });
 
 /*===============View History===================*/

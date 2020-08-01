@@ -57,6 +57,7 @@
         </div>
         <div class="table-title-2 p-0 search row" id="searchGroupButton">
             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 px-0">
+                <input type="button" id="download" class="btn btn-success mr-2 hide" value="Tải xuống"/>
                 <input type="button" id="viewHistory" class="btn btn-success mr-2 hide" value="Xem lịch sử"/>
             </div>
             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 px-0 text-right">
@@ -64,7 +65,6 @@
                        value="Sửa xếp hạng tháng"/>
                 <input type="button" id="createRankBtn" class="btn btn-success ml-2 manageBtn hide"
                        value="Tạo xếp hạng tháng"/>
-                <input type="button" id="download" class="btn btn-success ml-2 hide" value="Tải xuống"/>
             </div>
         </div>
 
@@ -86,7 +86,7 @@
 
 <!-- Create New Rank Modal HTML -->
 <div id="createNewRank" class="modal fade">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Tạo xếp hạng tháng</h4>
@@ -110,7 +110,7 @@
 
 <!-- Edit Rank Modal HTML -->
 <div id="editRank" class="modal fade">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Sửa xếp hạng tháng</h4>
@@ -125,8 +125,7 @@
                 <div class="error editRank-err"></div>
             </div>
             <div class="modal-footer">
-                <input type="submit" class="btn btn-danger" data-toggle="modal" id="editRankBtnModal"
-                       data-dismiss="modal" value="CHỈNH SỬA">
+                <input type="submit" class="btn btn-danger" data-toggle="modal" id="editRankBtnModal" value="CHỈNH SỬA">
                 <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
             </div>
         </div>
@@ -135,7 +134,7 @@
 
 <!--    Modal Message-->
 <div class="modal fade" tabindex="-1" role="dialog" id="messageModal">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-body text-center"></div>
             <div class="modal-footer">
@@ -148,7 +147,7 @@
 
 <!-- History Modal HTML -->
 <div id="historyModal" class="modal fade">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Lịch sử chỉnh sửa</h4>

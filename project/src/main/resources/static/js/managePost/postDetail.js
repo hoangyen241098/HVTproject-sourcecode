@@ -23,7 +23,6 @@ $.ajax({
                 document.title = '.::' + data.newsletter.header + '::.';
                 $('.table-title h2').text(data.newsletter.header);
                 $('.table-title .post-date').text(data.newsletter.createDate);
-                $('.table-title .post-author').text(data.newsletter.userName);
                 $('.post-content-text').html(data.newsletter.content);
                 $('.post-action .newsletterId').text(data.newsletter.newsletterId);
                 $('.post-action .status').text(data.newsletter.status);
@@ -38,7 +37,7 @@ $.ajax({
                 lazyLoad();
             } else {
                 $('.table-title h2').text('');
-                $('.table-title .post-subtitle-title').text('');
+                $('.table-title .post-date').text('');
                 $('.post-content-text').html(`
                 <div class="text-center mb-5">
                     <img class="my-3" src="img/img-error.png" alt="Không tìm thấy bài viết.">
@@ -49,7 +48,7 @@ $.ajax({
             displayButton();
         } else {
             $('.table-title h2').text('');
-            $('.table-title .post-subtitle-title').text('');
+            $('.table-title .post-date').text('');
             $('.post-content-text').html(`
                 <div class="text-center mb-5">
                     <img class="my-3" src="img/img-error.png" alt="Không tìm thấy bài viết.">
@@ -60,7 +59,7 @@ $.ajax({
     },
     failure: function (errMsg) {
         $('.table-title h2').text('');
-        $('.table-title .post-subtitle-title').text('');
+        $('.table-title .post-date').text('');
         $('.post-content-text').html(`
         <div class="text-center mb-5">
             <img class="my-3" src="img/img-error.png" alt="Không tìm thấy bài viết.">
@@ -77,24 +76,24 @@ function displayButton() {
     var status = $('.post-action .status').text();
     if (roleID == 1) {
         if (status == 2) {
-            $('.btn-delete').addClass('hide');
+            // $('.btn-delete').addClass('hide');
             $('.btn-edit').addClass('hide');
-            $('.btn-reject').removeClass('hide');
+            // $('.btn-reject').removeClass('hide');
             $('.btn-accept').removeClass('hide');
         } else if (status == 0) {
             $('.btn-delete').removeClass('hide');
             $('.btn-edit').removeClass('hide');
-            $('.btn-reject').addClass('hide');
+            // $('.btn-reject').addClass('hide');
             $('.btn-accept').addClass('hide');
         } else if (status == 1) {
-            $('.btn-delete').addClass('hide');
+            // $('.btn-delete').addClass('hide');
             $('.btn-edit').addClass('hide');
-            $('.btn-reject').addClass('hide');
+            // $('.btn-reject').addClass('hide');
             $('.btn-accept').removeClass('hide');
         }
     } else {
         if (status == 2) {
-            $('.btn-delete').removeClass('hide');
+            // $('.btn-delete').removeClass('hide');
             $('.btn-edit').removeClass('hide');
         }
     }
@@ -105,11 +104,11 @@ $('.btn-delete').on('click', function () {
     $('#confirmModal').modal('show');
     $('#confirmModal .modal-body').html(`
         <img class="my-3" src="img/img-question.png" alt="img-question">
-        <h5>Bạn có muốn <b>XÓA</b> bài viết này không?</h5>
+        <h5>Bạn có muốn <b>ẨN</b> bài viết này không?</h5>
     `);
     $('#confirmBtn').on('click', function () {
         $('#confirmModal').modal('hide');
-        confirmRequest(1, 'Xóa bài viết thành công!');
+        confirmRequest(1, 'Ẩn bài viết thành công!');
     })
 })
 
@@ -120,7 +119,7 @@ $('.btn-edit').on('click', function () {
 })
 
 $('.btn-reject').on('click', function () {
-    confirmRequest(1, 'Từ chối bài đăng thành công!')
+    confirmRequest(1, 'Ẩn bài đăng thành công!')
 });
 
 $('.btn-accept').on('click', function () {
