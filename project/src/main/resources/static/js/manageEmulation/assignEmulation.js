@@ -124,40 +124,8 @@ function search() {
 }
 
 $("#search").click(function () {
-    var classId, redStar, sortBy, orderBy;
-    fromDate = $('#fromDate option:selected').val();
-    redStar = $('#redStarList').val().trim();
-    if ($('#classList option:selected').val() == null || $('#classList option:selected').val() == "0") {
-        classId = "";
-    } else {
-        classId = $('#classList option:selected').val();
-    }
-    if (redStar == null) {
-        redStar = "";
-    } else {
-        redStar = $('#redStarList').val().trim();
-    }
-    if ($('#sortBy option:selected').val() == null) {
-        sortBy = "1";
-    } else {
-        sortBy = $('#sortBy option:selected').val();
-    }
-    if ($('#orderBy option:selected').val() == null) {
-        orderBy = "0";
-    } else {
-        orderBy = $('#orderBy option:selected').val();
-    }
-    inforSearch = {
-        fromDate: fromDate,
-        orderBy: orderBy,
-        sortBy: sortBy,
-        classId: classId,
-        redStar: redStar,
-        pageNumber: 0
-    }
     $('#violationList').html("");
     search();
-
 });
 
 /*Download button*/
@@ -200,6 +168,142 @@ $("#download").click(function () {
         contentType: "application/json"
     });
 });
+
+/*Check Date*/
+function checkDate() {
+    var request = {
+        date: $('#dateApplied').val()
+    }
+    console.log(JSON.stringify(request));
+    $.ajax({
+        url: '/api/assignRedStar/checkDate',
+        type: 'POST',
+        data: JSON.stringify(request),
+        beforeSend: function () {
+            $('body').addClass("loading")
+        },
+        complete: function () {
+            $('body').removeClass("loading")
+        },
+        success: function (data) {
+            var messageCode = data.messageCode;
+            var message = data.message;
+            if (messageCode == 0) {
+                $('#addAssign').modal('hide');
+                createAssign(request);
+            } else if (messageCode == 1) {
+                $('#addAssign').modal('hide');
+                dialogModal('addSuccess', 'img/img-error.png', message)
+            } else if (messageCode == 2) {
+                $('#addAssign').modal('hide');
+                $('#overrideConfirm .modal-body').html(`
+                <img class="mb-3 mt-3" src="img/img-question.png"/>
+                <h5>` + message + `</h5>`);
+                $('#overrideConfirm').modal('show');
+            } else {
+                $('#addAssign').modal('hide');
+                dialogModal('addSuccess', 'img/img-error.png', message)
+            }
+        },
+        failure: function (errMsg) {
+            $('#overrideConfirm').modal('hide');
+            dialogModal('addSuccess', 'img/img-error.png', errMsg)
+        },
+        dataType: "json",
+        contentType: "application/json"
+    });
+
+    $('#confirmApplied').unbind().click(function () {
+        createAssign(request);
+    })
+}
+
+function createAssign(request) {
+    $.ajax({
+        url: '/api/assignRedStar/create',
+        type: 'POST',
+        data: JSON.stringify(request),
+        beforeSend: function () {
+            $('body').addClass("loading")
+        },
+        complete: function () {
+            $('body').removeClass("loading")
+        },
+        success: function (data) {
+            var messageCode = data.messageCode;
+            var message = data.message;
+            if (messageCode == 0) {
+                $('#overrideConfirm').modal('hide');
+                $('#addSuccess .modal-footer').html(`<a href="assignEmulation" class="btn btn-primary">ĐÓNG</a>`);
+                dialogModal('addSuccess', 'img/img-success.png', 'Tạo phân công thành công!')
+            } else {
+                $('#overrideConfirm').modal('hide');
+                dialogModal('addSuccess', 'img/img-error.png', message)
+            }
+        },
+        failure: function (errMsg) {
+            $('#overrideConfirm').modal('hide');
+            dialogModal('addSuccess', 'img/img-error.png', errMsg)
+        },
+        dataType: "json",
+        contentType: "application/json"
+    });
+}
+
+/*Create Assign*/
+$('#createAssignBtn').on('click', function () {
+    var dateApplied = $('#dateApplied').val();
+    if (dateApplied == '') {
+        $('.addAssign-err').text('Hãy nhập ngày áp dụng.');
+        return false;
+    } else {
+        checkDate();
+    }
+})
+
+/*Delete Assign*/
+function deleteAssign() {
+    var date = $('#fromDate option:selected').val();
+    var request = {
+        date: date,
+    }
+    $('#overrideConfirm .modal-body').html(`
+        <img class="mb-3 mt-3" src="img/img-question.png"/>
+        <h5>Bạn có muốn <b>XÓA</b> phân công sau ngày ` + convertDate(date, '/') + ` không?</h5>`);
+    $('#overrideConfirm').modal('show');
+    $('#confirmApplied').unbind().click(function () {
+        $.ajax({
+            url: '/api/assignRedStar/delete',
+            type: 'POST',
+            data: JSON.stringify(request),
+            beforeSend: function () {
+                $('body').addClass("loading")
+            },
+            complete: function () {
+                $('body').removeClass("loading")
+            },
+            success: function (data) {
+                var messageCode = data.messageCode;
+                var message = data.message;
+                if (messageCode == 0) {
+                    $('#overrideConfirm').modal('hide');
+                    $('#addSuccess .modal-footer').html(`<a href="assignEmulation" class="btn btn-primary">ĐÓNG</a>`);
+                    dialogModal('addSuccess', 'img/img-success.png', 'Xóa phân công thành công!')
+                } else {
+                    $('#overrideConfirm').modal('hide');
+                    dialogModal('addSuccess', 'img/img-error.png', message)
+                }
+            },
+            failure: function (errMsg) {
+                $('#overrideConfirm').modal('hide');
+                dialogModal('addSuccess', 'img/img-error.png', errMsg)
+            },
+            dataType: "json",
+            contentType: "application/json"
+        });
+
+    })
+}
 
 /*Dialog Modal*/
 function dialogModal(modalName, img, message) {

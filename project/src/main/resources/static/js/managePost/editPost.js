@@ -105,7 +105,7 @@ $('#savePost').on('click', function () {
     } else if (newHeader == "") {
         $('.editPost-err').text('Hãy nhập tiêu đề của bài viết.');
         return false;
-    } else if (newHeaderImage == undefined) {
+    } else if (newHeaderImage.trim() == '') {
         $('.editPost-err').text('Hãy nhập ảnh bìa của bài viết.');
         return false;
     } else if (newContent == "") {
