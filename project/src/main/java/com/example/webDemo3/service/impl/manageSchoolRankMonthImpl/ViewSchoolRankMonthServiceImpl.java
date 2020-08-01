@@ -2,6 +2,8 @@ package com.example.webDemo3.service.impl.manageSchoolRankMonthImpl;
 
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
+import com.example.webDemo3.dto.manageClassResponseDto.ClassListResponseDto;
+import com.example.webDemo3.dto.manageClassResponseDto.ClassResponseDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.*;
 import com.example.webDemo3.dto.manageSchoolYearResponseDto.SchoolYearTableResponseDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.LoadRankMonthResponseDto;
@@ -13,6 +15,7 @@ import com.example.webDemo3.entity.SchoolYear;
 import com.example.webDemo3.repository.SchoolMonthRepository;
 import com.example.webDemo3.repository.SchoolRankMonthRepository;
 import com.example.webDemo3.repository.SchoolYearRepository;
+import com.example.webDemo3.service.manageClassService.ClassService;
 import com.example.webDemo3.service.manageSchoolRankMonthService.ViewSchoolRankMonthService;
 import com.example.webDemo3.service.manageSchoolYearService.SchoolYearService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -43,6 +46,9 @@ public class ViewSchoolRankMonthServiceImpl implements ViewSchoolRankMonthServic
 
     @Autowired
     private SchoolYearRepository schoolYearRepository;
+
+    @Autowired
+    private ClassService classService;
 
     /**
      * kimpt142
@@ -91,13 +97,24 @@ public class ViewSchoolRankMonthServiceImpl implements ViewSchoolRankMonthServic
         MessageDTO message;
 
         Integer monthId = model.getMonthId();
+        Integer classId = model.getClassId();
+
         if(monthId == null){
             message = Constant.MONTHID_EMPTY;
             resposeDto.setMessage(message);
             return resposeDto;
         }
 
-        List<SchoolRankMonth> schoolRankMonthList = schoolRankMonthRepository.findAllBySchoolRankMonthId(monthId);
+        //check month ranked or not
+        SchoolMonth checkSchoolMonth =  schoolMonthRepository.findSchoolMonthByMonthId(monthId);
+        if(checkSchoolMonth != null && checkSchoolMonth.getSemesterId() != 0){
+            resposeDto.setCheckEdit(1);
+        }
+        else{
+            resposeDto.setCheckEdit(0);
+        }
+
+        List<SchoolRankMonth> schoolRankMonthList = schoolRankMonthRepository.findAllBySchoolRankMonthId(monthId, classId);
         if(schoolRankMonthList == null || schoolRankMonthList.size() == 0)
         {
             message = Constant.RANKMONTHLIST_EMPTY;
@@ -113,7 +130,6 @@ public class ViewSchoolRankMonthServiceImpl implements ViewSchoolRankMonthServic
                 rankMonthDto.setTotalGradeWeek(round(item.getTotalGradeWeek()));
                 rankMonthDto.setTotalRankWeek(item.getTotalRankWeek());
                 rankMonthDto.setRank(item.getRank());
-                rankMonthDto.setHistory(item.getHistory());
                 rankMonthDtoList.add(rankMonthDto);
             }
         }
@@ -187,6 +203,9 @@ public class ViewSchoolRankMonthServiceImpl implements ViewSchoolRankMonthServic
         LoadRankMonthResponseDto responseDto = new LoadRankMonthResponseDto();
         MessageDTO message;
         Integer currentYearId = null;
+        List<ClassResponseDto> classList;
+
+        ClassListResponseDto classListDto = classService.getClassList();
 
         //get year list
         SchoolYearTableResponseDto schoolYearListDto = schoolYearService.getSchoolYearTable();
@@ -197,6 +216,15 @@ public class ViewSchoolRankMonthServiceImpl implements ViewSchoolRankMonthServic
         }
         else{
             responseDto.setSchoolYearList(schoolYearListDto.getSchoolYearList());
+        }
+
+        //get class list
+        if (classListDto.getMessage().getMessageCode() == 0) {
+            classList = classListDto.getClassList();
+            responseDto.setClassList(classList);
+        } else {
+            responseDto.setMessage(classListDto.getMessage());
+            return responseDto;
         }
 
         Date dateCurrent = new Date(System.currentTimeMillis());

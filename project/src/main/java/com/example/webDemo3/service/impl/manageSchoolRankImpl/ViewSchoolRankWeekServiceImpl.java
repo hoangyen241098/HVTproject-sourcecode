@@ -124,6 +124,15 @@ public class ViewSchoolRankWeekServiceImpl implements ViewSchoolRankWeekService 
             return responseDto;
         }
 
+        //check week is ranked or not
+        SchoolWeek checkSchoolWeek = schoolWeekRepository.findSchoolWeekByWeekID(weekId);
+        if(checkSchoolWeek != null && checkSchoolWeek.getMonthID() != 0){
+            responseDto.setCheckEdit(1);
+        }
+        else{
+            responseDto.setCheckEdit(0);
+        }
+
         rankWeekList = schoolRankWeekRepository.findByWeekIđAndClassId(weekId, classId);
         if(rankWeekList == null || rankWeekList.size() == 0){
             message = Constant.RANKLIST_EMPTY;
@@ -197,7 +206,6 @@ public class ViewSchoolRankWeekServiceImpl implements ViewSchoolRankWeekService 
             response.setLaborGrade(item.getLaborGrade());
             response.setTotalGrade(item.getTotalGrade());
             response.setRank(item.getRank());
-            response.setHistory(item.getHistory());
             responseList.add(response);
         }
         return responseList;

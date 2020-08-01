@@ -117,7 +117,7 @@ function search() {
                         $('#violationList').append(
                             `<div class="violation-description my-2">
                                 <div class="violation-date">
-                                    <span>` + day + convertDate(item.date) + `</span>
+                                    <span>` + day + convertDate(item.date,'/') + `</span>
                                 </div>
                                 <div class="violation-details">
                                     <div class="violation-name">

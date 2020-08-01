@@ -1,10 +1,8 @@
 package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListMonthSchoolRankResponseDto;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListSemesterSchoolRankResponseDto;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.*;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.*;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.RankYearListResponseDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.LoadByYearIdRequestDto;
 import com.example.webDemo3.service.manageSchoolRankYearSerivce.ViewSchoolRankYearService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +34,24 @@ public class RankYearApiContoller {
 
     /**
      * kimpt142
+     * 31/07
+     * catch request to get year list and class list
+     * @return responseDTO with a year list, class list and messagedto
+     */
+    @PostMapping("/loadrankyear")
+    public LoadRankYearResponseDto searchRankYearById()
+    {
+        return viewSchoolRankYearService.loadRankYear();
+    }
+
+    /**
+     * kimpt142
      * 24/07
      * catch request to get month list by year id
      * @return responseDTO with a month list and messagedto
      */
     @PostMapping("/searchrankyear")
-    public RankYearListResponseDto searchRankYearById(@RequestBody LoadByYearIdRequestDto model)
+    public RankYearListResponseDto searchRankYearById(@RequestBody SearchRankYearRequestDto model)
     {
         return viewSchoolRankYearService.searchRankYearById(model);
     }
@@ -54,7 +64,7 @@ public class RankYearApiContoller {
      * @return ResponseEntity
      */
     @PostMapping("/download")
-    public ResponseEntity<InputStreamResource> download(@RequestBody LoadByYearIdRequestDto model) {
+    public ResponseEntity<InputStreamResource> download(@RequestBody SearchRankYearRequestDto model) {
         ByteArrayInputStream in = viewSchoolRankYearService.downloadRankYear(model);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "attachment; filename=Bangxephangnam.xls");
@@ -111,5 +121,17 @@ public class RankYearApiContoller {
     public MessageDTO editrankyear(@RequestBody EditRankYearRequestDto module)
     {
         return createAndEditSchoolRankYearService.editRankYear(module);
+    }
+
+    /**
+     * lamnt98
+     * 29/07
+     * catch request to get history of school year
+     * @return ViewSchoolWeekHistoryResponseDto
+     */
+    @PostMapping("/viewhistory")
+    public ViewSchoolYearHistoryResponseDto viewSchoolyearHistory(@RequestBody ViewSchoolYearHistoryRequestDto module) {
+
+        return createAndEditSchoolRankYearService.viewSchoolYearHistory(module);
     }
 }

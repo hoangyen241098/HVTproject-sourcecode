@@ -114,7 +114,7 @@ function search() {
                         var classId = item.classId;
                         var className = item.className;
                         var createDate = item.createDate;
-                        var violationDate = item.dayName + " - " + convertDate(createDate);
+                        var violationDate = item.dayName + " - " + convertDate(createDate, '/');
                         var description = item.description;
                         var quantity = item.quantity;
                         var checkEdit = item.checkEdit;
@@ -215,6 +215,7 @@ function search() {
                     });
                     editBtn()
                     historyBtn();
+                    totalSubstractGrade();
                 } else {
                     $(".violation-by-date").html(`<h3 class="text-center mt-3">` + message + `</h3>`);
                 }
@@ -514,6 +515,17 @@ function decreaseBtn(substract, total, $total) {
         total = parseFloat(parseFloat(substract) * parseInt($qty.val())).toFixed(1);
         $total.text(total);
     });
+}
+
+/*Caculation total substract substract*/
+function totalSubstractGrade() {
+    var total = 0;
+    var substractGrade = $('.violation-total span:last-child');
+    $(substractGrade).each(function () {
+        var substract = $(this).text();
+        total = parseFloat(total) + parseFloat(substract);
+    })
+    $('.violation-total-grade .totalGrade').text(total.toFixed(1));
 }
 
 $('.closeModal').on('click', function () {

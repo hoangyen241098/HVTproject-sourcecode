@@ -2,11 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>.:: “Cửa” nào cho phụ huynh ngoại tỉnh muốn cho con học cấp 3 tại Hà Nội?::.</title>
+    <title></title>
     <link th:href="@{/img/logo.png}" rel="shortcut icon" type="image/x-icon"/>
 
     <!-- jQuery library -->
     <script th:src="@{/js/public/jquery-3.5.1.min.js}"></script>
+    <script th:src="@{/js/public/jquery.lazyload.min.js}"></script>
 
     <!--Bootstrap 4-->
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
@@ -18,6 +19,8 @@
     <!--Font-Awesome-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"/>
     <script th:src="@{/js/public/moment.min.js}"></script>
+    <link th:href="@{/js/public/ckeditor/contents.css}" rel="stylesheet"/>
+    <link th:href="@{/js/public/ckeditor/plugins/easyimage/styles/easyimage.css}" rel="stylesheet"/>
     <link th:href="@{/css/style.css}" rel="stylesheet"/>
     <script type="text/javascript" th:src="@{/js/functions.js}"></script>
 
@@ -27,158 +30,19 @@
 <div class="container">
     <div class="table-wrapper">
         <div class="table-title">
-            <h2>“Cửa” nào cho phụ huynh ngoại tỉnh muốn cho con học cấp 3 tại Hà Nội?</h2>
-            <span class="post-subtitle-title"><h5 class="post-date d-inline mr-2">22/07/2020</h5> | <h5 class="post-author d-inline ml-2">Tin tức</h5></span>
+            <h2></h2>
+            <h5 class="post-date d-inline mr-2"></h5>
         </div>
         <div class="panel panel-default mt-5">
             <div class="post-content-text">
-                <p><strong>Ngày càng nhiều phụ huynh và học sinh lớp 9 các tỉnh đổ dồn về Hà Nội tìm kiếm môi
-                    trường học tập mới với chất lượng và trải nghiệm học tập tốt hơn.&nbsp;</strong></p>
-                <p><strong>Hà Nội – Điểm đến hứa hẹn học sinh ngoại tỉnh</strong></p>
-                <p>Không hề ngẫu nhiên khi trong những năm gần
-                    đây, ngày càng nhiều phụ huynh tìm cách đưa con mình đến học tại các trường
-                    THPT tại Hà Nội. Nhiều lý do từ môi trường đào tạo, điều kiện kinh tế và quan
-                    điểm của phụ huynh tạo ra sự thay đổi này.</p>
-                <p>Một nhóm không nhỏ các phụ huynh ở các tỉnh
-                    hiện nay có tư duy mới hơn về giáo dục. Câu chuyện đi học của con cái đã không
-                    đơn thuần chỉ để được điểm cao hay thi đỗ vào đại học. Họ mong muốn con mình
-                    được tiếp nhận phương pháp giáo dục không chỉ mang lại kiến thức mà còn là tác
-                    phong, phong cách sống và khả năng thích ứng với nhiều môi trường khác nhau,
-                    nhằm chuẩn bị cho việc học Đại học hoặc du học sau này.</p>
-                <p>Trong khi đó, với mô hình đào tạo cố định và
-                    khó có được sự chuyển đổi đột phá về phương pháp đào tạo, các trường THPT tại
-                    tỉnh hiện chưa giải quyết được nhu cầu này của phụ huynh. Một số trường ngoài
-                    công lập tại tỉnh vẫn bị đặt dấu hỏi về chất lượng đào tạo và chưa chiếm được
-                    lòng tin của các bậc phụ huynh cũng như nhóm học sinh khá – giỏi.</p>
-                <p>Thêm nữa, ngày càng nhiều phụ huynh tại các
-                    tỉnh làm việc tại Hà Nội song chưa có hộ khẩu ở đây nên con họ không thể dự thi
-                    vào các trường công lập của thành phố. Bài toán chọn trường cho con thời điểm
-                    này khiến không ít phụ huynh đau đầu.</p>
-                <p>Vậy, các trường cấp III nào tại Hà Nội hiện nay nhận học sinh ngoại tỉnh?</p>
-                <p><strong>Các trường chuyên/ Khối chuyên trực thuộc Đại học</strong></p>
-                <p>Đây là nhóm trường THPT do các trường Đại học có tiếng thành lập, trực thuộc các trường này,
-                    có nhiệm vụ đào tạo học sinh THPT xuất sắc các lĩnh vực như toán, văn, lý, hóa, sinh học,
-                    ngoại ngữ… không giới hạn tỉnh thành. Tại Hà Nội có thể kể đến những cái tên từ lâu nức
-                    tiếng trong giới học sinh giỏi miền Bắc như THPT Chuyên ngoại ngữ – Đại học Ngoại ngữ – Đại
-                    học Quốc gia Hà Nội; THPT Chuyên Sư phạm – Đại học sư phạm; THPT Chuyên KHTN – Đại học Khoa
-                    học tự nhiên – Đại học Quốc gia Hà Nội… Đây là nơi đào tạo lực lượng học sinh nòng cốt cho
-                    các kỳ thi học sinh giỏi quốc gia, quốc tế.</p>
-                <div class="wp-block-image">
-                    <figure class="aligncenter size-large"><img
-                            src="http://thpt.fpt.edu.vn/wp-content/uploads/1-thptfpt-thivao-105-1594396057057.jpg"
-                            alt="1-thptfpt-thivao-105-1594396057057" class="wp-image-34830"
-                            srcset="http://thpt.fpt.edu.vn/wp-content/uploads/1-thptfpt-thivao-105-1594396057057.jpg 640w, http://thpt.fpt.edu.vn/wp-content/uploads/1-thptfpt-thivao-105-1594396057057-450x300.jpg 450w"
-                            sizes="(max-width: 640px) 100vw, 640px">
-                        <figcaption><em>Học sinh ngoại tỉnh phải cạnh tranh vô cùng khốc liệt với học sinh Hà
-                            Nội để vào các trường chuyên.</em></figcaption>
-                    </figure>
-                </div>
-                <p>Để được ghi danh trong các trường này, học sinh lớp 9 phải trải qua kỳ thi riêng với mức độ
-                    đề thi khó hơn rất nhiều so với kỳ thi vào lớp 10 THPT hiện hành. Tuy vậy tỷ lệ học sinh dự
-                    thi mỗi mùa đều rất cao với tỷ lệ chọi thường gấp 3 – 5 lần so với kỳ thi THPT và Đại
-                    học.</p>
-                <p><strong>Các trường nội trú</strong></p>
-                <p>Nhóm các trường nội trú cũng là lựa chọn của
-                    nhiều phụ huynh ngoại tỉnh trong thời gian gần đây khi muốn đưa con đến Hà Nội.
-                    Đặc thù của mô hình này việc học sinh học tập – sinh hoạt toàn thời gian trong
-                    khuôn viên trường, do đó không chỉ mang lại kiến thức mà còn cho các con cơ hội
-                    sống cùng tập thể, tự học cách chăm sóc bản thân, hòa nhập và trưởng thành. Đây
-                    cũng là lựa chọn của nhiều phụ huynh muốn con tự lập hơn, phát triển toàn diện
-                    hơn.</p>
-                <p>Các trường nội trú tại Hà Nội hiện nay như Trí Đức, Trần Quốc Tuấn, THPT FPT… có tỷ lệ học
-                    sinh ngoại tỉnh lớn. Tại THPT FPT – mô hình đào tạo nội trú do Tổ chức giáo dục FPT sáng lập
-                    không chỉ thu hút học sinh các tỉnh lân cận Hà Nội như Hải Phòng, Vĩnh Phúc, Thái Nguyên mà
-                    còn có sự xuất hiện của nhiều các em từ tỉnh xa như Cao Bằng, Bạc Liêu, Lâm Đồng, TP Hồ Chí
-                    Minh… theo học. Môi trường đa dạng vùng miền cũng mang đến một không gian học tập và văn hóa
-                    thú vị, cho các em cơ hội cùng tìm hiểu, học tập và chung sống trong không khí tôn trọng, tự
-                    chủ và tự do.</p>
-                <div class="wp-block-image">
-                    <figure class="aligncenter size-large"><img
-                            src="http://thpt.fpt.edu.vn/wp-content/uploads/190926_0892min.jpg"
-                            alt="190926_0892min" class="wp-image-33665"
-                            srcset="http://thpt.fpt.edu.vn/wp-content/uploads/190926_0892min.jpg 1000w, http://thpt.fpt.edu.vn/wp-content/uploads/190926_0892min-450x300.jpg 450w, http://thpt.fpt.edu.vn/wp-content/uploads/190926_0892min-768x512.jpg 768w"
-                            sizes="(max-width: 1000px) 100vw, 1000px">
-                        <figcaption><em>THPT FPT là mô hình nội trú hiện đại, chú trọng phát triển kỹ năng sống
-                            toàn diện cho học sinh</em></figcaption>
-                    </figure>
-                </div>
-                <p>Chương trình đào tạo của THPT FPT kế thừa nhiều thành công của Đại học FPT trong việc chú
-                    trọng đến việc học tiếng Anh và kỹ năng sống, giúp các em có hành trang tốt nhất cho việc
-                    học Đại học và du học sau này.</p>
-                <p><strong>Các trường quốc tế</strong></p>
-                <p>Bên cạnh các trường chuyên và nội trú, mô hình trường quốc tế cũng được phụ huynh quan tâm.
-                    Đây là các trường mô hình đào tạo theo nền tảng, giáo trình và mô hình quốc tế, được Sở Giáo
-                    dục và Đào tạo Hà Nội. Đặc trưng của các trường này là chương trình học tiến bộ, khoa học và
-                    bài bản, kiến thức vừa sức và chú trọng ngoại ngữ. Các trường tiêu biểu có thể kể đến như
-                    THPT liên cấp Wellspring Hà Nội, THPT Việt Úc, Hanoi International School…</p>
-                <div class="wp-block-image">
-                    <figure class="aligncenter size-large"><img
-                            src="http://thpt.fpt.edu.vn/wp-content/uploads/truongquocte.jpg" alt=""
-                            class="wp-image-34943"
-                            srcset="http://thpt.fpt.edu.vn/wp-content/uploads/truongquocte.jpg 650w, http://thpt.fpt.edu.vn/wp-content/uploads/truongquocte-450x300.jpg 450w"
-                            sizes="(max-width: 650px) 100vw, 650px">
-                        <figcaption><em>Trường THPT quốc tế có cơ sở vật chất, học với giáo viên nước ngoài
-                            nhưng có mức học phí khá cao.</em></figcaption>
-                    </figure>
-                </div>
-                <p>Học phí tại các trường mô hình này giao động từ 300 – hơn 500 triệu/ năm. Tuy nhiên, mô hình
-                    đào tạo này sẽ gây bất lợi nếu học sinh có ý định chuyển sang trường công lập, bởi bằng cấp
-                    của các trường này không khớp với hệ thống giáo dục hiện hành khó được chấp nhận.</p>
-                <p><strong>Kết luận</strong></p>
-                <p>Sự xuất hiện của một thế hệ phụ huynh mong muốn tìm kiếm những giá trị mới trong việc nuôi
-                    dạy và phát triển con cái như phong cách sống, khả năng thích ứng, khả năng hòa nhập và muốn
-                    đưa con đến học tập tại các môi trường tốt hơn đang là xu hướng mới tại các tỉnh. Đây là dấu
-                    hiệu tích cực cho thấy sự chuyển đổi về chất trong quan niệm giáo dục của phụ huynh, tạo
-                    điều kiện cho các em học sinh có thêm nhiều lựa chọn và cơ hội phát triển, vươn cao hơn
-                    nữa.</p>
-                <p></p>
             </div>
             <div class="post-action text-right">
-                <input type="button" class="btn btn-danger" value="XÓA">
-                <input type="button" class="btn btn-primary" value="CHỈNH SỬA">
-                <input type="button" class="btn btn-outline-danger" value="TỪ CHỐI">
-                <input type="button" class="btn btn-outline-primary" value="ĐĂNG BÀI">
-            </div>
-        </div>
-        <div class="same-content">
-            <h2>Bài viết liên quan</h2>
-            <div class="content-wrap d-flex flex-wrap p-0">
-                <div class="post-gird col-md-4 pl-0">
-                    <a href="#" class="card card-200">
-                        <div class="img-post">
-                            <img class="card-img-top"
-                                 src="http://thpt.fpt.edu.vn/wp-content/uploads/THPT_FPT_Thi-pathway1-255x143.jpg">
-                        </div>
-                        <div class="card-block">
-                            <h3 class="card-title">Pathways – kỳ thi “đảo chiều thứ hạng” xếp lớp gây xôn xao cộng đồng
-                                FSchool ﻿</h3>
-                            <div class="card-date">07.21.2020</div>
-                        </div>
-                    </a>
-                </div>
-                <div class="post-gird col-md-4">
-                    <a href="#" class="card card-200">
-                        <div class="img-post">
-                            <img class="card-img-top"
-                                 src="http://thpt.fpt.edu.vn/wp-content/uploads/THPT_FPT_BTCT6-255x143.png">
-                        </div>
-                        <div class="card-block">
-                            <h3 class="card-title">Cách để xây dựng suy nghĩ tích cực</h3>
-                            <div class="card-date">07.18.2020</div>
-                        </div>
-                    </a>
-                </div>
-                <div class="post-gird col-md-4 pr-0">
-                    <a href="#" class="card card-200">
-                        <div class="img-post">
-                            <img class="card-img-top" src="http://thpt.fpt.edu.vn/wp-content/uploads/THPT-FPT-5-2-255x143.jpg">
-                        </div>
-                        <div class="card-block">
-                            <h3 class="card-title">Teen FSchool khoe tài năng trong đêm chung kết Prom Xavia Stella</h3>
-                            <div class="card-date">07.15.2020</div>
-                        </div>
-                    </a>
-                </div>
+                <div class="newsletterId" hidden></div>
+                <div class="status" hidden></div>
+                <input type="button" class="btn btn-outline-danger btn-delete" value="ẨN BÀI">
+                <input type="button" class="btn btn-outline-primary btn-edit hide" value="CHỈNH SỬA">
+<!--                <input type="button" class="btn btn-outline-danger btn-delete hide" value="ẨN BÀI">-->
+                <input type="button" class="btn btn-outline-primary btn-accept hide" value="ĐĂNG BÀI">
             </div>
         </div>
     </div>
@@ -186,7 +50,7 @@
 
 <!--    Modal confirm-->
 <div class="modal fade" tabindex="-1" role="dialog" id="confirmModal">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-body text-center"></div>
             <div class="modal-footer">
@@ -199,7 +63,7 @@
 
 <!--    Modal Success-->
 <div class="modal fade" tabindex="-1" role="dialog" id="modalSuccess">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-body text-center"></div>
             <div class="modal-footer">
@@ -212,6 +76,6 @@
 
 <div class="modal-loading"></div>
 <div th:replace="fragments/footer :: footer"></div>
-<script type="text/javascript" th:src="@{/js/managePost/managePost.js}"></script>
+<script type="text/javascript" th:src="@{/js/managePost/postDetail.js}"></script>
 </body>
 </html>

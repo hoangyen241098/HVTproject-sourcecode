@@ -3,7 +3,7 @@ var currentYearId = localStorage.getItem('currentYearId');
 /*=============Set data================*/
 /*Load year list*/
 $.ajax({
-    url: '/api/admin/schoolyearlist',
+    url: '/api/rankyear/loadrankyear',
     type: 'POST',
     beforeSend: function () {
         $('body').addClass("loading")
@@ -18,7 +18,7 @@ $.ajax({
             if (data.schoolYearList != null) {
                 $('#byYear').html('');
                 $.each(data.schoolYearList, function (i, item) {
-                    if (currentYearId == item.schoolYearId) {
+                    if (item.schoolYearId == currentYearId) {
                         $('#byYear').append(`<option value="` + item.schoolYearId + `" selected="selected">` + item.yearName + `</option>`);
                     } else {
                         $('#byYear').append(`<option value="` + item.schoolYearId + `">` + item.yearName + `</option>`);
@@ -30,8 +30,22 @@ $.ajax({
             } else {
                 $('#byYear').html(`<option value="err">Danh sách năm học trống.</option>`);
             }
+            if (data.classList != null) {
+                $('#byClass').html(`<option value="" selected="selected">Tất cả</option>`);
+                $("#byClass").select2();
+                $.each(data.classList, function (i, item) {
+                    $('#byClass').append(`<option value="` + item.classID + `">` + item.className + `</option>`);
+                })
+            } else {
+                $('#byClass').html(`<option value="err">Danh sách lớp trống.</option>`);
+            }
         } else {
-            $('#byYear').html(`<option value="err">` + message + `</option>`);
+            if (data.schoolYearList == null) {
+                $('#byYear').html(`<option value="err">` + message + `</option>`);
+            }
+            if (data.classList == null) {
+                $('#byClass').html(`<option value="err">` + message + `</option>`);
+            }
         }
     },
     failure: function (errMsg) {
@@ -47,6 +61,7 @@ setTimeout(search, 500);
 function search() {
     var infoSearch = {
         yearId: $('#byYear option:selected').val(),
+        classId: $('#byClass option:selected').val()
     }
     console.log(JSON.stringify(infoSearch));
     if ($('#byYear option:selected').val() == 'err') {
@@ -158,7 +173,9 @@ $('#createRankBtn').on('click', function () {
             var messageCode = data.message.messageCode;
             var message = data.message.message;
             if (messageCode == 0 || messageCode == 1) {
-                if (data.schoolYearList != null) {
+                if (data.schoolYearList == null || data.schoolYearList.length == 0) {
+                    $('#yearName').html(`<option value="err" selected>Không có năm học nào chưa được xếp hạng.</option>`)
+                } else {
                     $('#yearName').html('');
                     $.each(data.schoolYearList, function (i, item) {
                         if (item.schoolYearId == currentYearId) {
@@ -167,10 +184,8 @@ $('#createRankBtn').on('click', function () {
                             $('#yearName').append(`<option value="` + item.schoolYearId + `">` + item.yearName + `</option>`);
                         }
                     });
-                } else {
-                    $('#yearName').html(`<option value="err" selected>Không có năm học nào chưa được xếp hạng.</option>`)
                 }
-                if (data.semesterList != null) {
+                if (data.semesterList.length != 0) {
                     $('#semesterList').html('');
                     $('#semesterList').append(`<h6>Các học kỳ áp dụng <span class="text-red">*</span></h6>`);
                     $.each(data.semesterList, function (i, item) {
@@ -243,8 +258,7 @@ $('#createNewRankBtn').on('click', function () {
                     sessionStorage.removeItem('yearId');
                     sessionStorage.setItem('yearId', yearId);
                 } else {
-                    $('#createNewRank').modal('hide');
-                    dialogModal('messageModal', 'img/img-error.png', message)
+                    $('.createNewRank-err').text(message);
                 }
             },
             failure: function (errMsg) {
@@ -395,8 +409,7 @@ $('#editRankBtnModal').on('click', function () {
                     sessionStorage.setItem('yearId', $('#byYear option:selected').val());
                     dialogModal('messageModal', 'img/img-success.png', 'Sửa xếp hạng năm học thành công!');
                 } else {
-                    $('#editRank').modal('hide');
-                    dialogModal('messageModal', 'img/img-error.png', message)
+                    $('.editRank-err').text(message);
                 }
             },
             failure: function (errMsg) {
@@ -414,6 +427,7 @@ $('#editRankBtnModal').on('click', function () {
 $("#download").click(function () {
     var download = {
         yearId: $('#byYear option:selected').val(),
+        classId: $('#byClass option:selected').val()
     }
     console.log(JSON.stringify(download))
     $.ajax({
@@ -466,11 +480,48 @@ function dialogModal(modalName, img, message) {
 }
 
 /*Remove checkbox and input when close modal*/
-$(document).on('hidden.bs.modal', '#createNewRank', '#editRank', function () {
+$(document).on('hidden.bs.modal', '#createNewRank', function () {
     $('input[name=options]').prop('checked', false);
+    $('#yearName').val('')
+    $('.createNewRank-err').val('');
+});
+$(document).on('hidden.bs.modal', '#editRank', function () {
     $('input[name=editOptions]').prop('checked', false);
     $('#newYearName').val('');
-    $('#yearName').val('')
     $('.editRank-err').val('');
-    $('.createNewRank-err').val('');
+});
+
+/*===============View History===================*/
+/*View history button*/
+$("#viewHistory").click(function () {
+    var viewHistory = {
+        yearId: $('#byYear option:selected').val(),
+    };
+    $.ajax({
+        url: '/api/rankyear/viewhistory',
+        type: 'POST',
+        data: JSON.stringify(viewHistory),
+        beforeSend: function () {
+            $('body').addClass("loading")
+        },
+        complete: function () {
+            $('body').removeClass("loading")
+        },
+        success: function (data) {
+            console.log(data)
+            var messageCode = data.message.messageCode;
+            var message = data.message.message;
+            if (messageCode == 0) {
+                $('#historyModal .modal-body').html(data.history);
+                $('#historyModal').modal('show');
+            } else {
+                dialogModal('messageModal', 'img/img-error.png', message)
+            }
+        },
+        failure: function (errMsg) {
+            dialogModal('messageModal', 'img/img-error.png', errMsg)
+        },
+        dataType: "json",
+        contentType: "application/json"
+    });
 });

@@ -5,13 +5,15 @@ var inforSearch = {
     classId: null,
     status: 0,
     createDate: $('#inputDate').val(),
+    createBy: $('#createBy').val(),
     pageNumber: 0
 }
 
 /*Search button*/
 $("#search").click(function () {
-    var classId, status, createDate;
+    var classId, status, createDate, createBy;
     createDate = $('#inputDate').val();
+    createBy = $('#createBy').val().trim();
     if ($('#classList option:selected').val() == null || $('#classList option:selected').val() == "" || $('#classList option:selected').val() == 0) {
         classId = null;
     } else {
@@ -26,6 +28,7 @@ $("#search").click(function () {
         classId: classId,
         status: status,
         createDate: createDate,
+        createBy: createBy,
         pageNumber: 0
     }
     console.log(JSON.stringify(inforSearch))
@@ -74,6 +77,11 @@ search();
 
 /*Set data to container*/
 function search() {
+    if (roleId == 4) {
+        inforSearch.createBy = username;
+        $('#createBy').val(username);
+        $('#createBy').prop('disabled', true);
+    }
     console.log(JSON.stringify(inforSearch))
     $.ajax({
         url: '/api/emulation/viewrequest',
@@ -103,7 +111,7 @@ function search() {
                         if (item.violationClassRequest != null) {
                             var status, requestId, dataTarget, createBy, totals, quantityNew,
                                 totalsNew, reason;
-                            var violationDate = item.dayName + " - " + convertDate(item.createDate);
+                            var violationDate = item.dayName + " - " + convertDate(item.createDate, '/');
                             var substractGrade = item.substractGrade;
                             var quantity = item.violationClassRequest.quantityOld;
                             totals = parseFloat(parseFloat(substractGrade) * parseInt(quantity)).toFixed(1);
@@ -140,7 +148,7 @@ function search() {
                                         </div>
                                         <div class="violation-status violationTypeName">
                                             <span class="font-500">Trạng thái: </span>
-                                            <span>` + status + `</span>
+                                            <span class="badge">` + status + `</span>
                                         </div>
                                     </div>
                                     <button class="violation-btn"><i class="fa fa-chevron-down rotate up"></i></button>
@@ -203,15 +211,19 @@ function search() {
                             }
                             if (status == "Chưa duyệt") {
                                 var dataTargetID = "#" + dataTarget;
-                                $(dataTargetID).prev().find('.violation-status span:last-child').css('color','#ff0000');
+                                // $(dataTargetID).prev().find('.violation-status span:last-child').css('color', '#ff0000');
+                                $(dataTargetID).prev().find('.violation-status .badge').addClass('badge-danger');
                             }
                             if (status == "Chấp nhận") {
                                 var dataTargetID = "#" + dataTarget;
-                                $(dataTargetID).prev().find('.violation-status span:last-child').css('color', '#339933');
+                                // $(dataTargetID).prev().find('.violation-status span:last-child').css('color', '#339933');
+                                $(dataTargetID).prev().find('.violation-status .badge').addClass('badge-success');
+
                             }
                             if (status == "Từ chối") {
                                 var dataTargetID = "#" + dataTarget;
-                                $(dataTargetID).prev().find('.violation-status span:last-child').css('color', '#808080');
+                                // $(dataTargetID).prev().find('.violation-status span:last-child').css('color', '#808080');
+                                $(dataTargetID).prev().find('.violation-status .badge').addClass('badge-secondary');
                             }
                         }
                     });

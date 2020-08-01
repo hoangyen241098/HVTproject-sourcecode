@@ -23,12 +23,12 @@ $.ajax({
                     if (item.fromDate == null) {
                         fromDate = "-";
                     } else {
-                        fromDate = item.fromDate;
+                        fromDate = convertDate(item.fromDate,'-');
                     }
                     if (item.toDate == null) {
                         toDate = "-";
                     } else {
-                        toDate = item.toDate;
+                        toDate = convertDate(item.toDate,'-');
                     }
                     if (item.yearName == null) {
                         yearName = "-";

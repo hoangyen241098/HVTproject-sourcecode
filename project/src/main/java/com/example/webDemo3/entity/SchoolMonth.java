@@ -2,6 +2,7 @@ package com.example.webDemo3.entity;
 
 import lombok.Data;
 import javax.persistence.*;
+import java.sql.Date;
 
 /*
 kimpt142 - 23/07
@@ -24,4 +25,10 @@ public class SchoolMonth {
 
     @Column(name = "YEAR_ID")
     private Integer yearId;
+
+    @Column(name = "RANK_HISTORY")
+    private String history;
+
+    @Column(name = "RANK_CREATE_DATE")
+    private Date createDate;
 }

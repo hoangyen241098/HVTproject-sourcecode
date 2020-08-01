@@ -219,6 +219,11 @@ public class WebController {
         return "managePost/createPost";
     }
 
+    @GetMapping("/editPost")
+    public String editPost(Model model) {
+        return "managePost/editPost";
+    }
+
     @GetMapping("/managePost")
     public String managePost(Model model) {
         return "managePost/managePost";

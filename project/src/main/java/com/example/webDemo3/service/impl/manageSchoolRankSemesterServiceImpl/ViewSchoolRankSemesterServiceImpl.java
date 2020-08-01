@@ -2,16 +2,20 @@ package com.example.webDemo3.service.impl.manageSchoolRankSemesterServiceImpl;
 
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
+import com.example.webDemo3.dto.manageClassResponseDto.ClassListResponseDto;
+import com.example.webDemo3.dto.manageClassResponseDto.ClassResponseDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.*;
 import com.example.webDemo3.dto.manageSchoolYearResponseDto.SchoolYearTableResponseDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.LoadByYearIdRequestDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.SearchRankSemesterRequestDto;
+import com.example.webDemo3.entity.SchoolMonth;
 import com.example.webDemo3.entity.SchoolRankSemester;
 import com.example.webDemo3.entity.SchoolSemester;
 import com.example.webDemo3.entity.SchoolYear;
 import com.example.webDemo3.repository.SchoolRankSemesterRepository;
 import com.example.webDemo3.repository.SchoolSemesterRepository;
 import com.example.webDemo3.repository.SchoolYearRepository;
+import com.example.webDemo3.service.manageClassService.ClassService;
 import com.example.webDemo3.service.manageSchoolRankSemesterService.ViewSchoolRankSemesterService;
 import com.example.webDemo3.service.manageSchoolYearService.SchoolYearService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -42,6 +46,9 @@ public class ViewSchoolRankSemesterServiceImpl implements ViewSchoolRankSemester
     @Autowired
     private SchoolYearRepository schoolYearRepository;
 
+    @Autowired
+    private ClassService classService;
+
     /**
      * kimpt142
      * 24/07
@@ -53,7 +60,9 @@ public class ViewSchoolRankSemesterServiceImpl implements ViewSchoolRankSemester
         LoadRankSemesterResponseDto responseDto = new LoadRankSemesterResponseDto();
         MessageDTO message;
         Integer currentYearId = null;
+        List<ClassResponseDto> classList;
 
+        ClassListResponseDto classListDto = classService.getClassList();
         //get year list
         SchoolYearTableResponseDto schoolYearListDto = schoolYearService.getSchoolYearTable();
         if(schoolYearListDto.getMessage().getMessageCode() == 1){
@@ -63,6 +72,15 @@ public class ViewSchoolRankSemesterServiceImpl implements ViewSchoolRankSemester
         }
         else{
             responseDto.setSchoolYearList(schoolYearListDto.getSchoolYearList());
+        }
+
+        //get class list
+        if (classListDto.getMessage().getMessageCode() == 0) {
+            classList = classListDto.getClassList();
+            responseDto.setClassList(classList);
+        } else {
+            responseDto.setMessage(classListDto.getMessage());
+            return responseDto;
         }
 
         Date dateCurrent = new Date(System.currentTimeMillis());
@@ -131,13 +149,25 @@ public class ViewSchoolRankSemesterServiceImpl implements ViewSchoolRankSemester
         MessageDTO message;
 
         Integer semesterId = model.getSemesterId();
+        Integer classId = model.getClassId();
+
         if(semesterId == null){
             message = Constant.SEMESTERID_EMPTY;
             resposeDto.setMessage(message);
             return resposeDto;
         }
 
-        List<SchoolRankSemester> schoolRankSemesterList = schoolRankSemesterRepository.findAllBySchoolRankSemesterId(semesterId);
+        //check semester ranked or not
+        SchoolSemester checkSchoolSemester =  schoolSemesterRepository.findSchoolSemesterBySemesterId(semesterId);
+        if(checkSchoolSemester != null && checkSchoolSemester.getIsRanked() != null
+                && checkSchoolSemester.getIsRanked() != 0){
+            resposeDto.setCheckEdit(1);
+        }
+        else{
+            resposeDto.setCheckEdit(0);
+        }
+
+        List<SchoolRankSemester> schoolRankSemesterList = schoolRankSemesterRepository.findAllBySchoolRankSemesterId(semesterId, classId);
         if(schoolRankSemesterList == null || schoolRankSemesterList.size() == 0)
         {
             message = Constant.RANKSEMESTERLIST_EMPTY;
@@ -153,7 +183,6 @@ public class ViewSchoolRankSemesterServiceImpl implements ViewSchoolRankSemester
                 rankSemesterDto.setTotalGradeMonth(round(item.getTotalGradeMonth()));
                 rankSemesterDto.setTotalRankMonth(item.getTotalRankMonth());
                 rankSemesterDto.setRank(item.getRank());
-                rankSemesterDto.setHistory(item.getHistory());
                 rankSemesterList.add(rankSemesterDto);
             }
         }

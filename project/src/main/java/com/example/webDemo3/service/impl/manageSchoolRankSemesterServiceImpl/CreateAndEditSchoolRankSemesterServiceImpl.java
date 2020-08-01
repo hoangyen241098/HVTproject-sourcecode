@@ -2,23 +2,20 @@ package com.example.webDemo3.service.impl.manageSchoolRankSemesterServiceImpl;
 
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListMonthSchoolRankResponseDto;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.SchoolMonthDto;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.SchoolWeekDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.CreateRankSemesterRequestDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.EditRankSemesterRequestDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ListMonthSchoolRankRequestDto;
-import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewMonthOfEditRankSemesterRequestDto;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.*;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.*;
 import com.example.webDemo3.entity.*;
 import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.exception.MyException;
 import com.example.webDemo3.repository.*;
+import com.example.webDemo3.service.manageSchoolRank.AdditionFunctionSchoolRankService;
 import com.example.webDemo3.service.manageSchoolRankSemesterService.CreateAndEditSchoolRankSemester;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -47,6 +44,9 @@ public class CreateAndEditSchoolRankSemesterServiceImpl implements CreateAndEdit
 
     @Autowired
     private SchoolRankSemesterRepository schoolRankSemesterRepository;
+
+    @Autowired
+    private AdditionFunctionSchoolRankService additionFunctionSchoolRankService;
 
     @Override
     public ListMonthSchoolRankResponseDto loadListMonth(ListMonthSchoolRankRequestDto requestDto) {
@@ -155,6 +155,7 @@ public class CreateAndEditSchoolRankSemesterServiceImpl implements CreateAndEdit
                 schoolMonthDto.setMonthId(schoolMonth.getMonthId());
                 schoolMonthDto.setMonth(schoolMonth.getMonth());
                 schoolMonthDto.setSemesterId(schoolMonth.getSemesterId());
+                schoolMonthDto.setRankCreateDate(schoolMonth.getCreateDate());
                 schoolMonthDto.setIsCheck(0);
 
                 monthListDto.add(schoolMonthDto);
@@ -182,6 +183,7 @@ public class CreateAndEditSchoolRankSemesterServiceImpl implements CreateAndEdit
                 schoolMonthDto.setMonthId(schoolMonth.getMonthId());
                 schoolMonthDto.setMonth(schoolMonth.getMonth());
                 schoolMonthDto.setSemesterId(schoolMonth.getSemesterId());
+                schoolMonthDto.setRankCreateDate(schoolMonth.getCreateDate());
                 schoolMonthDto.setIsCheck(1);
 
                 monthListDto.add(schoolMonthDto);
@@ -193,6 +195,13 @@ public class CreateAndEditSchoolRankSemesterServiceImpl implements CreateAndEdit
                 responseDto.setMessage(message);
                 return responseDto;
             }
+
+            Collections.sort(monthListDto, new Comparator<SchoolMonthDto>() {
+                @Override
+                public int compare(SchoolMonthDto o1, SchoolMonthDto o2) {
+                    return o1.getRankCreateDate().compareTo(o2.getRankCreateDate());
+                }
+            });
 
             message = Constant.SUCCESS;
             responseDto.setMonthList(monthListDto);
@@ -221,12 +230,69 @@ public class CreateAndEditSchoolRankSemesterServiceImpl implements CreateAndEdit
         }
         return message;
     }
+
+    /**
+     * lamnt98
+     * catch request to get hisitory of schoolSemester
+     * @param requestDto
+     * @return ViewSchoolSemesterHistoryResponseDto
+     */
+    @Override
+    public ViewSchoolSemesterHistoryResponseDto viewSchoolSemesterHistory(ViewSchoolSemesterHistoryRequestDto requestDto) {
+        ViewSchoolSemesterHistoryResponseDto responseDto = new ViewSchoolSemesterHistoryResponseDto();
+
+        Integer semesterId = requestDto.getSemesterId();
+        SchoolSemester schoolSemester;
+        String history = "";
+        MessageDTO message = new MessageDTO();
+
+
+        try{
+
+            //check semesterId null or not
+            if(semesterId == null){
+                message = Constant.SCHOOL_SEMESTER_ID_NULL;
+                responseDto.setMessage(message);
+                return responseDto;
+            }
+
+            schoolSemester = schoolSemesterRepository.findById(semesterId).orElse(null);
+            //check schoolWeek exist or not
+            if(schoolSemester == null){
+                message = Constant.SCHOOL_SEMESTER_NOT_EXISTS;
+                responseDto.setMessage(message);
+                return  responseDto;
+            }
+
+            history = schoolSemester.getHistory();
+
+            //check history is empty or not
+            if(history == null || history.isEmpty()){
+                message = Constant.HISTORY_IS_EMPTY;
+                responseDto.setMessage(message);
+                return responseDto;
+            }
+
+            message = Constant.SUCCESS;
+            responseDto.setMessage(message);
+            responseDto.setHistory(history);
+        }catch (Exception e){
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            responseDto.setMessage(message);
+            return responseDto;
+        }
+        return responseDto;
+    }
+
     private MessageDTO editRankSemesterTransaction(EditRankSemesterRequestDto requestDto)throws Exception{
 
         Integer semesterId = requestDto.getSemesterId();
         Integer semester = requestDto.getSemester();
         String userName = requestDto.getUserName();
+        Date createDate = null;
         User user = null;
+        String history = "";
 
         List<SchoolMonthDto> monthList = requestDto.getMonthList();
         List<Class> classList = new ArrayList<>();
@@ -250,6 +316,8 @@ public class CreateAndEditSchoolRankSemesterServiceImpl implements CreateAndEdit
             message = Constant.MONTH_LIST_EMPTY;
             return message;
         }
+
+        createDate = additionFunctionSchoolRankService.convertDateInComputerToSqlDate();
 
         try{
             //check userName empty or not
@@ -277,16 +345,21 @@ public class CreateAndEditSchoolRankSemesterServiceImpl implements CreateAndEdit
             if(schoolSemester == null){
                 message = Constant.SCHOOL_SEMESTER_NOT_EXISTS;
                 return message;
+            }else if(schoolSemester.getIsRanked() != null && schoolSemester.getIsRanked() != 0){
+                message = Constant.RANKSEMESTER_NOT_EDIT;
+                return message;
             }
 
             //check exist schoolMonth with month name
-            newSchoolSemester = schoolSemesterRepository.findExistBySemester(semester,semesterId);
-            if(newSchoolSemester != null){
+            newSchoolSemester = schoolSemesterRepository.findSchoolSemesterBySemesterAndYearId(semester,schoolSemester.getYearId());
+            if(newSchoolSemester != null && schoolSemester.getSemesterId() != newSchoolSemester.getSemesterId()){
                 message = Constant.SCHOOL_SEMESTER_EXISTS;
                 return message;
             }
 
             schoolSemester.setSemester(semester);
+            history = additionFunctionSchoolRankService.addHistory(schoolSemester.getHistory(),userName,createDate);
+            schoolSemester.setHistory(history);
             schoolSemesterRepository.save(schoolSemester);
             classList = classRepository.findAll();
 
@@ -307,12 +380,14 @@ public class CreateAndEditSchoolRankSemesterServiceImpl implements CreateAndEdit
         List<SchoolMonthDto> monthList = requestDto.getMonthList();
         List<SchoolRankSemester> schoolRankSemesterList = new ArrayList<>();
         List<Class> classList = new ArrayList<>();
+        Date createDate = null;
 
         MessageDTO message = new MessageDTO();
         User user = null;
         SchoolSemester schoolSemester = null;
         SchoolYear schoolYear;
         Integer semesterId = null;
+        String history = "";
 
         try{
             //check userName empty or not
@@ -360,6 +435,8 @@ public class CreateAndEditSchoolRankSemesterServiceImpl implements CreateAndEdit
                 return message;
             }
 
+            createDate = additionFunctionSchoolRankService.convertDateInComputerToSqlDate();
+
             schoolSemester = schoolSemesterRepository.findSchoolSemesterBySemesterAndYearId(semester,currentYearId);
             //check month exist or not
             if(schoolSemester != null){
@@ -367,9 +444,13 @@ public class CreateAndEditSchoolRankSemesterServiceImpl implements CreateAndEdit
                 return message;
             }
 
+            history = additionFunctionSchoolRankService.addHistory("",userName,createDate);
             schoolSemester = new SchoolSemester();
             schoolSemester.setYearId(currentYearId);
             schoolSemester.setSemester(semester);
+            schoolSemester.setIsRanked(0);
+            schoolSemester.setHistory(history);
+            schoolSemester.setCreateDate(createDate);
             schoolSemesterRepository.save(schoolSemester);
 
             semesterId = schoolSemesterRepository.findSchoolSemesterBySemesterAndYearId(semester,currentYearId).getSemesterId();

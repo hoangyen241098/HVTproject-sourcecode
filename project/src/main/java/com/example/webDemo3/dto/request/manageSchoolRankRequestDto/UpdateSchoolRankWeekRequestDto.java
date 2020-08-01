@@ -11,4 +11,5 @@ kimpt142 - 21/07
 @Data
 public class UpdateSchoolRankWeekRequestDto {
     private List<RankWeekResponseDto> rankWeekList;
+    private String userName;
 }

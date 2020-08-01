@@ -10,5 +10,6 @@ kimpt142 - 23/07
 @Data
 public class RankMonthListResponseDto {
     private List<RankMonthResponseDto> rankMonthList;
+    private Integer checkEdit;
     private MessageDTO message;
 }

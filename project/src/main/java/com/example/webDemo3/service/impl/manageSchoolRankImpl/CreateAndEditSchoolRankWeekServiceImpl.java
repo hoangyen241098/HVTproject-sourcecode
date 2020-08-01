@@ -4,8 +4,11 @@ import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.DateViolationClassDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListDateResponseDto;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.SchoolWeekDto;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewSchoolWeekHistoryResponseDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.CreateRankWeekRequestDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.EditRankWeekRequestDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewSchoolWeekHistoryRequestDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewWeekAnDateListRequestDto;
 import com.example.webDemo3.entity.*;
 import com.example.webDemo3.entity.Class;
@@ -67,6 +70,9 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
 
     @Autowired
     private SchoolYearRepository schoolYearRepository;
+
+    @Autowired
+    private AdditionFunctionSchoolRankServiceImpl additionFunctionSchoolRankService;
 
     /**
      * lamnt98
@@ -142,9 +148,12 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
 
     private MessageDTO create(CreateRankWeekRequestDto requestDto) throws Exception{
         MessageDTO message = new MessageDTO();
+
         String userName = requestDto.getUserName();
         Integer week = requestDto.getWeek();
         Integer currentYearId = requestDto.getCurrentYearId();
+        Date createDate = null;
+
         List<DateViolationClassDto> dateList = requestDto.getDateList();
         List<Class> classList = new ArrayList<>();
         SchoolWeek schoolWeek;
@@ -155,6 +164,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         Integer monthId = 0;
         boolean edit = false;
         User user;
+        String history = "";
 
         try {
             //check userName empty or not
@@ -175,6 +185,8 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
                 message = Constant.NOT_ACCEPT_CREATE_RANK_WEEK;
                 return message;
             }
+
+            createDate = additionFunctionSchoolRankService.convertDateInComputerToSqlDate();
 
             //check userName empty or not
             if(week == null){
@@ -202,25 +214,29 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
                 return message;
             }
 
-            schoolWeek = schoolWeekRepository.findSchoolWeeksByWeekMonthIdAndYearId(week,0,currentYearId);
+            schoolWeek = schoolWeekRepository.findSchoolWeeksByWeekAndYearId(week,currentYearId);
             //check week exist or not
             if(schoolWeek != null){
                 message = Constant.SCHOOL_WEEK_EXISTS;
                 return message;
             }
 
+            history = additionFunctionSchoolRankService.addHistory("",userName,createDate);
             schoolWeek = new SchoolWeek();
             schoolWeek.setWeek(week);
             schoolWeek.setMonthID(monthId);
             schoolWeek.setYearId(currentYearId);
+            schoolWeek.setHistory(history);
+            schoolWeek.setCreateDate(createDate);
             schoolWeekRepository.save(schoolWeek);
 
-            weekId = schoolWeekRepository.findSchoolWeeksByWeekMonthIdAndYearId(week,0,currentYearId).getWeekID();
+            weekId = schoolWeekRepository.findSchoolWeeksByWeekAndYearId(week,currentYearId).getWeekID();
 
             classList = classRepository.findAll();
             allTotalGrade = violationTypeRepository.sumAllTotalGradeViolationTypeActive();
 
-            message = createOrEditSchoolRankWeek(classList, dateList,allTotalGrade, schoolRankWeekList,weekId,edit,message);
+            message = createOrEditSchoolRankWeek(createDate,userName,classList, dateList,allTotalGrade, schoolRankWeekList,weekId,edit,message);
+
 
         }catch (Exception e){
             message.setMessageCode(1);
@@ -296,6 +312,13 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
                 dateResponseList.add(dateResponseDto);
             }
 
+            Collections.sort(dateResponseList, new Comparator<DateViolationClassDto>() {
+                @Override
+                public int compare(DateViolationClassDto o1, DateViolationClassDto o2) {
+                    return o1.getDate().compareTo(o2.getDate());
+                }
+            });
+
             //check dateList empty or not
             if(dateResponseList == null || dateResponseList.size() == 0){
                 message = Constant.DATE_LIST_EMPTY;
@@ -337,11 +360,68 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         return message;
     }
 
+    /**
+     * lamnt98
+     * 29/07
+     * get history of school week
+     * @return ViewSchoolWeekHistoryResponseDto
+     */
+    @Override
+    public ViewSchoolWeekHistoryResponseDto viewSchoolWeekHistory(ViewSchoolWeekHistoryRequestDto requestDto) {
+
+        ViewSchoolWeekHistoryResponseDto responseDto = new ViewSchoolWeekHistoryResponseDto();
+
+        Integer weekId = requestDto.getWeekId();
+        SchoolWeek schoolWeek;
+        String history = "";
+        MessageDTO message = new MessageDTO();
+
+
+        try{
+
+            //check weekId null or not
+            if(weekId == null){
+                message = Constant.WEEK_ID_NULL;
+                responseDto.setMessage(message);
+                return responseDto;
+            }
+
+            schoolWeek = schoolWeekRepository.findById(weekId).orElse(null);
+            //check schoolWeek exist or not
+            if(schoolWeek == null){
+                message = Constant.SCHOOL_WEEK_NOT_EXIST;
+                responseDto.setMessage(message);
+                return  responseDto;
+            }
+
+            history = schoolWeek.getHistory();
+
+            //check history is empty or not
+            if(history == null || history.isEmpty()){
+                message = Constant.HISTORY_IS_EMPTY;
+                responseDto.setMessage(message);
+                return responseDto;
+            }
+
+            message = Constant.SUCCESS;
+            responseDto.setMessage(message);
+            responseDto.setHistory(history);
+        }catch (Exception e){
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            responseDto.setMessage(message);
+            return responseDto;
+        }
+
+        return responseDto;
+    }
+
     private MessageDTO edit(EditRankWeekRequestDto requestDto) throws Exception{
 
         Integer weekId = requestDto.getWeekId();
         Integer week = requestDto.getWeek();
         String userName = requestDto.getUserName();
+        Date createDate = null;
         User user = null;
 
         List<DateViolationClassDto> dateList = requestDto.getDateList();
@@ -352,6 +432,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         Double allTotalGrade;
         boolean edit = true;
         List<SchoolRankWeek> schoolRankWeekList = new ArrayList<>();
+        String history = "";
 
 
         //check weekId null or not
@@ -365,6 +446,8 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
             message = Constant.WEEK_NAME_EMPTY;
             return message;
         }
+
+        createDate = additionFunctionSchoolRankService.convertDateInComputerToSqlDate();
 
         //check dateList null or not
         if(dateList == null || dateList.size() == 0){
@@ -398,8 +481,12 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
                 message = Constant.SCHOOL_WEEK_NOT_EXIST;
                 return message;
             }
+            else if(schoolWeek.getMonthID() != 0){
+                message = Constant.RANKWEEK_NOT_EDIT;
+                return message;
+            }
 
-            newSchoolWeek = schoolWeekRepository.findSchoolWeeksByWeekMonthIdAndYearId(week,schoolWeek.getMonthID(),schoolWeek.getYearId());
+            newSchoolWeek = schoolWeekRepository.findSchoolWeeksByWeekAndYearId(week,schoolWeek.getYearId());
 
             //check week exist or not
             if(newSchoolWeek != null && schoolWeek.getWeekID() != newSchoolWeek.getWeekID()){
@@ -407,12 +494,14 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
                 return message;
             }
             schoolWeek.setWeek(week);
+            history = additionFunctionSchoolRankService.addHistory(schoolWeek.getHistory(),userName,createDate);
+            schoolWeek.setHistory(history);
             schoolWeekRepository.save(schoolWeek);
 
             classList = classRepository.findAll();
             allTotalGrade = violationTypeRepository.sumAllTotalGradeViolationTypeActive();
 
-            message = createOrEditSchoolRankWeek(classList, dateList,allTotalGrade, schoolRankWeekList,weekId,edit,message);
+            message = createOrEditSchoolRankWeek(createDate,userName,classList, dateList,allTotalGrade, schoolRankWeekList,weekId,edit,message);
 
         }catch (Exception e){
             message.setMessageCode(1);
@@ -432,7 +521,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         return dayName;
     }
 
-    public MessageDTO createOrEditSchoolRankWeek(List<Class> classList, List<DateViolationClassDto> dateList,Double allTotalGrade, List<SchoolRankWeek> schoolRankWeekList,Integer weekId,boolean edit, MessageDTO message) throws Exception{
+    public MessageDTO createOrEditSchoolRankWeek(Date createDate,String userName, List<Class> classList, List<DateViolationClassDto> dateList,Double allTotalGrade, List<SchoolRankWeek> schoolRankWeekList,Integer weekId,boolean edit, MessageDTO message) throws Exception{
         List<ViolationClass> violationClassList = new ArrayList<>();
         List<SchoolRankWeek> deleteList = new ArrayList<>();
         Integer newSize = 0;
@@ -454,7 +543,7 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
                     violationClassList = violationClassRepository.findByDateClassAndStatus(date.getDate(),newClass.getClassId(),1);
 
                     for(ViolationClass violationClass: violationClassList){
-                        ViolationClassRequest classRequest = violationClassRequestRepository.findClassRequestByIdAndStatus(Long.valueOf(violationClass.getViolation().getViolationId()),0);
+                        ViolationClassRequest classRequest = violationClassRequestRepository.findClassRequestByIdAndStatus(Long.valueOf(violationClass.getId()),0);
                         //check violation class request exist or not
                         if(classRequest != null){
                             String newMessage = Constant.RANK_HAS_VIOLATION_CLASS_REQUEST_NOT_EXCEPT_EXIST.getMessage();

@@ -132,4 +132,16 @@ public class RankSemesterApiController {
                 .headers(headers)
                 .body(new InputStreamResource(in));
     }
+
+    /**
+     * lamnt98
+     * 29/07
+     * catch request to get history of schoolSemester
+     * @return ViewSchoolWeekHistoryResponseDto
+     */
+    @PostMapping("/viewhistory")
+    public ViewSchoolSemesterHistoryResponseDto viewSchoolSemesterHistory(@RequestBody ViewSchoolSemesterHistoryRequestDto module) {
+
+        return createAndEditSchoolRankSemester.viewSchoolSemesterHistory(module);
+    }
 }

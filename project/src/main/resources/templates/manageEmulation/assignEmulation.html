@@ -11,6 +11,12 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <script th:src="@{/js/public/popper.min.js}"></script>
     <script th:src="@{/js/public/bootstrap.min.js}"></script>
+    <!--Table-->
+    <link rel="stylesheet" th:href="@{/css/dataTables.bootstrap4.min.css}">
+    <link rel="stylesheet" th:href="@{/css/responsive.dataTables.min.css}">
+    <script th:src="@{/js/public/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/js/public/dataTables.bootstrap4.min.js}"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js"></script>
     <!--Select2-->
     <link rel="stylesheet" th:href="@{/css/select2.min.css}">
     <script th:src="@{/js/public/select2.min.js}"></script>
@@ -32,25 +38,11 @@
                         <label>Ngày:</label>
                         <select class="combobox form-control w-75" id="fromDate"></select>
                     </div>
-                    <div class="form-group text-left mb-1">
-                        <label>Sắp xếp theo:</label>
-                        <select class="combobox form-control w-75" id="sortBy">
-                            <option value="0" selected="selected">Lớp</option>
-                            <option value="1">Sao đỏ</option>
-                        </select>
-                    </div>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0">
                     <div class="form-group text-left mb-1">
                         <label>Lớp:</label>
                         <select class="combobox form-control w-75" id="classList"></select>
-                    </div>
-                    <div class="form-group text-left mb-1">
-                        <label>Thứ tự:</label>
-                        <select class="combobox form-control w-75" id="orderBy">
-                            <option value="0">Giảm dần</option>
-                            <option value="1" selected="selected">Tăng dần</option>
-                        </select>
                     </div>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 px-0">
@@ -73,15 +65,14 @@
         <table class="table table-bordered text-center" id="myTable">
             <thead class="thead-light">
             <tr>
-                <th style="width: 50%">Lớp</th>
-                <th>Sao đỏ trực tuần</th>
+                <th>Lớp</th>
+                <th>Sao đỏ 1</th>
+                <th>Sao đỏ 2</th>
             </tr>
             </thead>
             <tbody class="text-center">
             </tbody>
         </table>
-        <div class="table-paging">
-        </div>
     </div>
 </div>
 
@@ -149,7 +140,7 @@
 
 <!--    Modal Save Success-->
 <div class="modal fade" tabindex="-1" role="dialog" id="downloadModal">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-body text-center"></div>
             <div class="modal-footer">
