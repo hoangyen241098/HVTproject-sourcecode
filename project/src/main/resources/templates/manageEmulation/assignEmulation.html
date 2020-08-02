@@ -55,11 +55,10 @@
         </div>
         <div class="table-title-2 pt-0">
             <div class="col-sm-12 px-0 d-flex justify-content-end align-items-center">
-                <a href="#addAssign" class="btn btn-success manageBtn" data-toggle="modal">
-                    <span>Tạo phân công</span>
-                </a>
-                <button class="btn btn-success mr-0" id="download">Tải xuống</button>
-                <button class="btn btn-search mr-0" id="search">Tìm kiếm</button>
+                <a href="#addAssign" class="btn btn-success manageBtn mr-0" data-toggle="modal">Tạo phân công</a>
+                <button class="btn btn-success ml-2 manageBtn" onclick="deleteAssign()">Xóa phân công</button>
+                <button class="btn btn-success mr-0 ml-2" id="download">Tải xuống</button>
+                <button class="btn btn-search mr-0 ml-2" id="search">Tìm kiếm</button>
             </div>
         </div>
         <table class="table table-bordered text-center" id="myTable">
@@ -78,45 +77,36 @@
 
 <!-- Add Assign Modal HTML -->
 <div id="addAssign" class="modal fade">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
-            <form>
-                <div class="modal-header">
-                    <h4 class="modal-title">Tạo phân công</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <div class="form-group-input">
-                            <label>Áp dụng từ ngày</label>
-                            <input type="date" class="form-control"/>
-                        </div>
+            <div class="modal-header">
+                <h4 class="modal-title">Tạo phân công</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="form-group-input">
+                        <label>Áp dụng từ ngày</label>
+                        <input type="date" class="form-control" id="dateApplied"/>
                     </div>
-                    <div class="error addAssign-err"></div>
                 </div>
-                <div class="modal-footer">
-                    <input type="submit" class="btn btn-danger" data-toggle="modal" data-target="#addSuccess"
-                           data-dismiss="modal" value="TẠO">
-                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
-                </div>
-            </form>
+                <div class="error addAssign-err"></div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-danger" id="createAssignBtn" value="TẠO">
+                <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
+            </div>
         </div>
     </div>
 </div>
 
 <!--    Override Confirm-->
 <div class="modal fade" tabindex="-1" role="dialog" id="overrideConfirm">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
-            <div class="modal-body text-center">
-                <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                <h5>Ngày áp dụng này đã tồn tại.</h5>
-                <h5>Ngày áp dụng này sẽ bị <b>GHI ĐÈ</b> lên ngày áp dụng trước đó.</h5>
-                <h5>Bạn có muốn ghi đè không?</h5>
-            </div>
+            <div class="modal-body text-center"></div>
             <div class="modal-footer">
-                <input type="submit" class="btn btn-danger" data-toggle="modal" data-target="#addSuccess"
-                       data-dismiss="modal" value="CÓ">
+                <input type="button" class="btn btn-danger" id="confirmApplied" value="CÓ">
                 <input type="button" class="btn btn-primary" data-dismiss="modal" value="KHÔNG">
             </div>
         </div>
@@ -125,12 +115,9 @@
 
 <!--    Add Assign Success-->
 <div class="modal fade" tabindex="-1" role="dialog" id="addSuccess">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
-            <div class="modal-body text-center">
-                <img class="mb-3 mt-3" src="img/img-success.png"/>
-                <h5 id="message-reset">Phân công thành công!</h5>
-            </div>
+            <div class="modal-body text-center"></div>
             <div class="modal-footer">
                 <input type="button" class="btn btn-primary" data-dismiss="modal" value="ĐÓNG">
             </div>
