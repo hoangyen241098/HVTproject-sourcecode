@@ -1,5 +1,6 @@
 package com.example.webDemo3.security;
 
+import com.example.webDemo3.constant.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -16,11 +17,33 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value("${url}")
-    String[] url ;
+    @Value("${userUrl}")
+    private String[] userUrl ;
+
+    @Value("${adminUrl}")
+    private String[] adminUrl ;
+
+    @Value("${manageTimetableUrl}")
+    private String[] manageTimetableUrl ;
+
+    @Value("${gradingToEmulationUrl}")
+    private String[] gradingToEmulationUrl ;
+
+    @Value("${viewRequestUrl}")
+    private String[] viewRequestUrl ;
+
+    @Value("${newletterUrl}")
+    private String[] newletterUrl ;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
+
+    private String ROLE_ADMIN = "ROLE_" + Constant.ROLEID_ADMIN;
+    private String ROLE_TIMETABLE_MANAGER = "ROLE_" + Constant.ROLEID_TIMETABLE_MANAGER;
+    private String ROLE_REDSTAR = "ROLE_" + Constant.ROLEID_REDSTAR;
+    private String ROLE_MONITOR = "ROLE_" + Constant.ROLEID_MONITOR;
+    private String ROLE_SUMMERIZEGROUP = "ROLE_" + Constant.ROLEID_SUMMERIZEGROUP;
+    private String ROLE_CLUBLEADER = "ROLE_" + Constant.ROLEID_CLUBLEADER;
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
@@ -51,20 +74,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-//                .cors() // Ngăn chặn request từ một domain khác
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers(url ).permitAll() // Cho phép tất cả mọi người truy cập vào địa chỉ này
-//                .anyRequest().authenticated(); // Tất cả các request khác đều cần phải xác thực mới được truy cập
-
-        // Thêm một lớp Filter kiểm tra jwt
                 .csrf()
                 .disable()
                 .antMatcher("/**")
                 .authorizeRequests()
-                .antMatchers(url)
+                .antMatchers(userUrl)
                 .permitAll()
-                .antMatchers("/manageAccount").access("hasRole('ROLE_1')")
+               // .antMatchers(adminUrl).hasRole(ROLE_ADMIN)
+                .antMatchers(adminUrl).access("hasRole('" + ROLE_ADMIN + "')")
+                .antMatchers(manageTimetableUrl).access("hasAnyRole('"+ ROLE_ADMIN +"','"+ ROLE_TIMETABLE_MANAGER +"')")
+                .antMatchers(gradingToEmulationUrl).access("hasAnyRole('"+ ROLE_ADMIN +"','"+ ROLE_REDSTAR +"','"+ ROLE_SUMMERIZEGROUP +"')")
+                .antMatchers(viewRequestUrl).access("hasAnyRole('"+ ROLE_ADMIN +"','"+ ROLE_MONITOR +"')")
+                .antMatchers(newletterUrl).access("hasAnyRole('"+ ROLE_ADMIN +"','"+ ROLE_MONITOR +"','"+ ROLE_CLUBLEADER +"')")
                 .anyRequest()
                 .authenticated()
                 .and()

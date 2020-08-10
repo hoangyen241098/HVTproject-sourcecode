@@ -16,6 +16,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest httpServletRequest,
                        HttpServletResponse httpServletResponse,
                        AccessDeniedException e) throws IOException, ServletException {
-        httpServletResponse.sendRedirect("/createAccount");
+        httpServletResponse.sendRedirect("/error");
     }
 }

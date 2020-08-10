@@ -363,12 +363,8 @@ function getAuthen() {
             $('body').removeClass("loading")
         },
         success: function (data) {
-            if(data != null && data.messageCode === 0){
+            if(data != null && data.messageCode == 1){
                 localStorage.clear();
-                // localStorage.removeItem("userInfo")
-                // this.$cookies.remove("access_token")
-                // this.$cookies.remove("token_provider")
-                // window.location.href = "/"
             }
         },
         failure: function (errMsg) {

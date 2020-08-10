@@ -21,7 +21,7 @@ public class AddAccountServiceImpl implements AddAccountService {
     private UserRepository userRepository;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     /**
      * kimpt142
@@ -44,14 +44,6 @@ public class AddAccountServiceImpl implements AddAccountService {
             return message;
         }
 
-//<<<<<<< HEAD
-//            if(!passWord.trim().equals("")) {
-//                newUser.setPassword(passwordEncoder.encode(passWord));
-//            }
-//            else {
-//                message = Constant.PASSWORD_EMPTY;
-//                return message;
-//=======
         if(passWord.trim().isEmpty()) {
             message = Constant.PASSWORD_EMPTY;
             return message;
@@ -65,6 +57,8 @@ public class AddAccountServiceImpl implements AddAccountService {
             return message;
         }
         else{
+            passWord = passwordEncoder.encode(passWord);
+
             if(newUser == null){
                 newUser = new User();
             }
