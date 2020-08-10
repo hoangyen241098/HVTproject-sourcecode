@@ -1591,7 +1591,7 @@ a.slide_btn {
 }
 
 /*input-group-addon*/
-.input-group-addon{
+.input-group-addon {
     display: flex;
     align-items: center;
     border: 1px solid #ccc;
@@ -1603,6 +1603,9 @@ a.slide_btn {
     line-height: 1;
     color: #555;
     background-color: #eee;
+}
+.scrollable-table {
+    overflow-x: auto;
 }
 /*Responsive*/
 @media screen and (max-width: 330px) {
