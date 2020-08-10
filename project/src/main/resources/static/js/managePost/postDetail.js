@@ -78,6 +78,7 @@ function displayButton() {
     var author = $('.post-action .author').text();
     if (roleID == 1) {
         if (status == 2) {
+            $('.btn-delete').removeClass('hide');
             $('.btn-edit').addClass('hide');
             $('.btn-accept').removeClass('hide');
         } else if (status == 0) {
@@ -85,7 +86,8 @@ function displayButton() {
             $('.btn-edit').removeClass('hide');
             $('.btn-accept').addClass('hide');
         } else if (status == 1) {
-            $('.btn-edit').addClass('hide');
+            $('.btn-delete').addClass('hide');
+            $('.btn-edit').removeClass('hide');
             $('.btn-accept').removeClass('hide');
         }
     } else if (username == author) {

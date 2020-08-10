@@ -4,8 +4,6 @@ var inforSearch = {
     userName: "",
     pageNumber: 0
 }
-var roleID = localStorage.getItem("roleID");
-var username = localStorage.getItem("username");
 if (roleID != 1) {
     inforSearch.userName = username;
     $('#createBy').val(username);
