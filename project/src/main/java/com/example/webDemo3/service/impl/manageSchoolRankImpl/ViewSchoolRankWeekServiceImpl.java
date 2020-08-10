@@ -7,17 +7,23 @@ import com.example.webDemo3.dto.manageClassResponseDto.ClassResponseDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.RankWeekListResponseDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.RankWeekResponseDto;
 import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewWeekAndClassListResponseDto;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewWeekListResponseDto;
+import com.example.webDemo3.dto.manageSchoolYearResponseDto.SchoolYearTableResponseDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.SearchRankWeekRequestDto;
+import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.LoadByYearIdRequestDto;
 import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.entity.SchoolRankWeek;
 import com.example.webDemo3.entity.SchoolWeek;
+import com.example.webDemo3.entity.SchoolYear;
 import com.example.webDemo3.repository.SchoolRankWeekRepository;
 import com.example.webDemo3.repository.SchoolWeekRepository;
+import com.example.webDemo3.repository.SchoolYearRepository;
 import com.example.webDemo3.service.manageClassService.ClassService;
 import com.example.webDemo3.service.manageSchoolRank.ViewSchoolRankWeekService;
+import com.example.webDemo3.service.manageSchoolYearService.SchoolYearService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +42,12 @@ public class ViewSchoolRankWeekServiceImpl implements ViewSchoolRankWeekService 
     @Autowired
     private SchoolRankWeekRepository schoolRankWeekRepository;
 
+    @Autowired
+    private SchoolYearService schoolYearService;
+
+    @Autowired
+    private SchoolYearRepository schoolYearRepository;
+
     /**
      * kimpt142
      * 21/07
@@ -43,12 +55,14 @@ public class ViewSchoolRankWeekServiceImpl implements ViewSchoolRankWeekService 
      * @return ViewWeekAndClassListResponseDto
      */
     @Override
-    public ViewWeekAndClassListResponseDto getWeekAndClassList() {
+    public ViewWeekAndClassListResponseDto loadRankWeekPage() {
         ViewWeekAndClassListResponseDto responseDto = new ViewWeekAndClassListResponseDto();
         List<ClassResponseDto> classList = new ArrayList<>();
         ClassListResponseDto classListDto = classService.getClassList();
-        MessageDTO message = new MessageDTO();
+        MessageDTO message;
+        Integer currentYearId = null;
 
+        //get class list
         if (classListDto.getMessage().getMessageCode() == 0) {
             classList = classListDto.getClassList();
             responseDto.setClassList(classList);
@@ -57,14 +71,30 @@ public class ViewSchoolRankWeekServiceImpl implements ViewSchoolRankWeekService 
             return responseDto;
         }
 
-        List<SchoolWeek> schoolWeekList = schoolWeekRepository.findSchoolWeekExcludeZero();
-        if (schoolWeekList == null || schoolWeekList.size() == 0) {
-            message = Constant.LIST_WEEK_NULL;
+        //get year list
+        SchoolYearTableResponseDto schoolYearListDto = schoolYearService.getSchoolYearTable();
+        if(schoolYearListDto.getMessage().getMessageCode() == 1){
+            message = schoolYearListDto.getMessage();
             responseDto.setMessage(message);
             return responseDto;
-        } else {
-            responseDto.setSchoolWeekList(schoolWeekList);
         }
+        else {
+            responseDto.setSchoolYearList(schoolYearListDto.getSchoolYearList());
+        }
+
+        Date dateCurrent = new Date(System.currentTimeMillis());
+        SchoolYear schoolCurrent = schoolYearRepository.findSchoolYearsByDate(dateCurrent);
+        if(schoolCurrent != null) {
+            currentYearId = schoolCurrent.getYearID();
+            responseDto.setCurrentYearId(currentYearId);
+        }
+
+        LoadByYearIdRequestDto yearIdDto = new LoadByYearIdRequestDto();
+        yearIdDto.setYearId(currentYearId);
+
+        //get week list by yearid
+        ViewWeekListResponseDto schoolWeekListDto = getWeekListByYearId(yearIdDto);
+        responseDto.setSchoolWeekList(schoolWeekListDto.getSchoolWeekList());
 
         message = Constant.SUCCESS;
         responseDto.setMessage(message);
@@ -81,9 +111,9 @@ public class ViewSchoolRankWeekServiceImpl implements ViewSchoolRankWeekService 
     @Override
     public RankWeekListResponseDto searchRankWeekByWeekAndClass(SearchRankWeekRequestDto model) {
         RankWeekListResponseDto responseDto = new RankWeekListResponseDto();
-        MessageDTO message = new MessageDTO();
-        List<RankWeekResponseDto> rankWeekListDto = new ArrayList<>();
-        List<SchoolRankWeek> rankWeekList = new ArrayList<>();
+        MessageDTO message;
+        List<RankWeekResponseDto> rankWeekListDto;
+        List<SchoolRankWeek> rankWeekList;
 
         Integer weekId = model.getWeekId();
         Integer classId = model.getClassId();
@@ -92,6 +122,15 @@ public class ViewSchoolRankWeekServiceImpl implements ViewSchoolRankWeekService 
             message = Constant.WEEK_ID_NULL;
             responseDto.setMessage(message);
             return responseDto;
+        }
+
+        //check week is ranked or not
+        SchoolWeek checkSchoolWeek = schoolWeekRepository.findSchoolWeekByWeekID(weekId);
+        if(checkSchoolWeek != null && checkSchoolWeek.getMonthID() != 0){
+            responseDto.setCheckEdit(1);
+        }
+        else{
+            responseDto.setCheckEdit(0);
         }
 
         rankWeekList = schoolRankWeekRepository.findByWeekIđAndClassId(weekId, classId);
@@ -103,6 +142,38 @@ public class ViewSchoolRankWeekServiceImpl implements ViewSchoolRankWeekService 
 
         rankWeekListDto = convertSchoolRankWeekToDto(rankWeekList);
         responseDto.setRankWeekList(rankWeekListDto);
+        message = Constant.SUCCESS;
+        responseDto.setMessage(message);
+        return responseDto;
+    }
+
+    /**
+     * kimpt142
+     * 23/07
+     * get week list by year id
+     * @param model
+     * @return week list
+     */
+    @Override
+    public ViewWeekListResponseDto getWeekListByYearId(LoadByYearIdRequestDto model) {
+        ViewWeekListResponseDto responseDto = new ViewWeekListResponseDto();
+        MessageDTO message;
+        Integer yearId = model.getYearId();
+
+        if(yearId == null){
+            message = Constant.SCHOOLYEARID_EMPTY;
+            responseDto.setMessage(message);
+            return responseDto;
+        }
+
+        List<SchoolWeek> schoolWeekList = schoolWeekRepository.findSchoolWeekByYearIdExcludeZero(yearId);
+
+        if(schoolWeekList == null || schoolWeekList.size() == 0){
+            message = Constant.LIST_WEEK_NULL;
+            responseDto.setMessage(message);
+            return responseDto;
+        }
+        responseDto.setSchoolWeekList(schoolWeekList);
         message = Constant.SUCCESS;
         responseDto.setMessage(message);
         return responseDto;
@@ -135,7 +206,6 @@ public class ViewSchoolRankWeekServiceImpl implements ViewSchoolRankWeekService 
             response.setLaborGrade(item.getLaborGrade());
             response.setTotalGrade(item.getTotalGrade());
             response.setRank(item.getRank());
-            response.setHistory(item.getHistory());
             responseList.add(response);
         }
         return responseList;

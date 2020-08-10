@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>.::Quản lý giáo viên::.</title>
     <link th:href="@{/img/logo.png}" rel="shortcut icon" type="image/x-icon"/>
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
 
     <!-- jQuery library -->
     <script th:src="@{/js/public/jquery-3.5.1.min.js}"></script>
@@ -48,10 +49,10 @@
             </div>
         </div>
         <div class="table-title-2 manageBtn">
-            <div class="col-sm-12 px-0 d-flex justify-content-end align-items-center">
-                <input type="button" class="btn btn-success mx-2" data-toggle="modal" onclick="checkTeacher()"
+            <div class="row mx-0 justify-content-end">
+                <input type="button" class="btn btn-success ml-2 my-1" data-toggle="modal" onclick="checkTeacher()"
                        value="Xóa"/>
-                <a th:href="@{createTeacher}" class="btn btn-success mr-0">
+                <a th:href="@{createTeacher}" class="btn btn-success ml-2 my-1 mr-0">
                     <span>Thêm giáo viên</span>
                 </a>
             </div>
@@ -82,12 +83,11 @@
 
 <!-- Delete Modal HTML -->
 <div id="deleteTeacherModal" class="modal fade">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-body text-center"></div>
             <div class="modal-footer">
-                <input type="submit" class="btn btn-danger" data-toggle="modal" data-target="#deleteSuccess"
-                       id="deleteTeacher" data-dismiss="modal" value="CÓ">
+                <input type="submit" class="btn btn-danger" id="deleteTeacher" data-dismiss="modal" value="CÓ">
                 <input type="button" class="btn btn-primary" data-dismiss="modal" value="KHÔNG">
             </div>
         </div>
@@ -96,7 +96,7 @@
 
 <!--    Modal Delete Success-->
 <div class="modal fade" tabindex="-1" role="dialog" id="deleteSuccess">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-body text-center"></div>
             <div class="modal-footer">

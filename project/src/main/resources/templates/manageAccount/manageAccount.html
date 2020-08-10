@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>.::Quản lý tài khoản::.</title>
     <link th:href="@{/img/logo.png}" rel="shortcut icon" type="image/x-icon"/>
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
 
     <!-- jQuery library -->
     <script th:src="@{/js/public/jquery-3.5.1.min.js}"></script>
@@ -60,12 +61,12 @@
             </div>
         </div>
         <div class="table-title-2 manageBtn">
-            <div class="col-sm-12 px-0 d-flex justify-content-end align-items-center">
-                <input type="button" class="btn btn-success mx-2" data-toggle="modal" onclick="checkResetPassword()"
+            <div class="row mx-0 justify-content-end">
+                <input type="button" class="btn btn-success ml-2 my-1" data-toggle="modal" onclick="checkResetPassword()"
                        value="Đặt lại MK"/>
-                <input type="button" class="btn btn-success mx-2" data-toggle="modal" onclick="checkUser()"
+                <input type="button" class="btn btn-success ml-2 my-1" data-toggle="modal" onclick="checkUser()"
                        value="Xóa"/>
-                <a th:href="@{createAccount}" class="btn btn-success mr-0">
+                <a th:href="@{createAccount}" class="btn btn-success ml-2 mr-0 my-1">
                     <span>Tạo tài khoản</span>
                 </a>
             </div>
@@ -97,7 +98,7 @@
 
 <!-- Delete Modal HTML -->
 <div id="deleteAccountModal" class="modal fade">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-body text-center"></div>
             <div class="modal-footer">
@@ -111,7 +112,7 @@
 
 <!--    Modal Delete Success-->
 <div class="modal fade" tabindex="-1" role="dialog" id="deleteSuccess">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-body text-center"></div>
             <div class="modal-footer">
@@ -123,7 +124,7 @@
 
 <!-- Reset Password Modal HTML -->
 <div id="resetPasswordModal" class="modal fade">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Đặt lại mật khẩu</h4>
@@ -141,7 +142,7 @@
 
 <!--    Modal Reset Password Success-->
 <div class="modal fade" tabindex="-1" role="dialog" id="resetSuccess">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-body text-center"></div>
             <div class="modal-footer">

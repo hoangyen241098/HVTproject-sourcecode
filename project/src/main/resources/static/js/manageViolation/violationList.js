@@ -52,7 +52,7 @@ $(document).ready(function () {
                                 </div>
                             </div>
                             <div class="panel-collapse collapse in" id="collapse` + typeId + `">
-                                <table class="table table-hover">
+                                <table class="table table-hover table-responsive">
                                     <thead>
                                     <th style="width: 5%"></th>
                                     <th>Vi phạm</th>
@@ -246,7 +246,7 @@ function deleteViolation() {
                         $("#deleteSuccess .modal-body").html("");
                         $('#deleteSuccess .modal-body').append(`
                             <img class="mb-3 mt-3" src="img/img-success.png"/>
-                            <h5 id="message-delete">Xóa thành công nội quy.</h5>
+                            <h5 id="message-delete">Xóa thành công vi phạm.</h5>
                         `);
                     } else {
                         $("#deleteSuccess .modal-body").html("");

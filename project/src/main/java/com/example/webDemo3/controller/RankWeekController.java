@@ -1,13 +1,10 @@
 package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.ListDateResponseDto;
-import com.example.webDemo3.dto.request.assignRedStarRequestDto.DownloadAssignRedStarRequestDto;
+import com.example.webDemo3.dto.manageSchoolRankResponseDto.*;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.CreateRankWeekRequestDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.ViewWeekAnDateListRequestDto;
 import com.example.webDemo3.service.manageSchoolRank.CreateAndEditSchoolRankWeekService;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.RankWeekListResponseDto;
-import com.example.webDemo3.dto.manageSchoolRankResponseDto.ViewWeekAndClassListResponseDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.SearchRankWeekRequestDto;
 import com.example.webDemo3.dto.request.manageSchoolRankRequestDto.UpdateSchoolRankWeekRequestDto;
 import com.example.webDemo3.service.manageSchoolRank.DownloadRankWeekService;
@@ -102,7 +99,7 @@ public class RankWeekController {
     @PostMapping("/viewweekandclasslist")
     public ViewWeekAndClassListResponseDto getSchoolYearList()
     {
-        return viewSchoolRankWeekService.getWeekAndClassList();
+        return viewSchoolRankWeekService.loadRankWeekPage();
     }
 
     /**
@@ -134,9 +131,9 @@ public class RankWeekController {
     /**
      * kimpt142
      * 21/07
-     * catch request to update school rank week list
-     * @param model include rank week list
-     * @return MessageDTO
+     * catch request to download rank week
+     * @param model include weekid and classid
+     * @return ResponseEntity
      */
     @PostMapping("/download")
     public ResponseEntity<InputStreamResource> download(@RequestBody SearchRankWeekRequestDto model)
@@ -150,5 +147,30 @@ public class RankWeekController {
                 .headers(headers)
                 .body(new InputStreamResource(in));
 
+    }
+
+    /**
+     * kimpt142
+     * 21/07
+     * catch request to get the week list by year id
+     * @param model include year id
+     * @return ViewWeekListResponseDto
+     */
+    @PostMapping("/getweeklist")
+    public ViewWeekListResponseDto getWeekListByYearId(@RequestBody LoadByYearIdRequestDto model)
+    {
+        return viewSchoolRankWeekService.getWeekListByYearId(model);
+    }
+
+    /**
+     * lamnt98
+     * 21/07
+     * catch request to get history of schoolWeek
+     * @return ViewSchoolWeekHistoryResponseDto
+     */
+    @PostMapping("/viewhistory")
+    public ViewSchoolWeekHistoryResponseDto viewSchoolWeekHistory(@RequestBody ViewSchoolWeekHistoryRequestDto module) {
+
+        return createAndEditSchoolRankWeekService.viewSchoolWeekHistory(module);
     }
 }

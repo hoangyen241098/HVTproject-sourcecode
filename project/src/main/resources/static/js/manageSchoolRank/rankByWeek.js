@@ -1,9 +1,12 @@
+var currentYearId;
 var listCreate = [];
 var listEdit = [];
 var listEditOld = [];
+var rankOld = [];
+var rankWeekList = [];
 
 /*=============Set data================*/
-/*Load week list and class list*/
+/*Load year, week list and class list*/
 $.ajax({
     url: '/api/rankweek/viewweekandclasslist',
     type: 'POST',
@@ -16,27 +19,23 @@ $.ajax({
     success: function (data) {
         var messageCode = data.message.messageCode;
         var message = data.message.message;
+        currentYearId = data.currentYearId;
         if (messageCode == 0) {
-            if (data.schoolWeekList != null) {
-                $('#byWeek').html('');
-                $.each(data.schoolWeekList, function (i, item) {
-                    if (i == 0) {
-                        $('#byWeek').append(`<option value="` + item.weekID + `" selected="selected">Tuần ` + item.week + `</option>`);
+            if (data.schoolYearList != null) {
+                $('#byYear').html('');
+                $.each(data.schoolYearList, function (i, item) {
+                    if (currentYearId == item.schoolYearId) {
+                        $('#byYear').append(`<option value="` + item.schoolYearId + `" selected="selected">` + item.yearName + `</option>`);
                     } else {
-                        $('#byWeek').append(`<option value="` + item.weekID + `">Tuần ` + item.week + `</option>`);
+                        $('#byYear').append(`<option value="` + item.schoolYearId + `">` + item.yearName + `</option>`);
                     }
-                });
-                if (sessionStorage.getItem('weekName') != null) {
-                    var weekName = 'Tuần ' + sessionStorage.getItem('weekName');
-                    $("#byWeek option").filter(function () {
-                        return $(this).text() == weekName;
-                    }).prop("selected", true);
-                }
-                if (sessionStorage.getItem('weekId') != null) {
-                    $("#byWeek").val(sessionStorage.getItem('weekId')).change();
-                }
+                })
+                var yearId = $('#byYear option:selected').val();
+                loadComboboxYear(yearId);
             } else {
+                $('#byYear').html(`<option value="err">Danh sách năm học trống.</option>`);
                 $('#byWeek').html(`<option value="err">Danh sách tuần trống.</option>`);
+                $('#byWeek').prop('disabled', true);
             }
             if (data.classList != null) {
                 $('#byClass').html(`<option value="" selected="selected">Tất cả</option>`);
@@ -48,6 +47,9 @@ $.ajax({
                 $('#byClass').html(`<option value="err">Danh sách lớp trống.</option>`);
             }
         } else {
+            if (data.schoolYearList == null) {
+                $('#byYear').html(`<option value="err">` + message + `</option>`);
+            }
             if (data.schoolWeekList == null) {
                 $('#byWeek').html(`<option value="err">` + message + `</option>`);
             }
@@ -63,28 +65,90 @@ $.ajax({
     contentType: "application/json"
 });
 
+/*Get week list combo when change year combo box*/
+function loadComboboxYear(yearId) {
+    $.ajax({
+        url: '/api/rankweek/getweeklist',
+        type: 'POST',
+        data: JSON.stringify({yearId: yearId}),
+        beforeSend: function () {
+            $('body').addClass("loading")
+        },
+        complete: function () {
+            $('body').removeClass("loading")
+        },
+        success: function (data) {
+            var messageCode = data.message.messageCode;
+            var message = data.message.message;
+            if (messageCode == 0) {
+                if (data.schoolWeekList != null) {
+                    $('#byWeek').html('');
+                    $.each(data.schoolWeekList, function (i, item) {
+                        if (i == 0) {
+                            $('#byWeek').append(`<option value="` + item.weekID + `" name="` + item.yearId + `" selected="selected">Tuần ` + item.week + `</option>`);
+                        } else {
+                            $('#byWeek').append(`<option value="` + item.weekID + `" name="` + item.yearId + `">Tuần ` + item.week + `</option>`);
+                        }
+                    });
+                    if (sessionStorage.getItem('weekName') != null) {
+                        var weekName = 'Tuần ' + sessionStorage.getItem('weekName');
+                        $("#byWeek option").filter(function () {
+                            return $(this).text() == weekName;
+                        }).prop("selected", true);
+                    }
+                    if (sessionStorage.getItem('weekId') != null) {
+                        $("#byWeek").val(sessionStorage.getItem('weekId')).change();
+                    }
+                } else {
+                    $('#byWeek').html(`<option value="err">Danh sách tuần đang trống.</option>`);
+                }
+            } else {
+                if (data.schoolWeekList == null) {
+                    $('#byWeek').html(`<option value="err">` + message + `</option>`);
+                }
+            }
+        },
+        failure: function (errMsg) {
+            console.log(errMsg);
+        },
+        dataType: "json",
+        contentType: "application/json"
+    });
+}
+
+$('#byYear').change(function () {
+    var yearId = $('#byYear option:selected').val();
+    loadComboboxYear(yearId);
+})
+
 setTimeout(search, 500);
 
 /*Set data to table*/
 function search() {
-    var infoSearch = {
-        weekId: $('#byWeek option:selected').val(),
-        classId: $('#byClass option:selected').val()
+    var weekId = $('#byWeek option:selected').val();
+    if (weekId != null && weekId != "" && weekId != "err") {
+        $('#viewHistory').removeClass('hide');
     }
-    console.log(JSON.stringify(infoSearch));
+    if (roleID == 1) {
+        $('#createRank').removeClass('hide');
+    }
     if ($('#byWeek option:selected').val() == 'err') {
         $('#editRankBtn').addClass('hide');
         $('#editGrades').addClass('hide');
         $('tbody').append(`<tr><td colspan="7" class="userlist-result">Không có tuần trong dữ liệu.</td></tr>`)
     } else {
-        $('#editRankBtn').removeClass('hide');
-        $('#editGrades').removeClass('hide');
+        var infoSearch = {
+            weekId: weekId,
+            classId: $('#byClass option:selected').val()
+        }
+        console.log(JSON.stringify(infoSearch));
         $('table').dataTable({
             destroy: true,
             searching: false,
             bInfo: false,
             paging: false,
-            responsive: true,
+            // responsive: true,
+            order: [],
             ajax: {
                 url: "/api/rankweek/searchrankweek",
                 type: "POST",
@@ -104,9 +168,20 @@ function search() {
                     var dataSrc = null;
                     var messageCode = data.message.messageCode;
                     var message = data.message.message;
+                    var checkEdit = data.checkEdit;
                     if (messageCode == 0) {
+                        if (roleID == 1) {
+                            if (checkEdit != null && checkEdit == 0) {
+                                $('#editGrades').removeClass('hide');
+                                $('#editRankBtn').removeClass('hide');
+                            } else {
+                                $('#editGrades').addClass('hide');
+                                $('#editRankBtn').addClass('hide');
+                            }
+                        }
                         if (data.rankWeekList != null) {
                             dataSrc = data.rankWeekList;
+                            $('#download').removeClass('hide');
                         } else {
                             return false;
                         }
@@ -135,93 +210,131 @@ function search() {
                     targets: 0,
                     createdCell: function (td, cellData, rowData, row, col) {
                         $(td).attr('data-column', rowData.classId);
+                        $(td).css('min-width', '150px');
+                    }
+                },
+                {
+                    targets: 1,
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        $(td).addClass('text-right');
                     }
                 },
                 {
                     targets: 2,
                     createdCell: function (td, cellData, rowData, row, col) {
                         $(td).attr('contenteditable', 'false');
-                        $(td).addClass('learningGrade');
+                        $(td).addClass('learningGrade text-right');
                     }
                 },
                 {
                     targets: 3,
                     createdCell: function (td, cellData, rowData, row, col) {
                         $(td).attr('contenteditable', 'false');
-                        $(td).addClass('movementGrade');
+                        $(td).addClass('movementGrade text-right');
                     }
                 },
                 {
                     targets: 4,
                     createdCell: function (td, cellData, rowData, row, col) {
                         $(td).attr('contenteditable', 'false');
-                        $(td).addClass('laborGrade');
+                        $(td).addClass('laborGrade text-right');
+                    }
+                },
+                {
+                    targets: 5,
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        $(td).addClass('text-right');
+                    }
+                },
+                {
+                    targets: 6,
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        $(td).addClass('font-500 text-right');
                     }
                 }
             ],
             drawCallback: function (settings) {
                 settings.oLanguage.sEmptyTable = "Danh sách xếp hạng tuần trống."
             }
-        })
+        });
     }
+    viewHistory();
+    dowload();
+    createRank();
+    editRankBtn();
+    editGrade();
 }
 
 /*Search button*/
 $('#search').click(function (e) {
     $('table tbody').html('');
+    $('#searchGroupButton').html(`            
+    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 flex-wrap px-0">
+        <input type="button" id="download" class="btn btn-success mr-2 my-1 hide" value="Tải xuống"/>
+        <input type="button" id="viewHistory" class="btn btn-success mr-2 my-1 hide" value="Xem lịch sử"/>
+        <input type="button" class="btn btn-success manageBtn mr-2 my-1 hide" id="editGrades" value="Sửa điểm"/>
+        <input type="button" class="btn btn-danger manageBtn mr-2 my-1 hide" id="closeEditGrades" value="Hủy"/>
+    </div>
+    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 flex-wrap px-0 text-right">
+        <input type="button" id="editRankBtn" class="btn btn-success manageBtn ml-2 my-1 hide" value="Sửa xếp hạng tuần"/>
+        <input type="button" id="createRank" class="btn btn-success manageBtn ml-2 my-1 hide" value="Tạo xếp hạng tuần"/>
+    </div>`);
     search();
 })
 
 /*==========Create rank===========*/
+
 /*Load date list*/
-$('#createRank').on('click', function () {
-    $('#createNewRank').modal('show');
-    listCreate = [];
-    $.ajax({
-        url: '/api/rankweek/loaddatelist',
-        type: 'POST',
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
-        success: function (data) {
-            var messageCode = data.message.messageCode;
-            var message = data.message.message;
-            if (messageCode == 0) {
-                if (data.dateList != null) {
-                    $('#dateList').html('');
-                    $('#dateList').append(`
+function createRank() {
+    $('#createRank').on('click', function () {
+        $('#createNewRank').modal('show');
+        listCreate = [];
+        $.ajax({
+            url: '/api/rankweek/loaddatelist',
+            type: 'POST',
+            beforeSend: function () {
+                $('body').addClass("loading")
+            },
+            complete: function () {
+                $('body').removeClass("loading")
+            },
+            success: function (data) {
+                var messageCode = data.message.messageCode;
+                var message = data.message.message;
+                if (messageCode == 0) {
+                    if (data.dateList != null) {
+                        $('#dateList').html('');
+                        $('#dateList').append(`
                     <h6>Các ngày áp dụng <span class="text-red">*</span></h6>
                 `);
-                    $.each(data.dateList, function (i, item) {
-                        $('#dateList').append(`
+                        $.each(data.dateList, function (i, item) {
+                            $('#dateList').append(`
                         <div class="form-check text-left my-1">
                             <span class="custom-checkbox">
                                 <input type="checkbox" name="options" value="` + i + `">
                                 <label for="` + i + `"></label>
                             </span>
-                            <span class="ml-3">` + item.dayName + ` - ` + item.date + `</span>
+                            <span class="ml-3">` + item.dayName + ` - ` + convertDate(item.date, '/') + `</span>
                             <span class="hide dayName">` + item.dayName + `</span>
                             <span class="hide date">` + item.date + `</span>
                         </div>
                     `);
-                    });
+                        });
+                    } else {
+                        $('#dateList').html(`<h6 class="text-red">Không có ngày áp dụng nào!</h6>`);
+                    }
                 } else {
-                    $('#dateList').html(`<h6 class="text-red">Không có ngày áp dụng nào!</h6>`);
+                    $('#dateList').html(`<h6 class="text-red">` + message + `</h6>`);
                 }
-            } else {
-                $('#dateList').html(`<h6 class="text-red">` + message + `</h6>`);
-            }
-        },
-        failure: function (errMsg) {
-            $('#dateList').html(`<h6 class="text-red">` + errMsg + `</h6>`);
-        },
-        dataType: "json",
-        contentType: "application/json"
-    });
-})
+            },
+            failure: function (errMsg) {
+                $('#dateList').html(`<h6 class="text-red">` + errMsg + `</h6>`);
+            },
+            dataType: "json",
+            contentType: "application/json"
+        });
+    })
+}
 
 /*Create rank week*/
 $('#createNewRankBtn').on('click', function () {
@@ -242,9 +355,9 @@ $('#createNewRankBtn').on('click', function () {
     } else {
         $('.createNewRank-err').text('');
         var createRank = {
-            userName: localStorage.getItem('username'),
+            userName: username,
             week: weekName,
-            currentYearId: localStorage.getItem('currentYearId'),
+            currentYearId: currentYearId,
             dateList: listCreate
         }
         console.log(JSON.stringify(createRank));
@@ -262,16 +375,17 @@ $('#createNewRankBtn').on('click', function () {
                 var messageCode = data.messageCode;
                 var message = data.message;
                 if (messageCode == 0) {
-                    dialogModal('createSuccess', 'img/img-success.png', 'Tạo xếp hạng tuần thành công!');
+                    $('#createNewRank').modal('hide');
+                    messageModal('createSuccess', 'img/img-success.png', 'Tạo xếp hạng tuần thành công!');
                     sessionStorage.removeItem('weekId');
                     sessionStorage.removeItem('weekName');
                     sessionStorage.setItem('weekName', weekName);
                 } else {
-                    dialogModal('createSuccess', 'img/img-error.png', message)
+                    $('.createNewRank-err').text(message);
                 }
             },
             failure: function (errMsg) {
-                dialogModal('createSuccess', 'img/img-error.png', errMsg)
+                messageModal('createSuccess', 'img/img-error.png', errMsg)
             },
             dataType: "json",
             contentType: "application/json"
@@ -280,84 +394,87 @@ $('#createNewRankBtn').on('click', function () {
 })
 
 /*=============Edit Rank=====================*/
+
 /*Load edit rank week*/
-$('#editRankBtn').on('click', function () {
-    listEdit = [];
-    listEditOld = [];
-    $('#editRank').modal('show');
-    var weekName = $('#byWeek option:selected').text().slice(5);
-    $('#newWeekName').val(weekName);
-    var weekId = $('#byWeek option:selected').val();
-    var data = {
-        weekId: weekId
-    }
-    console.log(JSON.stringify(data));
-    $.ajax({
-        url: '/api/rankweek/loadeditrankweek',
-        type: 'POST',
-        data: JSON.stringify(data),
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
-        success: function (data) {
-            var messageCode = data.message.messageCode;
-            var message = data.message.message;
-            if (messageCode == 0) {
-                if (data.dateList != null) {
-                    $('#dateListEdit').html('');
-                    $('#dateListEdit').append(`
+function editRankBtn() {
+    $('#editRankBtn').on('click', function () {
+        listEdit = [];
+        listEditOld = [];
+        $('#editRank').modal('show');
+        var weekName = $('#byWeek option:selected').text().slice(5);
+        $('#newWeekName').val(weekName);
+        var weekId = $('#byWeek option:selected').val();
+        var data = {
+            weekId: weekId
+        }
+        console.log(JSON.stringify(data));
+        $.ajax({
+            url: '/api/rankweek/loadeditrankweek',
+            type: 'POST',
+            data: JSON.stringify(data),
+            beforeSend: function () {
+                $('body').addClass("loading")
+            },
+            complete: function () {
+                $('body').removeClass("loading")
+            },
+            success: function (data) {
+                var messageCode = data.message.messageCode;
+                var message = data.message.message;
+                if (messageCode == 0) {
+                    if (data.dateList != null) {
+                        $('#dateListEdit').html('');
+                        $('#dateListEdit').append(`
                     <h6>Các ngày áp dụng <span class="text-red">*</span></h6>
                     `);
-                    $.each(data.dateList, function (i, item) {
-                        $('#dateListEdit').append(`
+                        $.each(data.dateList, function (i, item) {
+                            $('#dateListEdit').append(`
                             <div class="form-check text-left my-1">
                                 <span class="custom-checkbox">
                                     <input type="checkbox" name="editOptions" value="` + i + `">
                                     <label for="` + i + `"></label>
                                 </span>
-                                <span class="ml-3">` + item.dayName + ` - ` + item.date + `</span>
+                                <span class="ml-3">` + item.dayName + ` - ` + convertDate(item.date, '/') + `</span>
                                 <span class="hide dayName">` + item.dayName + `</span>
                                 <span class="hide date">` + item.date + `</span>
                                 <span class="hide week">` + item.week + `</span>
                             </div>
                         `);
-                        if (item.isCheck == 1) {
-                            $('input[value=' + i + ']').prop('checked', true);
-                        }
-                    });
-                    $('input[name=editOptions]:checked').each(function (i) {
-                        listEditOld.push({
-                            date: $(this).parent().parent().find('.date').text(),
-                            dayName: $(this).parent().parent().find('.dayName').text(),
-                            isCheck: 1,
-                            week: $('#byWeek option:selected').val()
+                            if (item.isCheck == 1) {
+                                $('input[value=' + i + ']').prop('checked', true);
+                            }
                         });
-                    });
-                    $('input[name=editOptions]:not(:checked)').each(function (i) {
-                        listEditOld.push({
-                            date: $(this).parent().parent().find('.date').text(),
-                            dayName: $(this).parent().parent().find('.dayName').text(),
-                            isCheck: 0,
-                            week: null
+                        $('input[name=editOptions]:checked').each(function (i) {
+                            listEditOld.push({
+                                date: $(this).parent().parent().find('.date').text(),
+                                dayName: $(this).parent().parent().find('.dayName').text(),
+                                isCheck: 1,
+                                week: $('#byWeek option:selected').val()
+                            });
                         });
-                    });
+                        $('input[name=editOptions]:not(:checked)').each(function (i) {
+                            listEditOld.push({
+                                date: $(this).parent().parent().find('.date').text(),
+                                dayName: $(this).parent().parent().find('.dayName').text(),
+                                isCheck: 0,
+                                week: null
+                            });
+                        });
+                    } else {
+                        $('#dateListEdit').html(`<h6 class="text-red">Không có ngày áp dụng nào!</h6>`);
+                    }
                 } else {
-                    $('#dateListEdit').html(`<h6 class="text-red">Không có ngày áp dụng nào!</h6>`);
+                    $('#dateListEdit').html(`<h6 class="text-red">` + message + `</h6>`);
                 }
-            } else {
-                $('#dateListEdit').html(`<h6 class="text-red">` + message + `</h6>`);
-            }
-        },
-        failure: function (errMsg) {
-            $('#dateListEdit').html(`<h6 class="text-red">` + errMsg + `</h6>`);
-        },
-        dataType: "json",
-        contentType: "application/json"
-    });
-})
+            },
+            failure: function (errMsg) {
+                $('#dateListEdit').html(`<h6 class="text-red">` + errMsg + `</h6>`);
+            },
+            dataType: "json",
+            contentType: "application/json"
+        });
+    })
+}
 
 /*Edit rank week*/
 $('#editRankBtnModal').on('click', function () {
@@ -403,6 +520,7 @@ $('#editRankBtnModal').on('click', function () {
         var editRank = {
             weekId: $('#byWeek option:selected').val(),
             week: weekName,
+            userName: username,
             dateList: listEdit
         }
         console.log(JSON.stringify(editRank));
@@ -420,16 +538,17 @@ $('#editRankBtnModal').on('click', function () {
                 var messageCode = data.messageCode;
                 var message = data.message;
                 if (messageCode == 0) {
+                    $('#editRank').modal('hide');
                     sessionStorage.removeItem('weekId');
                     sessionStorage.removeItem('weekName');
                     sessionStorage.setItem('weekName', weekName);
-                    dialogModal('editSuccess', 'img/img-success.png', 'Sửa xếp hạng tuần thành công!');
+                    messageModal('editSuccess', 'img/img-success.png', 'Sửa xếp hạng tuần thành công!');
                 } else {
-                    dialogModal('editSuccess', 'img/img-error.png', message)
+                    $('.editRank-err').text(message);
                 }
             },
             failure: function (errMsg) {
-                dialogModal('editSuccess', 'img/img-error.png', errMsg)
+                messageModal('editSuccess', 'img/img-error.png', errMsg)
             },
             dataType: "json",
             contentType: "application/json"
@@ -438,81 +557,125 @@ $('#editRankBtnModal').on('click', function () {
 })
 
 /*=============Edit Grade=====================*/
-/*Button Edit table*/
-$("#editGrades").on("click", function () {
-    var row = $('tbody tr td[contenteditable]');
-    var editOn = $('#editGrades').hasClass("editMode");
 
-    if (editOn == false) {
-        $(row).attr('contenteditable', 'true');
-        $(row).css('background-color', '#fdf1f1');
-        $('#editGrades').attr('value', 'Lưu thay đổi');
-        validateInput('learningGrade', 20);
-        validateInput('movementGrade', 0.2);
-        validateInput('laborGrade', 0.2);
-        $('#editGrades').addClass('editMode');
-    } else if (editOn == true) {
+/*Button Edit table*/
+function editGrade() {
+    $("#editGrades").unbind().click(function () {
+        var row = $('tbody tr td[contenteditable]');
+        var editOn = $('#editGrades').hasClass("editMode");
+        var weekId = $('#byWeek option:selected').val();
+        rankWeekList = [];
+
+        if (editOn == false) {
+            $(row).attr('contenteditable', 'true');
+            $(row).css('background-color', '#fdf1f1');
+            $('#editGrades').attr('value', 'Lưu thay đổi');
+            validateInput('learningGrade', 20);
+            validateInput('movementGrade', 0.2);
+            validateInput('laborGrade', 0.2);
+            $('#closeEditGrades').removeClass('hide');
+            $('#editGrades').addClass('editMode');
+            rankOld = [];
+            $('table tbody tr').each(function () {
+                rankOld.push({
+                    weekId: weekId,
+                    classId: $(this).find('td').eq(0).data('column'),
+                    className: $(this).find('td').eq(0).text(),
+                    emulationGrade: $(this).find('td').eq(1).text(),
+                    learningGrade: $(this).find('td').eq(2).text(),
+                    movementGrade: $(this).find('td').eq(3).text(),
+                    laborGrade: $(this).find('td').eq(4).text(),
+                    totalGrade: $(this).find('td').eq(5).text(),
+                    rank: $(this).find('td').eq(6).text(),
+                    history: null
+                })
+            });
+            rankOld.sort(function (a, b) {
+                return a.classId - b.classId;
+            });
+            console.log(rankOld);
+        } else {
+            console.log(rankWeekList);
+            $('table tbody tr').each(function () {
+                rankWeekList.push({
+                    weekId: weekId,
+                    classId: $(this).find('td').eq(0).data('column'),
+                    className: $(this).find('td').eq(0).text(),
+                    emulationGrade: $(this).find('td').eq(1).text(),
+                    learningGrade: $(this).find('td').eq(2).text(),
+                    movementGrade: $(this).find('td').eq(3).text(),
+                    laborGrade: $(this).find('td').eq(4).text(),
+                    totalGrade: $(this).find('td').eq(5).text(),
+                    rank: $(this).find('td').eq(6).text(),
+                    history: null
+                })
+            });
+            rankWeekList.sort(function (a, b) {
+                return a.classId - b.classId;
+            });
+            console.log(rankWeekList);
+            if (JSON.stringify(rankOld) == JSON.stringify(rankWeekList)) {
+                $('#editSuccess .modal-footer').html(`<input type="button" class="btn btn-primary" value="ĐÓNG" data-dismiss="modal"/>`)
+                messageModal('editSuccess', 'img/img-error.png', 'Chưa thay đổi dữ liệu.');
+            } else {
+                $(row).attr('contenteditable', 'false');
+                $(row).css('background-color', 'transparent');
+                $('#editGrades').attr('value', 'Sửa điểm');
+                $('#editGrades').removeClass('editMode');
+                $('#closeEditGrades').addClass('hide');
+                var newData = {
+                    rankWeekList: rankWeekList,
+                    userName: username
+                }
+                $.ajax({
+                    url: '/api/rankweek/updatescorerankweek',
+                    type: 'POST',
+                    data: JSON.stringify(newData),
+                    beforeSend: function () {
+                        $('body').addClass("loading")
+                    },
+                    complete: function () {
+                        $('body').removeClass("loading")
+                    },
+                    success: function (data) {
+                        var messageCode = data.messageCode;
+                        var message = data.message;
+                        if (messageCode == 0) {
+                            sessionStorage.removeItem('weekName');
+                            sessionStorage.removeItem('weekId');
+                            sessionStorage.setItem('weekId', weekId);
+                            messageModal('editSuccess', 'img/img-success.png', 'Sửa điểm thành công!');
+                        } else {
+                            sessionStorage.removeItem('weekName');
+                            sessionStorage.removeItem('weekId');
+                            sessionStorage.setItem('weekId', weekId);
+                            messageModal('editSuccess', 'img/img-error.png', message)
+                        }
+                    },
+                    failure: function (errMsg) {
+                        sessionStorage.removeItem('weekName');
+                        sessionStorage.removeItem('weekId');
+                        sessionStorage.setItem('weekId', weekId);
+                        messageModal('editSuccess', 'img/img-error.png', errMsg)
+                    },
+                    dataType: "json",
+                    contentType: "application/json"
+                });
+            }
+        }
+    });
+    $('#closeEditGrades').unbind().click(function () {
+        var row = $('tbody tr td[contenteditable]');
         $(row).attr('contenteditable', 'false');
         $(row).css('background-color', 'transparent');
         $('#editGrades').attr('value', 'Sửa điểm');
         $('#editGrades').removeClass('editMode');
-        var rankWeekList = [];
-        var weekId = $('#byWeek option:selected').val();
-        $('table tbody tr').each(function () {
-            rankWeekList.push({
-                weekId: weekId,
-                classId: $(this).find('td').eq(0).data('column'),
-                className: $(this).find('td').eq(0).text(),
-                emulationGrade: $(this).find('td').eq(1).text(),
-                learningGrade: $(this).find('td').eq(2).text(),
-                movementGrade: $(this).find('td').eq(3).text(),
-                laborGrade: $(this).find('td').eq(4).text(),
-                totalGrade: $(this).find('td').eq(5).text(),
-                rank: $(this).find('td').eq(6).text(),
-                history: "a"
-            })
-        });
-        var newData = {
-            rankWeekList: rankWeekList
-        }
-        console.log(JSON.stringify(newData));
-        $.ajax({
-            url: '/api/rankweek/updatescorerankweek',
-            type: 'POST',
-            data: JSON.stringify(newData),
-            beforeSend: function () {
-                $('body').addClass("loading")
-            },
-            complete: function () {
-                $('body').removeClass("loading")
-            },
-            success: function (data) {
-                var messageCode = data.messageCode;
-                var message = data.message;
-                if (messageCode == 0) {
-                    sessionStorage.removeItem('weekName');
-                    sessionStorage.removeItem('weekId');
-                    sessionStorage.setItem('weekId', weekId);
-                    dialogModal('editSuccess', 'img/img-success.png', 'Sửa điểm thành công!');
-                } else {
-                    sessionStorage.removeItem('weekName');
-                    sessionStorage.removeItem('weekId');
-                    sessionStorage.setItem('weekId', weekId);
-                    dialogModal('editSuccess', 'img/img-error.png', message)
-                }
-            },
-            failure: function (errMsg) {
-                sessionStorage.removeItem('weekName');
-                sessionStorage.removeItem('weekId');
-                sessionStorage.setItem('weekId', weekId);
-                dialogModal('editSuccess', 'img/img-error.png', errMsg)
-            },
-            dataType: "json",
-            contentType: "application/json"
-        });
-
-    }
-});
+        $('#closeEditGrades').addClass('hide');
+        rankWeekList.length = 0;
+        rankOld.length = 0;
+        search();
+    })
+}
 
 /*Validate input*/
 function validateInput(className, max) {
@@ -523,10 +686,21 @@ function validateInput(className, max) {
     });
     $(inputClass).blur(function () {
         var value = parseFloat($(this).text());
-        if (value > max || value < 0) {
+        console.log(value)
+        if (value > max || value < 0 || isNaN(value)) {
+            var $input = $(this);
             $(this).css('color', 'red');
             $(this).css('font-weight', '500');
-            $(this).focus();
+            $('#editSuccess .modal-footer').html(`<input type="button" class="btn btn-primary closeModalErr" value="ĐÓNG"/>`)
+            if (isNaN(value)) {
+                messageModal('editSuccess', 'img/img-error.png', 'Không được để trống trường này!');
+            } else {
+                messageModal('editSuccess', 'img/img-error.png', 'Điểm nhập vào phải nhỏ hơn ' + max + '!');
+            }
+            $('.closeModalErr').on('click', function () {
+                $input.focus();
+                $('#editSuccess').modal('hide');
+            })
         } else if (value != input) {
             $(this).css('color', 'black');
             $(this).css('font-weight', '700');
@@ -542,78 +716,107 @@ function validateInput(className, max) {
 }
 
 /*===============Download===================*/
+
 /*Download button*/
-$("#download").click(function () {
-    var classId = $('#byClass option:selected').val();
-    var weekId = $('#byWeek option:selected').val();
-    if (classId == null || classId == "") {
-        classId = ""
-    } else {
-        classId = $('#byClass option:selected').val();
-    }
-    var download = {
-        weekId: weekId,
-        classId: classId,
-    }
-    console.log(JSON.stringify(download))
-    $.ajax({
-        url: '/api/rankweek/download',
-        type: 'POST',
-        data: JSON.stringify(download),
-        xhrFields: {
-            responseType: 'blob'
-        },
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
-        success: function (data) {
-            var a = document.createElement('a');
-            var url = window.URL.createObjectURL(data);
-            var name = 'XẾP-HẠNG-THI-ĐUA-THEO-TUẦN.xls';
-            a.href = url;
-            a.download = name;
-            document.body.append(a);
-            a.click();
-            a.remove();
-            window.URL.revokeObjectURL(url);
-        },
-        failure: function (errMsg) {
-            dialogModal('downloadModal', 'img/img-error.png', errMsg)
-        },
-        dataType: "binary",
-        contentType: "application/json"
+function dowload() {
+    $("#download").click(function () {
+        var classId = $('#byClass option:selected').val();
+        var weekId = $('#byWeek option:selected').val();
+        if (classId == null || classId == "") {
+            classId = ""
+        } else {
+            classId = $('#byClass option:selected').val();
+        }
+        var download = {
+            weekId: weekId,
+            classId: classId,
+        }
+        console.log(JSON.stringify(download))
+        $.ajax({
+            url: '/api/rankweek/download',
+            type: 'POST',
+            data: JSON.stringify(download),
+            xhrFields: {
+                responseType: 'blob'
+            },
+            beforeSend: function () {
+                $('body').addClass("loading")
+            },
+            complete: function () {
+                $('body').removeClass("loading")
+            },
+            success: function (data) {
+                var a = document.createElement('a');
+                var url = window.URL.createObjectURL(data);
+                var name = 'XẾP-HẠNG-THI-ĐUA-THEO-TUẦN.xls';
+                a.href = url;
+                a.download = name;
+                document.body.append(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+            },
+            failure: function (errMsg) {
+                messageModal('downloadModal', 'img/img-error.png', errMsg)
+            },
+            dataType: "binary",
+            contentType: "application/json"
+        });
     });
-});
+}
 
 /*=====================================*/
 /*Set role*/
-if (localStorage.getItem('roleID') != 1) {
+if (roleID != 1) {
     $('.manageBtn').addClass('hide');
 }
 
-/*Dialog Modal*/
-function dialogModal(modalName, img, message) {
-    $('#' + modalName + ' .modal-body').html(`
-        <img class="mb-3 mt-3" src="` + img + `"/>
-        <h5>` + message + `</h5>
-    `)
-    $('#' + modalName).modal('show');
-}
-
-function closeModal(weekId) {
-    $('.isClosed').on('click', function () {
-        $('#editSuccess').modal('hide');
-        $('#createSuccess').modal('hide');
-        $('#byWeek option:selected').val(weekId);
-        $('table tbody').html('');
-        search();
-    })
-}
-
 /*Remove checkbox when close modal*/
-$(document).on('hidden.bs.modal', '#createNewRank', '#editRank', function () {
+$(document).on('hidden.bs.modal', '#createNewRank', function () {
     $('input[name=options]').prop('checked', false);
+    $('#weekName').val('');
+    $('.createNewRank-err').text('');
 });
+$(document).on('hidden.bs.modal', '#editRank', function () {
+    $('input[name=editOptions]').prop('checked', false);
+    $('#newWeekName').val('');
+    $('.editRank-err').text('');
+});
+
+/*===============View History===================*/
+
+/*View history button*/
+function viewHistory() {
+    $("#viewHistory").click(function () {
+        var weekId = $('#byWeek option:selected').val();
+        var viewHistory = {
+            weekId: weekId
+        };
+        $.ajax({
+            url: '/api/rankweek/viewhistory',
+            type: 'POST',
+            data: JSON.stringify(viewHistory),
+            beforeSend: function () {
+                $('body').addClass("loading")
+            },
+            complete: function () {
+                $('body').removeClass("loading")
+            },
+            success: function (data) {
+                var messageCode = data.message.messageCode;
+                var message = data.message.message;
+                if (messageCode == 0) {
+                    $('#historyModal .modal-body').html(data.history);
+                    $('#historyModal').modal('show');
+                } else {
+                    messageModal('downloadModal', 'img/img-error.png', message)
+                }
+            },
+            failure: function (errMsg) {
+                messageModal('downloadModal', 'img/img-error.png', errMsg)
+            },
+            dataType: "json",
+            contentType: "application/json"
+        });
+    });
+}

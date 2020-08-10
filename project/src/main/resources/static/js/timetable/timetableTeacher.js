@@ -7,6 +7,7 @@ var applyDate, teacherId;
 $(document).ready(function () {
     $("#teacher").select2();
 });
+
 /*Load years and list*/
 $.ajax({
     url: '/api/timetable/getapplydateandteacher',
@@ -27,9 +28,9 @@ $.ajax({
                 $('#appyDateList').html("");
                 $.each(data.appyDateList, function (i, item) {
                     if (item == data.currentDate) {
-                        $('#appyDateList').append(`<option value="` + item + `" selected>` + convertDate(item) + `</option>`);
+                        $('#appyDateList').append(`<option value="` + item + `" selected>` + convertDate(item,'/') + `</option>`);
                     } else {
-                        $('#appyDateList').append(`<option value="` + item + `">` + convertDate(item) + `</option>`);
+                        $('#appyDateList').append(`<option value="` + item + `">` + convertDate(item,'/') + `</option>`);
                     }
                 });
                 applyDate = $('#appyDateList option:selected').val();

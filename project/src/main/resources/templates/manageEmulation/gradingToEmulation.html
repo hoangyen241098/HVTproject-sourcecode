@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>.::Chấm điểm thi đua::.</title>
     <link th:href="@{/img/logo.png}" rel="shortcut icon" type="image/x-icon"/>
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
 
     <!-- jQuery library -->
     <script th:src="@{/js/public/jquery-3.5.1.min.js}"></script>
@@ -55,7 +56,7 @@
 
 <!-- Confirm Modal HTML -->
 <div id="confirmModal" class="modal fade">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Xác nhận lưu</h4>
@@ -73,7 +74,7 @@
 
 <!--    Modal Save Success-->
 <div class="modal fade" tabindex="-1" role="dialog" id="saveSuccess">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-body text-center"></div>
             <div class="modal-footer">

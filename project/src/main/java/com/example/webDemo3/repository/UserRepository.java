@@ -32,4 +32,7 @@ public interface UserRepository extends JpaRepository<User,String>, PagingAndSor
     List<User> findAllByClassSchoolClassId(Integer classId);
 
     List<User> findAllByRoleRoleId(Integer roleId);
+
+    @Query("select u.username from User u where (u.status <> 1 or u.status is null) ")
+    List<String> findAllUsernameActive();
 }

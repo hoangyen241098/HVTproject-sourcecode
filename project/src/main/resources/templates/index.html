@@ -4,80 +4,63 @@
     <meta charset="UTF-8">
     <title>.::Trang chủ::.</title>
     <link th:href="@{/img/logo.png}" rel="shortcut icon" type="image/x-icon"/>
-
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
     <!-- jQuery library -->
     <script th:src="@{/js/public/jquery-3.5.1.min.js}"></script>
+    <script th:src="@{/js/public/jquery.lazyload.min.js}"></script>
 
     <!--Bootstrap 4-->
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <script th:src="@{/js/public/popper.min.js}"></script>
     <script th:src="@{/js/public/bootstrap.min.js}"></script>
     <!--Font-Awesome-->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"
-          type="text/css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"/>
     <link th:href="@{/css/style.css}" rel="stylesheet"/>
     <script type="text/javascript" th:src="@{/js/functions.js}"></script>
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
-<div class="container">
-    <br>
-    <h2>Module 1: Quản lý tài khoản</h2>
-    <div><a th:href="@{login}">Đăng nhập</a></div>
-    <div><a th:href="@{forgotPassword}">Quên mật khẩu</a></div>
-    <div><a th:href="@{changePassword}">Thay đổi mật khẩu</a></div>
-    <div><a th:href="@{userInformation}">Thông tin cá nhân</a></div>
-    <div><a th:href="@{manageAccount}">Quản lý tài khoản</a></div>
-    <div><a th:href="@{createAccount}">Tạo tài khoản</a></div>
-    <br>
-    <h2>Module 2: Quản lý giáo viên</h2>
-    <div><a th:href="@{manageTeacher}">Quản lý giáo viên</a></div>
-    <div><a th:href="@{createTeacher}">Thêm giáo viên</a></div>
-    <div><a th:href="@{teacherInformation}">Sửa thông tin giáo viên</a></div>
-    <br>
-    <h2>Module 3: Quản lý lớp</h2>
-    <div><a th:href="@{manageClass}">Quản lý lớp</a></div>
-    <div><a th:href="@{createClass}">Thêm lớp</a></div>
-    <div><a th:href="@{editClass}">Sửa thông tin lớp</a></div>
-    <div><a th:href="@{createGifftedClass}">Thêm hệ chuyên</a></div>
-    <div><a th:href="@{deleteGifftedClass}">Xóa hệ chuyên</a></div>
-    <br>
-    <h2>Module 4: Thời khóa biểu</h2>
-    <div><a th:href="@{timetableClass}">Thời khóa biểu của lớp</a></div>
-    <div><a th:href="@{timetableTeacher}">Thời khóa biểu của giáo viên</a></div>
-    <div><a th:href="@{manageTimetable}">Quản lý thời khóa biểu</a></div>
-    <br>
-    <h2>Module 5: Quản lý lỗi</h2>
-    <div><a th:href="@{violationList}">Danh sách lỗi vi phạm</a></div>
-    <div><a th:href="@{editViolation}">Chỉnh sửa thông tin lỗi vi phạm</a></div>
-    <div><a th:href="@{addViolation}">Thêm thông tin lỗi vi phạm</a></div>
-    <div><a th:href="@{editViolationType}">Chỉnh sửa thông tin nội quy</a></div>
-    <div><a th:href="@{addViolationType}">Thêm thông tin nội quy</a></div>
-    <br>
-    <h2>Module 6: Quản lý năm học</h2>
-    <div><a th:href="@{schoolYearList}">Quản lý năm học</a></div>
-    <div><a th:href="@{addSchoolYear}">Thêm năm học mới</a></div>
-    <div><a th:href="@{editSchoolYear}">Sửa thông tin năm học</a></div>
-    <br>
-    <h2>Module 7: Trực tuần</h2>
-    <div><a th:href="@{assignEmulation}">Xem phân công trực tuần</a></div>
-    <div><a th:href="@{gradingToEmulation}">Chấm điểm thi đua</a></div>
-    <div><a th:href="@{violationListOfClass}">Xem danh sách lỗi theo ngày</a></div>
-    <div><a th:href="@{viewRequest}">Xem yêu cầu thay đổi</a></div>
-    <div><a th:href="@{history}">Xem lịch sử</a></div>
-    <br>
-    <h2>Module 8: Quản lý thời gian</h2>
-    <div><a th:href="@{manageViolationEnteringTime}">Xem thời gian thực thi chấm điểm</a></div>
-    <div><a th:href="@{createViolationEnteringTime}">Thêm thời gian chấm</a></div>
-    <br>
-    <h2>Module 9: Quản lý xếp hạng</h2>
-    <div><a th:href="@{rankByWeek}">Xếp hạng theo tuần</a></div>
-    <div><a th:href="@{rankByMonth}">Xếp hạng theo tháng</a></div>
-    <div><a th:href="@{rankBySemester}">Xếp hạng theo học kỳ</a></div>
-    <div><a th:href="@{rankByYear}">Xếp hạng theo năm</a></div>
-    <br>
+<div class="main-content">
+    <!--Side Photo-->
+    <div class="slider">
+        <div class="slide_viewer">
+            <div class="slide_group">
+                <div class="slide"><img class="lazy" data-original="https://picsum.photos/1200/800/?random"
+                                        title="Silde Photo 1"></div>
+                <div class="slide"><img class="lazy" data-original="https://picsum.photos/1200/800/?random"
+                                        title="Silde Photo 2"></div>
+                <div class="slide"><img class="lazy" data-original="https://picsum.photos/1200/800/?random"
+                                        title="Silde Photo 3"></div>
+            </div>
+        </div>
+        <div class="slide_buttons"></div>
+        <!--        <div class="directional_nav">-->
+        <!--            <div class="previous_btn" title="Previous">-->
+        <!--                <i class="fa fa-angle-left"></i>-->
+        <!--            </div>-->
+        <!--            <div class="next_btn" title="Next">-->
+        <!--                <i class="fa fa-angle-right"></i>-->
+        <!--            </div>-->
+        <!--        </div>&lt;!&ndash; End // .directional_nav &ndash;&gt;-->
+    </div><!-- End // .slider -->
+    <div class="content-wrap">
+        <div class="container w-1130 d-flex row container-header px-0 m-0 mx-auto">
+            <div class="post-gird card-pin col-md-6 col-sm-12 pr-0"></div>
+            <div class="col-md-6 col-sm-12 d-flex flex-wrap pr-0"></div>
+        </div>
+    </div>
+    <div class="content-wrap pt-0 container-paging">
+        <div class="container w-1130 mx-auto d-flex flex-wrap px-0"></div>
+    </div>
+    <div class="content-wrap py-0">
+        <div class="container w-1130 mx-auto px-0">
+            <div class="table-paging"></div>
+            <h2 class="homepage-message my-3 text-center"></h2>
+        </div>
+    </div>
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 <div class="modal-loading"></div>
 </body>
+<script th:src="@{/js/managePost/homePage.js}"></script>
 </html>

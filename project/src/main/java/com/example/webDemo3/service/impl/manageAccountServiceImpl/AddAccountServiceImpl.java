@@ -39,26 +39,38 @@ public class AddAccountServiceImpl implements AddAccountService {
         Integer classId = resquestDTO.getClassId();
         MessageDTO message = new MessageDTO();
 
-        List<String> userList = userRepository.findAllUsername();
+        if(userName.trim().isEmpty()) {
+            message = Constant.USERNAME_EMPTY;
+            return message;
+        }
+
+//<<<<<<< HEAD
+//            if(!passWord.trim().equals("")) {
+//                newUser.setPassword(passwordEncoder.encode(passWord));
+//            }
+//            else {
+//                message = Constant.PASSWORD_EMPTY;
+//                return message;
+//=======
+        if(passWord.trim().isEmpty()) {
+            message = Constant.PASSWORD_EMPTY;
+            return message;
+        }
+
+        newUser = userRepository.findUserByUsername(userName);
+
         //check username existed in user table
-        if(!userList.contains(userName))
-        {
-            if(!userName.trim().equals("")) {
-                newUser.setUsername(userName);
-            }
-            else {
-                message = Constant.USERNAME_EMPTY;
-                return message;
-            }
-
-            if(!passWord.trim().equals("")) {
-                newUser.setPassword(passwordEncoder.encode(passWord));
-            }
-            else {
-                message = Constant.PASSWORD_EMPTY;
-                return message;
+        if(newUser != null && (newUser.getStatus() == null || newUser.getStatus() == 0)) {
+            message = Constant.USERNAME_EXIST;
+            return message;
+        }
+        else{
+            if(newUser == null){
+                newUser = new User();
             }
 
+            newUser.setUsername(userName);
+            newUser.setPassword(passWord);
             newUser.setName(resquestDTO.getFullName());
             newUser.setPhone(resquestDTO.getPhone());
             newUser.setEmail(resquestDTO.getEmail());
@@ -85,7 +97,5 @@ public class AddAccountServiceImpl implements AddAccountService {
             message = Constant.SUCCESS;
             return message;
         }
-        message = Constant.USERNAME_EXIST;
-        return message;
     }
 }

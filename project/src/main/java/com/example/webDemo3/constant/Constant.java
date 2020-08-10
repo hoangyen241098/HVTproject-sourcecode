@@ -213,6 +213,20 @@ public class Constant {
             new MessageDTO(1,"Không có ngày chưa được xếp hạng.");
     public static final MessageDTO NOT_ACCEPT_CREATE_RANK_WEEK =
             new MessageDTO(1,"Bạn không có quyền tạo xếp hạng tuần.");
+    public static final MessageDTO NOT_ACCEPT_CREATE_RANK_MONTH =
+            new MessageDTO(1,"Bạn không có quyền tạo xếp hạng tháng.");
+    public static final MessageDTO NOT_ACCEPT_CREATE_RANK_SEMESTER =
+            new MessageDTO(1,"Bạn không có quyền tạo xếp hạng kỳ.");
+    public static final MessageDTO NOT_ACCEPT_CREATE_RANK_YEAR =
+            new MessageDTO(1,"Bạn không có quyền tạo xếp hạng năm.");
+    public static final MessageDTO NOT_ACCEPT_EDIT_RANK_WEEK =
+            new MessageDTO(1,"Bạn không có quyền sửa xếp hạng tuần.");
+    public static final MessageDTO NOT_ACCEPT_EDIT_RANK_MONTH =
+            new MessageDTO(1,"Bạn không có quyền sửa xếp hạng tháng.");
+    public static final MessageDTO NOT_ACCEPT_EDIT_RANK_SEMESTER =
+            new MessageDTO(1,"Bạn không có quyền sửa xếp hạng kỳ.");
+    public static final MessageDTO NOT_ACCEPT_EDIT_RANK_YEAR =
+            new MessageDTO(1,"Bạn không có quyền sửa xếp hạng năm.");
     public static final MessageDTO WEEK_NAME_EMPTY =
             new MessageDTO(1,"Hãy điền tên tuần.");
     public static final MessageDTO SCHOOL_WEEK_EXISTS =
@@ -249,6 +263,102 @@ public class Constant {
             new MessageDTO(1,"Tuần này chưa tồn tại.");
     public static final MessageDTO RANK_HAS_VIOLATION_CLASS_REQUEST_NOT_EXCEPT_EXIST =
             new MessageDTO(1,"Vẫn còn yêu cầu thay đổi chưa được xử lý, không thể tạo xếp hạng.");
+    public static final MessageDTO  MONTHLIST_EMPTY=
+            new MessageDTO(1,"Danh sách tháng đang trống.");
+    public static final MessageDTO  MONTHID_EMPTY=
+            new MessageDTO(1,"Hãy chọn tháng cần tìm kiếm.");
+    public static final MessageDTO  RANKMONTHLIST_EMPTY=
+            new MessageDTO(1,"Danh sách xếp hạng của tháng này trống.");
+    public static final MessageDTO MONTH_NAME_EMPTY =
+            new MessageDTO(1,"Hãy điền tên tháng.");
+    public static final MessageDTO WEEK_LIST_EMPTY =
+            new MessageDTO(1,"Không có tuần chưa được xếp hạng.");
+    public static final MessageDTO SCHOOL_MONTH_EXISTS =
+            new MessageDTO(1,"Tên tháng trong kỳ đã tồn tại.");
+    public static final MessageDTO SCHOOL_MONTH_ID_NULL =
+            new MessageDTO(1,"Hãy nhập tên tháng.");
+    public static final MessageDTO SCHOOL_MONTH_NOT_EXISTS =
+            new MessageDTO(1,"Tên tháng trong kỳ không tồn tại.");
+    public static final MessageDTO LIST_MONTH_NULL =
+            new MessageDTO(1,"Danh sách tháng đang trống.");
+    public static final MessageDTO SEMESTER_NAME_EMPTY =
+            new MessageDTO(1,"Hãy điền tên kỳ.");
+    public static final MessageDTO MONTH_LIST_EMPTY =
+            new MessageDTO(1,"Không có tháng chưa được xếp hạng.");
+    public static final MessageDTO SCHOOL_SEMESTER_EXISTS =
+            new MessageDTO(1,"Tên kỳ trong năm hiện tại đã tồn tại.");
+    public static final MessageDTO SCHOOL_RANK_SEMESTER_NULL =
+            new MessageDTO(1,"Danh sách xếp hạng lớp theo kỳ trống.");
+    public static final MessageDTO SCHOOL_SEMESTER_ID_NULL =
+            new MessageDTO(1,"Hãy nhập tên kỳ.");
+    public static final MessageDTO SCHOOL_SEMESTER_NOT_EXISTS =
+            new MessageDTO(1,"Tên kỳ trong năm không tồn tại.");
+    public static final MessageDTO  SEMESTERLIST_EMPTY=
+            new MessageDTO(1,"Danh sách học kỳ đang trống.");
+    public static final MessageDTO  SEMESTERID_EMPTY=
+            new MessageDTO(1,"Hãy chọn học kỳ cần tìm kiếm.");
+    public static final MessageDTO  RANKYEARLIST_EMPTY=
+            new MessageDTO(1,"Danh sách xếp hạng của năm học này trống.");
+    public static final MessageDTO  RANKSEMESTERLIST_EMPTY=
+            new MessageDTO(1,"Danh sách xếp hạng của kỳ này trống.");
+    public static final MessageDTO LIST_SEMESTER_NULL =
+            new MessageDTO(1,"Danh sách kỳ đang trống.");
+    public static final MessageDTO SEMESTER_LIST_EMPTY =
+            new MessageDTO(1,"Không có kỳ chưa được xếp hạng.");
+    public static final MessageDTO SCHOOL_RANK_YEAR_EMPTY =
+            new MessageDTO(1,"Không có năm chưa được xếp hạng.");
+    public static final MessageDTO SCHOOL_RANK_YEAR_NULL =
+            new MessageDTO(1,"Danh sách xếp hạng lớp theo năm trống.");
+    public static final MessageDTO SCHOOL_YEAR_NOT_EXISTS =
+            new MessageDTO(1,"Tên năm không tồn tại.");
+    public static final MessageDTO HEADER_EMPTY =
+            new MessageDTO(1,"Hãy nhập tiêu đề của bài viết.");
+    public static final MessageDTO HEADERIMAGE_EMPTY =
+            new MessageDTO(1,"Hãy nhập ảnh bìa của bài viết.");
+    public static final MessageDTO CONTENT_EMPTY =
+            new MessageDTO(1,"Hãy nhập nội dung của bài viết.");
+    public static final MessageDTO NOROLE_NEWSLETTER =
+            new MessageDTO(1,"Bạn không có quyền thêm/chỉnh sửa bài viết.");
+    public static final MessageDTO NEWSLETTERID_EMPTY =
+            new MessageDTO(1,"Hãy lựa chọn bài viết.");
+    public static final MessageDTO ADD_NEWSLETTER_FAIL =
+            new MessageDTO(1,"Tạo bài viết xảy ra lỗi.");
+    public static final MessageDTO EDIT_NEWSLETTER_FAIL =
+            new MessageDTO(1,"Chỉnh sửa bài viết xảy ra lỗi.");
+    public static final MessageDTO NEWSLETTER_STATUS_NULL =
+            new MessageDTO(1,"Hãy lựa chọn trạng thái.");
+    public static final MessageDTO NEWSLETTER_NULL =
+            new MessageDTO(1,"Không tìm thấy bài viết");
+    public static final MessageDTO PAGE_NUMBER_NULL =
+            new MessageDTO(1,"Hãy chọn trang.");
+    public static final MessageDTO NEW_LETTER_ID_NULL =
+            new MessageDTO(1,"Hãy chọn bài viết.");
+    public static final MessageDTO NEW_LETTER_NOT_EXISTS =
+            new MessageDTO(1,"Bài viết không tồn tại.");
+    public static final MessageDTO NEWSLETTERLIST_EMPTY =
+            new MessageDTO(1,"Danh sách bài viết trống.");
+    public static final MessageDTO CREATE_DATE_NULL =
+            new MessageDTO(1,"Hãy điền ngày tạo.");
+    public static final MessageDTO HISTORY_IS_EMPTY =
+            new MessageDTO(1,"Không có lịch sử.");
+    public static final MessageDTO ADD_FROMDATE_SMALLER_CURRENT =
+            new MessageDTO(1,"Bạn không thể tạo năm với ngày nhỏ hơn hiện tại.");
+    public static final MessageDTO EDIT_FROMDATE_SMALLER_CURRENT =
+            new MessageDTO(1,"Bạn không thể sửa năm với ngày nhỏ hơn hiện tại.");
+    public static final MessageDTO EDIT_TODATE_SMALLER_CURRENT =
+            new MessageDTO(1,"Bạn không thể sửa ngày của năm học nhỏ hơn ngày hôm nay.");
+    public static final MessageDTO NO_EDIT_STARTDATE_SCHOOLYEAR =
+            new MessageDTO(1,"Bạn không thể chỉnh sửa ngày bắt đầu.");
+    public static final MessageDTO NO_EDIT_ENDDATE_SCHOOLYEAR =
+            new MessageDTO(1,"Bạn không thể chỉnh sửa ngày kết thúc.");
+    public static final MessageDTO RANKMONTH_NOT_EDIT =
+            new MessageDTO(1,"Bạn không thể sửa tháng đã được xếp hạng ở học kỳ.");
+    public static final MessageDTO RANKSEMESTER_NOT_EDIT =
+            new MessageDTO(1,"Bạn không thể sửa học kỳ đã được xếp hạng ở năm học.");
+    public static final MessageDTO ADD_HISTORY_WEEK_FAIL =
+            new MessageDTO(1,"Thêm lịch sử cho chỉnh sửa xảy ra lỗi.");
+    public static final MessageDTO UPDATE_GIM_FAIL =
+            new MessageDTO(1,"Cập nhật bài đăng ghim xảy ra lỗi.");
     /**
      * Success message
      */

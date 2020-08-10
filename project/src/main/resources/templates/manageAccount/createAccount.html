@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>.::Tạo tài khoản::.</title>
     <link th:href="@{/img/logo.png}" rel="shortcut icon" type="image/x-icon"/>
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
 
     <!-- jQuery library -->
     <script th:src="@{/js/public/jquery-3.5.1.min.js}"></script>
@@ -24,10 +25,10 @@
 <div class="container">
     <!-- MultiStep Form -->
     <div class="row">
-        <div class="col-md-6 col-md-offset-3 mx-auto">
+        <div class="col-lg-6 col-md-12 p-0 mx-auto">
             <form id="msform">
                 <h2 class="fs-title">Tạo tài khoản</h2>
-                <h3 class="fs-subtitle">Điền đầy đủ thông tin vào các trường để tạo tài khoản mới</h3>
+                <h3 class="fs-subtitle mx-2">Điền đầy đủ thông tin vào các trường để tạo tài khoản mới</h3>
                 <!-- progressbar -->
                 <ul id="progressbar">
                     <li class="active">Chọn chức vụ</li>
@@ -91,7 +92,7 @@
 
 <!--    Modal Create Success-->
 <div class="modal fade" tabindex="-1" role="dialog" id="createSuccess">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-body text-center"></div>
             <div class="modal-footer">

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>.::Quản lý năm học::.</title>
     <link th:href="@{/img/logo.png}" rel="shortcut icon" type="image/x-icon"/>
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
 
     <!-- jQuery library -->
     <script th:src="@{/js/public/jquery-3.5.1.min.js}"></script>
@@ -29,8 +30,8 @@
             <h2>DANH SÁCH NĂM HỌC</h2>
         </div>
         <div class="table-title-2 manageBtn">
-            <div class="col-sm-12 d-flex justify-content-end align-items-center">
-                <a th:href="@{addSchoolYear}" class="btn btn-success">
+            <div class="row mx-0 justify-content-end">
+                <a th:href="@{addSchoolYear}" class="btn btn-success mr-0">
                     <span>Thêm năm học</span>
                 </a>
             </div>
@@ -55,7 +56,7 @@
 
 <!-- Delete Modal HTML -->
 <div id="deleteModal" class="modal fade">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-body text-center">
             </div>
@@ -70,7 +71,7 @@
 
 <!--    Modal Delete Success-->
 <div class="modal fade" tabindex="-1" role="dialog" id="deleteSuccess">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-body text-center"></div>
             <div class="modal-footer">

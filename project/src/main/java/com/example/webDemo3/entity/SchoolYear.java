@@ -31,6 +31,12 @@ public class SchoolYear {
     @Column(name = "TO_YEAR")
     private Integer toYear;
 
+    @Column(name = "RANK_HISTORY")
+    private String history;
+
+    @Column(name = "RANK_CREATE_DATE")
+    private Date createDate;
+
     public SchoolYear() {
     }
 

@@ -1,4 +1,13 @@
 var list = [];
+$(function () {
+    $('#timeToStart').datetimepicker({
+        format: 'HH:mm'
+    });
+
+    $('#timeToEnd').datetimepicker({
+        format: 'HH:mm'
+    });
+});
 
 /*Get roleName list*/
 $.ajax({
@@ -16,32 +25,21 @@ $.ajax({
         if (messageCode == 0) {
             if (data.listRole != null) {
                 $('#roleName').html('');
-                $('#roleName').append(`
-                    <option value="0" selected>Tất cả</option>
-                `);
+                $('#roleName').append(`<option value="0" selected>Chọn chức vụ</option>`);
                 $.each(data.listRole, function (i, list) {
-                    $('#roleName').append(`
-                        <option value="` + list.roleId + `" name="` + list.roleName + `">` + list.roleName + `</option>
-                    `);
+                    if (list.roleId == 3 || list.roleId == 5) {
+                        $('#roleName').append(`<option value="` + list.roleId + `" name="` + list.roleName + `">` + list.roleName + `</option>`);
+                    }
                 });
             } else {
-                $('#roleName').html('');
-                $('#roleName').append(`
-                    <option selected>Danh sách trống.</option>
-                `);
+                $('#roleName').html(`<option value="err" selected>Danh sách trống.</option>`);
             }
         } else {
-            $('#roleName').html('');
-            $('#roleName').append(`
-                <option selected>` + message + `</option>
-            `);
+            $('#roleName').html(`<option value="err" selected>` + message + `</option>`);
         }
     },
     failure: function (errMsg) {
-        $('#roleName').html('');
-        $('#roleName').append(`
-            <option selected>` + errMsg + `</option>
-        `);
+        $('#roleName').html(`<option value="err" selected>` + errMsg + `</option>`);
     },
     dataType: "json",
     contentType: "application/json"
@@ -78,23 +76,14 @@ $.ajax({
                     `);
                 });
             } else {
-                $('#allDay').html('');
-                $('#allDay').append(`
-                    <h6 class="text-red">Không có ngày áp dụng nào!</h6>
-                `);
+                $('#allDay').html(`<h6 class="text-red">Không có ngày áp dụng nào!</h6>`);
             }
         } else {
-            $('#allDay').html('');
-            $('#allDay').append(`
-                <h6 class="text-red">` + message + `</h6>
-            `);
+            $('#allDay').html(`<h6 class="text-red">` + message + `</h6>`);
         }
     },
     failure: function (errMsg) {
-        $('#allDay').html('');
-        $('#allDay').append(`
-            <h6 class="text-red">` + errMsg + `</h6>
-        `);
+        $('#allDay').html(`<h6 class="text-red">` + errMsg + `</h6>`);
     },
     dataType: "json",
     contentType: "application/json"
@@ -102,9 +91,10 @@ $.ajax({
 
 /*Add Entering Time*/
 $('#submit').on('click', function () {
+    list = [];
     var roleId = $('#roleName option:selected').val();
-    var startTime = $('#timeToStart').val().trim();
-    var endTime = $('#timeToEnd').val().trim();
+    var startTime = $('#timeToStart input').val().trim();
+    var endTime = $('#timeToEnd input').val().trim();
     $('input[name=options]:checked').map(function () {
         list.push(parseInt($(this).val()));
     });
@@ -121,10 +111,14 @@ $('#submit').on('click', function () {
     } else if (endTime == "") {
         $('.createTime-err').text('Hãy điền thời gian kết thúc.')
         return false;
+    } else if (startTime >= endTime) {
+        $('.createTime-err').text('Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc.')
+        return false;
     } else if (list.length == 0) {
         $('.createTime-err').text('Hãy chọn ngày áp dụng.')
         return false;
     } else {
+        $('.createTime-err').text('');
         var newTime = {
             roleId: roleId,
             listDayId: list,
@@ -146,29 +140,13 @@ $('#submit').on('click', function () {
                 var messageCode = data.messageCode;
                 var message = data.message;
                 if (messageCode == 0) {
-                    $('.createTime-err').text('');
-                    $('#createSuccess').modal('show');
-                    $('#createSuccess .modal-body').html('');
-                    $('#createSuccess .modal-body').append(`
-                        <img class="mb-3 mt-3" src="img/img-success.png"/>
-                        <h5>Thêm thời gian chấm thành công!</h5>
-                    `);
+                    messageModal('createSuccess', 'img/img-success.png', 'Thêm thời gian chấm thành công!')
                 } else {
-                    $('#createSuccess').modal('show');
-                    $('#createSuccess .modal-body').html('');
-                    $('#createSuccess .modal-body').append(`
-                        <img class="mb-3 mt-3" src="img/img-error.png"/>
-                        <h5>` + message + `</h5>
-                    `);
+                    messageModal('createSuccess', 'img/img-error.png', message)
                 }
             },
             failure: function (errMsg) {
-                $('#createSuccess').modal('show');
-                $('#createSuccess .modal-body').html('');
-                $('#createSuccess .modal-body').append(`
-                    <img class="mb-3 mt-3" src="img/img-error.png"/>
-                    <h5>` + errMsg + `</h5>
-                `);
+                messageModal('createSuccess', 'img/img-error.png', errMsg)
             },
             dataType: "json",
             contentType: "application/json"
@@ -177,7 +155,7 @@ $('#submit').on('click', function () {
 });
 
 /*Show or hide button manage*/
-if (localStorage.getItem('roleID') != 1) {
+if (roleID != 1) {
     $('.createTime-err').text('Bạn không có quyền thêm thời gian chấm!');
     $('#submit').prop('disabled', true);
 }

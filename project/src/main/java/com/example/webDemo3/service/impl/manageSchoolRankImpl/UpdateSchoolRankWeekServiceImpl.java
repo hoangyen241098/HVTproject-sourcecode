@@ -12,13 +12,16 @@ import com.example.webDemo3.exception.MyException;
 import com.example.webDemo3.repository.ClassRepository;
 import com.example.webDemo3.repository.SchoolRankWeekRepository;
 import com.example.webDemo3.repository.SchoolWeekRepository;
+import com.example.webDemo3.service.manageSchoolRank.AdditionFunctionSchoolRankService;
 import com.example.webDemo3.service.manageSchoolRank.SortSchoolRankWeekService;
 import com.example.webDemo3.service.manageSchoolRank.UpdateSchoolRankWeekService;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +43,9 @@ public class UpdateSchoolRankWeekServiceImpl implements UpdateSchoolRankWeekServ
     @Autowired
     private ClassRepository classRepository;
 
+    @Autowired
+    private AdditionFunctionSchoolRankService additionFunctionService;
+
     /**
      * kimpt142
      * 21/07
@@ -51,6 +57,7 @@ public class UpdateSchoolRankWeekServiceImpl implements UpdateSchoolRankWeekServ
     @Transactional
     public MessageDTO updateSchoolRankWeek(UpdateSchoolRankWeekRequestDto model) {
         List<RankWeekResponseDto> rankWeekList = model.getRankWeekList();
+        String userName = model.getUserName();
         MessageDTO message = new MessageDTO();
         List<SchoolRankWeek> schoolRankWeekList = new ArrayList<>();
         if(rankWeekList != null && rankWeekList.size() != 0) {
@@ -94,6 +101,7 @@ public class UpdateSchoolRankWeekServiceImpl implements UpdateSchoolRankWeekServ
 
             try {
                 message = updateSchoolRankWeek(schoolRankWeekList);
+                message = addHistoryUpdate(schoolWeek, userName);
             } catch (Exception e) {
                 message.setMessageCode(1);
                 message.setMessage(e.toString());
@@ -132,7 +140,6 @@ public class UpdateSchoolRankWeekServiceImpl implements UpdateSchoolRankWeekServ
         schoolRankWeek.setLaborGrade(round(laborGrade));
         schoolRankWeek.setTotalGrade(round(newTotalGrade));
         schoolRankWeek.setEmulationGrade(round(responseDto.getEmulationGrade()));
-        schoolRankWeek.setHistory(responseDto.getHistory());
 
         return schoolRankWeek;
     }
@@ -155,6 +162,33 @@ public class UpdateSchoolRankWeekServiceImpl implements UpdateSchoolRankWeekServ
             message = Constant.UPDATE_SCHOOL_RANK_FAIL;
             throw new MyException(message.getMessage());
         }
+        return message;
+    }
+
+    /**
+     * kimpt142
+     * 30/07
+     * add history into schoolweek table
+     * @param schoolWeek
+     * @param userName
+     * @return
+     * @throws Exception
+     */
+    private MessageDTO addHistoryUpdate(SchoolWeek schoolWeek, String userName) throws Exception
+    {
+        MessageDTO message;
+        Date currentDate = new Date(System.currentTimeMillis());
+        String oldHistory = schoolWeek.getHistory();
+        String newHistory = additionFunctionService.addHistory(oldHistory, userName, currentDate);
+        schoolWeek.setHistory(newHistory);
+        try {
+            schoolWeekRepository.save(schoolWeek);
+        }
+        catch (Exception e){
+            message = Constant.ADD_HISTORY_WEEK_FAIL;
+            throw new MyException(message.getMessage());
+        }
+        message = Constant.SUCCESS;
         return message;
     }
 

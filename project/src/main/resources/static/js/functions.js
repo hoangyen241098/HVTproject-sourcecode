@@ -1,23 +1,37 @@
+/*Value default*/
+var roleID = localStorage.getItem("roleID");
+var username = localStorage.getItem("username");
+var pathname = $(location).attr('pathname');
+
 /*Set navigation bar*/
 $(document).ready(function () {
     getAuthen();
     var loginSuccess = localStorage.getItem("loginSuccess");
-    var roleID = localStorage.getItem("roleID");
-    var username = localStorage.getItem("username");
     if (loginSuccess == 0) {
-        $("#loginSuccessMenu").addClass("show");
+        $("#loginSuccessMenu").removeClass("hide");
         $("#loginSuccessMenu .nav-link").html(username + `<i class="fa fa-caret-down"></i>`);
         $('#loginMenu').css('display', 'none');
+        //ROLEID_ADMIN
         if (roleID == 1) {
-            $("#adminMenu").addClass("show");
+            $("#adminMenu").removeClass("hide");
+            $('#gradingToEmulationMenu').removeClass('hide');
         }
+        //ROLEID_TIMETABLE_MANAGER
         if (roleID == 2) {
             $("#scheduleManagerMenu").addClass("show");
         }
+        //ROLEID_REDSTAR || ROLEID_SUMMERIZEGROUP
+        if (roleID == 3 || roleID == 5) {
+            $('#gradingToEmulationMenu').removeClass('hide');
+        }
+        //ROLEID_MONITOR || ROLEID_CLUBLEADER
+        if (roleID == 4 || roleID == 6) {
+            $('#sendPostMenu').removeClass('hide');
+        }
     } else {
         $('#loginMenu').css('display', 'block');
-        $("#loginSuccessMenu").removeClass("show");
-        $("#adminMenu").removeClass("show");
+        $("#loginSuccessMenu").addClass("hide");
+        $("#adminMenu").addClass("hide");
         $("#scheduleManagerMenu").removeClass("show");
     }
     $("#logout").click(function () {
@@ -25,21 +39,56 @@ $(document).ready(function () {
         logout();
     })
 
-    $('#adminMenu').on('click', function () {
-        $('.mega-menu.show').not($(this).find('.mega-menu')).removeClass('show');
-        $('.dropdown-menu.show').removeClass('show');
-        $('.nav-link .fa').not($(this).find('.fa')).removeClass('up');
-        $(this).find('.mega-menu').toggleClass('show');
-        $(this).find('.fa').toggleClass('up');
-    })
-    $('.dropdown').on('click', function () {
-        $('.mega-menu.show').removeClass('show');
-        $('.dropdown-menu.show').not($(this).find('.dropdown-menu')).removeClass('show');
-        $('.nav-link .fa').not($(this).find('.fa')).removeClass('up');
-        $(this).find('.dropdown-menu').toggleClass('show');
-        $(this).find('.fa').toggleClass('up');
+    // Responsive menu
+    // $(document).on('click', '.dropdown-menu', function (e) {
+    //     e.stopPropagation();
+    // });
+    if ($(window).width() < 992) {
+        $('.dropdown-menu a').click(function (e) {
+            // e.preventDefault();
+            if ($(this).next('.submenu').length) {
+                e.stopPropagation();
+                $(this).next('.submenu').toggleClass('show');
+            }
+            $('.dropdown').on('hide.bs.dropdown', function () {
+                $(this).find('.submenu').hide();
+            })
+        });
+
+        var divHeight = $('header .navbar').height();
+        $('header').css('height', divHeight + 'px');
+    }
+
+    /*Add active class on menu*/
+    $('#navbarMenu li a').each(function () {
+        var href = '/' + $(this).attr('href');
+        if (href == '//') {
+            href = '/';
+        }
+        if (href == pathname) {
+            if (pathname == '/') {
+                $('.homePage').addClass('active');
+            } else {
+                $('.homePage').removeClass('active');
+                $(this).closest('.nav-item').find('.nav-link').addClass('active');
+                $(this).addClass('active');
+            }
+        }
     });
+
+    menuClick();
 });
+
+function menuClick() {
+    $('.dropdown').on('hide.bs.dropdown', function () {
+        $('.nav-link .fa').not($(this).find('.fa')).removeClass('up');
+        $(this).find('.fa').removeClass('up');
+    });
+    $('.dropdown').on('show.bs.dropdown', function () {
+        $('.nav-link .fa').not($(this).find('.fa')).removeClass('up');
+        $(this).find('.fa').addClass('up');
+    });
+}
 
 /*Loading page*/
 $(document).on({
@@ -196,9 +245,9 @@ function paging(inforSearch, totalPages) {
 };
 
 /*Convert string to form date*/
-function convertDate(str) {
+function convertDate(str, value) {
     str = str.split("-");
-    str = str[2].concat("/" + str[1] + "/" + str[0]);
+    str = str[2].concat(value + str[1] + value + str[0]);
     return str;
 }
 
@@ -222,8 +271,32 @@ function limitedDate() {
     $('#toDate').attr('max', toYear + '-12-31');
 }
 
-// /*Clear session when leaving page*/
-var pathname = $(location).attr('pathname');
+/*Limited text*/
+function limitedText(str) {
+    str = $(str).text();
+    if (str.length > 300) {
+        str = str.substring(0, 300) + '...'
+    }
+    return str;
+}
+
+/*Lazy Load*/
+function lazyLoad() {
+    $("img.lazy").lazyload({
+        effect: "fadeIn"
+    });
+}
+
+/*Dialog message*/
+function messageModal(modalName, img, message) {
+    $('#' + modalName + ' .modal-body').html(`
+        <img class="my-3" src="` + img + `"/>
+        <h5>` + message + `</h5>
+    `)
+    $('#' + modalName).modal('show');
+}
+
+/*Clear session when leaving page*/
 if (pathname != '/teacherInformation') {
     sessionStorage.removeItem('teacherId');
 }
@@ -306,3 +379,24 @@ function getAuthen() {
         // Authorization: 'Bearer ' + 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImlhdCI6MTU5NjA5NzYxMSwiZXhwIjoxNTk2NzAyNDExfQ.bCFuTQOk1Kl9ARmrT83HTOQOMOFbFb6aLY_uEXiJTXBMz3tdlh3RMFPz70-sCKzNgTZ8bFJlzGeeHs5PgGAeNQ'
     });
 }
+
+if (pathname != '/rankByWeek') {
+    sessionStorage.removeItem('weekName');
+    sessionStorage.removeItem('weekId');
+}
+if (pathname != '/rankByMonth') {
+    sessionStorage.removeItem('monthName');
+}
+if (pathname != '/rankBySemester') {
+    sessionStorage.removeItem('semesterName');
+}
+if (pathname != '/rankByYear') {
+    sessionStorage.removeItem('yearId');
+}
+if (pathname != '/postDetail') {
+    sessionStorage.removeItem('newsletterId');
+}
+if (pathname != '/editPost') {
+    sessionStorage.removeItem('newsletterIdEdit');
+}
+
