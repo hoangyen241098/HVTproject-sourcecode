@@ -85,8 +85,8 @@ function editViolationType(e){
             if (messageCode == 0) {
                 oldTotalGrade = newTotalGrade;
                 oldName = newName;
-                $('#editInfoSuccess').css('display', 'block');
                 $('.violation-err').text("");
+                messageModal('editInfoSuccess', 'img/img-success.png', message)
             } else {
                 $('.violation-err').text(message);
             }

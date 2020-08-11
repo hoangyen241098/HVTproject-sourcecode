@@ -60,16 +60,16 @@ $.ajax({
                     `);
                 });
             } else {
-                $('tbody').html(`<tr><td colspan="5" class="userlist-result">Chưa có thời gian chấm điểm.</td></tr>`)
+                $('tbody').html(`<tr><td colspan="5" class="text-center">Chưa có thời gian chấm điểm.</td></tr>`)
             }
         } else {
-            $('tbody').html(`<tr><td colspan="5" class="userlist-result">` + message + `</td></tr>`)
+            $('tbody').html(`<tr><td colspan="5" class="text-center">` + message + `</td></tr>`)
         }
         selectCheckbox();
         manageBtn();
     },
     failure: function (errMsg) {
-        $('tbody').html(`<tr><td colspan="5" class="userlist-result">` + errMsg + `</td></tr>`)
+        $('tbody').html(`<tr><td colspan="5" class="text-center">` + errMsg + `</td></tr>`)
     },
     dataType: "json",
     contentType: "application/json"

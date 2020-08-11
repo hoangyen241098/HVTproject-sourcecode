@@ -163,12 +163,7 @@ function deleteViolationType() {
             typeId: deleteTypeId,
         }
         e.preventDefault();
-        $("#deleteModal .modal-body").html("");
-        $('#deleteModal .modal-body').append(`
-                <img class="mb-3 mt-3" src="img/img-question.png"/>
-                <h5>Bạn có chắc muốn <b>XÓA</b> nội quy này không?</h5>
-        `);
-        $('#deleteModal').addClass('fade');
+        messageModal('deleteModal', 'img/img-question.png', 'Bạn có chắc muốn <b>XÓA</b> nội quy này không?')
         $('.bt-table-type-delete').attr('data-target', '#deleteModal');
         $('#deleteViolation').on('click', function (e) {
             $.ajax({
@@ -185,25 +180,13 @@ function deleteViolationType() {
                     var messageCode = data.messageCode;
                     var message = data.message;
                     if (messageCode == 0) {
-                        $("#deleteSuccess .modal-body").html("");
-                        $('#deleteSuccess .modal-body').append(`
-                            <img class="mb-3 mt-3" src="img/img-success.png"/>
-                            <h5 id="message-delete">Xóa thành công nội quy.</h5>
-                        `);
+                        messageModal('deleteSuccess', 'img/img-success.png', message)
                     } else {
-                        $("#deleteSuccess .modal-body").html("");
-                        $('#deleteSuccess .modal-body').append(`
-                            <img class="mb-3 mt-3" src="img/img-error.png"/>
-                            <h5>` + message + `</h5>
-                        `);
+                        messageModal('deleteSuccess', 'img/img-error.png', message)
                     }
                 },
                 failure: function (errMsg) {
-                    $("#deleteSuccess .modal-body").html("");
-                    $('#deleteSuccess .modal-body').append(`
-                        <img class="mb-3 mt-3" src="img/img-error.png"/>
-                        <h5>` + errMsg + `</h5>
-                    `);
+                    messageModal('deleteSuccess', 'img/img-error.png', errMsg)
                 },
                 dataType: "json",
                 contentType: "application/json"
@@ -221,12 +204,7 @@ function deleteViolation() {
             violationId: deleteId,
         }
         e.preventDefault();
-        $("#deleteModal .modal-body").html("");
-        $('#deleteModal .modal-body').append(`
-                <img class="mb-3 mt-3" src="img/img-question.png"/>
-                <h5>Bạn có chắc muốn <b>XÓA</b> vi phạm này không?</h5>
-        `);
-        $('#deleteModal').addClass('fade');
+        messageModal('deleteModal', 'img/img-question.png', 'Bạn có chắc muốn <b>XÓA</b> vi phạm này không?')
         $('.bt-table-delete-vio').attr('data-target', '#deleteModal');
         $('#deleteViolation').on('click', function (e) {
             $.ajax({
@@ -243,25 +221,13 @@ function deleteViolation() {
                     var messageCode = data.messageCode;
                     var message = data.message;
                     if (messageCode == 0) {
-                        $("#deleteSuccess .modal-body").html("");
-                        $('#deleteSuccess .modal-body').append(`
-                            <img class="mb-3 mt-3" src="img/img-success.png"/>
-                            <h5 id="message-delete">Xóa thành công vi phạm.</h5>
-                        `);
+                        messageModal('deleteSuccess', 'img/img-success.png', message)
                     } else {
-                        $("#deleteSuccess .modal-body").html("");
-                        $('#deleteSuccess .modal-body').append(`
-                            <img class="mb-3 mt-3" src="img/img-error.png"/>
-                            <h5>` + message + `</h5>
-                        `);
+                        messageModal('deleteSuccess', 'img/img-error.png', message)
                     }
                 },
                 failure: function (errMsg) {
-                    $("#deleteSuccess .modal-body").html("");
-                    $('#deleteSuccess .modal-body').append(`
-                        <img class="mb-3 mt-3" src="img/img-error.png"/>
-                        <h5>` + errMsg + `</h5>
-                    `);
+                    messageModal('deleteSuccess', 'img/img-error.png', errMsg)
                 },
                 dataType: "json",
                 contentType: "application/json"
@@ -271,7 +237,7 @@ function deleteViolation() {
 };
 
 function manageBtn() {
-    if (localStorage.getItem('roleID') != 1) {
+    if (roleID != 1) {
         $('.manageBtn').addClass('hide');
         $('thead th:last-child').addClass('hide');
         $('tbody tr td:last-child').addClass('hide');

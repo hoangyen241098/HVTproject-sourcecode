@@ -144,19 +144,10 @@ var loadFile = function (event) {
             console.log(data.default);
         },
         failure: function (errMsg) {
-            dialogErr('#overrideSuccess', errMsg);
+            messageModal('overrideSuccess','img/img-error.png', errMsg);
         },
         cache: false,
         contentType: false,
         processData: false,
     });
 };
-
-/*Dialog message*/
-function messageModal(modalName, img, message) {
-    $('#' + modalName + ' .modal-body').html(`
-        <img class="my-3" src="` + img + `"/>
-        <h5>` + message + `</h5>
-    `)
-    $('#' + modalName).modal('show');
-}
