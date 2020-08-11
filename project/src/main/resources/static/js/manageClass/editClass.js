@@ -104,14 +104,18 @@ function editClass(e) {
             var message = data.message;
             if (messageCode == 0) {
                 $('.classInfo-err').text("");
+                $('#editInfoSuccess .modal-body').html(`
+                    <img class="my-3" src="img/img-success.png"/>
+                    <h5>Thông tin sửa thành công!</h5>
+                `)
                 if (oldStatus != newStatus) {
                     $('#editInfoSuccess .modal-body').append(`
                         <h5>Trạng thái của tài khoản cờ đỏ và lớp trưởng của lớp cũng đã được thay đổi.</h5>
                     `);
                 }
+                $('#editInfoSuccess').modal('show');
                 oldIdentifierName = newClassIdentifier;
                 oldStatus = newStatus;
-                messageModal('editInfoSuccess', 'img/img-success.png', 'Thông tin sửa thành công!')
             } else {
                 $('.classInfo-err').text(message);
             }

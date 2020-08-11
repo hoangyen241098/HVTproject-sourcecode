@@ -71,10 +71,11 @@ function search() {
         classId: classId,
         redStar: redStar,
     };
+    $('#deleteBtn').addClass('hide');
+    $('#download').addClass('hide');
     console.log(JSON.stringify(inforSearch));
     if (fromDate == 'err' || classId == 'err') {
         $('tbody').html(`<tr><td colspan="3" class="text-center">Danh sách trống.</td></tr>`);
-        $('table').dataTable();
     } else {
         $('table').dataTable({
             destroy: true,
@@ -100,6 +101,8 @@ function search() {
                     if (messageCode == 0) {
                         if (data.listAssignTask.length != 0) {
                             dataSrc = data.listAssignTask;
+                            $('#deleteBtn').removeClass('hide');
+                            $('#download').removeClass('hide');
                         } else {
                             return false;
                         }
