@@ -123,7 +123,7 @@ function search() {
         $('#createRankBtn').removeClass('hide');
     }
     if ($('#bySemester option:selected').val() == 'err') {
-        $('tbody').append(`<tr><td colspan="4" class="userlist-result">Không có học kỳ nào trong dữ liệu.</td></tr>`);
+        $('tbody').append(`<tr><td colspan="4" class="text-center">Danh sách xếp hạng của học kỳ trống.</td></tr>`);
         $('#editRankBtn').addClass('hide');
     } else {
         var infoSearch = {
@@ -146,7 +146,7 @@ function search() {
                 dataType: "json",
                 contentType: "application/json",
                 failure: function (errMsg) {
-                    $('tbody').append(`<tr><td colspan="4" class="userlist-result"> ` + errMsg + ` </td></tr>`)
+                    $('tbody').append(`<tr><td colspan="4" class="text-center"> ` + errMsg + ` </td></tr>`)
                 },
                 dataSrc: function (data) {
                     var dataSrc = null;
@@ -168,7 +168,7 @@ function search() {
                             return false;
                         }
                     } else {
-                        $('tbody').append(`<tr><td colspan="4" class="userlist-result"> ` + message + ` </td></tr>`)
+                        $('tbody').append(`<tr><td colspan="4" class="text-center"> ` + message + ` </td></tr>`)
                         return false;
                     }
                     return dataSrc;
@@ -208,7 +208,7 @@ function search() {
                 },
             ],
             drawCallback: function (settings) {
-                settings.oLanguage.sEmptyTable = "Danh sách xếp hạng của học kỳ này trống."
+                settings.oLanguage.sEmptyTable = "Danh sách xếp hạng của học kỳ trống."
             }
         })
     }

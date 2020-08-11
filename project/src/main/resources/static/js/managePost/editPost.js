@@ -192,12 +192,3 @@ function editPost(request) {
         contentType: "application/json"
     });
 }
-
-/*Dialog message*/
-function messageModal(modalName, img, message) {
-    $('#' + modalName + ' .modal-body').html(`
-        <img class="my-3" src="` + img + `"/>
-        <h5>` + message + `</h5>
-    `)
-    $('#' + modalName).modal('show');
-}

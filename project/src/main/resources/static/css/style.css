@@ -1604,9 +1604,7 @@ a.slide_btn {
     color: #555;
     background-color: #eee;
 }
-.scrollable-table {
-    overflow-x: auto;
-}
+
 /*Responsive*/
 @media screen and (max-width: 330px) {
     .contact-number a {
@@ -1771,6 +1769,9 @@ a.slide_btn {
 }
 
 @media screen and (max-width: 768px) {
+    .scrollable-table {
+        overflow-x: auto;
+    }
     .container {
         max-width: 100%;
     }

@@ -124,7 +124,7 @@ function search() {
         $('#createRankBtn').removeClass('hide');
     }
     if ($('#byMonth option:selected').val() == 'err') {
-        $('tbody').append(`<tr><td colspan="4" class="userlist-result">Không có tháng nào trong dữ liệu.</td></tr>`);
+        $('tbody').append(`<tr><td colspan="4" class="text-center">Danh sách xếp hạng của tháng trống.</td></tr>`);
         $('#editRankBtn').addClass('hide');
     } else {
         var infoSearch = {
@@ -149,7 +149,7 @@ function search() {
                 failure: function (errMsg) {
                     $('tbody').append(
                         `<tr>
-                        <td colspan="4" class="userlist-result"> ` + errMsg + ` </td>
+                        <td colspan="4" class="text-center"> ` + errMsg + ` </td>
                     </tr>`
                     )
                 },
@@ -175,7 +175,7 @@ function search() {
                     } else {
                         $('tbody').append(
                             `<tr>
-                            <td colspan="4" class="userlist-result"> ` + message + ` </td>
+                            <td colspan="4" class="text-center"> ` + message + ` </td>
                         </tr>`
                         )
                         return false;
@@ -217,7 +217,7 @@ function search() {
                 },
             ],
             drawCallback: function (settings) {
-                settings.oLanguage.sEmptyTable = "Danh sách xếp hạng của tháng này trống."
+                settings.oLanguage.sEmptyTable = "Danh sách xếp hạng của tháng trống."
             }
         })
     }

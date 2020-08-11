@@ -91,8 +91,8 @@ $("#editInfo").click(function (e) {
                     oldTypeId = newTypeId;
                     oldDescription = newDescription;
                     oldSubstractGrade = newSubstractGrade;
-                    $('#editInfoSuccess').css('display', 'block');
                     $('.violation-err').text("");
+                    messageModal('editInfoSuccess', 'img/img-success.png', 'Thông tin sửa thành công!')
                 } else {
                     $('.violation-err').text(message);
                 }
