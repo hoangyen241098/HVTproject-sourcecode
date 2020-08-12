@@ -1,6 +1,6 @@
 package com.example.webDemo3.controller;
 
-import com.example.webDemo3.dto.manageEmulationResponseDto.ViewViolationClassHistoryResponseDto;
+import com.example.webDemo3.dto.manageEmulationResponseDto.ViewViolationClassListResponseDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViolationHistoryResquestDTO;
 import com.example.webDemo3.service.manageEmulationService.ViolationHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class ViolationHistoryApiController {
     private ViolationHistoryService violationHistoryService;
 
     @PostMapping("/view")
-    public ViewViolationClassHistoryResponseDto viewViolationClassHistory(@RequestBody ViolationHistoryResquestDTO model)
+    public ViewViolationClassListResponseDto viewViolationClassHistory(@RequestBody ViolationHistoryResquestDTO model)
     {
         return violationHistoryService.getHistoryViolationOfClas(model);
     }

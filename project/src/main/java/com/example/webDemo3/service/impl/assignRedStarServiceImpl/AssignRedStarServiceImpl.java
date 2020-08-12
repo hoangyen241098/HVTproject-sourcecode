@@ -42,18 +42,30 @@ public class AssignRedStarServiceImpl implements AssignRedStarService {
             List<ClassRedStar> assignList = classRedStarRepository.findAllByCondition(data.getClassId()
                     , "", data.getFromDate());
             List<ClassRedStarResponseDto> listAssignTask = new ArrayList<>();
+            String redstar1 = "";
             for (int i = 0; i < assignList.size(); i++) {
                 ClassRedStarResponseDto itemResponse = new ClassRedStarResponseDto();
                 ClassRedStar item = assignList.get(i);
+                if(i % 2 == 0){
+                    redstar1 = item.getClassRedStarId().getRED_STAR();
+                }
                 if (i % 2 == 0 && item.getClassRedStarId().getRED_STAR().contains(data.getRedStar())) {
                     itemResponse.setClassId(item.getClassSchool().getClassId());
                     itemResponse.setClassName(item.getClassSchool().getGrade() + " "
                             + item.getClassSchool().getGiftedClass().getName());
-                    itemResponse.setRedStar1(item.getClassRedStarId().getRED_STAR());
+                    itemResponse.setRedStar1(redstar1);
                     listAssignTask.add(itemResponse);
-                } else if (listAssignTask.size() > 0 && i % 2 == 1) {
-                    if (item.getClassSchool().getClassId() == listAssignTask.get(listAssignTask.size() - 1).getClassId()) {
+                } else if (i % 2 == 1) {
+                    if (listAssignTask.size() > 0 && item.getClassSchool().getClassId() == listAssignTask.get(listAssignTask.size() - 1).getClassId()) {
                         listAssignTask.get(listAssignTask.size() - 1).setRedStar2(item.getClassRedStarId().getRED_STAR());
+                    }
+                    else if(item.getClassRedStarId().getRED_STAR().contains(data.getRedStar())){
+                        itemResponse.setClassId(item.getClassSchool().getClassId());
+                        itemResponse.setClassName(item.getClassSchool().getGrade() + " "
+                                + item.getClassSchool().getGiftedClass().getName());
+                        itemResponse.setRedStar1(redstar1);
+                        itemResponse.setRedStar2(item.getClassRedStarId().getRED_STAR());
+                        listAssignTask.add(itemResponse);
                     }
                 }
             }
