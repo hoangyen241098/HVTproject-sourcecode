@@ -5,11 +5,13 @@ import com.example.webDemo3.dto.manageEnteringViolationResponseDto.ListDayRespon
 import com.example.webDemo3.dto.manageEnteringViolationResponseDto.ListEnteringTimeResponseDto;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageEnteringViolationResponseDto.ViolationEnteringTimeResponseDto;
+import com.example.webDemo3.dto.request.manageAccountRequestDto.DeleteAccountRequestDto;
 import com.example.webDemo3.dto.request.manageEnteringViolationRequestDto.AddVioEnTimeRequestDto;
 import com.example.webDemo3.dto.request.manageEnteringViolationRequestDto.DeleteEnteringTimeRequestDto;
 import com.example.webDemo3.entity.Day;
 import com.example.webDemo3.entity.Role;
 import com.example.webDemo3.entity.ViolationEnteringTime;
+import com.example.webDemo3.exception.MyException;
 import com.example.webDemo3.repository.DayRepository;
 import com.example.webDemo3.repository.RoleRepository;
 import com.example.webDemo3.repository.ViolationEnteringTimeRepository;
@@ -19,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.sql.Time;
 import java.util.ArrayList;
@@ -171,7 +174,7 @@ public class EnteringTimeServiceImpl implements EnteringTimeService {
         }
         return  enteringTimeResponseDto;
     }
-
+    
     /**
      * lamnt98
      * 07/07
@@ -180,8 +183,20 @@ public class EnteringTimeServiceImpl implements EnteringTimeService {
      * @return MessageDTO
      */
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {ServiceException.class})
+    @Transactional
     public MessageDTO addEnteringTime(AddVioEnTimeRequestDto addVioEnTimeRequestDto) {
+        MessageDTO message = new MessageDTO();
+        try {
+            message = addEnteringTimeTransaction(addVioEnTimeRequestDto);
+        }catch (Exception e){
+            message.setMessageCode(1);
+            message.setMessage(e.toString());
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return message;
+    }
+
+    private MessageDTO addEnteringTimeTransaction(AddVioEnTimeRequestDto addVioEnTimeRequestDto) throws Exception {
         MessageDTO message = new MessageDTO();
         Role role;
         Integer roleId;
@@ -194,20 +209,20 @@ public class EnteringTimeServiceImpl implements EnteringTimeService {
             //check roleId null or not
             if(roleId == null) {
                 message = Constant.ROLE_ID_NULL;
-                return message;
+                throw new MyException(message.getMessage());
             }
 
             role = roleRepository.findByRoleId(roleId);
             //check role exist or not
             if(role == null){
                 message = Constant.ROLE_NOT_EXIST;
-                return message;
+                throw new MyException(message.getMessage());
             }
 
             listDayId = addVioEnTimeRequestDto.getListDayId();
             if(listDayId.size() == 0){
                 message = Constant.LIST_DAY_EMPTY;
-                return message;
+                throw new MyException(message.getMessage());
             }
             for(int i = 0; i < listDayId.size(); i++){
                 Day day = dayRepository.findByDayId(listDayId.get(i));
@@ -220,24 +235,39 @@ public class EnteringTimeServiceImpl implements EnteringTimeService {
             //check all day in list day exist or not
             if(!checkListDay){
                 message = Constant.DAY_NOT_EXIST;
-                return message;
+                throw new MyException(message.getMessage());
             }
 
             //check start time empty or not
             if(addVioEnTimeRequestDto.getStartTime().trim().isEmpty()){
                 message = Constant.START_TIME_EMPTY;
-                return message;
+                throw new MyException(message.getMessage());
             }
             startTime = changeStringToTimeFormat(addVioEnTimeRequestDto.getStartTime());
 
             //check end time empty or not
             if(addVioEnTimeRequestDto.getEndTime().trim().isEmpty()){
                 message = Constant.END_TIME_EMPTY;
-                return message;
+                throw new MyException(message.getMessage());
             }
             endTime = changeStringToTimeFormat(addVioEnTimeRequestDto.getEndTime());
 
             for(int i = 0; i < listDayId.size(); i++){
+                List<ViolationEnteringTime> checkEnteringTime = new ArrayList<>();
+
+                checkEnteringTime = enteringTimeRepository.findEnteringTimeByRoleIdAndDayId(roleId,listDayId.get(i));
+
+                for(ViolationEnteringTime enteringTime : checkEnteringTime){
+                    //check start time or end time has between time in database of role and day or not
+                    if((startTime.after(enteringTime.getStartTime()) && startTime.before(enteringTime.getEndTime()))
+                            || (endTime.after(enteringTime.getStartTime()) && endTime.before(enteringTime.getEndTime()))){
+                        Day day = dayRepository.findByDayId(listDayId.get(i));
+                        message.setMessageCode(1);
+                        message.setMessage("Không thể thêm thời gian trực tuần cho " + role.getRoleName() + " do đã tồn tại thời gian trực tuần từ "
+                                        + enteringTime.getStartTime() + " - " + enteringTime.getEndTime() + " của " + day.getDayName());
+                        throw new MyException(message.getMessage());
+                    }
+                }
                 ViolationEnteringTime enteringTime = new ViolationEnteringTime();
                 enteringTime.setRoleId(roleId);
                 enteringTime.setDayId(listDayId.get(i));
@@ -249,7 +279,7 @@ public class EnteringTimeServiceImpl implements EnteringTimeService {
         }catch (Exception e){
             message.setMessageCode(1);
             message.setMessage(e.toString());
-            return message;
+            throw new MyException(message.getMessage());
         }
         return message;
     }
