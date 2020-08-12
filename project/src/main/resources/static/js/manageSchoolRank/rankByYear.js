@@ -59,13 +59,12 @@ setTimeout(search, 500);
 
 /*Set data to table*/
 function search() {
+    $('#editRankBtn').addClass('hide');
+    $('#download').addClass('hide');
+    $('#viewHistory').addClass('hide');
     if ($('#byYear option:selected').val() == 'err') {
-        $('tbody').append(`<tr><td colspan="4" class="userlist-result">Không có năm học nào trong dữ liệu.</td></tr>`);
-        $('#editRankBtn').addClass('hide');
+        $('tbody').append(`<tr><td colspan="4" class="text-center">Danh sách xếp hạng của năm học trống.</td></tr>`);
     } else {
-        if (roleID == 1) {
-            $('#editRankBtn').removeClass('hide');
-        }
         var infoSearch = {
             yearId: $('#byYear option:selected').val(),
             classId: $('#byClass option:selected').val()
@@ -86,7 +85,7 @@ function search() {
                 dataType: "json",
                 contentType: "application/json",
                 failure: function (errMsg) {
-                    $('tbody').append(`<tr><td colspan="4" class="userlist-result"> ` + errMsg + ` </td></tr>`)
+                    $('tbody').append(`<tr><td colspan="4" class="text-center"> ` + errMsg + ` </td></tr>`)
                 },
                 dataSrc: function (data) {
                     var dataSrc = null;
@@ -95,11 +94,14 @@ function search() {
                     if (messageCode == 0) {
                         if (data.rankYearList != null) {
                             dataSrc = data.rankYearList;
+                            $('#editRankBtn').removeClass('hide');
+                            $('#download').removeClass('hide');
+                            $('#viewHistory').removeClass('hide');
                         } else {
                             return false;
                         }
                     } else {
-                        $('tbody').append(`<tr><td colspan="4" class="userlist-result"> ` + message + ` </td></tr>`)
+                        $('tbody').append(`<tr><td colspan="4" class="text-center"> ` + message + ` </td></tr>`)
                         return false;
                     }
                     return dataSrc;
@@ -139,7 +141,7 @@ function search() {
                 },
             ],
             drawCallback: function (settings) {
-                settings.oLanguage.sEmptyTable = "Danh sách xếp hạng của năm học này trống.\n"
+                settings.oLanguage.sEmptyTable = "Danh sách xếp hạng của năm học trống."
             }
         })
     }
@@ -474,12 +476,12 @@ if (roleID != 1) {
 $(document).on('hidden.bs.modal', '#createNewRank', function () {
     $('input[name=options]').prop('checked', false);
     $('#yearName').val('')
-    $('.createNewRank-err').val('');
+    $('.createNewRank-err').text('');
 });
 $(document).on('hidden.bs.modal', '#editRank', function () {
     $('input[name=editOptions]').prop('checked', false);
     $('#newYearName').val('');
-    $('.editRank-err').val('');
+    $('.editRank-err').text('');
 });
 
 /*===============View History===================*/

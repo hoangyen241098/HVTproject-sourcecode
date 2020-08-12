@@ -147,10 +147,10 @@ $("#submit").click(function (e) {
         $('.createAccount-err').text("Mật khẩu xác nhận không đúng.");
         return false;
     } else if (passWord.length <= 6) {
-        $('.changePassword-err').text("Mật khẩu phải chứa nhiều hơn 6 ký tự.");
+        $('.createAccount-err').text("Mật khẩu phải chứa nhiều hơn 6 ký tự.");
         return false;
     } else if (!passWord.match(spaceRegex)) {
-        $('.changePassword-err').text("Mật khẩu không được chứa khoảng trắng.");
+        $('.createAccount-err').text("Mật khẩu không được chứa khoảng trắng.");
         return false;
     } else if (phone != "" && !phone.match(phoneRegex)) {
         $('.createAccount-err').text("SĐT không đúng định dạng.");

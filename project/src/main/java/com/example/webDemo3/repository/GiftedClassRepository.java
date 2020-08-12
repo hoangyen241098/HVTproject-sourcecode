@@ -11,4 +11,7 @@ import java.util.List;
 public interface GiftedClassRepository extends JpaRepository<GiftedClass,Integer> {
     @Query("select LOWER(gt.name) from GiftedClass gt")
     List<String> findAllGiftedNameLower();
+
+    @Query("select gt from GiftedClass gt order by gt.giftedClassId asc")
+    List<GiftedClass> findAll();
 }

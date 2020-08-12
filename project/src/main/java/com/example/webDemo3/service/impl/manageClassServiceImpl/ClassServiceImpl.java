@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -40,6 +41,9 @@ public class ClassServiceImpl implements ClassService {
 
     @Autowired
     private GenerateAccountService generateAccountService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /**
      * kimpt142
@@ -180,6 +184,8 @@ public class ClassServiceImpl implements ClassService {
             Class saveClass = classRepository.findClassActiveByClassIdentifier(classIdentifier);
             Integer classId = saveClass.getClassId();
             GenerateNameRequestDto requestDto;
+            String password = "123@123a";
+            String passwordEncode = passwordEncoder.encode(password);
             if(model.getIsRedStar()){
                 requestDto = new GenerateNameRequestDto(3, classId);
                 for(int i=0;i<2;i++){
@@ -191,10 +197,11 @@ public class ClassServiceImpl implements ClassService {
                     }
                     userRedStar.setUsername(userName);
                     userRedStar.setClassSchool(saveClass);
-                    userRedStar.setPassword("123@123a");
+                    userRedStar.setPassword(passwordEncode);
                     userRedStar.setRole(new Role(3));
                     userRedStar.setStatus(0);
                     userRepository.save(userRedStar);
+                    userRedStar.setPassword(password);
                     userList.add(userRedStar);
                 }
             }
@@ -209,10 +216,11 @@ public class ClassServiceImpl implements ClassService {
 
                 userMonitor.setUsername(userName);
                 userMonitor.setClassSchool(saveClass);
-                userMonitor.setPassword("123@123a");
+                userMonitor.setPassword(passwordEncode);
                 userMonitor.setRole(new Role(4));
                 userMonitor.setStatus(0);
                 userRepository.save(userMonitor);
+                userMonitor.setPassword(password);
                 userList.add(userMonitor);
             }
         }

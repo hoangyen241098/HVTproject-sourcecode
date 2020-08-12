@@ -135,7 +135,7 @@ function search() {
     if ($('#byWeek option:selected').val() == 'err') {
         $('#editRankBtn').addClass('hide');
         $('#editGrades').addClass('hide');
-        $('tbody').append(`<tr><td colspan="7" class="userlist-result">Không có tuần trong dữ liệu.</td></tr>`)
+        $('tbody').append(`<tr><td colspan="7" class="text-center">Danh sách xếp hạng tuần trống.</td></tr>`)
     } else {
         var infoSearch = {
             weekId: weekId,
@@ -160,7 +160,7 @@ function search() {
                 failure: function (errMsg) {
                     $('tbody').append(
                         `<tr>
-                        <td colspan="7" class="userlist-result"> ` + errMsg + ` </td>
+                        <td colspan="7" class="text-center"> ` + errMsg + ` </td>
                     </tr>`
                     )
                 },
@@ -188,7 +188,7 @@ function search() {
                     } else {
                         $('tbody').append(
                             `<tr>
-                            <td colspan="7" class="userlist-result"> ` + message + ` </td>
+                            <td colspan="7" class="text-center"> ` + message + ` </td>
                         </tr>`
                         )
                         return false;
@@ -644,7 +644,7 @@ function editGrade() {
                             sessionStorage.removeItem('weekName');
                             sessionStorage.removeItem('weekId');
                             sessionStorage.setItem('weekId', weekId);
-                            messageModal('editSuccess', 'img/img-success.png', 'Sửa điểm thành công!');
+                            messageModal('editSuccess', 'img/img-success.png', 'Sửa xếp hạng tuần thành công!');
                         } else {
                             sessionStorage.removeItem('weekName');
                             sessionStorage.removeItem('weekId');

@@ -65,11 +65,11 @@ $.ajax({
                 manageBtn();
             }
         } else {
-            $('tbody').html(`<tr><td colspan="5" class="userlist-result">` + message + `</td></tr>`)
+            $('tbody').html(`<tr><td colspan="5" class="text-center">` + message + `</td></tr>`)
         }
     },
     failure: function (errMsg) {
-        $('tbody').html(`<tr><td colspan="5" class="userlist-result">` + errMsg + `</td></tr>`)
+        $('tbody').html(`<tr><td colspan="5" class="text-center">` + errMsg + `</td></tr>`)
     },
     dataType: "json",
     contentType: "application/json"

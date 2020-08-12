@@ -201,10 +201,10 @@ $("#resetPassword").click(function (e) {
         $('.resetPass-err').text("Mật khẩu xác nhận không đúng.");
         return false;
     } else if (newpassword.length <= 6) {
-        $('.changePassword-err').text("Mật khẩu phải chứa nhiều hơn 6 ký tự.");
+        $('.resetPass-err').text("Mật khẩu phải chứa nhiều hơn 6 ký tự.");
         return false;
     } else if (!newpassword.match(spaceRegex)) {
-        $('.changePassword-err').text("Mật khẩu không được chứa khoảng trắng.");
+        $('.resetPass-err').text("Mật khẩu không được chứa khoảng trắng.");
         return false;
     }  else {
         var resetPassword = {

@@ -60,7 +60,7 @@
                     <div class="form-group text-left" id="allDay">
                     </div>
                     <div class="error createTime-err text-left"></div>
-                    <input type="button" id="submit" data-toggle="modal" class="btn btn-customer" value="TẠO"/>
+                    <a href="#createSuccess" id="submit" data-toggle="modal" class="btn btn-customer">TẠO</a>
                 </fieldset>
             </form>
         </div>
@@ -68,10 +68,11 @@
 </div>
 
 <!--    Modal Create Success-->
-<div class="modal fade" tabindex="-1" role="dialog" id="createSuccess">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+<div id="createSuccess" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
-            <div class="modal-body text-center"></div>
+            <div class="modal-body text-center">
+            </div>
             <div class="modal-footer">
                 <a href="manageViolationEnteringTime" class="btn btn-danger">XEM THỜI GIAN CHẤM</a>
                 <a href="createViolationEnteringTime" class="btn btn-primary">ĐÓNG</a>
@@ -80,8 +81,8 @@
     </div>
 </div>
 
-<div th:replace="fragments/footer :: footer"></div>
 <div class="modal-loading"></div>
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 
 <script type="text/javascript" th:src="@{/js/manageViolationEnteringTime/createViolationEnteringTime.js}"></script>

@@ -71,10 +71,11 @@ function search() {
         classId: classId,
         redStar: redStar,
     };
+    $('#deleteBtn').addClass('hide');
+    $('#download').addClass('hide');
     console.log(JSON.stringify(inforSearch));
     if (fromDate == 'err' || classId == 'err') {
-        $('tbody').html(`<tr><td colspan="3" class="userlist-result">Danh sách trống.</td></tr>`);
-        $('table').dataTable();
+        $('tbody').html(`<tr><td colspan="3" class="text-center">Danh sách trống.</td></tr>`);
     } else {
         $('table').dataTable({
             destroy: true,
@@ -91,7 +92,7 @@ function search() {
                 dataType: "json",
                 contentType: "application/json",
                 failure: function (errMsg) {
-                    $('tbody').html(`<tr><td colspan="3" class="userlist-result"> ` + errMsg + ` </td></tr>`)
+                    $('tbody').html(`<tr><td colspan="3" class="text-center"> ` + errMsg + ` </td></tr>`)
                 },
                 dataSrc: function (data) {
                     var dataSrc = null;
@@ -100,11 +101,13 @@ function search() {
                     if (messageCode == 0) {
                         if (data.listAssignTask.length != 0) {
                             dataSrc = data.listAssignTask;
+                            $('#deleteBtn').removeClass('hide');
+                            $('#download').removeClass('hide');
                         } else {
                             return false;
                         }
                     } else {
-                        $('tbody').html(`<tr><td colspan="3" class="userlist-result"> ` + message + ` </td></tr>`)
+                        $('tbody').html(`<tr><td colspan="3" class="text-center"> ` + message + ` </td></tr>`)
                         return false;
                     }
                     return dataSrc;
@@ -136,8 +139,8 @@ $("#download").click(function () {
     } else {
         var download = {
             fromDate: fromDate,
-            classId: "",
-            redStar: ""
+            classId: $('#classList option:selected').val(),
+            redStar: $('#redStarList').val().trim()
         }
         console.log(JSON.stringify(download))
         $.ajax({
@@ -313,6 +316,6 @@ function deleteAssign() {
     }
 }
 
-if (localStorage.getItem('roleID') != 1) {
+if (roleID != 1) {
     $('.manageBtn').addClass('hide');
 }
