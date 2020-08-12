@@ -1,13 +1,11 @@
 package com.example.webDemo3.service.impl.manageEmulationServiceImpl;
 
 import com.example.webDemo3.constant.Constant;
-import com.example.webDemo3.dto.manageEmulationResponseDto.ViewViolationClassHistoryResponseDto;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViewViolationClassListResponseDto;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViolationClassResponseDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViolationHistoryResquestDTO;
 import com.example.webDemo3.entity.Class;
 import com.example.webDemo3.entity.ViolationClass;
-import com.example.webDemo3.entity.ViolationClassRequest;
 import com.example.webDemo3.repository.ClassRepository;
 import com.example.webDemo3.repository.ViolationClassRepository;
 import com.example.webDemo3.service.manageEmulationService.AdditionalFunctionViolationClassService;

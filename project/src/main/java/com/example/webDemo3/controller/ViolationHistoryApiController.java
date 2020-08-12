@@ -1,6 +1,5 @@
 package com.example.webDemo3.controller;
 
-import com.example.webDemo3.dto.manageEmulationResponseDto.ViewViolationClassHistoryResponseDto;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViewViolationClassListResponseDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViolationHistoryResquestDTO;
 import com.example.webDemo3.service.manageEmulationService.ViolationHistoryService;

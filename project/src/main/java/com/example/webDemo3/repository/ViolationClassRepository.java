@@ -32,17 +32,6 @@ public interface ViolationClassRepository extends JpaRepository<ViolationClass, 
                                                @Param("fromYear12")Integer fromYear12,
                                                Pageable paging);
 
-    @Query(value = "select v from ViolationClass v " +
-            "where v.classId = :classId " +
-            "and v.year.fromYear = :fromYear " +
-            "and v.date >= :fromDate " +
-            "and v.date <= :toDate " +
-            "order by v.date desc")
-    List<ViolationClass> findHistoryOfClass(@Param("classId")Integer classId,
-                                            @Param("fromYear")Integer fromYear,
-                                            @Param("fromDate") Date fromDate,
-                                            @Param("toDate")Date toDate);
-
 
     @Query(value = "select v from ViolationClass v " +
             "where (v.classId = :classId or :classId is NULL ) " +
