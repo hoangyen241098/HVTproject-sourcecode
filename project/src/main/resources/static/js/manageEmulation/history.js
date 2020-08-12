@@ -12,36 +12,9 @@ var inforSearch = {
     toDate: $('#toDate').val(),
     giftedId: $('#gifftedClass option:selected').val(),
     fromYear: $('#fromYear').val(),
-    toYear: $('#toYear').val()
+    toYear: $('#toYear').val(),
+    pageNumber: 0
 }
-
-/*Search button*/
-$("#search").click(function () {
-    var giftedId, fromYear, toYear;
-    fromDate = $('#fromDate').val();
-    toDate = $('#toDate').val();
-    if ($('#gifftedClass option:selected').val() == null || $('#gifftedClass option:selected').val() == "0") {
-        giftedId = "";
-    } else {
-        giftedId = $('#gifftedClass option:selected').val();
-    }
-    if ($('#fromYear').val() == null) {
-        fromYear = "";
-    } else {
-        fromYear = $('#fromYear').val();
-    }
-    toYear = $('#toYear').val();
-    inforSearch = {
-        fromDate: fromDate,
-        toDate: toDate,
-        giftedId: giftedId,
-        fromYear: fromYear,
-        toYear: toYear
-    }
-    $('#violationList').html("");
-    search();
-
-});
 
 /*Get giftedClass in combobox*/
 $.ajax({
@@ -80,6 +53,31 @@ $.ajax({
 });
 search();
 
+/*Search button*/
+$("#search").click(function () {
+    var giftedId, fromYear;
+    if ($('#gifftedClass option:selected').val() == null || $('#gifftedClass option:selected').val() == "0") {
+        giftedId = "";
+    } else {
+        giftedId = $('#gifftedClass option:selected').val();
+    }
+    if ($('#fromYear').val() == null) {
+        fromYear = "";
+    } else {
+        fromYear = $('#fromYear').val();
+    }
+    inforSearch = {
+        fromDate: $('#fromDate').val(),
+        toDate: $('#toDate').val(),
+        giftedId: giftedId,
+        fromYear: fromYear,
+        toYear: $('#toYear').val(),
+        pageNumber: 0
+    }
+    $('#violationList').html("");
+    search();
+});
+
 /*Load data to list*/
 function search() {
     console.log(JSON.stringify(inforSearch))
@@ -94,15 +92,25 @@ function search() {
             $('body').removeClass("loading")
         },
         success: function (data) {
-            if (data.message.messageCode == 0) {
-                if (data.violationClassList.length != 0) {
+            var messageCode = data.message.messageCode;
+            var message = data.message.message;
+            if (messageCode == 0) {
+                var totalPage = parseInt(data.totalPage);
+                if (totalPage > 1) {
+                    $('.table-paging').removeClass('hide');
+                    $('.table-paging').html('');
+                    paging(inforSearch, totalPage);
+                } else {
+                    $('.table-paging').addClass('hide');
+                }
+                if (data.viewViolationClassList.length != 0) {
                     $('#violationList').html("");
-                    $.each(data.violationClassList, function (i, item) {
-                        var quantity, note, day;
-                        if (item.day == null) {
-                            day = "";
+                    $.each(data.viewViolationClassList, function (i, item) {
+                        var quantity, note, dayName;
+                        if (item.dayName == null) {
+                            dayName = "";
                         } else {
-                            day = item.day + " - ";
+                            dayName = item.dayName + " - ";
                         }
                         if (item.quantity == null) {
                             quantity = 0;
@@ -117,12 +125,12 @@ function search() {
                         $('#violationList').append(
                             `<div class="violation-description my-2">
                                 <div class="violation-date">
-                                    <span>` + day + convertDate(item.date,'/') + `</span>
+                                    <span>` + dayName + convertDate(item.createDate, '/') + `</span>
                                 </div>
                                 <div class="violation-details">
                                     <div class="violation-name">
                                         <span class="font-500">Mô tả lỗi: </span>
-                                        <span>` + item.violation.description + `</span>
+                                        <span>` + item.description + `</span>
                                     </div>
                                     <p class="violation-note my-0">
                                         <span class="font-500">Ghi chú: </span>
@@ -131,7 +139,7 @@ function search() {
                                 </div>
                                 <div class="violation-substract-grade">
                                     <span class="font-500">Điểm trừ: </span>
-                                    <span>` + item.violation.substractGrade + `</span>
+                                    <span>` + item.substractGrade + `</span>
                                 </div>
                                 <div class="violation-quantity">
                                     <span class="font-500">Số lần: </span>
@@ -139,7 +147,7 @@ function search() {
                                 </div>
                                 <div class="violation-total">
                                     <span class="font-500">Tổng điểm trừ: </span>
-                                    <span>` + parseFloat(parseFloat(item.violation.substractGrade) * parseInt(quantity)) + `</span>
+                                    <span>` + parseFloat(parseFloat(item.substractGrade) * parseInt(quantity)) + `</span>
                                 </div>
                             </div>`
                         );
@@ -157,11 +165,12 @@ function search() {
                 $('#violationList').html(
                     `<div class="violation-description my-2">
                         <div class="violation-date w-100 text-center">
-                            <span>` + data.message.message + `</span>
+                            <span>` + message + `</span>
                         </div>
                     </div>
                 `)
             }
+            pagingClick();
         },
         failure: function (errMsg) {
             $('#violationList').html(
