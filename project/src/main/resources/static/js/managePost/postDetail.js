@@ -1,5 +1,5 @@
 /*Value default*/
-var newsletterId = sessionStorage.getItem('newsletterId');
+var newsletterId = $('#newsletterId').text();
 var request = {
     newsletterId: newsletterId
 }
@@ -24,7 +24,6 @@ $.ajax({
                 $('.table-title h2').text(data.newsletter.header);
                 $('.table-title .post-date').text(data.newsletter.createDate);
                 $('.post-content-text').html(data.newsletter.content);
-                $('.post-action .newsletterId').text(data.newsletter.newsletterId);
                 $('.post-action .status').text(data.newsletter.status);
                 $('.post-action .author').text(data.newsletter.userName);
                 var imgContent = $('.post-content-text img');
@@ -117,7 +116,6 @@ $('.btn-delete').on('click', function () {
 })
 
 $('.btn-edit').on('click', function () {
-    var newsletterId = $('.post-action .newsletterId').text();
     sessionStorage.setItem('newsletterIdEdit', newsletterId);
     location.href = 'editPost';
 })
@@ -131,7 +129,6 @@ $('.btn-accept').on('click', function () {
 })
 
 function confirmRequest(status, messageSuccess) {
-    var newsletterId = $('.post-action .newsletterId').text();
     var request = {
         newsletterId: newsletterId,
         status: status,
