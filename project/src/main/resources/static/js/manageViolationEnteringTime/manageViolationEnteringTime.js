@@ -13,8 +13,8 @@ $.ajax({
         var messageCode = data.message.messageCode;
         var message = data.message.message;
         if (messageCode == 0) {
-            console.log(data.listEmteringTime)
             if (data.listEmteringTime.length != 0) {
+                $('#deleteBtn').removeClass('hide');
                 $('tbody').html("");
                 $.each(data.listEmteringTime, function (i, item) {
                     var violationEnteringTimeId, roleName, dayName, startTime, endTime;
@@ -60,6 +60,7 @@ $.ajax({
                     `);
                 });
             } else {
+                $('#deleteBtn').addClass('hide');
                 $('tbody').html(`<tr><td colspan="5" class="text-center">Chưa có thời gian chấm điểm.</td></tr>`)
             }
         } else {

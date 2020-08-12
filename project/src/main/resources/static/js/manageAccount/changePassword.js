@@ -30,6 +30,10 @@ $(document).ready(function () {
         } else if (!newpassword.match(spaceRegex)) {
             $('.changePassword-err').text("Mật khẩu không được chứa khoảng trắng.");
             return false;
+
+        } else if (oldpassword == newpassword) {
+            $('.changePassword-err').text("Mật khẩu chưa thay đổi.");
+            return false;
         } else {
             $('.changePassword-err').text("");
             var password = {

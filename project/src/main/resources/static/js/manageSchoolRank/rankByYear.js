@@ -59,13 +59,12 @@ setTimeout(search, 500);
 
 /*Set data to table*/
 function search() {
+    $('#editRankBtn').addClass('hide');
+    $('#download').addClass('hide');
+    $('#viewHistory').addClass('hide');
     if ($('#byYear option:selected').val() == 'err') {
         $('tbody').append(`<tr><td colspan="4" class="text-center">Danh sách xếp hạng của năm học trống.</td></tr>`);
-        $('#editRankBtn').addClass('hide');
     } else {
-        if (roleID == 1) {
-            $('#editRankBtn').removeClass('hide');
-        }
         var infoSearch = {
             yearId: $('#byYear option:selected').val(),
             classId: $('#byClass option:selected').val()
@@ -95,6 +94,9 @@ function search() {
                     if (messageCode == 0) {
                         if (data.rankYearList != null) {
                             dataSrc = data.rankYearList;
+                            $('#editRankBtn').removeClass('hide');
+                            $('#download').removeClass('hide');
+                            $('#viewHistory').removeClass('hide');
                         } else {
                             return false;
                         }

@@ -644,7 +644,7 @@ function editGrade() {
                             sessionStorage.removeItem('weekName');
                             sessionStorage.removeItem('weekId');
                             sessionStorage.setItem('weekId', weekId);
-                            messageModal('editSuccess', 'img/img-success.png', 'Sửa điểm thành công!');
+                            messageModal('editSuccess', 'img/img-success.png', 'Sửa xếp hạng tuần thành công!');
                         } else {
                             sessionStorage.removeItem('weekName');
                             sessionStorage.removeItem('weekId');

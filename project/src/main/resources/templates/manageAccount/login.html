@@ -43,6 +43,9 @@
                     <div class="error login-err text-left"></div>
                     <input type="button" name="signin" id="signin" class="btn btn-customer" data-toggle="modal"
                            value="ĐĂNG NHẬP"/>
+                    <div class="my-3">
+                        <a th:href="forgotPassword">Quên mật khẩu?</a>
+                    </div>
                 </fieldset>
             </form>
         </div>
@@ -50,21 +53,6 @@
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 <div class="modal-loading"></div>
-
-<!--    Modal Login Success-->
-<div class="modal fade" tabindex="-1" role="dialog" id="loginSuccess">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-        <div class="modal-content">
-            <div class="modal-body text-center">
-                <img class="mb-3 mt-3" th:src="@{img/img-success.png}"/>
-                <h5>Đăng nhập thành công!</h5>
-            </div>
-            <div class="modal-footer">
-                <a type="button" class="btn btn-primary" th:href="@{/}">XÁC NHẬN</a>
-            </div>
-        </div>
-    </div>
-</div>
 
 </body>
 <script type="text/javascript" th:src="@{/js/manageAccount/login.js}"></script>
