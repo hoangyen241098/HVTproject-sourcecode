@@ -173,9 +173,8 @@ function editPost(request) {
             var messageCode = data.messageCode;
             var message = data.message;
             if (messageCode == 0) {
-                sessionStorage.setItem('newsletterId', newsletterId);
                 $('#messageModal .modal-footer').html(`
-                    <a href="postDetail" class="btn btn-danger" id="viewPost">XEM BÀI VIẾT</a>
+                    <a href="postDetail?id=` + newsletterId + `" class="btn btn-danger" id="viewPost">XEM BÀI VIẾT</a>
                     <a href="editPost" class="btn btn-primary">ĐÓNG</a>
                 `)
                 messageModal('messageModal', 'img/img-success.png', 'Sửa bài viết thành công!');

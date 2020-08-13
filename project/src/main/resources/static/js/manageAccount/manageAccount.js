@@ -200,8 +200,8 @@ $("#resetPassword").click(function (e) {
     } else if (newpassword != confirmpassword) {
         $('.resetPass-err').text("Mật khẩu xác nhận không đúng.");
         return false;
-    } else if (newpassword.length <= 6) {
-        $('.resetPass-err').text("Mật khẩu phải chứa nhiều hơn 6 ký tự.");
+    } else if (newpassword.length < 6) {
+        $('.resetPass-err').text("Mật khẩu phải chứa ít nhất 6 ký tự.");
         return false;
     } else if (!newpassword.match(spaceRegex)) {
         $('.resetPass-err').text("Mật khẩu không được chứa khoảng trắng.");
