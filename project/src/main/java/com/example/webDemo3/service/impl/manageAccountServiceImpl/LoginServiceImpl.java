@@ -3,8 +3,10 @@ package com.example.webDemo3.service.impl.manageAccountServiceImpl;
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.request.manageAccountRequestDto.LoginRequestDto;
+import com.example.webDemo3.entity.ClassRedStar;
 import com.example.webDemo3.entity.SchoolYear;
 import com.example.webDemo3.entity.User;
+import com.example.webDemo3.repository.ClassRedStarRepository;
 import com.example.webDemo3.repository.SchoolYearRepository;
 import com.example.webDemo3.repository.UserRepository;
 import com.example.webDemo3.dto.manageAccountResponseDto.LoginResponseDto;
@@ -14,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 @Service
 public class LoginServiceImpl implements LoginService {
@@ -26,6 +29,9 @@ public class LoginServiceImpl implements LoginService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ClassRedStarRepository classRedStarRepository;
 
     /**
      * kimpt142
@@ -73,6 +79,11 @@ public class LoginServiceImpl implements LoginService {
             SchoolYear schoolCurrent = schoolYearRepository.findSchoolYearsByDate(dateCurrent);
             if(schoolCurrent != null) {
                 loginDto.setCurrentYearId(schoolCurrent.getYearID());
+            }
+            if(loginDto.getRoleid() == Constant.ROLEID_REDSTAR){
+                Date fromDate = classRedStarRepository.getBiggestClosetDate(dateCurrent);
+                ClassRedStar cs = classRedStarRepository.findByRedStar(u.getUsername(),fromDate);
+                loginDto.setAsignedClass(cs.getClassSchool().getGrade()+" "+cs.getClassSchool().getGiftedClass().getName());
             }
         }
 
