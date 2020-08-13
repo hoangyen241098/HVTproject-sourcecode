@@ -53,8 +53,7 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         if(sdf.format(dateCurrent).equalsIgnoreCase(sdf.format(fromDate))
                 || fromDate.before(dateCurrent)){
-            message.setMessageCode(1);
-            message.setMessage("không thể xóa phân công có ngày áp dụng nhỏ hơn hoạc bằng ngày hiện tại");
+            message = Constant.NOT_DELETE_ASSIGN_REDSTAR;
             return message;
         }
         try {
@@ -72,10 +71,18 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
     public MessageDTO checkDate(Date fromDate) {
         MessageDTO message = new MessageDTO();
         message.setMessageCode(0);
+        Date dateCurrent = new Date(System.currentTimeMillis());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if(sdf.format(dateCurrent).equalsIgnoreCase(sdf.format(fromDate))
+                || fromDate.before(dateCurrent)){
+            message = Constant.NOT_ADD_ASSIGN_REDSTAR;
+            return message;
+        }
         List<Date> date = classRedStarRepository.findByDate(fromDate);
         if (date != null && date.size() > 0) {
+            sdf = new SimpleDateFormat("dd/MM/yyyy");
             message.setMessageCode(2);
-            message.setMessage("Phân công sau ngày " + fromDate + " sẽ bị xóa.\n Bạn có muốn tiếp tục ghi đè?");
+            message.setMessage("Phân công sau ngày " + sdf.format(fromDate) + " sẽ bị xóa.\n Bạn có muốn tiếp tục ghi đè?");
         }
         return message;
     }
@@ -88,9 +95,7 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         if(sdf.format(dateCurrent).equalsIgnoreCase(sdf.format(fromDate))
                 || fromDate.before(dateCurrent)){
-            message = new MessageDTO();
-            message.setMessageCode(1);
-            message.setMessage("không thể thêm phân công có ngày áp dụng nhỏ hơn hoạc bằng ngày hiện tại");
+            message = Constant.NOT_ADD_ASSIGN_REDSTAR;
             return message;
         }
         try {
@@ -131,7 +136,7 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
             int l = danhgiaOne(classList.size() * 2, redStarList.size(), outputData);
             System.out.println(l);
 //            outputData[outputData.length-1] =1000;
-            insertClassRedStar(message, fromDate, classList, redStarList, outputData);
+            insertClassRedStar(fromDate, classList, redStarList, outputData);
 
         } catch (Exception e) {
             System.out.println(e);
@@ -143,7 +148,7 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
         return message;
     }
 
-    private void insertClassRedStar(MessageDTO message, Date fromDate,
+    private void insertClassRedStar(Date fromDate,
                                           List<Class> classList, List<User> redStarList, int[] output) throws Exception {
         int i;
         try {
@@ -164,7 +169,6 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
             System.out.println(e);
             throw new MyException(e.toString());
         }
-       // return message;
     }
 
     private int[][] copyflag(int d,int c){
