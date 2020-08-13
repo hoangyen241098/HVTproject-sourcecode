@@ -60,7 +60,7 @@ public class UserApiController {
      * @return MessageDTO
      */
     @PostMapping("/changepassword")
-    public MessageDTO login(@RequestBody ChangePasswordRequestDto model)
+    public MessageDTO changePassword(@RequestBody ChangePasswordRequestDto model)
     {
         return changePasswordService.checkChangePasswordUser(model);
     }
@@ -74,7 +74,7 @@ public class UserApiController {
      * @return MessageDTO
      */
     @PostMapping("/editinformation")
-    public MessageDTO login(@RequestBody EditPerInforRequestDto model)
+    public MessageDTO editInformation(@RequestBody EditPerInforRequestDto model)
     {
         return editPerInforService.editUserInformation(model);
     }
