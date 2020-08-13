@@ -31,7 +31,7 @@ import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/api/user")
-public class UserController {
+public class UserApiController {
 
     @Autowired
     private ChangePasswordService changePasswordService;

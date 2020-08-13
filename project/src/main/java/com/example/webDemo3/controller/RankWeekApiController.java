@@ -27,7 +27,7 @@ kimpt142 - 21/07
  */
 @RestController
 @RequestMapping("/api/rankweek")
-public class RankWeekController {
+public class RankWeekApiController {
 
     @Autowired
     private CreateAndEditSchoolRankWeekService createAndEditSchoolRankWeekService;
