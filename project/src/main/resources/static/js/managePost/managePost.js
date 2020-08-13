@@ -54,7 +54,7 @@ function search() {
                             }
                             $('.panel-default').append(`
                             <div class="panel-post mb-3">
-                                <a href="postDetail" id="` + item.newsletterId + `">
+                                <a href="postDetail?id=` + item.newsletterId + `" id="` + item.newsletterId + `">
                                     <div class="panel-post-content">
                                         <div class="post-img">
                                             <img class="lazy" data-original="` + item.headerImage + `">
@@ -82,7 +82,6 @@ function search() {
                         $('.panel-default').html('<h3 class="text-center">Danh sách bài viết trống.</h3>');
                     }
                     pagingClick();
-                    getNewsletterId();
                     lazyLoad();
                 } else {
                     $('.panel-default').html('<h3 class="text-center">Danh sách bài viết trống.</h3>');
@@ -99,11 +98,3 @@ function search() {
     });
 }
 
-/*Get newsletterId */
-function getNewsletterId() {
-    var newsletterId = $('.panel-post a');
-    $(newsletterId).on('click', function (e) {
-        newsletterId = $(this).prop('id');
-        sessionStorage.setItem("newsletterId", newsletterId);
-    });
-}

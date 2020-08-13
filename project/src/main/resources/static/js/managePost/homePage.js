@@ -129,7 +129,7 @@ function loadHomepage() {
                     $.each(data.listLetter, function (i, item) {
                         if (i == 0) {
                             $('.container-header .card-pin').html(`
-                            <a href="postDetail" class="card" id="` + item.newsletterId + `">
+                            <a href="postDetail?id=` + item.newsletterId + `" class="card" id="` + item.newsletterId + `">
                                 <div class="img-post">
                                     <img class="lazy card-img-top" data-original="` + item.headerImage + `">
                                 </div>
@@ -146,7 +146,7 @@ function loadHomepage() {
                             if (count <= 4) {
                                 $('.container-header .flex-wrap').append(`
                             <div class="post-gird col-md-6">
-                                <a href="postDetail" class="card card-140" id="` + item.newsletterId + `">
+                                <a href="postDetail?id=` + item.newsletterId + `" class="card card-140" id="` + item.newsletterId + `">
                                     <div class="img-post">
                                     <img class="lazy card-img-top" data-original="` + item.headerImage + `">
                                     </div>
@@ -160,7 +160,7 @@ function loadHomepage() {
                             } else {
                                 $('.container-paging .flex-wrap').append(`
                             <div class="post-gird col-md-4">
-                                <a href="postDetail" class="card card-200" id="` + item.newsletterId + `">
+                                <a href="postDetail?id=` + item.newsletterId + `" class="card card-200" id="` + item.newsletterId + `">
                                     <div class="img-post">
                                         <img class="lazy card-img-top" data-original="` + item.headerImage + `">
                                     </div>
@@ -175,7 +175,6 @@ function loadHomepage() {
                         }
                     });
                     pagingHomepage();
-                    getNewsletterId();
                     lazyLoad();
                 } else {
                     $('.homepage-message').text('Danh sách bài viết trống.');
@@ -239,7 +238,7 @@ function search() {
                     $.each(data.listLetter, function (i, item) {
                         if (i == 0) {
                             $('.container-header .card-pin').html(`
-                            <a href="postDetail" class="card" id="` + item.newsletterId + `">
+                            <a href="postDetail?id=`+item.newsletterId+`" class="card" id="` + item.newsletterId + `">
                                 <div class="img-post">
                                     <img class="lazy card-img-top" data-original="` + item.headerImage + `">
                                 </div>
@@ -255,7 +254,7 @@ function search() {
                             if (count <= 4) {
                                 $('.container-header .flex-wrap').append(`
                             <div class="post-gird col-md-6">
-                                <a href="postDetail" class="card card-140" id="` + item.newsletterId + `">
+                                <a href="postDetail?id=`+item.newsletterId+`" class="card card-140" id="` + item.newsletterId + `">
                                     <div class="img-post">
                                     <img class="lazy card-img-top" data-original="` + item.headerImage + `">
                                     </div>
@@ -269,7 +268,7 @@ function search() {
                             } else {
                                 $('.container-paging .flex-wrap').append(`
                             <div class="post-gird col-md-4">
-                                <a href="postDetail" class="card card-200" id="` + item.newsletterId + `">
+                                <a href="postDetail?id=`+item.newsletterId+`" class="card card-200" id="` + item.newsletterId + `">
                                     <div class="img-post">
                                         <img class="lazy card-img-top" data-original="` + item.headerImage + `">
                                     </div>
@@ -284,7 +283,6 @@ function search() {
                         }
                     });
                     pagingClick();
-                    getNewsletterId();
                     lazyLoad();
                 } else {
                     $('.homepage-message').text('Danh sách bài viết trống.');
@@ -304,16 +302,6 @@ function search() {
         },
         dataType: "json",
         contentType: "application/json"
-    });
-}
-
-/*Get newsletterId */
-function getNewsletterId() {
-    var newsletterId = $('.card');
-    $(newsletterId).on('click', function (e) {
-        newsletterId = $(this).prop('id');
-        console.log(newsletterId)
-        sessionStorage.setItem("newsletterId", newsletterId);
     });
 }
 
