@@ -146,8 +146,8 @@ $("#submit").click(function (e) {
     } else if (passWord != confirmPassword) {
         $('.createAccount-err').text("Mật khẩu xác nhận không đúng.");
         return false;
-    } else if (passWord.length <= 6) {
-        $('.createAccount-err').text("Mật khẩu phải chứa nhiều hơn 6 ký tự.");
+    } else if (passWord.length < 6) {
+        $('.createAccount-err').text("Mật khẩu phải chứa ít nhất 6 ký tự.");
         return false;
     } else if (!passWord.match(spaceRegex)) {
         $('.createAccount-err').text("Mật khẩu không được chứa khoảng trắng.");

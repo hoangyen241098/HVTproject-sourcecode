@@ -97,10 +97,9 @@ function addNewPost(request) {
         success: function (data) {
             var messageCode = data.message.messageCode;
             var message = data.message.message;
-            sessionStorage.setItem('newsletterId', data.newsletterId);
             if (messageCode == 0) {
                 $('#saveModal .modal-footer').html(`
-                    <a href="postDetail" class="btn btn-danger" id="viewPost">XEM BÀI VIẾT</a>
+                    <a href="postDetail?id=` + data.newsletterId + `" class="btn btn-danger" id="viewPost">XEM BÀI VIẾT</a>
                     <a href="createPost" class="btn btn-primary">ĐÓNG</a>
                 `)
                 messageModal('saveModal', 'img/img-success.png', "Tạo bài viết thành công!");
@@ -144,7 +143,7 @@ var loadFile = function (event) {
             console.log(data.default);
         },
         failure: function (errMsg) {
-            messageModal('overrideSuccess','img/img-error.png', errMsg);
+            messageModal('overrideSuccess', 'img/img-error.png', errMsg);
         },
         cache: false,
         contentType: false,

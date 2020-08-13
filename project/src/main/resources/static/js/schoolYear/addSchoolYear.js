@@ -48,11 +48,11 @@ $(document).ready(function () {
                     if (messageCode == 0) {
                         messageModal('createSuccess', 'img/img-success.png', 'Thêm năm học mới thành công!');
                     } else {
-                        messageModal('createSuccess', 'img/img-error.png', message);
+                        messageModal('createError', 'img/img-error.png', message);
                     }
                 },
                 failure: function (errMsg) {
-                    messageModal('createSuccess', 'img/img-error.png', errMsg);
+                    messageModal('createError', 'img/img-error.png', errMsg);
                 },
                 dataType: "json",
                 contentType: "application/json"
