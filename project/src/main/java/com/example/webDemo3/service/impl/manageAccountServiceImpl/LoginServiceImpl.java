@@ -83,7 +83,9 @@ public class LoginServiceImpl implements LoginService {
             if(loginDto.getRoleid() == Constant.ROLEID_REDSTAR){
                 Date fromDate = classRedStarRepository.getBiggestClosetDate(dateCurrent);
                 ClassRedStar cs = classRedStarRepository.findByRedStar(u.getUsername(),fromDate);
-                loginDto.setAsignedClass(cs.getClassSchool().getGrade()+" "+cs.getClassSchool().getGiftedClass().getName());
+                if(cs != null){
+                    loginDto.setAsignedClass(cs.getClassSchool().getGrade()+" "+cs.getClassSchool().getGiftedClass().getName());
+                }
             }
         }
 
