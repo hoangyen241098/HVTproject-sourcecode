@@ -13,10 +13,10 @@ $(document).ready(function () {
         $('#loginMenu').css('display', 'none');
         //ROLEID_REDSTAR
         if (roleID == 3) {
-            if (asignedClass != null) {
+            if (asignedClass != "null") {
                 $("#loginSuccessMenu .nav-link").html(`<span><p class="m-0" style="font-size: 15px">` + username + `</p><p class="m-0" style="font-size: 12px">(Chấm lớp ` + asignedClass + `)</p></span><i class="fa fa-caret-down"></i>`);
             } else {
-                $("#loginSuccessMenu .nav-link").html(`<span><p class="m-0" style="font-size: 15px">` + username + `</p><p class="m-0" style="font-size: 12px">(Chưa được phân công)</p></span><i class="fa fa-caret-down"></i>`);
+                $("#loginSuccessMenu .nav-link").html(`<span><p class="m-0" style="font-size: 15px">` + username + `</p><p class="m-0" style="font-size: 12px">(Không có lớp chấm)</p></span><i class="fa fa-caret-down"></i>`);
             }
             $('#loginSuccessMenu .nav-link').attr('style', 'padding-top: 0!important; padding-bottom: 0!important');
         } else {
