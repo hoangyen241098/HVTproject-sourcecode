@@ -111,7 +111,7 @@ $('#byYear').change(function () {
     loadComboboxYear(yearId);
 })
 
-setTimeout(search, 500);
+setTimeout(search, 1000);
 
 /*Set data to table*/
 function search() {

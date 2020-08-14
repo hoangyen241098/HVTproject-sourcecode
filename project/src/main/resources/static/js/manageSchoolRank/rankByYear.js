@@ -55,7 +55,7 @@ $.ajax({
     contentType: "application/json"
 });
 
-setTimeout(search, 500);
+setTimeout(search, 1000);
 
 /*Set data to table*/
 function search() {
