@@ -45,6 +45,7 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
     int[] costValue;
     int size;
     int[] outputData;
+    int costValueOutput;
 
     @Override
     public MessageDTO delete(Date fromDate) {
@@ -91,13 +92,13 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
     @Override
     public MessageDTO create(Date fromDate) {
         MessageDTO message = Constant.SUCCESS;
-        Date dateCurrent = new Date(System.currentTimeMillis());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        if(sdf.format(dateCurrent).equalsIgnoreCase(sdf.format(fromDate))
-                || fromDate.before(dateCurrent)){
-            message = Constant.NOT_ADD_ASSIGN_REDSTAR;
-            return message;
-        }
+//        Date dateCurrent = new Date(System.currentTimeMillis());
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        if(sdf.format(dateCurrent).equalsIgnoreCase(sdf.format(fromDate))
+//                || fromDate.before(dateCurrent)){
+//            message = Constant.NOT_ADD_ASSIGN_REDSTAR;
+//            return message;
+//        }
         try {
             // delete if fromdate exit
             MessageDTO messageCheckDate = checkDate(fromDate);
@@ -122,19 +123,22 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
 
             //genertic
             khoitao(redStarList.size());
-//          khoitaoTest(redStarList.size());
-//          laighep();
-            while (true){
+            for(int i = 1;i <= 1000; i++){
                 danhgia(classList.size() * 2, redStarList.size());
-                if (Print()) {
+                Print();
+                if (costValueOutput == 0) {
+                    System.out.println(i);
                     break;
                 }
                 chonloc();
                 dotbien();
             }
+            if(costValueOutput > 0){
+                System.out.println("giá trị nhỏ nhất là: " + costValueOutput);
+            }
 
-            int l = danhgiaOne(classList.size() * 2, redStarList.size(), outputData);
-            System.out.println(l);
+//            int l = danhgiaOne(classList.size() * 2, redStarList.size(), outputData);
+//            System.out.println(l);
 //            outputData[outputData.length-1] =1000;
             insertClassRedStar(fromDate, classList, redStarList, outputData);
 
@@ -193,6 +197,7 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
         indexRedStarOfClass = (List<Integer>[]) new List[classList.size()];
         flag = new int[classList.size() * 2][redStarList.size()];
         outputData = new int[size];
+        costValueOutput = size;
 
         for (int i = 0; i < classList.size(); i++) {
             Class classi = classList.get(i);
@@ -289,26 +294,27 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
         }
     }
 
-    public boolean Print() {
+    public void Print() {
         int [] temp = costValue.clone();
         Arrays.sort(temp);
         int best = temp[0];
-        System.out.print(best+": ");
+        //System.out.print(best+": ");
         for (int i=0;i<n;i++){
             if (costValue[i]==best){
-                for (int j=0;j<size;j++)
-                    System.out.print(population[i][j]+" ,");
-                System.out.println();
-                if(best == 0){
+//                for (int j=0;j<size;j++)
+//                    System.out.print(population[i][j]+" ,");
+//                System.out.println();
+                if(best < costValueOutput){
                     outputData = population[i];
+                    costValueOutput = best;
                 }
                 break;
             }
         }
-        if(best == 0) {
-            return true;
-        }
-        else return false;
+//        if(best == 0) {
+//            return true;
+//        }
+//        else return false;
     }
 
     public void chonloc() {
