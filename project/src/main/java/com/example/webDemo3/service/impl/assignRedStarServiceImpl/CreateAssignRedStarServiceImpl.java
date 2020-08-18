@@ -241,33 +241,8 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
             }
         }
 
-        for (int i = 0; i < classList.size(); i++) {
-            Class classi = classList.get(i);
-            for (int j = 0; j < redStarList.size(); j++) {
-                User redstar = redStarList.get(j);
-                //loại bỏ cùng khối
-                if (classi.getGrade() == redstar.getClassSchool().getGrade()) {
-                    flag[i * 2][j] = -1;
-                    flag[i * 2 + 1][j] = -1;
-                }
-                //loại bỏ chấm chéo 2 lần liên tiếp
-                for (int k = 0; k < assignList.size(); k++) {
-                    ClassRedStar data = assignList.get(k);
-                    if ((data.getClassSchool().getClassId() == classi.getClassId())
-                            && (data.getClassRedStarId().getRED_STAR() == redstar.getUsername())) {
-                        flag[i * 2][j] = -1;
-                        flag[i * 2 + 1][j] = -1;
-                    }
-                    User userData = assignUser[k];
-                    //userRepository.findUserByUsername(data.getClassRedStarId().getRED_STAR());
-                    if ((userData.getClassSchool().getClassId() == classi.getClassId())
-                            && (data.getClassSchool().getClassId() == redstar.getClassSchool().getClassId())) {
-                        flag[i * 2][j] = -1;
-                        flag[i * 2 + 1][j] = -1;
-                    }
-                }
-            }
-        }
+        getFlag(classList, redStarList, assignList, assignUser);//tạo giá trị cho flag[][]
+        
     }
 
     private void khoitao(int redStarListSize) {
