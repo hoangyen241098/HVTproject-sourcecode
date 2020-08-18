@@ -92,13 +92,13 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
     @Override
     public MessageDTO create(Date fromDate) {
         MessageDTO message = Constant.SUCCESS;
-//        Date dateCurrent = new Date(System.currentTimeMillis());
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//        if(sdf.format(dateCurrent).equalsIgnoreCase(sdf.format(fromDate))
-//                || fromDate.before(dateCurrent)){
-//            message = Constant.NOT_ADD_ASSIGN_REDSTAR;
-//            return message;
-//        }
+        Date dateCurrent = new Date(System.currentTimeMillis());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if(sdf.format(dateCurrent).equalsIgnoreCase(sdf.format(fromDate))
+                || fromDate.before(dateCurrent)){
+            message = Constant.NOT_ADD_ASSIGN_REDSTAR;
+            return message;
+        }
         try {
             // delete if fromdate exit
             MessageDTO messageCheckDate = checkDate(fromDate);
@@ -122,12 +122,13 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
             getIndex(classList, redStarList, assignList, assignUser);
 
             //genertic
+            //getFlag(classList, redStarList, assignList, assignUser);//tạo giá trị cho flag[][]
             khoitao(redStarList.size());
             for(int i = 1;i <= 1000; i++){
                 danhgia(classList.size() * 2, redStarList.size());
                 Print();
                 if (costValueOutput == 0) {
-                    System.out.println(i);
+                    System.out.println("tạo phân công thành công tại genertation thứ " + i);
                     break;
                 }
                 chonloc();
@@ -137,9 +138,6 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
                 System.out.println("giá trị nhỏ nhất là: " + costValueOutput);
             }
 
-//            int l = danhgiaOne(classList.size() * 2, redStarList.size(), outputData);
-//            System.out.println(l);
-//            outputData[outputData.length-1] =1000;
             insertClassRedStar(fromDate, classList, redStarList, outputData);
 
         } catch (Exception e) {
@@ -186,6 +184,35 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
         return flagcCopy;
     }
 
+    private void getFlag(List<Class> classList, List<User> redStarList, List<ClassRedStar> assignList,User[] assignUser) {
+        for (int i = 0; i < classList.size(); i++) {
+            Class classi = classList.get(i);
+            for (int j = 0; j < redStarList.size(); j++) {
+                User redstar = redStarList.get(j);
+                //loại bỏ cùng khối
+                if (classi.getGrade() == redstar.getClassSchool().getGrade()) {
+                    flag[i * 2][j] = -1;
+                    flag[i * 2 + 1][j] = -1;
+                }
+                //loại bỏ chấm chéo 2 lần liên tiếp
+                for (int k = 0; k < assignList.size(); k++) {
+                    ClassRedStar data = assignList.get(k);
+                    if ((data.getClassSchool().getClassId() == classi.getClassId())
+                            && (data.getClassRedStarId().getRED_STAR() == redstar.getUsername())) {
+                        flag[i * 2][j] = -1;
+                        flag[i * 2 + 1][j] = -1;
+                    }
+                    User userData = assignUser[k];
+                    if ((userData.getClassSchool().getClassId() == classi.getClassId())
+                            && (data.getClassSchool().getClassId() == redstar.getClassSchool().getClassId())) {
+                        flag[i * 2][j] = -1;
+                        flag[i * 2 + 1][j] = -1;
+                    }
+                }
+            }
+        }
+    }
+
     private void getIndex(List<Class> classList, List<User> redStarList,
                           List<ClassRedStar> assignList,User[] assignUser) {
         //set up
@@ -214,33 +241,8 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
             }
         }
 
-        for (int i = 0; i < classList.size(); i++) {
-            Class classi = classList.get(i);
-            for (int j = 0; j < redStarList.size(); j++) {
-                User redstar = redStarList.get(j);
-                //loại bỏ cùng khối
-                if (classi.getGrade() == redstar.getClassSchool().getGrade()) {
-                    flag[i * 2][j] = -1;
-                    flag[i * 2 + 1][j] = -1;
-                }
-                //loại bỏ chấm chéo 2 lần liên tiếp
-                for (int k = 0; k < assignList.size(); k++) {
-                    ClassRedStar data = assignList.get(k);
-                    if ((data.getClassSchool().getClassId() == classi.getClassId())
-                            && (data.getClassRedStarId().getRED_STAR() == redstar.getUsername())) {
-                        flag[i * 2][j] = -1;
-                        flag[i * 2 + 1][j] = -1;
-                    }
-                    User userData = assignUser[k];
-                    //userRepository.findUserByUsername(data.getClassRedStarId().getRED_STAR());
-                    if ((userData.getClassSchool().getClassId() == classi.getClassId())
-                            && (data.getClassSchool().getClassId() == redstar.getClassSchool().getClassId())) {
-                        flag[i * 2][j] = -1;
-                        flag[i * 2 + 1][j] = -1;
-                    }
-                }
-            }
-        }
+        getFlag(classList, redStarList, assignList, assignUser);//tạo giá trị cho flag[][]
+        
     }
 
     private void khoitao(int redStarListSize) {
@@ -298,12 +300,8 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
         int [] temp = costValue.clone();
         Arrays.sort(temp);
         int best = temp[0];
-        //System.out.print(best+": ");
         for (int i=0;i<n;i++){
             if (costValue[i]==best){
-//                for (int j=0;j<size;j++)
-//                    System.out.print(population[i][j]+" ,");
-//                System.out.println();
                 if(best < costValueOutput){
                     outputData = population[i];
                     costValueOutput = best;
@@ -311,10 +309,6 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
                 break;
             }
         }
-//        if(best == 0) {
-//            return true;
-//        }
-//        else return false;
     }
 
     public void chonloc() {
@@ -329,289 +323,16 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
     }
 
     public void dotbien() {
-        for (int i=0;i<n/2;i++){
-            int cha=ran.nextInt(n);
-
+        for (int k=0;k<n/2;k++){
+            int i=ran.nextInt(n);
             for (int j=0;j<size;j++)
-                if(populationFlag[cha][j] == -1){
+                if(populationFlag[i][j] == -1){
                     int value = ran.nextInt(size);
-                    int temp=population[cha][j];
-                    population[cha][j] = population[cha][value];
-                    population[cha][value] = temp;
+                    int temp=population[i][j];
+                    population[i][j] = population[i][value];
+                    population[i][value] = temp;
                 }
         }
-    }
-
-    private int[] test(int redStarListSize, int[][] flagCopy) {
-        int[] data = new int[redStarListSize];
-        for (int i = 0; i < redStarListSize; i++) {
-            data[i] = i;
-        }
-        int[] output = new int[size];
-        for (int j = 0; j < size; j++) output[j] = -1;
-        int maxfirst = redStarListSize;
-        int kq = 1;
-        for (int classIndex = 0; classIndex < size; classIndex++) {
-            int t = 0;
-            int[] copyData = data.clone();
-            int max = maxfirst;
-            if(classIndex == 82){
-                int h=0;
-            }
-            while (true){
-                int value ;
-                if(max < 0){
-                    if (output[classIndex] == -1)
-                        kq =0;
-                    break;
-                }
-                else if( max == 0){
-                    value =0;
-                }
-                else {
-                    value = ran.nextInt(max);
-                }
-                int redStar = copyData[value];
-                if (flagCopy[classIndex][redStar] ==0) {
-                    output[classIndex] = redStar;
-                    flagCopy[classIndex][redStar] = 1;
-                    if(classIndex%2 == 0) {
-                        flagCopy[classIndex + 1][redStar] = 1;
-                        int classOfRedstar = indexClassOfRedStar[redStar];
-                        for (int redStarOfClass : indexRedStarOfClass[classOfRedstar]) {
-                            flagCopy[classIndex + 1][redStarOfClass] = 1;
-                        }
-                    }
-                    int k = 0;
-                    if (classIndex != 0) k = classIndex/2;
-                    for (int redStarOfClass : indexRedStarOfClass[k]){
-                        flagCopy[indexClassOfRedStar[redStar]*2][redStarOfClass] = 1;
-                        flagCopy[indexClassOfRedStar[redStar]*2+1][redStarOfClass] = 1;
-                    }
-                    if(maxfirst > 0){
-                        for(int j =0;j<maxfirst;j++){
-
-                            if(data[j] == redStar){
-                                maxfirst--;
-                                int temp = data[j];
-                                data[j] = data[maxfirst];
-                                data[maxfirst] = temp;
-                                break;
-                            }
-                        }
-                    }
-                    else{
-                        kq=2;
-                        maxfirst--;
-                    }
-                    break;
-                }
-                else{
-                    max--;
-                    if(max>=0){
-                        int temp = copyData[value];
-                        copyData[value] = copyData[max];
-                        copyData[max] = temp;
-                    }
-                }
-            }
-        }
-
-        System.out.print("ket qua: "+kq+": ");
-        for (int j=0;j<size;j++) {
-            System.out.print(output[j] + " ,");
-        }
-        System.out.println();
-        if (kq == 0){
-            output[size -1] = -1;
-        }
-        return output;
-    }
-
-    private int[] craeteOnePopulation(int redStarListSize, int[][] flagCopy) {
-        int[] data = new int[redStarListSize];
-        for (int i = 0; i < redStarListSize; i++) {
-            data[i] = i;
-        }
-        int[] output = new int[size];
-        for (int j = 0; j < size; j++) output[j] = -1;
-        int maxfirst = redStarListSize;
-        int kq = 1;
-        for (int classIndex = 0; classIndex < size; classIndex++) {
-            int t = 0;
-            int[] copyData = data.clone();
-            int max = maxfirst;
-            while (true){
-                int value = 0;
-                if(max < 0){
-                    if (output[classIndex] == -1){
-                        if(maxfirst > 0 ) value = ran.nextInt(maxfirst);
-                        output[classIndex] = copyData[value];
-                        if(maxfirst > 0){
-                            for(int j =0;j<maxfirst;j++){
-                                if(data[j] == copyData[value]){
-                                    maxfirst--;
-                                    int temp = data[j];
-                                    data[j] = data[maxfirst];
-                                    data[maxfirst] = temp;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    break;
-                }
-                else if( max > 0){
-                    value = ran.nextInt(max);
-                }
-                int redStar = copyData[value];
-                // if data corect
-                if (flagCopy[classIndex][redStar] ==0) {
-                    output[classIndex] = redStar;
-                    flagCopy[classIndex][redStar] = 1;
-                    //2 sao đỏ cùng lớp không chấm cùng 1 lớp
-                    if(classIndex%2 == 0) {
-                        flagCopy[classIndex + 1][redStar] = 1;
-                        int classOfRedstar = indexClassOfRedStar[redStar];
-                        for (int redStarOfClass : indexRedStarOfClass[classOfRedstar]) {
-                            flagCopy[classIndex + 1][redStarOfClass] = 1;
-                        }
-                    }
-                    //sao đỏ của 2 lớp không chấm chéo nhau
-                    int k = 0;
-                    if (classIndex != 0) k = classIndex/2;
-                    for (int redStarOfClass : indexRedStarOfClass[k]){
-                        flagCopy[indexClassOfRedStar[redStar]*2][redStarOfClass] = 1;
-                        flagCopy[indexClassOfRedStar[redStar]*2+1][redStarOfClass] = 1;
-                    }
-                    // đưa data đã chọn về cuối để không chọn lại
-                    if(maxfirst > 0){
-                        for(int j =0;j<maxfirst;j++){
-                            if(data[j] == redStar){
-                                maxfirst--;
-                                int temp = data[j];
-                                data[j] = data[maxfirst];
-                                data[maxfirst] = temp;
-                                break;
-                            }
-                        }
-                    }
-                    else{
-                        kq=2;
-                        maxfirst--;
-                    }
-                    break;
-                }
-                else{
-                    // đưa data đã chọn về cuối để không chọn lại
-                    max--;
-                    if(max>=0){
-                        int temp = copyData[value];
-                        copyData[value] = copyData[max];
-                        copyData[max] = temp;
-                    }
-                }
-            }
-        }
-
-        System.out.print("ket qua: "+kq+": ");
-        for (int j=0;j<size;j++) {
-            System.out.print(output[j] + " ,");
-        }
-        System.out.println();
-        if (kq != 1){
-            output[size -1] = -1;
-        }
-        return output;
-    }
-
-    private void khoitaoTest(int redStarListSize) {
-        int[] data = new int[redStarListSize];
-        for (int i = 0; i < redStarListSize; i++) {
-            data[i] = i;
-        }
-        for (int i = 0; i < n; i++) {
-            //population[i] = new int[size];
-            int[][] flagCopy = copyflag(size, redStarListSize);
-            int[] output = craeteOnePopulation(redStarListSize, flagCopy);
-            population[i] = output;
-        }
-    }
-
-    public void laighep() {
-        for (int i=0;i<n/2;i++){
-            int cha=ran.nextInt(n);
-            int me = ran.nextInt(n);
-
-            int[] indexCha = new int[size];
-            int[] indexme = new int[size];
-            for (int j=0;j<size;j++){
-                indexCha[population[cha][j]] = j;
-                indexme[population[me][j]] = j;
-            }
-
-            for (int j=0;j<size;j++)
-                if (ran.nextInt(2)==1){
-               //if(populationFlag[cha][j] == -1){
-                    int temp=population[cha][j];
-                    population[cha][j]=population[me][j];
-                    population[me][j]=temp;
-
-                    temp = population[cha][indexCha[population[cha][j]]];
-                    population[cha][indexCha[population[cha][j]]]
-                            = population[me][indexCha[population[me][j]]];
-                    population[me][indexCha[population[me][j]]] = temp;
-                }
-        }
-    }
-
-    private int danhgiaOne(int d,int c, int[] data){
-        int kq = 0;
-        int[] dd = new int[c];
-        for(int i=0 ;i<c;i++){
-            dd[i] = 0;
-        }
-        int[][] flagCopy = copyflag(d,c);
-        for (int classIndex = 0; classIndex < size; classIndex++) {
-            int redStar = data[classIndex];
-            dd[redStar] ++;
-            if(dd[redStar] > 1){
-                kq ++;
-            }
-            if (flagCopy[classIndex][redStar] != 0) {
-                kq ++;
-            }
-            else {
-                flagCopy[classIndex][redStar] = 1;
-                if (classIndex % 2 == 0) {
-                    flagCopy[classIndex + 1][redStar] = 1;
-                    int classOfRedstar = indexClassOfRedStar[redStar];
-                    for (int redStarOfClass : indexRedStarOfClass[classOfRedstar]) {
-                        flagCopy[classIndex + 1][redStarOfClass] = 1;
-                    }
-                }
-                int k = 0;
-                if (classIndex != 0) k = classIndex / 2;
-                for (int redStarOfClass : indexRedStarOfClass[k]) {
-                    flagCopy[indexClassOfRedStar[redStar] * 2][redStarOfClass] = 1;
-                    flagCopy[indexClassOfRedStar[redStar] * 2 + 1][redStarOfClass] = 1;
-                }
-            }
-        }
-        return kq;
     }
 
 }
-//random with condition
-//        int kq = 0;
-//        int[] output = null;
-//        for (int i = 0; i < 10000; i++) {
-//            int[][] flagCopy = copyflag(classList.size() * 2, redStarList.size());
-//            output = test(redStarList.size(), flagCopy);
-//            if (output != null && output[size - 1] != -1) {
-//                System.out.println(i);
-//                break;
-//            }
-//        }
-//
-//        message = insertClassRedStar(message,fromDate,classList,redStarList,output);
