@@ -2,7 +2,6 @@ package com.example.webDemo3.service.impl.manageNewletterServiceImpl;
 
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
-import com.example.webDemo3.dto.manageNewsletterResponseDto.NewsletterListResponseDto;
 import com.example.webDemo3.dto.manageNewsletterResponseDto.NewsletterPageResponseDto;
 import com.example.webDemo3.dto.manageNewsletterResponseDto.ViewDetailLetterResponseDto;
 import com.example.webDemo3.dto.request.manageNewsletterRequestDto.LoadHomePageRequestDto;

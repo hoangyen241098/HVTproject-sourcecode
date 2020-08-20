@@ -44,9 +44,6 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
     private ViolationClassRepository violationClassRepository;
 
     @Autowired
-    private ValidateEmulationService validateEmulationService;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Autowired
