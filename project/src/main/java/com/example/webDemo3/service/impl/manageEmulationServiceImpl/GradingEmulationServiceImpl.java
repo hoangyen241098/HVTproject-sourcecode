@@ -20,7 +20,6 @@ import com.example.webDemo3.service.manageViolationService.ViolationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 /*

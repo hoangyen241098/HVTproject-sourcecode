@@ -20,8 +20,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ChangeRequestServiceImpl implements ChangeRequestService {
-    @Autowired
-    private ViolationClassRepository violationClassRepository;
 
     @Autowired
     private ViolationClassRequestRepository violationClassRequestRepository;

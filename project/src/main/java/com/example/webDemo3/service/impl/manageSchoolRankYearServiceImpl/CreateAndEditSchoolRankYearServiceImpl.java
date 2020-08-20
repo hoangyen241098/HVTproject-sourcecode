@@ -395,7 +395,7 @@ public class CreateAndEditSchoolRankYearServiceImpl implements CreateAndEditScho
 
             //check user have permisson or not
             if(user.getRole().getRoleId() != Constant.ROLEID_ADMIN){
-                message = Constant.NOT_ACCEPT_CREATE_RANK_SEMESTER;
+                message = Constant.NOT_ACCEPT_CREATE_RANK_YEAR;
                 return message;
             }
 
