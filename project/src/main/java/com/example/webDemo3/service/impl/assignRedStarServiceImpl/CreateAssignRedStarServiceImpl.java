@@ -107,6 +107,12 @@ public class CreateAssignRedStarServiceImpl implements CreateAssignRedStarServic
             }
             List<Class> classList = classRepository.findAll();
             List<User> redStarList = userRepository.findRedStar();
+            if(classList.size()*2 > redStarList.size()){
+                message = new MessageDTO();
+                message.setMessageCode(1);
+                message.setMessage("số lượng sao đỏ không đủ để phân công");
+                return message;
+            }
             Date beforDate = classRedStarRepository.getBiggestClosetDate(fromDate);
             List<ClassRedStar> assignList = new ArrayList<>();
             User[] assignUser = new User[0];
