@@ -19,13 +19,8 @@ var imageCover = CKEDITOR.replace('imageCover', {
     width: 250,
     height: 200,
     extraPlugins: 'easyimage',
-    // extraPlugins: 'autogrow',
     removePlugins: 'image',
     removeDialogTabs: 'link:advanced',
-    // autoGrow_minHeight: 50,
-    // autoGrow_maxHeight: 600,
-    // autoGrow_bottomSpace: 0,
-    // removePlugins: 'resize',
     toolbar: [
         {
             name: 'insert',
@@ -108,6 +103,9 @@ $('#savePost').on('click', function () {
     } else if (newHeaderImage.trim() == '') {
         $('.editPost-err').text('Hãy nhập ảnh bìa của bài viết.');
         return false;
+    } else if (!newHeaderImage.includes('src=')) {
+        $('.editPost-err').text('Ảnh bìa của bài viết không đúng định dạng.');
+        return false;
     } else if (newContent == "") {
         $('.editPost-err').text('Hãy nhập nội dung của bài viết.');
         return false;
@@ -136,7 +134,6 @@ $('#savePost').on('click', function () {
                 messageModal('messageModal', 'img/img-question.png', 'Bạn có muốn <b>GHIM</b> bài viết này không?<h6>Bài viết được ghim trước đó sẽ bị bỏ ghim!</h6>');
                 $('#newGim').on('click', function () {
                     request.newsletter.gim = newGim;
-                    console.log(JSON.stringify(request));
                     editPost(request);
                 })
             } else {
@@ -147,12 +144,10 @@ $('#savePost').on('click', function () {
                 messageModal('messageModal', 'img/img-question.png', 'Bạn có muốn <b>BỎ GHIM</b> bài viết này không?');
                 $('#newGim').on('click', function () {
                     request.newsletter.gim = newGim;
-                    console.log(JSON.stringify(request));
                     editPost(request);
                 })
             }
         } else {
-            console.log(JSON.stringify(request));
             editPost(request);
         }
     }
