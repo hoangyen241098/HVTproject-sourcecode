@@ -47,6 +47,7 @@ $.ajax({
                 $("#fromDate").html(`<option value="err" selected="selected">` + message + `</option>`);
             }
         }
+        search();
     },
     failure: function (errMsg) {
         if (data.listClass.length != 0) {
@@ -58,8 +59,6 @@ $.ajax({
     dataType: "json",
     contentType: "application/json"
 });
-
-setTimeout(search, 500);
 
 /*Load data to list*/
 function search() {
@@ -73,7 +72,6 @@ function search() {
     };
     $('#deleteBtn').addClass('hide');
     $('#download').addClass('hide');
-    console.log(JSON.stringify(inforSearch));
     if (fromDate == 'err' || classId == 'err') {
         $('tbody').html(`<tr><td colspan="3" class="text-center">Danh sách trống.</td></tr>`);
     } else {
@@ -91,6 +89,12 @@ function search() {
                 },
                 dataType: "json",
                 contentType: "application/json",
+                beforeSend: function () {
+                    $('body').addClass("loading")
+                },
+                complete: function () {
+                    $('body').removeClass("loading")
+                },
                 failure: function (errMsg) {
                     $('tbody').html(`<tr><td colspan="3" class="text-center"> ` + errMsg + ` </td></tr>`)
                 },
@@ -144,7 +148,6 @@ $("#download").click(function () {
             classId: $('#classList option:selected').val(),
             redStar: $('#redStarList').val().trim()
         }
-        console.log(JSON.stringify(download))
         $.ajax({
             url: '/api/assignRedStar/download',
             type: 'POST',
@@ -183,17 +186,10 @@ function checkDate() {
     var request = {
         date: $('#dateApplied').val()
     }
-    console.log(JSON.stringify(request));
     $.ajax({
         url: '/api/assignRedStar/checkDate',
         type: 'POST',
         data: JSON.stringify(request),
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
         success: function (data) {
             var messageCode = data.messageCode;
             var message = data.message;

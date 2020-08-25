@@ -47,15 +47,15 @@ $.ajax({
                 $('#byClass').html(`<option value="err">` + message + `</option>`);
             }
         }
+        setTimeout(search, 500);
     },
     failure: function (errMsg) {
-        console.log(errMsg);
+        $('#byYear').html(`<option value="err">` + errMsg + `</option>`);
+        $('#byClass').html(`<option value="err">` + errMsg + `</option>`);
     },
     dataType: "json",
     contentType: "application/json"
 });
-
-setTimeout(search, 1000);
 
 /*Set data to table*/
 function search() {
@@ -69,7 +69,6 @@ function search() {
             yearId: $('#byYear option:selected').val(),
             classId: $('#byClass option:selected').val()
         }
-        console.log(JSON.stringify(infoSearch));
         $('table').dataTable({
             destroy: true,
             searching: false,
@@ -84,6 +83,12 @@ function search() {
                 },
                 dataType: "json",
                 contentType: "application/json",
+                beforeSend: function () {
+                    $('body').addClass("loading")
+                },
+                complete: function () {
+                    $('body').removeClass("loading")
+                },
                 failure: function (errMsg) {
                     $('tbody').append(`<tr><td colspan="4" class="text-center"> ` + errMsg + ` </td></tr>`)
                 },
@@ -161,7 +166,6 @@ $('#createRankBtn').on('click', function () {
     var currentYear = {
         currentYearId: currentYearId,
     }
-    console.log(JSON.stringify(currentYear))
     $.ajax({
         url: '/api/rankyear/loadsemesterlist',
         type: 'POST',
@@ -188,6 +192,7 @@ $('#createRankBtn').on('click', function () {
                     });
                 }
                 if (data.semesterList.length != 0) {
+                    $('#createNewRankBtn').removeClass('hide');
                     $('#semesterList').html('');
                     $('#semesterList').append(`<h6>Các học kỳ áp dụng <span class="text-red">*</span></h6>`);
                     $.each(data.semesterList, function (i, item) {
@@ -206,13 +211,16 @@ $('#createRankBtn').on('click', function () {
                     });
                 } else {
                     $('#semesterList').html(`<h6 class="text-red">Không có học kỳ áp dụng nào!</h6>`);
+                    $('#createNewRankBtn').addClass('hide');
                 }
             } else {
                 $('#semesterList').html(`<h6 class="text-red">` + message + `</h6>`);
+                $('#createNewRankBtn').addClass('hide');
             }
         },
         failure: function (errMsg) {
             $('#semesterList').html(`<h6 class="text-red">` + errMsg + `</h6>`);
+            $('#createNewRankBtn').addClass('hide');
         },
         dataType: "json",
         contentType: "application/json"
@@ -240,7 +248,6 @@ $('#createNewRankBtn').on('click', function () {
             userName: username,
             semesterList: listCreate
         }
-        console.log(JSON.stringify(createRank));
         $.ajax({
             url: '/api/rankyear/createrankyear',
             type: 'POST',
@@ -285,7 +292,6 @@ $('#editRankBtn').on('click', function () {
     var data = {
         yearId: yearId,
     }
-    console.log(JSON.stringify(data));
     $.ajax({
         url: '/api/rankyear/loadeditrankyear',
         type: 'POST',
@@ -391,7 +397,6 @@ $('#editRankBtnModal').on('click', function () {
             userName: username,
             semesterList: listEdit
         }
-        console.log(JSON.stringify(editRank));
         $.ajax({
             url: '/api/rankyear/editrankyear',
             type: 'POST',
@@ -431,7 +436,6 @@ $("#download").click(function () {
         yearId: $('#byYear option:selected').val(),
         classId: $('#byClass option:selected').val()
     }
-    console.log(JSON.stringify(download))
     $.ajax({
         url: '/api/rankyear/download',
         type: 'POST',
@@ -501,7 +505,6 @@ $("#viewHistory").click(function () {
             $('body').removeClass("loading")
         },
         success: function (data) {
-            console.log(data)
             var messageCode = data.message.messageCode;
             var message = data.message.message;
             if (messageCode == 0) {
