@@ -97,6 +97,7 @@ $.ajax({
                 getClass();
                 increaseBtn();
                 decreaseBtn();
+                validateQuantity()
             } else {
                 $(".panel-default").html(`<h5>Không có lỗi vi phạm.</h5>`);
             }
@@ -297,6 +298,26 @@ function decreaseBtn() {
         var $total = $(this).closest('td').parent().find('.total');
         var total = parseFloat($substract.text()) * parseInt($qty.val());
         $total.text(total.toFixed(2));
+    });
+}
+
+/*Validate quantity input*/
+function validateQuantity() {
+    $('.quantity-input').blur(function () {
+        var value = parseInt($(this).val());
+        var $substract = $(this).closest('td').parent().find('.substract');
+        var $total = $(this).closest('td').parent().find('.total');
+        if (isNaN(value)) {
+            $(this).val(0);
+            value = 0;
+            var total = parseFloat($substract.text()) * parseInt(value);
+        } else if (value > 0) {
+            $(this).val(parseInt(value));
+            var total = parseFloat($substract.text()) * parseInt(value);
+        } else if (value < 0) {
+            $(this).focus();
+        }
+        $total.text(total.toFixed(1));
     });
 }
 

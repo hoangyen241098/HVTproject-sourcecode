@@ -86,6 +86,12 @@ $('#savePost').on('click', function () {
     var newHeader = $('#titleName').val().trim();
     // var newHeaderImage = $('#imagePreview').attr('src');
     var newHeaderImage = imageCover.getData();
+    if (!newHeaderImage.includes('src=')) {
+        $('.editPost-err').text('Ảnh bìa của bài viết không đúng định dạng.');
+        return false;
+    } else {
+        newHeaderImage = newHeaderImage.split('src=')[1].split('"')[1];
+    }
     var newContent = editor.getData();
     var newGim;
     if ($('input[type="checkbox"]').prop("checked") == true) {
@@ -103,15 +109,11 @@ $('#savePost').on('click', function () {
     } else if (newHeaderImage.trim() == '') {
         $('.editPost-err').text('Hãy nhập ảnh bìa của bài viết.');
         return false;
-    } else if (!newHeaderImage.includes('src=')) {
-        $('.editPost-err').text('Ảnh bìa của bài viết không đúng định dạng.');
-        return false;
     } else if (newContent == "") {
         $('.editPost-err').text('Hãy nhập nội dung của bài viết.');
         return false;
     } else {
         $('.editPost-err').text('');
-        newHeaderImage = newHeaderImage.split('src=')[1].split('"')[1];
         var request = {
             newsletter: {
                 newsletterId: newsletterId,

@@ -128,8 +128,9 @@ function search() {
                 settings.oLanguage.sEmptyTable = "Danh sách trống."
             }
         })
-
     }
+    download(fromDate);
+    deleteAssign(fromDate)
 }
 
 $("#search").click(function () {
@@ -138,48 +139,49 @@ $("#search").click(function () {
 });
 
 /*Download button*/
-$("#download").click(function () {
-    var fromDate = $('#fromDate option:selected').val();
-    if (fromDate == 'err') {
-        messageModal('downloadModal', 'img/img-error.png', 'Chưa chọn ngày tải xuống!')
-    } else {
-        var download = {
-            fromDate: fromDate,
-            classId: $('#classList option:selected').val(),
-            redStar: $('#redStarList').val().trim()
+function download(fromDate) {
+    $("#download").unbind().click(function () {
+        if (fromDate == 'err') {
+            messageModal('downloadModal', 'img/img-error.png', 'Chưa chọn ngày tải xuống!')
+        } else {
+            var download = {
+                fromDate: fromDate,
+                classId: $('#classList option:selected').val(),
+                redStar: $('#redStarList').val().trim()
+            }
+            $.ajax({
+                url: '/api/assignRedStar/download',
+                type: 'POST',
+                data: JSON.stringify(download),
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                beforeSend: function () {
+                    $('body').addClass("loading")
+                },
+                complete: function () {
+                    $('body').removeClass("loading")
+                },
+                success: function (data) {
+                    var a = document.createElement('a');
+                    var url = window.URL.createObjectURL(data);
+                    var name = "Phân-công-trực-tuần-" + fromDate + '.xls';
+                    a.href = url;
+                    a.download = name;
+                    document.body.append(a);
+                    a.click();
+                    a.remove();
+                    window.URL.revokeObjectURL(url);
+                },
+                failure: function (errMsg) {
+                    messageModal('downloadModal', 'img/img-error.png', 'Không thể tải xuống!')
+                },
+                dataType: "binary",
+                contentType: "application/json"
+            });
         }
-        $.ajax({
-            url: '/api/assignRedStar/download',
-            type: 'POST',
-            data: JSON.stringify(download),
-            xhrFields: {
-                responseType: 'blob'
-            },
-            beforeSend: function () {
-                $('body').addClass("loading")
-            },
-            complete: function () {
-                $('body').removeClass("loading")
-            },
-            success: function (data) {
-                var a = document.createElement('a');
-                var url = window.URL.createObjectURL(data);
-                var name = "Phân-công-trực-tuần-" + fromDate + '.xls';
-                a.href = url;
-                a.download = name;
-                document.body.append(a);
-                a.click();
-                a.remove();
-                window.URL.revokeObjectURL(url);
-            },
-            failure: function (errMsg) {
-                messageModal('downloadModal', 'img/img-error.png', 'Không thể tải xuống!')
-            },
-            dataType: "binary",
-            contentType: "application/json"
-        });
-    }
-});
+    });
+}
 
 /*Check Date*/
 function checkDate() {
@@ -267,51 +269,52 @@ $('#createAssignBtn').on('click', function () {
 })
 
 /*Delete Assign*/
-function deleteAssign() {
-    var date = $('#fromDate option:selected').val();
-    if (date == 'err') {
-        messageModal('addSuccess', 'img/img-error.png', 'Chưa chọn ngày xóa!')
-    } else {
-        var request = {
-            date: date,
-        }
-        $('#overrideConfirm .modal-body').html(`
-        <img class="mb-3 mt-3" src="img/img-question.png"/>
-        <h5>Bạn có muốn <b>XÓA</b> phân công sau ngày ` + convertDate(date, '/') + ` không?</h5>`);
-        $('#overrideConfirm').modal('show');
-        $('#confirmApplied').unbind().click(function () {
-            $.ajax({
-                url: '/api/assignRedStar/delete',
-                type: 'POST',
-                data: JSON.stringify(request),
-                beforeSend: function () {
-                    $('body').addClass("loading")
-                },
-                complete: function () {
-                    $('body').removeClass("loading")
-                },
-                success: function (data) {
-                    var messageCode = data.messageCode;
-                    var message = data.message;
-                    if (messageCode == 0) {
+function deleteAssign(date) {
+    $('#deleteBtn').unbind().click(function () {
+        if (date == 'err') {
+            messageModal('addSuccess', 'img/img-error.png', 'Chưa chọn ngày xóa!')
+        } else {
+            var request = {
+                date: date,
+            }
+            $('#overrideConfirm .modal-body').html(`
+                <img class="mb-3 mt-3" src="img/img-question.png"/>
+                <h5>Bạn có muốn <b>XÓA</b> phân công sau ngày ` + convertDate(date, '/') + ` không?</h5>`);
+            $('#overrideConfirm').modal('show');
+            $('#confirmApplied').unbind().click(function () {
+                $.ajax({
+                    url: '/api/assignRedStar/delete',
+                    type: 'POST',
+                    data: JSON.stringify(request),
+                    beforeSend: function () {
+                        $('body').addClass("loading")
+                    },
+                    complete: function () {
+                        $('body').removeClass("loading")
+                    },
+                    success: function (data) {
+                        var messageCode = data.messageCode;
+                        var message = data.message;
+                        if (messageCode == 0) {
+                            $('#overrideConfirm').modal('hide');
+                            $('#addSuccess .modal-footer').html(`<a href="assignEmulation" class="btn btn-primary">ĐÓNG</a>`);
+                            messageModal('addSuccess', 'img/img-success.png', 'Xóa phân công thành công!')
+                        } else {
+                            $('#overrideConfirm').modal('hide');
+                            messageModal('addSuccess', 'img/img-error.png', message)
+                        }
+                    },
+                    failure: function (errMsg) {
                         $('#overrideConfirm').modal('hide');
-                        $('#addSuccess .modal-footer').html(`<a href="assignEmulation" class="btn btn-primary">ĐÓNG</a>`);
-                        messageModal('addSuccess', 'img/img-success.png', 'Xóa phân công thành công!')
-                    } else {
-                        $('#overrideConfirm').modal('hide');
-                        messageModal('addSuccess', 'img/img-error.png', message)
-                    }
-                },
-                failure: function (errMsg) {
-                    $('#overrideConfirm').modal('hide');
-                    messageModal('addSuccess', 'img/img-error.png', errMsg)
-                },
-                dataType: "json",
-                contentType: "application/json"
-            });
+                        messageModal('addSuccess', 'img/img-error.png', errMsg)
+                    },
+                    dataType: "json",
+                    contentType: "application/json"
+                });
 
-        })
-    }
+            })
+        }
+    })
 }
 
 if (roleID != 1) {
