@@ -167,7 +167,6 @@ $('#saveGrading').on('click', function () {
                         yearId: localStorage.getItem('currentYearId'),
                         violationList: violationList
                     }
-                    console.log(JSON.stringify(infoSave));
                     $.ajax({
                         url: '/api/emulation/addgrademulation',
                         type: 'POST',
@@ -243,17 +242,10 @@ function getClass() {
             username: username,
             applyDate: $('#datetime').val()
         }
-        console.log(JSON.stringify(request))
         $.ajax({
             url: '/api/emulation/getClassIdOfRedStar',
             type: 'POST',
             data: JSON.stringify(request),
-            beforeSend: function () {
-                $('body').addClass("loading")
-            },
-            complete: function () {
-                $('body').removeClass("loading")
-            },
             success: function (data) {
                 var messageCode = data.message.messageCode;
                 var message = data.message.message;

@@ -107,16 +107,6 @@ function menuClick() {
     });
 }
 
-/*Loading page*/
-$(document).on({
-    ajaxStart: function () {
-        $('body').addClass("loading");
-    },
-    ajaxComplete: function () {
-        $('body').removeClass("loading");
-    }
-})
-
 /*Select Checkbox*/
 function selectCheckbox() {
     var checkbox = $('table tbody input[type="checkbox"]');
@@ -216,23 +206,22 @@ function paging(inforSearch, totalPages) {
         `<input type="button" class="table-paging__page btn-prev" id="prevPage" value="Trước"/>`
     );
 
-    if(pageNumber == 0){
+    if (pageNumber == 0) {
         $('.table-paging').append(
             `<input type="button" value="` + (1) + `" class="table-paging__page table-paging__page_cur"/>`
         );
-    }
-    else {
+    } else {
         $('.table-paging').append(
             `<input type="button" value="` + (1) + `" class="table-paging__page"/>`
         );
     }
-    if(pageNumber > 2) {
+    if (pageNumber > 2) {
         $('.table-paging').append(
             `<input type="button" value="..." class="table-paging__page" disabled/>`
         );
     }
     for (var i = pageNumber; i <= pageNumber + 2; i++) {
-        if(i <= 1 || i >= totalPages) continue;
+        if (i <= 1 || i >= totalPages) continue;
         if (i - 1 == pageNumber) {
             $('.table-paging').append(
                 `<input type="button" value="` + (i) + `" class="table-paging__page table-paging__page_cur"/>`
@@ -244,19 +233,18 @@ function paging(inforSearch, totalPages) {
         }
     }
 
-    if(pageNumber + 2 < totalPages -1) {
+    if (pageNumber + 2 < totalPages - 1) {
         $('.table-paging').append(
             `<input type="button" value="..." class="table-paging__page" disabled/>`
         );
     }
 
-    if(totalPages > 1){
-        if(pageNumber == totalPages -1 ){
+    if (totalPages > 1) {
+        if (pageNumber == totalPages - 1) {
             $('.table-paging').append(
                 `<input type="button" value="` + (totalPages) + `" class="table-paging__page table-paging__page_cur"/>`
             );
-        }
-        else{
+        } else {
             $('.table-paging').append(
                 `<input type="button" value="` + (totalPages) + `" class="table-paging__page"/>`
             );
@@ -267,7 +255,7 @@ function paging(inforSearch, totalPages) {
         `<input type="button" class="table-paging__page btn-next" id="nextPage" value="Sau"/>`
     );
     var pageNumInfo = parseInt(inforSearch.pageNumber);
-    if ( pageNumInfo == 0) {
+    if (pageNumInfo == 0) {
         $('#prevPage').prop('disabled', true);
     } else {
         $('#prevPage').prop('disabled', false);
@@ -316,6 +304,15 @@ function limitedText(str) {
     return str;
 }
 
+/*Check is Integer*/
+function isInteger(x) {
+    if (x <= 0) {
+        return false;
+    } else {
+        return x % 1 === 0;
+    }
+}
+
 /*Lazy Load*/
 function lazyLoad() {
     $("img.lazy").lazyload({
@@ -338,12 +335,6 @@ function logout() {
         type: 'POST',
         url: "/api/user/logout",
         // data: JSON.stringify(user),
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
         success: function (data) {
             if (data != null && data.messageCode === 0) {
                 localStorage.clear();
@@ -373,12 +364,6 @@ function getAuthen() {
         },
 
         // data: JSON.stringify(user),
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
         success: function (data) {
             if (data != null && data.messageCode == 1) {
                 localStorage.clear();

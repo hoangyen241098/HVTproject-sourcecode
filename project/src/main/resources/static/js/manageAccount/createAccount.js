@@ -10,6 +10,12 @@ $('.createAccount-err').text("");
 $.ajax({
     url: '/api/admin/rolelist',
     type: 'POST',
+    beforeSend: function () {
+        $('body').addClass("loading")
+    },
+    complete: function () {
+        $('body').removeClass("loading")
+    },
     success: function (data) {
         $.each(data.listRole, function (i, list) {
             $('#position-role').append(`<option value="` + list.roleId + `" name="` + list.roleName + `">` + list.roleName + `</option>`);
@@ -93,6 +99,12 @@ $("#next").click(function () {
                 url: '/api/admin/genaccname',
                 type: 'POST',
                 data: JSON.stringify(userName),
+                beforeSend: function () {
+                    $('body').addClass("loading")
+                },
+                complete: function () {
+                    $('body').removeClass("loading")
+                },
                 success: function (data) {
                     $('#username').val(data.userName);
                 },
