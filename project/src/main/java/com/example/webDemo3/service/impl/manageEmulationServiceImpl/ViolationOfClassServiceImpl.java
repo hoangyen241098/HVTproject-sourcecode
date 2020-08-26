@@ -8,8 +8,6 @@ import com.example.webDemo3.dto.manageEmulationResponseDto.ViolationClassRespons
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.DeleteRequestChangeViolationClassRequestDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.EditViolationOfClassRequestDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewViolationOfClassRequestDto;
-import com.example.webDemo3.entity.Class;
-import com.example.webDemo3.entity.Violation;
 import com.example.webDemo3.entity.ViolationClass;
 import com.example.webDemo3.entity.ViolationClassRequest;
 import com.example.webDemo3.repository.*;
@@ -18,10 +16,7 @@ import com.example.webDemo3.service.manageEmulationService.ValidateEmulationServ
 import com.example.webDemo3.service.manageEmulationService.ViolationOfClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.sql.Date;
-import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -203,7 +198,7 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
                         String history = violationClass.getHistory();
                         String newHistory = additionalFunctionService.addHistory(history, reason, username, violationClass.getQuantity());
                         if (newQuantity == 0) {
-                            violationClass.setStatus(0);
+                            violationClass.setQuantity(0);
                             violationClass.setHistory(newHistory);
                             violationClassRepository.save(violationClass);
                         } else {
@@ -230,6 +225,7 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
             }
         }
         catch (Exception e){
+            message = new MessageDTO();
             message.setMessageCode(1);
             message.setMessage(e.toString());
             return message;

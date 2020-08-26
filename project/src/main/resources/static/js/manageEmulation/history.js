@@ -1,12 +1,18 @@
+/*Setup value */
+$('#fromDate').val(moment().format('YYYY-MM-DD'));
+$('#toDate').val(moment().format('YYYY-MM-DD'));
+$('#toDate').attr('min', $('#fromDate').val());
+$('#fromYear').val(moment().year());
+$('#toYear').val(parseInt($('#fromYear').val()) + 3);
 $('#fromYear').change(function () {
     var fromYear = $(this).val();
     $('#toYear').val(parseInt(fromYear) + 3);
 });
-/*Setup value */
-$('#fromDate').val(moment().format('YYYY-MM-DD'));
-$('#toDate').val(moment().format('YYYY-MM-DD'));
-$('#fromYear').val(moment().year());
-$('#toYear').val(parseInt($('#fromYear').val()) + 3)
+$('#fromDate').change(function () {
+    var fromDate = $(this).val();
+    $('#toDate').attr('min', fromDate);
+    $('#toDate').val(fromDate);
+});
 var inforSearch = {
     fromDate: $('#fromDate').val(),
     toDate: $('#toDate').val(),
@@ -44,6 +50,7 @@ $.ajax({
         } else {
             $("#gifftedClass").html(`<option>` + message + `</option>`);
         }
+        search();
     },
     failure: function (errMsg) {
         $("#gifftedClass").html(`<option>` + errMsg + `</option>`);
@@ -51,7 +58,7 @@ $.ajax({
     dataType: "json",
     contentType: "application/json"
 });
-search();
+
 
 /*Search button*/
 $("#search").click(function () {
@@ -80,7 +87,6 @@ $("#search").click(function () {
 
 /*Load data to list*/
 function search() {
-    console.log(JSON.stringify(inforSearch))
     $.ajax({
         url: '/api/violationClass/history/view',
         type: 'POST',
