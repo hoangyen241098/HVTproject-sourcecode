@@ -118,6 +118,7 @@ $('#byYear').change(function () {
 /*Set data to table*/
 function search() {
     var weekId = $('#byWeek option:selected').val();
+    var classId = $('#byClass option:selected').val();
     if (weekId != null && weekId != "" && weekId != "err") {
         $('#viewHistory').removeClass('hide');
     }
@@ -131,7 +132,7 @@ function search() {
     } else {
         var infoSearch = {
             weekId: weekId,
-            classId: $('#byClass option:selected').val()
+            classId: classId
         }
         $('table').dataTable({
             destroy: true,
@@ -254,11 +255,11 @@ function search() {
             }
         });
     }
-    viewHistory();
-    download();
+    viewHistory(weekId);
+    download(weekId, classId);
     createRank();
     editRankBtn();
-    editGrade();
+    editGrade(weekId);
 }
 
 /*Search button*/
@@ -560,11 +561,10 @@ $('#editRankBtnModal').on('click', function () {
 /*=============Edit Grade=====================*/
 
 /*Button Edit table*/
-function editGrade() {
+function editGrade(weekId) {
     $("#editGrades").unbind().click(function () {
         var row = $('tbody tr td[contenteditable]');
         var editOn = $('#editGrades').hasClass("editMode");
-        var weekId = $('#byWeek option:selected').val();
         rankWeekList = [];
 
         if (editOn == false) {
@@ -715,15 +715,8 @@ function validateInput(className, max) {
 /*===============Download===================*/
 
 /*Download button*/
-function download() {
+function download(weekId, classId) {
     $("#download").click(function () {
-        var classId = $('#byClass option:selected').val();
-        var weekId = $('#byWeek option:selected').val();
-        if (classId == null || classId == "") {
-            classId = ""
-        } else {
-            classId = $('#byClass option:selected').val();
-        }
         var download = {
             weekId: weekId,
             classId: classId,
@@ -782,9 +775,8 @@ $(document).on('hidden.bs.modal', '#editRank', function () {
 /*===============View History===================*/
 
 /*View history button*/
-function viewHistory() {
+function viewHistory(weekId) {
     $("#viewHistory").click(function () {
-        var weekId = $('#byWeek option:selected').val();
         var viewHistory = {
             weekId: weekId
         };

@@ -112,7 +112,7 @@ $('#byYear').change(function () {
 /*Set data to table*/
 function search() {
     var monthId = $('#byMonth option:selected').val();
-
+    var classId = $('#byClass option:selected').val();
     if (monthId != null && monthId != "" && monthId != "err") {
         $('#viewHistory').removeClass('hide');
     }
@@ -125,7 +125,7 @@ function search() {
     } else {
         var infoSearch = {
             monthId: monthId,
-            classId: $('#byClass option:selected').val(),
+            classId: classId,
         }
         $('table').dataTable({
             destroy: true,
@@ -224,8 +224,8 @@ function search() {
     }
     createRankBtn();
     editRankBtn();
-    download();
-    viewHistory();
+    download(monthId, classId);
+    viewHistory(monthId);
 }
 
 /*Search button*/
@@ -530,11 +530,11 @@ $('#editRankBtnModal').on('click', function () {
 /*===============Download===================*/
 
 /*Download button*/
-function download() {
+function download(monthId, classId) {
     $("#download").click(function () {
         var download = {
-            monthId: $('#byMonth option:selected').val(),
-            classId: $('#byClass option:selected').val()
+            monthId: monthId,
+            classId: classId
         }
         $.ajax({
             url: '/api/rankmonth/download',
@@ -592,10 +592,10 @@ $(document).on('hidden.bs.modal', '#editRank', function () {
 /*===============View History===================*/
 
 /*View history button*/
-function viewHistory() {
+function viewHistory(monthId) {
     $("#viewHistory").click(function () {
         var viewHistory = {
-            monthId: $('#byMonth option:selected').val(),
+            monthId: monthId,
         };
         $.ajax({
             url: '/api/rankmonth/viewhistory',

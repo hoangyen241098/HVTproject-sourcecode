@@ -62,12 +62,14 @@ function search() {
     $('#editRankBtn').addClass('hide');
     $('#download').addClass('hide');
     $('#viewHistory').addClass('hide');
+    var yearId = $('#byYear option:selected').val();
+    var classId = $('#byClass option:selected').val();
     if ($('#byYear option:selected').val() == 'err') {
         $('tbody').append(`<tr><td colspan="4" class="text-center">Danh sách xếp hạng của năm học trống.</td></tr>`);
     } else {
         var infoSearch = {
-            yearId: $('#byYear option:selected').val(),
-            classId: $('#byClass option:selected').val()
+            yearId: yearId,
+            classId: classId
         }
         $('table').dataTable({
             destroy: true,
@@ -150,6 +152,8 @@ function search() {
             }
         })
     }
+    download(yearId, classId);
+    viewHistory(yearId);
 }
 
 /*Search button*/
@@ -430,45 +434,48 @@ $('#editRankBtnModal').on('click', function () {
 })
 
 /*===============Download===================*/
+
 /*Download button*/
-$("#download").click(function () {
-    var download = {
-        yearId: $('#byYear option:selected').val(),
-        classId: $('#byClass option:selected').val()
-    }
-    $.ajax({
-        url: '/api/rankyear/download',
-        type: 'POST',
-        data: JSON.stringify(download),
-        xhrFields: {
-            responseType: 'blob'
-        },
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
-        success: function (data) {
-            var a = document.createElement('a');
-            var url = window.URL.createObjectURL(data);
-            var name = 'XẾP-HẠNG-THI-ĐUA-THEO-NĂM-HỌC.xls';
-            a.href = url;
-            a.download = name;
-            document.body.append(a);
-            a.click();
-            a.remove();
-            window.URL.revokeObjectURL(url);
-        },
-        statusCode: {
-            400: function (errMsg) {
-                messageModal('messageModal', 'img/img-error.png', 'Không thể tải được tập tin!')
-            }
-        },
-        dataType: "binary",
-        contentType: "application/json"
+function download(yearId, classId) {
+    $("#download").unbind().click(function () {
+        var download = {
+            yearId: yearId,
+            classId: classId
+        }
+        $.ajax({
+            url: '/api/rankyear/download',
+            type: 'POST',
+            data: JSON.stringify(download),
+            xhrFields: {
+                responseType: 'blob'
+            },
+            beforeSend: function () {
+                $('body').addClass("loading")
+            },
+            complete: function () {
+                $('body').removeClass("loading")
+            },
+            success: function (data) {
+                var a = document.createElement('a');
+                var url = window.URL.createObjectURL(data);
+                var name = 'XẾP-HẠNG-THI-ĐUA-THEO-NĂM-HỌC.xls';
+                a.href = url;
+                a.download = name;
+                document.body.append(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+            },
+            statusCode: {
+                400: function (errMsg) {
+                    messageModal('messageModal', 'img/img-error.png', 'Không thể tải được tập tin!')
+                }
+            },
+            dataType: "binary",
+            contentType: "application/json"
+        });
     });
-});
+}
 
 /*=====================================*/
 /*Set role*/
@@ -489,35 +496,38 @@ $(document).on('hidden.bs.modal', '#editRank', function () {
 });
 
 /*===============View History===================*/
+
 /*View history button*/
-$("#viewHistory").click(function () {
-    var viewHistory = {
-        yearId: $('#byYear option:selected').val(),
-    };
-    $.ajax({
-        url: '/api/rankyear/viewhistory',
-        type: 'POST',
-        data: JSON.stringify(viewHistory),
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
-        success: function (data) {
-            var messageCode = data.message.messageCode;
-            var message = data.message.message;
-            if (messageCode == 0) {
-                $('#historyModal .modal-body').html(data.history);
-                $('#historyModal').modal('show');
-            } else {
-                messageModal('messageModal', 'img/img-error.png', message)
-            }
-        },
-        failure: function (errMsg) {
-            messageModal('messageModal', 'img/img-error.png', errMsg)
-        },
-        dataType: "json",
-        contentType: "application/json"
+function viewHistory(yearId) {
+    $("#viewHistory").unbind().click(function () {
+        var viewHistory = {
+            yearId: yearId,
+        };
+        $.ajax({
+            url: '/api/rankyear/viewhistory',
+            type: 'POST',
+            data: JSON.stringify(viewHistory),
+            beforeSend: function () {
+                $('body').addClass("loading")
+            },
+            complete: function () {
+                $('body').removeClass("loading")
+            },
+            success: function (data) {
+                var messageCode = data.message.messageCode;
+                var message = data.message.message;
+                if (messageCode == 0) {
+                    $('#historyModal .modal-body').html(data.history);
+                    $('#historyModal').modal('show');
+                } else {
+                    messageModal('messageModal', 'img/img-error.png', message)
+                }
+            },
+            failure: function (errMsg) {
+                messageModal('messageModal', 'img/img-error.png', errMsg)
+            },
+            dataType: "json",
+            contentType: "application/json"
+        });
     });
-});
+}

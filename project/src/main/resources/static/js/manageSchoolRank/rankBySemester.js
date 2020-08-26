@@ -111,6 +111,7 @@ $('#byYear').change(function () {
 /*Set data to table*/
 function search() {
     var semesterId = $('#bySemester option:selected').val();
+    var classId = $('#byClass option:selected').val();
     if (semesterId != null && semesterId != "" && semesterId != "err") {
         $('#viewHistory').removeClass('hide');
     }
@@ -123,7 +124,7 @@ function search() {
     } else {
         var infoSearch = {
             semesterId: semesterId,
-            classId: $('#byClass option:selected').val()
+            classId: classId
         }
         $('table').dataTable({
             destroy: true,
@@ -214,8 +215,8 @@ function search() {
     }
     createRankBtn();
     editRankBtn();
-    download();
-    viewHistory();
+    download(semesterId, classId);
+    viewHistory(semesterId);
 }
 
 /*Search button*/
@@ -520,11 +521,11 @@ $('#editRankBtnModal').on('click', function () {
 /*===============Download===================*/
 
 /*Download button*/
-function download() {
+function download(semesterId, classId) {
     $("#download").click(function () {
         var download = {
-            semesterId: $('#bySemester option:selected').val(),
-            classId: $('#byClass option:selected').val()
+            semesterId: semesterId,
+            classId: classId
         }
         $.ajax({
             url: '/api/ranksemester/download',
@@ -582,10 +583,10 @@ $(document).on('hidden.bs.modal', '#editRank', function () {
 /*===============View History===================*/
 
 /*View history button*/
-function viewHistory() {
+function viewHistory(semesterId) {
     $("#viewHistory").click(function () {
         var viewHistory = {
-            semesterId: $('#bySemester option:selected').val(),
+            semesterId: semesterId,
         }
         $.ajax({
             url: '/api/ranksemester/viewhistory',
