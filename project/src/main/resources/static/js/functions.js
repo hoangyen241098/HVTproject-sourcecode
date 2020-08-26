@@ -93,7 +93,66 @@ $(document).ready(function () {
     });
 
     menuClick();
+    // setLocationFooter();
 });
+
+function setLocationFooter() {
+    var h = window.clientWidth;
+    var bodyHeight = $('body').height();
+    if (bodyHeight < h) {
+        $('.footer-area').css('margin-top', h - bodyHeight + "px")
+    } else {
+        $('.footer-area').css('margin-top', 0)
+    }
+}
+
+/*Set phone number*/
+$.ajax({
+    type: 'POST',
+    url: "/api/user/getAdminInfor",
+    success: function (data) {
+        var messageCode = data.message.messageCode;
+        if (messageCode == 0) {
+            if (data.userList.content.length != 0) {
+                var phoneNumber = data.userList.content[0].phone;
+                if (phoneNumber != null) {
+                    $('.number-link').html(validatePhone(phoneNumber));
+                    $('.number-link').attr('href', linkPhone(phoneNumber));
+                } else {
+                    $('.contact-number').addClass('hide');
+                    $('.contact-number-footer').addClass('hide');
+                }
+            } else {
+                $('.contact-number').addClass('hide');
+                $('.contact-number-footer').addClass('hide');
+            }
+        } else {
+            $('.contact-number').addClass('hide');
+            $('.contact-number-footer').addClass('hide');
+        }
+    },
+    failure: function (errMsg) {
+        $('.contact-number').addClass('hide');
+        $('.contact-number-footer').addClass('hide');
+    },
+    dataType: "json",
+    contentType: "application/json"
+});
+
+/*Add space for phone number*/
+function validatePhone(number) {
+    var part1 = number.substring(0, 4);
+    var part2 = number.substring(4, 7);
+    var part3 = number.substring(7, 10);
+    return part1 + " " + part2 + " " + part3;
+}
+
+function linkPhone(number) {
+    var part1 = number.substring(0, 4);
+    var part2 = number.substring(4, 7);
+    var part3 = number.substring(7, 10);
+    return "tel:" + part1 + "-" + part2 + "-" + part3;
+}
 
 function menuClick() {
     $('.dropdown').on('hide.bs.dropdown', function () {
