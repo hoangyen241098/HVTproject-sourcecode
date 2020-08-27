@@ -14,28 +14,20 @@ $.ajax({
             if (data.userList.content.length != 0) {
                 $.each(data.userList.content, function (i, item) {
                     if (item.phone != null) {
-                        if (item.name != "") {
-                            $('.admin-info').append("<h5 class='text-left'>" + item.name + " - " + validatePhone(item.phone) + "</h5>")
-                        } else {
-                            $('.admin-info').append("<h5 class='text-left'>" + validatePhone(item.phone) + "</h5>")
-                        }
+                        $('.table').append(`<tr><td class="font-500">` + item.name + `</td><td class="font-500">` + validatePhone(item.phone) + `</td></tr>`)
                     } else {
-                        $('.table .form-title').html('Chưa cập nhật Hotline!');
-                        $('.admin-info').addClass('hide');
+                        $('.table').append(`<tr><td class="font-500">` + item.name + `</td></tr>`)
                     }
                 })
             } else {
-                $('.table .form-title').html('Chưa cập nhật Hotline!');
-                $('.admin-info').addClass('hide');
+                $('.table').html(`<tr><td class="font-500">Chưa có thông tin liên hệ!</td></tr>`);
             }
         } else {
-            $('.table .form-title').html(message);
-            $('.admin-info').addClass('hide');
+            $('.table').html(`<tr><td class="font-500">` + message + `</td></tr>`);
         }
     },
     failure: function (errMsg) {
-        $('.table .form-title').html(errMsg);
-        $('.admin-info').addClass('hide');
+        $('.table').html(`<tr><td class="font-500">` + errMsg + `</td></tr>`);
     },
     dataType: "json",
     contentType: "application/json"

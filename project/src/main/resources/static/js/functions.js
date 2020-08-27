@@ -117,7 +117,7 @@ $.ajax({
                 var phoneNumber = data.userList.content[0].phone;
                 if (phoneNumber != null) {
                     $('.number-link').html(validatePhone(phoneNumber));
-                    $('.number-link').attr('href', linkPhone(phoneNumber));
+                    $('.number-link').attr('href', 'tel:' + phoneNumber);
                 } else {
                     $('.contact-number').addClass('hide');
                     $('.contact-number-footer').addClass('hide');
@@ -145,13 +145,6 @@ function validatePhone(number) {
     var part2 = number.substring(4, 7);
     var part3 = number.substring(7, 10);
     return part1 + " " + part2 + " " + part3;
-}
-
-function linkPhone(number) {
-    var part1 = number.substring(0, 4);
-    var part2 = number.substring(4, 7);
-    var part3 = number.substring(7, 10);
-    return "tel:" + part1 + "-" + part2 + "-" + part3;
 }
 
 function menuClick() {
