@@ -11,7 +11,6 @@ $('#fromYear').change(function () {
 $('#fromDate').change(function () {
     var fromDate = $(this).val();
     $('#toDate').attr('min', fromDate);
-    $('#toDate').val(fromDate);
 });
 var inforSearch = {
     fromDate: $('#fromDate').val(),
@@ -59,7 +58,6 @@ $.ajax({
     contentType: "application/json"
 });
 
-
 /*Search button*/
 $("#search").click(function () {
     var giftedId, fromYear;
@@ -87,49 +85,62 @@ $("#search").click(function () {
 
 /*Load data to list*/
 function search() {
-    $.ajax({
-        url: '/api/violationClass/history/view',
-        type: 'POST',
-        data: JSON.stringify(inforSearch),
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
-        success: function (data) {
-            var messageCode = data.message.messageCode;
-            var message = data.message.message;
-            if (messageCode == 0) {
-                var totalPage = parseInt(data.totalPage);
-                if (totalPage > 1) {
-                    $('.table-paging').removeClass('hide');
-                    $('.table-paging').html('');
-                    paging(inforSearch, totalPage);
-                } else {
-                    $('.table-paging').addClass('hide');
-                }
-                if (data.viewViolationClassList.length != 0) {
-                    $('#violationList').html("");
-                    $.each(data.viewViolationClassList, function (i, item) {
-                        var quantity, note, dayName;
-                        if (item.dayName == null) {
-                            dayName = "";
-                        } else {
-                            dayName = item.dayName + " - ";
-                        }
-                        if (item.quantity == null) {
-                            quantity = 0;
-                        } else {
-                            quantity = item.quantity;
-                        }
-                        if (item.note == null) {
-                            note = "";
-                        } else {
-                            note = item.note;
-                        }
-                        $('#violationList').append(
-                            `<div class="violation-description my-2">
+    if (inforSearch.fromDate == "" || inforSearch.toDate == "") {
+        messageModal('modalMessage', 'img/img-error.png', 'Chưa chọn ngày ngày áp dụng!')
+    } else if (new Date(inforSearch.fromDate) > new Date(inforSearch.toDate)) {
+        messageModal('modalMessage', 'img/img-error.png', 'Chưa chọn ngày áp dụng!')
+    } else {
+        console.log(JSON.stringify(inforSearch))
+        $.ajax({
+            url: '/api/violationClass/history/view',
+            type: 'POST',
+            data: JSON.stringify(inforSearch),
+            beforeSend: function () {
+                $('body').addClass("loading")
+            },
+            complete: function () {
+                $('body').removeClass("loading")
+            },
+            success: function (data) {
+                var messageCode = data.message.messageCode;
+                var message = data.message.message;
+                if (messageCode == 0) {
+                    var totalPage = parseInt(data.totalPage);
+                    if (totalPage > 1) {
+                        $('.table-paging').removeClass('hide');
+                        $('.table-paging').html('');
+                        paging(inforSearch, totalPage);
+                    } else {
+                        $('.table-paging').addClass('hide');
+                    }
+                    if (data.viewViolationClassList.length != 0) {
+                        $('#violationList').html("");
+                        $.each(data.viewViolationClassList, function (i, item) {
+                            var quantity, note, dayName, checkHistory, history;
+                            if (item.dayName == null) {
+                                dayName = "";
+                            } else {
+                                dayName = item.dayName + " - ";
+                            }
+                            if (item.quantity == null) {
+                                quantity = 0;
+                            } else {
+                                quantity = item.quantity;
+                            }
+                            if (item.note == null) {
+                                note = "";
+                            } else {
+                                note = item.note;
+                            }
+                            if (item.history == null || item.history == "") {
+                                history = null;
+                                checkHistory = 0;
+                            } else {
+                                history = item.history;
+                                checkHistory = 1;
+                            }
+                            $('#violationList').append(
+                                `<div class="violation-description my-2">
                                 <div class="violation-date">
                                     <span>` + dayName + convertDate(item.createDate, '/') + `</span>
                                 </div>
@@ -155,39 +166,59 @@ function search() {
                                     <span class="font-500">Tổng điểm trừ: </span>
                                     <span>` + parseFloat(parseFloat(item.substractGrade) * parseInt(quantity)) + `</span>
                                 </div>
+                                <div class="violation-action">
+                                    <div class="hide history">` + history + `</div>
+                                    <input type="button" class="btn btn-primary history-btn my-1" data-toggle="modal" name="` + checkHistory + `" value="LỊCH SỬ SỬA"/>
+                                </div>
                             </div>`
-                        );
-                    });
-                } else {
-                    $('#violationList').html(
-                        `<div class="violation-description my-2">
+                            );
+                            if (checkHistory == 0) {
+                                $('.violation-action .history-btn[name="0"]').addClass('hide');
+                            } else {
+                                $('.violation-action .history-btn[name="1"]').removeClass('hide');
+                            }
+                        });
+                    } else {
+                        $('#violationList').html(
+                            `<div class="violation-description my-2">
                             <div class="violation-date w-100 text-center">
                                 <span>Không có kết quả.</span>
                             </div>
                         </div>
                     `)
-                }
-            } else {
-                $('#violationList').html(
-                    `<div class="violation-description my-2">
+                    }
+                } else {
+                    $('#violationList').html(
+                        `<div class="violation-description my-2">
                         <div class="violation-date w-100 text-center">
                             <span>` + message + `</span>
                         </div>
                     </div>
                 `)
-            }
-            pagingClick();
-        },
-        failure: function (errMsg) {
-            $('#violationList').html(
-                `<div class="violation-description my-2">
+                }
+                pagingClick();
+                historyBtn();
+            },
+            failure: function (errMsg) {
+                $('#violationList').html(
+                    `<div class="violation-description my-2">
                     <div class="violation-date w-100 text-center">
                         <span>` + errMsg + `</span>
                     </div>
                 </div>
             `)
-        },
-        dataType: "json",
-        contentType: "application/json"
+            },
+            dataType: "json",
+            contentType: "application/json"
+        });
+    }
+}
+
+/*History button*/
+function historyBtn() {
+    $('.history-btn').on('click', function () {
+        var history = $(this).parent().find('.history').html();
+        $('#historyModal .modal-body').html(history);
+        $('#historyModal').modal('show');
     });
 }
