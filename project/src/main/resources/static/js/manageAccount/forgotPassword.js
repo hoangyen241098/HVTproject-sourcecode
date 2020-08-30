@@ -13,21 +13,22 @@ $.ajax({
         if (messageCode == 0) {
             if (data.userList.content.length != 0) {
                 $.each(data.userList.content, function (i, item) {
-                    if (item.phone != null) {
-                        $('.table').append(`<tr><td class="font-500">` + item.name + `</td><td class="font-500">` + validatePhone(item.phone) + `</td></tr>`)
+                    console.log(item.phone)
+                    if (item.phone != null && item.phone.trim() != "") {
+                        $('.user-info').append(`<p>` + item.name + ` - ` + validatePhone(item.phone) + `</p>`)
                     } else {
-                        $('.table').append(`<tr><td class="font-500">` + item.name + `</td></tr>`)
+                        $('.user-info').append(`<p>` + item.name + `</p>`)
                     }
                 })
             } else {
-                $('.table').html(`<tr><td class="font-500">Chưa có thông tin liên hệ!</td></tr>`);
+                $('.user-info').html(`<p>Chưa có thông tin liên hệ!</p>`)
             }
         } else {
-            $('.table').html(`<tr><td class="font-500">` + message + `</td></tr>`);
+            $('.user-info').html(`<p>` + message + `</p>`)
         }
     },
     failure: function (errMsg) {
-        $('.table').html(`<tr><td class="font-500">` + errMsg + `</td></tr>`);
+        $('.user-info').html(`<p>` + errMsg + `</p>`)
     },
     dataType: "json",
     contentType: "application/json"
