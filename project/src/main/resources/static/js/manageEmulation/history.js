@@ -142,7 +142,7 @@ function search() {
                             $('#violationList').append(
                                 `<div class="violation-description my-2">
                                 <div class="violation-date">
-                                    <span>` + dayName + convertDate(item.createDate, '/') + `</span>
+                                    <span>` + dayName + convertDate(item.createDate, '/') + ` - Lớp ` + item.className + `</span>
                                 </div>
                                 <div class="violation-details">
                                     <div class="violation-name">
@@ -153,6 +153,10 @@ function search() {
                                         <span class="font-500">Ghi chú: </span>
                                         <span>` + note + `</span>
                                     </p>
+                                </div>
+                                <div class="violation-create-by">
+                                    <span class="font-500">Tạo bởi: </span>
+                                    <span>` + item.createBy + `</span>
                                 </div>
                                 <div class="violation-substract-grade">
                                     <span class="font-500">Điểm trừ: </span>
