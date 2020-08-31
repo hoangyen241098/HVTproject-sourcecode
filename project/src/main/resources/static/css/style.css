@@ -1615,16 +1615,6 @@ a.slide_btn {
     .contact-number .icon {
         display: none;
     }
-
-    .content-wrap {
-        padding-right: 0;
-        padding-left: 0;
-    }
-
-    .table-wrapper {
-        padding-right: 0;
-        padding-left: 0;
-    }
 }
 
 @media screen and (max-width: 430px) {
@@ -1764,6 +1754,15 @@ a.slide_btn {
 @media screen and (max-width: 600px) {
     .timetable {
         font-size: 13px;
+    }
+    .content-wrap {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .table-wrapper {
+        padding-right: 0;
+        padding-left: 0;
     }
 }
 
