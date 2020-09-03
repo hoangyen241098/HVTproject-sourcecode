@@ -18,6 +18,7 @@ public class SchoolWeek {
 
     @Id
     @Column(name = "WEEK_ID")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer weekID;
 
     @Column(name = "Month_ID")
@@ -26,18 +27,12 @@ public class SchoolWeek {
     @Column(name = "WEEK")
     private Integer week;
 
-    @Column(name = "FROM_DATE")
-    private Date fromDate;
-
-    @Column(name = "TO_DATE")
-    private Date toDate;
-
     @Column(name = "YEAR_ID")
-    private Integer yearID;
+    private Integer yearId;
 
-/*    @ManyToOne
-    @JoinColumn(name = "YEAR_ID")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private SchoolYear schoolYear;*/
+    @Column(name = "RANK_HISTORY")
+    private String history;
+
+    @Column(name = "RANK_CREATE_DATE")
+    private Date createDate;
 }

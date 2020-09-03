@@ -1,5 +1,5 @@
-sessionStorage.removeItem('schoolId');
 var list = [];
+
 $.ajax({
     url: '/api/admin/viewenteringtime',
     type: 'POST',
@@ -13,7 +13,8 @@ $.ajax({
         var messageCode = data.message.messageCode;
         var message = data.message.message;
         if (messageCode == 0) {
-            if (data.listEmteringTime != null) {
+            if (data.listEmteringTime.length != 0) {
+                $('#deleteBtn').removeClass('hide');
                 $('tbody').html("");
                 $.each(data.listEmteringTime, function (i, item) {
                     var violationEnteringTimeId, roleName, dayName, startTime, endTime;
@@ -58,24 +59,18 @@ $.ajax({
                         </tr>
                     `);
                 });
+            } else {
+                $('#deleteBtn').addClass('hide');
+                $('tbody').html(`<tr><td colspan="5" id="table-err" class="text-center">Chưa có thời gian chấm điểm.</td></tr>`)
             }
         } else {
-            $('tbody').html("");
-            $('tbody').append(
-                `<tr>
-                    <td colspan="5" class="userlist-result">` + message + `</td>
-                </tr>`
-            )
+            $('tbody').html(`<tr><td colspan="5" id="table-err" class="text-center">` + message + `</td></tr>`)
         }
         selectCheckbox();
+        manageBtn();
     },
     failure: function (errMsg) {
-        $('tbody').html("");
-        $('tbody').append(
-            `<tr>
-                <td colspan="5" class="userlist-result">` + errMsg + ` </td>
-            </tr>`
-        )
+        $('tbody').html(`<tr><td colspan="5" id="table-err" class="text-center">` + errMsg + `</td></tr>`)
     },
     dataType: "json",
     contentType: "application/json"
@@ -83,33 +78,22 @@ $.ajax({
 
 /*Check select*/
 function checkSelect() {
-    console.log(list.length)
     if (list.length == 0) {
-        $("#deleteModal .modal-body").html("");
-        $('#deleteModal .modal-body').append(`
-            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-            <h5>Hãy chọn thời gian mà bạn muốn xóa</h5>
-        `);
         $('#deleteModal .modal-footer .btn-danger').addClass('hide');
         $('#deleteModal .modal-footer .btn-primary').attr('value', 'ĐÓNG');
+        messageModal('deleteModal', 'img/img-error.png', 'Hãy chọn thời gian mà bạn muốn xóa!')
     } else {
-        $("#deleteModal .modal-body").html("");
-        $('#deleteModal .modal-body').append(`
-            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-            <h5>Bạn có muốn <b>XÓA</b> thời gian chấm này không?</h5>
-        `);
         $('#deleteModal .modal-footer .btn-danger').removeClass('hide');
         $('#deleteModal .modal-footer .btn-primary').attr('value', 'KHÔNG');
+        messageModal('deleteModal', 'img/img-question.png', 'Bạn có muốn <b>XÓA</b> thời gian chấm này không?')
     }
 }
 
 /*Delete School Year*/
 $('#deleteTime').on('click', function () {
-    console.log(list)
     listEnteringTime = {
         listEnteringTime: list,
     }
-    console.log(JSON.stringify(listEnteringTime))
     $.ajax({
         url: '/api/admin/deleteenteringtime',
         type: 'POST',
@@ -124,30 +108,26 @@ $('#deleteTime').on('click', function () {
             var messageCode = data.messageCode;
             var message = data.message;
             if (messageCode == 0) {
-                $('#deleteSuccess .modal-body').html('');
-                $('#deleteSuccess .modal-body').append(`
-                    <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
-                    <h5>Xóa thời gian chấm thành công!</h5>
-                `);
+                messageModal('deleteSuccess', 'img/img-success.png', 'Xóa thời gian chấm thành công!')
             } else {
-                $('#deleteSuccess .modal-body').html('');
-                $('#deleteSuccess .modal-body').append(`
-                    <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                    <h5>` + message + `</h5>
-                `);
+                messageModal('deleteSuccess', 'img/img-error.png', message)
             }
         },
         failure: function (errMsg) {
-            $('#deleteSuccess .modal-body').html('');
-            $('#deleteSuccess .modal-body').append(`
-                    <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                    <h5>` + errMsg + `</h5>
-                `);
+            messageModal('deleteSuccess', 'img/img-error.png', errMsg)
         },
         dataType: "json",
         contentType: "application/json"
     });
-})
+});
 
-
-
+/*Show or hide button manage*/
+function manageBtn() {
+    if (roleID != 1) {
+        $('.manageBtn').addClass('hide');
+        $('table > thead > tr > th:first-child').addClass('hide');
+        $('tbody > tr > td:first-child').addClass('hide');
+        $('.table-title').addClass('pb-3');
+    }
+    $('#table-err').removeClass('hide');
+}

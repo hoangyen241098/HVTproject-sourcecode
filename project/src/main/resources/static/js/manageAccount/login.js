@@ -46,21 +46,19 @@ function login() {
                 var messageCode = data.message.messageCode;
                 var message = data.message.message;
                 var roleID = data.roleid;
-                var account = {
-                    username,
-                    password,
-                    roleID
-                }
                 if (messageCode == 0) {
-                    $('#loginSuccess').css('display', 'block');
-                    localStorage.setItem("username", account.username);
+                    localStorage.setItem("username", username);
                     localStorage.setItem("loginSuccess", messageCode);
-                    localStorage.setItem("roleID", account.roleID);
+                    localStorage.setItem("roleID", roleID);
+                    localStorage.setItem("currentYearId", data.currentYearId);
+                    localStorage.setItem("accessToken", data.accessToken);
+                    localStorage.setItem("asignedClass", data.asignedClass);
                     $("#loginSuccess-menu").addClass("show");
                     $('#login').css('display', 'none');
                     if (roleID == 1) {
                         $("#admin").addClass("show");
                     }
+                    setTimeout(window.location.replace("/"),500);
                 } else {
                     $('.login-err').text(message);
                 }
@@ -72,4 +70,9 @@ function login() {
             contentType: "application/json"
         });
     }
+}
+
+/*Check Role has create or not*/
+if (roleID != null) {
+    $('fieldset').html(`<h5 class="text-red">Bạn đã đăng nhập!</h5>`);
 }

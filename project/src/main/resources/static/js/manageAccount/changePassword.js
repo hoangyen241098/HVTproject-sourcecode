@@ -1,3 +1,4 @@
+var spaceRegex = /^\S+$/;
 $(document).ready(function () {
     $("#confirm").click(function (e) {
         $('.changePassword-err').text("");
@@ -23,10 +24,20 @@ $(document).ready(function () {
         } else if (newpassword != confirmpassword) {
             $('.changePassword-err').text("Mật khẩu xác nhận không đúng.");
             return false;
+        } else if (newpassword.length < 6) {
+            $('.changePassword-err').text("Mật khẩu phải chứa ít nhất 6 ký tự.");
+            return false;
+        } else if (!newpassword.match(spaceRegex)) {
+            $('.changePassword-err').text("Mật khẩu không được chứa khoảng trắng.");
+            return false;
+
+        } else if (oldpassword == newpassword) {
+            $('.changePassword-err').text("Mật khẩu chưa thay đổi.");
+            return false;
         } else {
             $('.changePassword-err').text("");
             var password = {
-                userName: localStorage.getItem('username'),
+                userName: username,
                 oldPassword: oldpassword,
                 newPassword: newpassword
             };
@@ -45,13 +56,14 @@ $(document).ready(function () {
                     var messageCode = data.messageCode;
                     var message = data.message;
                     if (messageCode == 0) {
-                        $('#changePassword').css('display', 'block');
+                        $('.changePassword-err').text("");
+                        messageModal('changePassword', 'img/img-success.png', 'Mật khẩu thay đổi thành công!');
                     } else {
                         $('.changePassword-err').text(message);
                     }
                 },
                 failure: function (errMsg) {
-                    $('.changePassword-err').text(errMsg);
+                    messageModal('changePassword', 'img/img-success.png', errMsg);
                 },
                 dataType: "json",
                 contentType: "application/json"
@@ -62,4 +74,10 @@ $(document).ready(function () {
 
 $('#changePassword .modal-footer a').click(function () {
     localStorage.clear();
-})
+});
+
+/*Check Role has create or not*/
+if (roleID == null) {
+    $('.changePassword-err').append(`Hãy <a href="login">ĐĂNG NHẬP</a> để có thể thay đổi mật khẩu!`);
+    $('#confirm').prop('disabled', true);
+}

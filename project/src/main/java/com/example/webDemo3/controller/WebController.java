@@ -5,23 +5,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class WebController {
 
-    @Autowired
-    private UserRepository userRepository;
-
-
     @GetMapping("/") // Nếu người dùng request tới địa chỉ "/"
     public String index(Model model) {
-//        model.addAttribute("userList", userRepository.findAll());
         return "index"; // Trả về file index.html
     }
 
     @GetMapping("/test")
     public String test(Model model) {
         return "test";
+    }
+
+    @GetMapping("/error")
+    public String error(Model model) {
+        return "error";
     }
 
     /*Module 1: Quản lý tài khoản*/
@@ -171,15 +172,11 @@ public class WebController {
         return "manageEmulation/violationListOfClass";
     }
 
-    @GetMapping("/addNewViolation")
-    public String addNewViolation(Model model) {
-        return "manageEmulation/addNewViolation";
-    }
-
     @GetMapping("/viewRequest")
     public String viewRequest(Model model) {
         return "manageEmulation/viewRequest";
     }
+
     @GetMapping("/history")
     public String history(Model model) {
         return "manageEmulation/history";
@@ -215,5 +212,27 @@ public class WebController {
     @GetMapping("/rankByYear")
     public String rankByYear(Model model) {
         return "manageSchoolRank/rankByYear";
+    }
+
+    /*Module 10: Quản lý bài đăng*/
+    @GetMapping("/createPost")
+    public String createPost(Model model) {
+        return "managePost/createPost";
+    }
+
+    @GetMapping("/editPost")
+    public String editPost(Model model) {
+        return "managePost/editPost";
+    }
+
+    @GetMapping("/managePost")
+    public String managePost(Model model) {
+        return "managePost/managePost";
+    }
+
+    @GetMapping("/postDetail")
+    public String postDetail(@RequestParam(value = "id", required = true) Integer id,  Model model) {
+        model.addAttribute("newsletterId", id);
+        return "managePost/postDetail";
     }
 }

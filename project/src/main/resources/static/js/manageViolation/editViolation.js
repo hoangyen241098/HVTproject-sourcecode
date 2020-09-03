@@ -1,6 +1,6 @@
 var violationID, oldDescription, oldSubstractGrade, oldTypeId;
 $(document).ready(function () {
-    violationID = localStorage.getItem("violationId")
+    violationID = sessionStorage.getItem("violationId")
     var model = {
         violationId: violationID
     }
@@ -91,8 +91,8 @@ $("#editInfo").click(function (e) {
                     oldTypeId = newTypeId;
                     oldDescription = newDescription;
                     oldSubstractGrade = newSubstractGrade;
-                    $('#editInfoSuccess').css('display', 'block');
                     $('.violation-err').text("");
+                    messageModal('editInfoSuccess', 'img/img-success.png', 'Thông tin sửa thành công!')
                 } else {
                     $('.violation-err').text(message);
                 }

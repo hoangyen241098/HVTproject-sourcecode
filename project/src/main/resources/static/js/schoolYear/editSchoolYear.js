@@ -1,4 +1,7 @@
 var schoolYearId, oldFromYear, oldFromDate, oldToDate;
+var currentDate = moment().format('YYYY-MM-DD');
+var currentYear = moment().format('YYYY');
+
 $(document).ready(function () {
     schoolYearId = sessionStorage.getItem("schoolYearId")
     var info = {
@@ -31,6 +34,15 @@ $(document).ready(function () {
                     $('#toYear').val(oldToYear);
                     $('#fromDate').val(oldFromDate);
                     $("#toDate").val(oldToDate);
+                    if (Date.parse(oldFromDate) <= Date.parse(currentDate)) {
+                        $('#fromDate').prop('disabled', true);
+                    }
+                    if (Date.parse(oldToDate) <= Date.parse(currentDate)) {
+                        $('#toDate').prop('disabled', true);
+                    }
+                    if (oldFromYear <= currentYear) {
+                        $('#fromYear').prop('disabled', true);
+                    }
                 } else {
                     $('#editSchoolYear-err').text(message);
                 }
@@ -67,6 +79,7 @@ $("#editInfo").click(function (e) {
         $('.editSchoolYear-err').text("Hãy thay đổi thông tin.");
         return false;
     } else {
+        $('.editSchoolYear-err').text('')
         var newInfo = {
             schoolYearId: schoolYearId,
             fromDate: fromDate,
@@ -74,7 +87,6 @@ $("#editInfo").click(function (e) {
             fromYear: fromYear,
             toYear: toYear
         }
-        console.log(JSON.stringify(newInfo))
         e.preventDefault();
         $.ajax({
             url: '/api/admin/editschoolyear',
@@ -90,13 +102,13 @@ $("#editInfo").click(function (e) {
                 var messageCode = data.messageCode;
                 var message = data.message;
                 if (messageCode == 0) {
-                    $('.editSchoolYear-err').text("");
+                    messageModal('editInfoSuccess', 'img/img-success.png', 'Thông tin sửa thành công!')
                 } else {
                     $('.editSchoolYear-err').text(message);
                 }
             },
             failure: function (errMsg) {
-                $('.editSchoolYear-err').text(errMsg);
+                messageModal('editInfoError', 'img/img-error.png', errMsg);
             },
             dataType: "json",
             contentType: "application/json"

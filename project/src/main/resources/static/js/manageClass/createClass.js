@@ -1,5 +1,6 @@
 var grade, giftedClassId, classIdentifier, isRedStar, isMonitor;
 gradeCombobox();
+
 $.ajax({
     url: '/api/admin/giftedclasslist',
     type: 'POST',
@@ -9,7 +10,7 @@ $.ajax({
         });
     },
     failure: function (errMsg) {
-        console.log(errMsg);
+        $('#classIdentifier').html(`<option value="err">` + errMsg + `</option>`);
     },
     dataType: "json",
     contentType: "application/json"
@@ -36,7 +37,6 @@ $("#submit").click(function (e) {
     if ($('#isMonitor').is(":checked")) {
         isMonitor = true;
     }
-
     if (grade == 0 || grade == null) {
         $('.createClass-err').text("Hãy chọn khối lớp!");
         return false;
@@ -47,6 +47,7 @@ $("#submit").click(function (e) {
         $('.createClass-err').text("Hãy nhập tên định danh!");
         return false;
     } else {
+        $('.createClass-err').text('');
         var addClass = {
             classIdentifier: classIdentifier,
             grade: grade,
@@ -70,32 +71,14 @@ $("#submit").click(function (e) {
                 var message = data.message.message;
                 var listUser = data.userList;
                 if (messageCode == 2) {
-                    $("#createSuccess .modal-body").html("");
-                    $("#createSuccess .modal-body").append(
-                        `
-                        <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                        <h5>` + message + `</h5>
-                        <h5>Nếu muốn tiếp tục sử dụng thì chỉnh sửa <a href="editClass">TẠI ĐÂY</a></h5>
-                        `)
-                    $('#createSuccess').css('display', 'block');
-                    localStorage.setItem("classId", data.classId);
+                    messageModal('createSuccess', 'img/img-error.png', message + `<h5>Nếu muốn tiếp tục sử dụng thì chỉnh sửa <a href="editClass" id="saveSession">TẠI ĐÂY</a></h5>`)
+                    $('#saveSession').on('click', function () {
+                        sessionStorage.setItem("classId", data.classId);
+                    })
                 } else if (messageCode == 0) {
-                    if (listUser == null) {
-                        $("#createSuccess .modal-body").html("");
-                        $("#createSuccess .modal-body").append(
-                            `
-                        <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
-                        <h5>Tạo lớp thành công!</h5>
-                        `
-                        )
-                    } else {
-                        $("#createSuccess .modal-body").html("");
-                        $("#createSuccess .modal-body").append(
-                            `
-                        <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
-                        <h5>Tạo lớp thành công!</h5>
-                        `)
+                    if (listUser != null) {
                         var index = 1;
+                        messageModal('createSuccess', 'img/img-success.png', 'Tạo lớp thành công!')
                         for (var i = 0; i < data.userList.length; i++) {
                             var roleAcc = data.userList[i].role.roleId;
                             var roleName;
@@ -105,26 +88,26 @@ $("#submit").click(function (e) {
                                 roleName = "Tài khoản Cờ đỏ " + index + ":";
                                 index++;
                             }
-                            $("#createSuccess .modal-body").append(
-                                `
+                            $("#createSuccess .modal-body").append(`
                                 <div class="info-account">
-                        <div class="text-left"><b>` + roleName + `</b></div>
-                        <div class="account">
-                        <p><span class="roleName">Tên đăng nhập:</span> ` + data.userList[i].username + `</p>
-                        <p><span class="roleName">Mật khẩu:</span> ` + data.userList[i].password + `</p></div>
+                                    <div class="text-left"><b>` + roleName + `</b></div>
+                                    <div class="account">
+                                        <p><span class="roleName">Tên đăng nhập:</span> ` + data.userList[i].username + `</p>
+                                        <p><span class="roleName">Mật khẩu:</span> ` + data.userList[i].password + `</p>
+                                    </div>
                                 </div>
-                                `
-                            )
+                            `);
                         }
+                    } else {
+                        messageModal('createSuccess', 'img/img-success.png', 'Tạo lớp thành công!')
                     }
-                    $('#createSuccess').css('display', 'block');
-
                 } else {
                     $('.createClass-err').text(message);
                 }
             },
             failure: function (errMsg) {
-                $('.createClass-err').text(errMsg);
+                $('.createClass-err').text('');
+                messageModal('createSuccess', 'img/img-error.png', errMsg)
             },
             dataType: "json",
             contentType: "application/json"
@@ -132,7 +115,8 @@ $("#submit").click(function (e) {
     }
 });
 
-$('#closeDialog').click(function () {
-    localStorage.removeItem("classId");
-    $('#createSuccess').css('display', 'none');
-})
+/*Check Role has create or not*/
+if (roleID != 1) {
+    $('.createClass-err').text("Bạn không có quyền thêm lớp!");
+    $('#submit').prop('disabled', true);
+}

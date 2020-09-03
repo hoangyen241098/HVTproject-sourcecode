@@ -1,6 +1,4 @@
 $(document).ready(function () {
-    localStorage.removeItem("violationTypeID");
-    localStorage.removeItem("violationId");
     $.ajax({
         url: '/api/admin/violationandviolationtype',
         type: 'POST',
@@ -39,27 +37,27 @@ $(document).ready(function () {
                                     <div class="d-flex align-items-center"><h5 class="my-0 mr-2">Nội quy theo dõi: </h5>` + name + `</div>
                                     <div class="d-flex align-items-center"><h6 class="my-0 mr-2">Điểm:</h6>` + totalGrade + `</div>
                                 </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="bt-table-field mx-2">
+                                <div class="d-flex justify-content-end align-items-center">
+                                    <span class="bt-table-field mx-2 manageBtn">
                                         <a href="editViolationType" class="bt-table-edit" title="Sửa" id="` + typeId + `">
                                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                         </a>
                                     </span>
-                                    <span class="bt-table-field mr-5">
+                                    <span class="bt-table-field mr-5 manageBtn">
                                         <a title="Xóa" data-target="" data-toggle="modal" class="mx-2 bt-table-type-delete" id="` + typeId + `">
                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                         </a>
                                     </span>
-                                    <button><i class="fa fa-chevron-down rotate"></i></button>
+                                    <button><i class="fa fa-chevron-down rotate up"></i></button>
                                 </div>
                             </div>
                             <div class="panel-collapse collapse in" id="collapse` + typeId + `">
-                                <table class="table table-hover">
+                                <table class="table table-hover table-responsive">
                                     <thead>
                                     <th style="width: 5%"></th>
                                     <th>Vi phạm</th>
-                                    <th>Điểm trừ</th>
-                                    <th></th>
+                                    <th style="width: 10%">Điểm trừ</th>
+                                    <th style="width: 15%"></th>
                                     </thead>
                                     <tbody>
                                     </tbody>
@@ -116,10 +114,13 @@ $(document).ready(function () {
                     getViolationID();
                     deleteViolationType();
                     deleteViolation();
+                    manageBtn();
                 }
             } else {
                 $('#violationList').append(`
-                    
+                    <tr>
+                        <td colspan="6" class="userlist-result">` + data.messageDTO.message + ` </td>
+                    </tr> 
                 `);
             }
         },
@@ -135,19 +136,12 @@ $(document).ready(function () {
     });
 });
 
-//drop the violation item
-function toggleClick() {
-    $(".panel-heading").on('click', function () {
-        $(this).find(".fa-chevron-down").toggleClass("up");
-    })
-};
-
 /*Edit violation type by ID*/
 function getViolationTypeID() {
     var typeId = $('.bt-table-edit');
     $(typeId).on('click', function (e) {
         typeId = $(this).prop('id');
-        localStorage.setItem("violationTypeID", typeId);
+        sessionStorage.setItem("violationTypeID", typeId);
     });
 };
 
@@ -156,7 +150,7 @@ function getViolationID() {
     var violationId = $('.bt-table-edit-vio');
     $(violationId).on('click', function (e) {
         violationId = $(this).prop('id');
-        localStorage.setItem("violationId", violationId);
+        sessionStorage.setItem("violationId", violationId);
     });
 };
 
@@ -169,12 +163,7 @@ function deleteViolationType() {
             typeId: deleteTypeId,
         }
         e.preventDefault();
-        $("#deleteModal .modal-body").html("");
-        $('#deleteModal .modal-body').append(`
-                <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                <h5>Bạn có chắc muốn <b>XÓA</b> nội quy này không?</h5>
-        `);
-        $('#deleteModal').addClass('fade');
+        messageModal('deleteModal', 'img/img-question.png', 'Bạn có chắc muốn <b>XÓA</b> nội quy này không?')
         $('.bt-table-type-delete').attr('data-target', '#deleteModal');
         $('#deleteViolation').on('click', function (e) {
             $.ajax({
@@ -191,25 +180,13 @@ function deleteViolationType() {
                     var messageCode = data.messageCode;
                     var message = data.message;
                     if (messageCode == 0) {
-                        $("#deleteSuccess .modal-body").html("");
-                        $('#deleteSuccess .modal-body').append(`
-                            <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
-                            <h5 id="message-delete">Xóa thành công nội quy.</h5>
-                        `);
+                        messageModal('deleteSuccess', 'img/img-success.png', message)
                     } else {
-                        $("#deleteSuccess .modal-body").html("");
-                        $('#deleteSuccess .modal-body').append(`
-                            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                            <h5>` + message + `</h5>
-                        `);
+                        messageModal('deleteSuccess', 'img/img-error.png', message)
                     }
                 },
                 failure: function (errMsg) {
-                    $("#deleteSuccess .modal-body").html("");
-                    $('#deleteSuccess .modal-body').append(`
-                        <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                        <h5>` + errMsg + `</h5>
-                    `);
+                    messageModal('deleteSuccess', 'img/img-error.png', errMsg)
                 },
                 dataType: "json",
                 contentType: "application/json"
@@ -227,12 +204,7 @@ function deleteViolation() {
             violationId: deleteId,
         }
         e.preventDefault();
-        $("#deleteModal .modal-body").html("");
-        $('#deleteModal .modal-body').append(`
-                <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                <h5>Bạn có chắc muốn <b>XÓA</b> vi phạm này không?</h5>
-        `);
-        $('#deleteModal').addClass('fade');
+        messageModal('deleteModal', 'img/img-question.png', 'Bạn có chắc muốn <b>XÓA</b> vi phạm này không?')
         $('.bt-table-delete-vio').attr('data-target', '#deleteModal');
         $('#deleteViolation').on('click', function (e) {
             $.ajax({
@@ -249,25 +221,13 @@ function deleteViolation() {
                     var messageCode = data.messageCode;
                     var message = data.message;
                     if (messageCode == 0) {
-                        $("#deleteSuccess .modal-body").html("");
-                        $('#deleteSuccess .modal-body').append(`
-                            <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
-                            <h5 id="message-delete">Xóa thành công nội quy.</h5>
-                        `);
+                        messageModal('deleteSuccess', 'img/img-success.png', message)
                     } else {
-                        $("#deleteSuccess .modal-body").html("");
-                        $('#deleteSuccess .modal-body').append(`
-                            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                            <h5>` + message + `</h5>
-                        `);
+                        messageModal('deleteSuccess', 'img/img-error.png', message)
                     }
                 },
                 failure: function (errMsg) {
-                    $("#deleteSuccess .modal-body").html("");
-                    $('#deleteSuccess .modal-body').append(`
-                        <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                        <h5>` + errMsg + `</h5>
-                    `);
+                    messageModal('deleteSuccess', 'img/img-error.png', errMsg)
                 },
                 dataType: "json",
                 contentType: "application/json"
@@ -276,3 +236,11 @@ function deleteViolation() {
     });
 };
 
+function manageBtn() {
+    if (roleID != 1) {
+        $('.manageBtn').addClass('hide');
+        $('thead th:last-child').addClass('hide');
+        $('tbody tr td:last-child').addClass('hide');
+        $('.table-title').addClass('pb-4');
+    }
+}

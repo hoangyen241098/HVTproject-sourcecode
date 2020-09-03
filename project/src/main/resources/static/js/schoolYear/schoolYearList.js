@@ -1,4 +1,5 @@
-sessionStorage.removeItem('schoolYearId');
+var schoolYearId;
+
 $.ajax({
     url: '/api/admin/schoolyearlist',
     type: 'POST',
@@ -16,18 +17,18 @@ $.ajax({
                 var id = 0;
                 $('tbody').html("");
                 $.each(data.schoolYearList, function (i, item) {
-                    var schoolYearId, fromDate, toDate, yearName;
+                    var fromDate, toDate, yearName;
                     schoolYearId = item.schoolYearId;
                     id += 1;
                     if (item.fromDate == null) {
                         fromDate = "-";
                     } else {
-                        fromDate = item.fromDate;
+                        fromDate = convertDate(item.fromDate, '-');
                     }
                     if (item.toDate == null) {
                         toDate = "-";
                     } else {
-                        toDate = item.toDate;
+                        toDate = convertDate(item.toDate, '-');
                     }
                     if (item.yearName == null) {
                         yearName = "-";
@@ -42,36 +43,33 @@ $.ajax({
                             <td><span id="fromDate">` + fromDate + `</span></td>
                             <td><span id="toDate">` + toDate + `</span></td>
                             <td><span id="action">
-                                <a href="editSchoolYear" title="Sửa" class="mx-2" name="` + schoolYearId + `" id="btnEdit">
+                                <a href="editSchoolYear" title="Sửa" class="mx-2 btnEdit" name="` + schoolYearId + `">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a>
-                                <a href="#deleteModal" title="Xóa" class="mx-2" name="` + schoolYearId + `" 
-                                data-toggle="modal" id="btnDelete">
+                                <a href="#deleteModal" title="Xóa" class="mx-2 btnDelete" name="` + schoolYearId + `" data-toggle="modal">
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                 </a>
                             </span></td>
                         </tr>
                     `);
                 });
+                $('#tableSchoolYear').DataTable({
+                    lengthMenu: [30],
+                    bLengthChange: false,
+                    bFilter: false,
+                    bInfo: false,
+                    paging: false,
+                });
+                getSchoolYearId();
+                deleteYear();
+                manageBtn();
             }
         } else {
-            $('tbody').html("");
-            $('tbody').append(
-                `<tr>
-                    <td colspan="5" class="userlist-result">` + message + `</td>
-                </tr>`
-            )
+            $('tbody').html(`<tr><td colspan="5" class="text-center">` + message + `</td></tr>`)
         }
-        getSchoolYearId();
-        deleteYear();
     },
     failure: function (errMsg) {
-        $('tbody').html("");
-        $('tbody').append(
-            `<tr>
-                <td colspan="5" class="userlist-result">` + errMsg + ` </td>
-            </tr>`
-        )
+        $('tbody').html(`<tr><td colspan="5" class="text-center">` + errMsg + `</td></tr>`)
     },
     dataType: "json",
     contentType: "application/json"
@@ -79,8 +77,8 @@ $.ajax({
 
 /*Get schoolYear ID*/
 function getSchoolYearId() {
-    var schoolYearId = $('#btnEdit');
-    $(schoolYearId).on('click', function (e) {
+    var btnEdit = $('.btnEdit');
+    $(btnEdit).on('click', function (e) {
         schoolYearId = $(this).prop('name');
         sessionStorage.setItem('schoolYearId', schoolYearId);
     });
@@ -88,21 +86,15 @@ function getSchoolYearId() {
 
 /*Delete School Year*/
 function deleteYear() {
-    var schoolYearId = $('#btnDelete');
-    $(schoolYearId).on('click', function (e) {
+    var btnDelete = $('.btnDelete');
+    $(btnDelete).unbind().click(function () {
         schoolYearId = $(this).prop('name');
+        messageModal('deleteModal', 'img/img-question.png', 'Bạn có muốn <b>XÓA</b> năm học này không?')
     });
-    $('#deleteModal .modal-body').html('');
-    $('#deleteModal .modal-body').append(`
-        <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-        <h5>Bạn có muốn <b>XÓA</b> năm học này không?</h5>
-    `);
-
-    $('#btnDelete').on('click', function () {
+    $('#btnDeleteModal').unbind().click(function () {
         var schoolYear = {
             schoolYearId: schoolYearId
         }
-        console.log(JSON.stringify(schoolYear))
         $.ajax({
             url: '/api/admin/delschoolyear',
             type: 'POST',
@@ -117,25 +109,13 @@ function deleteYear() {
                 var messageCode = data.messageCode;
                 var message = data.message;
                 if (messageCode == 0) {
-                    $("#deleteSuccess .modal-body").html("");
-                    $('#deleteSuccess .modal-body').append(`
-                    <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
-                    <h5 id="message-delete">Xóa năm học thành công!</h5>
-                `);
+                    messageModal('deleteSuccess', 'img/img-success.png', 'Xóa năm học thành công!')
                 } else {
-                    $("#deleteSuccess .modal-body").html("");
-                    $('#deleteSuccess .modal-body').append(`
-                    <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                    <h5>` + message + `</h5>
-                `);
+                    messageModal('deleteSuccess', 'img/img-error.png', message)
                 }
             },
             failure: function (errMsg) {
-                $("#deleteSuccess .modal-body").html("");
-                $('#deleteSuccess .modal-body').append(`
-                    <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                    <h5>` + errMsg + `</h5>
-            `);
+                messageModal('deleteSuccess', 'img/img-error.png', errMsg)
             },
             dataType: "json",
             contentType: "application/json"
@@ -143,6 +123,14 @@ function deleteYear() {
     })
 }
 
+function manageBtn() {
+    if (roleID != 1) {
+        $('.manageBtn').addClass('hide');
+        $('thead th:last-child').addClass('hide');
+        $('tbody tr td:last-child').addClass('hide');
+        $('.table-title').addClass('pb-4');
+    }
+}
 
 
 

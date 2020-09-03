@@ -30,9 +30,7 @@ $(document).ready(function () {
                 fromYear: $('#fromYear').val(),
                 toYear: $('#toYear').val(),
             }
-            console.log(JSON.stringify(schoolYear))
-            $('#createSuccess').addClass('fade');
-            $('#submit').attr('data-target', '#createSuccess');
+            $('.addSchoolYear-err').text('');
             $.ajax({
                 url: '/api/admin/addschoolyear',
                 type: 'POST',
@@ -47,25 +45,13 @@ $(document).ready(function () {
                     var messageCode = data.messageCode;
                     var message = data.message;
                     if (messageCode == 0) {
-                        $('#createSuccess .modal-body').html('');
-                        $('#createSuccess .modal-body').append(`
-                            <img class="mb-3 mt-3" src="https://img.icons8.com/material/100/007bff/ok--v1.png"/>
-                            <h5>Thêm năm học mới thành công!</h5>
-                        `);
+                        messageModal('createSuccess', 'img/img-success.png', 'Thêm năm học mới thành công!');
                     } else {
-                        $('#createSuccess .modal-body').html('');
-                        $('#createSuccess .modal-body').append(`
-                            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                            <h5>` + message + `</h5>
-                        `);
+                        messageModal('createError', 'img/img-error.png', message);
                     }
                 },
                 failure: function (errMsg) {
-                    $('#createSuccess .modal-body').html('');
-                    $('#createSuccess .modal-body').append(`
-                        <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                        <h5>` + errMsg + `</h5>
-                    `);
+                    messageModal('createError', 'img/img-error.png', errMsg);
                 },
                 dataType: "json",
                 contentType: "application/json"
@@ -74,3 +60,8 @@ $(document).ready(function () {
         }
     })
 })
+
+if (roleID != 1) {
+    $('.addSchoolYear-err').text('Bạn không có quyền thêm năm học!');
+    $('#submit').prop('disabled', true);
+}

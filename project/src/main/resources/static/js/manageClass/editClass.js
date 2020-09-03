@@ -1,6 +1,7 @@
 var editClassId, oldIdentifierName, oldStatus, newStatus;
+
 $(document).ready(function () {
-    editClassId = localStorage.getItem("classId")
+    editClassId = sessionStorage.getItem("classId")
     var classRequest = {
         classId: editClassId
     }
@@ -33,18 +34,11 @@ $(document).ready(function () {
                         oldStatus = 0;
                     }
                 } else {
-                    $('tbody').append(
-                        `<tr>
-                    <td colspan="7" class="userlist-result">
-                        ` + data.message.message + `
-                    </td>
-                </tr>`
-                    )
+                    $('.classInfo-err').text(data.message.message);
                 }
-
             },
             failure: function (errMsg) {
-                console.log(errMsg);
+                $('.classInfo-err').text(errMsg);
             },
             dataType: "json",
             contentType: "application/json"
@@ -60,7 +54,6 @@ $("#editInfo").click(function (e) {
     if (radioValue == '0') {
         newStatus = 0;
     }
-
     if (newClassIdentifier == "") {
         $('.classInfo-err').text("Hãy nhập tên định danh!");
         return false;
@@ -69,27 +62,17 @@ $("#editInfo").click(function (e) {
         return false;
     } else {
         if (newStatus != oldStatus) {
-            $("#confirmEditModal .modal-body").html("");
-            $('#confirmEditModal .modal-body').append(`
-                <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-                <h5>Bạn có chắc muốn <b>CẬP NHẬT</b> trạng thái của lớp này không?</h5>
-            `);
             $('#confirmEditModal .modal-footer .btn-danger').removeClass('hide');
             $('#confirmEditModal .modal-footer .btn-primary').attr('value', 'KHÔNG');
-            $('#confirmEditModal').css('display', 'block');
+            messageModal('confirmEditModal', 'img/img-error.png', 'Bạn có chắc muốn <b>CẬP NHẬT</b> trạng thái của lớp này không?')
             $('#editClassModal').click(function (e) {
-                $('#confirmEditModal').css('display', 'none');
                 editClass(e);
-            })
-            $('#closeModal').click(function (e) {
-                $('#confirmEditModal').css('display', 'none');
             })
         } else {
             editClass(e);
         }
     }
 });
-
 
 function editClass(e) {
     var editClass = {
@@ -112,21 +95,26 @@ function editClass(e) {
             var messageCode = data.messageCode;
             var message = data.message;
             if (messageCode == 0) {
+                $('.classInfo-err').text("");
+                $('#editInfoSuccess .modal-body').html(`
+                    <img class="my-3" src="img/img-success.png"/>
+                    <h5>Thông tin sửa thành công!</h5>
+                `)
                 if (oldStatus != newStatus) {
                     $('#editInfoSuccess .modal-body').append(`
-                        <h5>Trạng thái của tài khoản cờ đỏ và lớp trưởng của lớp cũng đã thay đổi thành công.</h5>
+                        <h5>Trạng thái của tài khoản cờ đỏ và lớp trưởng của lớp cũng đã được thay đổi.</h5>
                     `);
                 }
+                $('#editInfoSuccess').modal('show');
                 oldIdentifierName = newClassIdentifier;
                 oldStatus = newStatus;
-                $('#editInfoSuccess').css('display', 'block');
-                $('.classInfo-err').text("");
             } else {
                 $('.classInfo-err').text(message);
             }
         },
         failure: function (errMsg) {
-            $('.classInfo-err').text(errMsg);
+            $('.classInfo-err').text('');
+            messageModal('editInfoSuccess', 'img/img-error.png', errMsg)
         },
         dataType: "json",
         contentType: "application/json"

@@ -4,7 +4,6 @@ var inforSearch = {
     pageNumber: 0
 }
 var list = [];
-localStorage.removeItem("teacherId");
 search();
 
 /*Search button*/
@@ -63,7 +62,7 @@ function search() {
                         }
                         $('tbody').append(
                             `<tr class="` + selected + `">
-                                <td>
+                                <td class="text-center">
                                     <span class="custom-checkbox ">
                                         <input id="` + item.teacherId + `"type="checkbox" name="options" value="` + item.teacherId + `" ` + checked + `>
                                         <label for="` + item.teacherId + `"></label>
@@ -93,24 +92,13 @@ function search() {
                 getTeacherID();
                 selectCheckbox();
                 pagingClick();
+                manageBtn();
             } else {
-                $('tbody').append(
-                    `<tr>
-                        <td colspan="7" class="userlist-result">
-                            ` + data.message.message + `
-                        </td>
-                    </tr>`
-                )
+                $('tbody').append(`<tr><td colspan="7" class="userlist-result">` + data.message.message + `</td></tr>`);
             }
         },
         failure: function (errMsg) {
-            $('tbody').append(
-                `<tr>
-                        <td colspan="7" class="userlist-result">
-                            ` + errMsg + `
-                        </td>
-                    </tr>`
-            )
+            $('tbody').append(`<tr><td colspan="7" class="userlist-result">` + errMsg + `</td></tr>`);
         },
         dataType: "json",
         contentType: "application/json"
@@ -137,17 +125,13 @@ $("#deleteTeacher").click(function (e) {
             var messageCode = data.messageCode;
             var message = data.message;
             if (messageCode == 0) {
-                $('.img-success').removeClass('hide');
-                $('.img-fail').addClass('hide');
-                $('#message-delete').text(message);
+                messageModal('deleteSuccess', 'img/img-success.png', message)
             } else {
-                $('.img-success').addClass('hide');
-                $('.img-fail').removeClass('hide');
-                $('#message-delete').text(message);
+                messageModal('deleteSuccess', 'img/img-error.png', message)
             }
         },
         failure: function (errMsg) {
-            $('#message-delete').text(errMsg);
+            messageModal('deleteSuccess', 'img/img-error.png', errMsg)
         },
         dataType: "json",
         contentType: "application/json"
@@ -156,23 +140,16 @@ $("#deleteTeacher").click(function (e) {
 
 /*Check teacher before delete account*/
 function checkTeacher() {
+    $('#deleteTeacherModal').modal('show');
     $('#deleteTeacherModal .modal-body').html("");
     if (list.length == 0) {
-        $("#deleteTeacherModal .modal-body").html("");
-        $('#deleteTeacherModal .modal-body').append(`
-            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-            <h5>Hãy chọn giáo viên mà bạn muốn xóa</h5>
-        `);
         $('#deleteTeacherModal .modal-footer .btn-danger').addClass('hide');
         $('#deleteTeacherModal .modal-footer .btn-primary').attr('value', 'ĐÓNG');
+        messageModal('deleteTeacherModal', 'img/img-error.png', 'Hãy chọn giáo viên mà bạn muốn xóa!')
     } else {
-        $("#deleteTeacherModal .modal-body").html("");
-        $('#deleteTeacherModal .modal-body').append(`
-            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-            <h5>Bạn có chắc muốn <b>XÓA</b> giáo viên này không?</h5>
-        `);
         $('#deleteTeacherModal .modal-footer .btn-danger').removeClass('hide');
         $('#deleteTeacherModal .modal-footer .btn-primary').attr('value', 'KHÔNG');
+        messageModal('deleteTeacherModal', 'img/img-question.png', `Bạn có chắc muốn <b>XÓA</b> giáo viên này không?`)
     }
 }
 
@@ -181,6 +158,17 @@ function getTeacherID() {
     var teacherId = $('.bt-table-edit');
     $(teacherId).on('click', function (e) {
         teacherId = $(this).prop('id');
-        localStorage.setItem("teacherId", teacherId);
+        sessionStorage.setItem("teacherId", teacherId);
     });
+}
+
+/*Show or hide button manage*/
+function manageBtn() {
+    if (roleID != 1) {
+        $('.manageBtn').addClass('hide');
+        $('table thead th:first-child').addClass('hide');
+        $('tbody > tr > td:first-child').addClass('hide');
+        $('table thead th:last-child').addClass('hide');
+        $('tbody > tr > td:last-child').addClass('hide')
+    }
 }

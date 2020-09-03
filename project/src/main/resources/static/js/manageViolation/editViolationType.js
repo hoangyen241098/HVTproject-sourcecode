@@ -1,6 +1,6 @@
 var violationTypeID, oldName, oldTotalGrade, newName, newTotalGrade;
 $(document).ready(function () {
-    violationTypeID = localStorage.getItem("violationTypeID")
+    violationTypeID = sessionStorage.getItem("violationTypeID")
     var editRequest = {
         typeId: violationTypeID
     }
@@ -53,6 +53,9 @@ $("#editInfo").click(function (e) {
     }else if (newTotalGrade == oldTotalGrade && newName == oldName) {
         $('.violation-err').text("Hãy thay đổi thông tin!");
         return false;
+    }else if(newTotalGrade <= 0){
+        $('.violation-err').text("Hãy nhập điểm của nội quy lớn hơn 0!");
+        return false;
     } else {
         editViolationType(e);
     }
@@ -82,8 +85,8 @@ function editViolationType(e){
             if (messageCode == 0) {
                 oldTotalGrade = newTotalGrade;
                 oldName = newName;
-                $('#editInfoSuccess').css('display', 'block');
                 $('.violation-err').text("");
+                messageModal('editInfoSuccess', 'img/img-success.png', message)
             } else {
                 $('.violation-err').text(message);
             }

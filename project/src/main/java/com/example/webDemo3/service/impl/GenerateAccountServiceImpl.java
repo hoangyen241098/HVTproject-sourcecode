@@ -47,6 +47,7 @@ public class GenerateAccountServiceImpl implements GenerateAccountService {
         GenerateNameResponseDto responseDto = new GenerateNameResponseDto();
         MessageDTO message = new MessageDTO();
         String userName = null;
+        String convertClassName = null;
         String giftedClassName;
         Integer roleId = model.getRoleId();
         Integer classId = model.getClassId();
@@ -88,18 +89,23 @@ public class GenerateAccountServiceImpl implements GenerateAccountService {
         giftedClassName = giftedClass.getName();
         String className = genClass.getGrade().toString() + giftedClassName;
 
-        if(!rollName.equalsIgnoreCase("") && !className.equalsIgnoreCase("")){
-            userName = stripAccents(rollName+className);
+        if(rollName != null && !rollName.isEmpty()){
+            userName = stripAccents(rollName);
         }
 
         Integer indexAccount = 1;
-        List<String> userNameList = userRepository.findAllUsername();
+        List<String> userNameList = userRepository.findAllUsernameActive();
 
-        while (userNameList.contains(userName.concat(indexAccount.toString()))){
+        if(!className.isEmpty()) {
+            convertClassName = stripAccents(className);
+        }
+
+        while (userNameList.contains(userName + indexAccount + "_"+ convertClassName)){
             indexAccount+=1;
         }
 
-        userName += indexAccount.toString();
+        userName += indexAccount+ "_"+ convertClassName;
+
         responseDto.setUserName(userName);
         message = Constant.SUCCESS;
         responseDto.setMessage(message);

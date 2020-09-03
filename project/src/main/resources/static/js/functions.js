@@ -1,51 +1,169 @@
+/*Value default*/
+var roleID = localStorage.getItem("roleID");
+var username = localStorage.getItem("username");
+var pathname = $(location).attr('pathname');
+
 /*Set navigation bar*/
 $(document).ready(function () {
+    getAuthen();
     var loginSuccess = localStorage.getItem("loginSuccess");
-    var roleID = localStorage.getItem("roleID");
+    var asignedClass = localStorage.getItem("asignedClass");
     if (loginSuccess == 0) {
-        $("#loginSuccessMenu").addClass("show");
+        $("#loginSuccessMenu").removeClass("hide");
         $('#loginMenu').css('display', 'none');
-        if (roleID == 1) {
-            $("#adminMenu").addClass("show");
+        //ROLEID_REDSTAR
+        if (roleID == 3) {
+            if (asignedClass != "null") {
+                $("#loginSuccessMenu .nav-link").html(`<span><p class="m-0" style="font-size: 15px">` + username + `</p><p class="m-0" style="font-size: 12px">(Chấm lớp ` + asignedClass + `)</p></span><i class="fa fa-caret-down"></i>`);
+            } else {
+                $("#loginSuccessMenu .nav-link").html(`<span><p class="m-0" style="font-size: 15px">` + username + `</p><p class="m-0" style="font-size: 12px">(Không có lớp chấm)</p></span><i class="fa fa-caret-down"></i>`);
+            }
+            $('#loginSuccessMenu .nav-link').attr('style', 'padding-top: 0!important; padding-bottom: 0!important');
+        } else {
+            $("#loginSuccessMenu .nav-link").html(username + `<i class="fa fa-caret-down"></i>`);
         }
-        if (roleID == 2) {
+        //ROLEID_ADMIN
+        if (roleID == 1) {
+            $("#adminMenu").removeClass("hide");
+        }
+        //ROLEID_TIMETABLE_MANAGER || ROLEID_ADMIN
+        if (roleID == 2 || roleID == 1) {
             $("#scheduleManagerMenu").addClass("show");
+        }
+        //ROLEID_REDSTAR || ROLEID_SUMMERIZEGROUP || ROLEID_ADMIN
+        if (roleID == 3 || roleID == 5 || roleID == 1) {
+            $('#gradingToEmulationMenu').removeClass('hide');
+        }
+        //ROLEID_MONITOR || ROLEID_CLUBLEADER
+        if (roleID == 4 || roleID == 6) {
+            $('#sendPostMenu').removeClass('hide');
+        }
+        //ROLEID_MONITOR || ROLEID_ADMIN
+        if (roleID == 4 || roleID == 1) {
+            $('#viewRequestMenu').removeClass('hide');
         }
     } else {
         $('#loginMenu').css('display', 'block');
-        $("#loginSuccessMenu").removeClass("show");
-        $("#adminMenu").removeClass("show");
+        $("#loginSuccessMenu").addClass("hide");
+        $("#adminMenu").addClass("hide");
         $("#scheduleManagerMenu").removeClass("show");
     }
     $("#logout").click(function () {
-        localStorage.clear();
+        //localStorage.clear();
+        logout();
     })
 
-    $('#adminMenu').on('click', function () {
-        $('.mega-menu.show').not($(this).find('.mega-menu')).removeClass('show');
-        $('.dropdown-menu.show').removeClass('show');
-        $('.nav-link .fa').not($(this).find('.fa')).removeClass('up');
-        $(this).find('.mega-menu').toggleClass('show');
-        $(this).find('.fa').toggleClass('up');
-    })
-    $('.dropdown').on('click', function () {
-        $('.mega-menu.show').removeClass('show');
-        $('.dropdown-menu.show').not($(this).find('.dropdown-menu')).removeClass('show');
-        $('.nav-link .fa').not($(this).find('.fa')).removeClass('up');
-        $(this).find('.dropdown-menu').toggleClass('show');
-        $(this).find('.fa').toggleClass('up');
+    // Responsive menu
+    // $(document).on('click', '.dropdown-menu', function (e) {
+    //     e.stopPropagation();
+    // });
+    if ($(window).width() < 992) {
+        $('.submenu').prev().append(`<i class="fa fa-caret-down"></i>`);
+        $('.dropdown-menu a').click(function (e) {
+            if ($(this).next('.submenu').length) {
+                e.stopPropagation();
+                $(this).next('.submenu').toggleClass('show');
+                $(this).find('.fa').toggleClass('up');
+            }
+            $('.dropdown').on('hide.bs.dropdown', function () {
+                $(this).find('.submenu').hide();
+                $(this).find('.fa').removeClass('up');
+            })
+        });
+
+        var divHeight = $('header .navbar').height();
+        $('header').css('height', divHeight + 'px');
+    }
+
+    /*Add active class on menu*/
+    $('#navbarMenu li a').each(function () {
+        var href = '/' + $(this).attr('href');
+        if (href == '//') {
+            href = '/';
+        }
+        if (href == pathname) {
+            if (pathname == '/') {
+                $('.homePage').addClass('active');
+            } else {
+                $('.homePage').removeClass('active');
+                $(this).closest('.nav-item').find('.nav-link').addClass('active');
+                $(this).addClass('active');
+            }
+        }
     });
+
+    menuClick();
+    // setLocationFooter();
 });
 
-/*Loading page*/
-$(document).on({
-    ajaxStart: function () {
-        $('body').addClass("loading");
-    },
-    ajaxComplete: function () {
-        $('body').removeClass("loading");
+function setLocationFooter() {
+    var h = window.clientWidth;
+    var bodyHeight = $('body').height();
+    if (bodyHeight < h) {
+        $('.footer-area').css('margin-top', h - bodyHeight + "px")
+    } else {
+        $('.footer-area').css('margin-top', 0)
     }
-})
+}
+
+/*Set phone number*/
+$.ajax({
+    type: 'POST',
+    url: "/api/user/getAdminInfor",
+    success: function (data) {
+        var messageCode = data.message.messageCode;
+        if (messageCode == 0) {
+            if (data.userList.content.length != 0) {
+                var phoneList = [];
+                $.each(data.userList.content, function (i, item) {
+                    if (item.phone != null && item.phone.trim() != "") {
+                        phoneList.push(item.phone)
+                    }
+                })
+                if (phoneList.length != 0) {
+                    $('.number-link').html(validatePhone(phoneList[0]));
+                    $('.number-link').attr('href', 'tel:' + phoneList[0]);
+                } else {
+                    $('.contact-number').addClass('hide');
+                    $('.contact-number-footer').addClass('hide');
+                }
+            } else {
+                $('.contact-number').addClass('hide');
+                $('.contact-number-footer').addClass('hide');
+            }
+        } else {
+            $('.contact-number').addClass('hide');
+            $('.contact-number-footer').addClass('hide');
+        }
+    },
+    failure: function (errMsg) {
+        $('.contact-number').addClass('hide');
+        $('.contact-number-footer').addClass('hide');
+    },
+    dataType: "json",
+    contentType: "application/json"
+});
+
+/*Add space for phone number*/
+function validatePhone(number) {
+    var end = number.length;
+    var part1 = number.substring(0, 4);
+    var part2 = number.substring(4, 7);
+    var part3 = number.substring(7, end);
+    return part1 + " " + part2 + " " + part3;
+}
+
+function menuClick() {
+    $('.dropdown').on('hide.bs.dropdown', function () {
+        $('.nav-link .fa').not($(this).find('.fa')).removeClass('up');
+        $(this).find('.fa').removeClass('up');
+    });
+    $('.dropdown').on('show.bs.dropdown', function () {
+        $('.nav-link .fa').not($(this).find('.fa')).removeClass('up');
+        $(this).find('.nav-link').find('.fa').addClass('up');
+        $(this).find('.submenu').prev().removeClass('up');
+    });
+}
 
 /*Select Checkbox*/
 function selectCheckbox() {
@@ -124,66 +242,82 @@ function pagingClick() {
     })
 }
 
+function pagingHomepage() {
+    $('.table-paging input').on('click', function (event) {
+        var value = ($(this).val() - 1);
+        if ($(this).val() == "Sau") {
+            value = $('.table-paging__page_cur').val();
+        } else if ($(this).val() == "Trước") {
+            value = $('.table-paging__page_cur').val() - 2;
+        }
+        homePage.pageNumber = value;
+        $('tbody').html("");
+        $('.table-paging').html("");
+        loadHomepage();
+    })
+}
+
 function paging(inforSearch, totalPages) {
     var pageNumber = parseInt(inforSearch.pageNumber)
     $('.table-paging').append(
         `<input type="button" class="table-paging__page btn-prev" id="prevPage" value="Trước"/>`
     );
-    if (pageNumber < 4) {
-        var newTotalPages = (totalPages <= 4) ? (totalPages) : (4);
-        for (var i = 0; i < newTotalPages; i++) {
-            if (i == pageNumber) {
-                $('.table-paging').append(
-                    `<input type="button" value="` + (i + 1) + `" class="table-paging__page table-paging__page_cur"/>`
-                );
-            } else {
-                $('.table-paging').append(
-                    `<input type="button" value="` + (i + 1) + `" class="table-paging__page"/>`
-                );
-            }
-        }
-        if (newTotalPages < totalPages) {
-            $('.table-paging').append(
-                `<input type="button" value="..." class="table-paging__page" disabled/>`
-            );
-        }
+
+    if (pageNumber == 0) {
+        $('.table-paging').append(
+            `<input type="button" value="` + (1) + `" class="table-paging__page table-paging__page_cur"/>`
+        );
     } else {
         $('.table-paging').append(
             `<input type="button" value="` + (1) + `" class="table-paging__page"/>`
         );
-        $('.table-paging').append(
-            `<input type="button" value="` + (2) + `" class="table-paging__page"/>`
-        );
+    }
+    if (pageNumber > 2) {
         $('.table-paging').append(
             `<input type="button" value="..." class="table-paging__page" disabled/>`
         );
-        var pageEnd = (pageNumber + 2 < totalPages) ? (pageNumber + 2) : (totalPages);
-        for (var i = pageNumber - 1; i < pageEnd; i++) {
-            if (i == pageNumber) {
-                $('.table-paging').append(
-                    `<input type="button" value="` + (i + 1) + `" class="table-paging__page table-paging__page_cur"/>`
-                );
-            } else {
-                $('.table-paging').append(
-                    `<input type="button" value="` + (i + 1) + `" class="table-paging__page"/>`
-                );
-            }
-        }
-        if (pageEnd < totalPages) {
+    }
+    for (var i = pageNumber; i <= pageNumber + 2; i++) {
+        if (i <= 1 || i >= totalPages) continue;
+        if (i - 1 == pageNumber) {
             $('.table-paging').append(
-                `<input type="button" value="..." class="table-paging__page" disabled/>`
+                `<input type="button" value="` + (i) + `" class="table-paging__page table-paging__page_cur"/>`
+            );
+        } else {
+            $('.table-paging').append(
+                `<input type="button" value="` + (i) + `" class="table-paging__page"/>`
             );
         }
     }
+
+    if (pageNumber + 2 < totalPages - 1) {
+        $('.table-paging').append(
+            `<input type="button" value="..." class="table-paging__page" disabled/>`
+        );
+    }
+
+    if (totalPages > 1) {
+        if (pageNumber == totalPages - 1) {
+            $('.table-paging').append(
+                `<input type="button" value="` + (totalPages) + `" class="table-paging__page table-paging__page_cur"/>`
+            );
+        } else {
+            $('.table-paging').append(
+                `<input type="button" value="` + (totalPages) + `" class="table-paging__page"/>`
+            );
+        }
+    }
+
     $('.table-paging').append(
         `<input type="button" class="table-paging__page btn-next" id="nextPage" value="Sau"/>`
     );
-    if (inforSearch.pageNumber == 0) {
+    var pageNumInfo = parseInt(inforSearch.pageNumber);
+    if (pageNumInfo == 0) {
         $('#prevPage').prop('disabled', true);
     } else {
         $('#prevPage').prop('disabled', false);
     }
-    if ((inforSearch.pageNumber + 1) == totalPages) {
+    if ((pageNumInfo + 1) == totalPages) {
         $('#nextPage').prop('disabled', true);
     } else {
         $('#nextPage').prop('disabled', false);
@@ -191,74 +325,11 @@ function paging(inforSearch, totalPages) {
 
 };
 
-function nextPage() {
-    $('#nextPage').on('click', function (event) {
-        $("#selectAll").prop("checked", false);
-        inforSearch.pageNumber++;
-        $('tbody').html("");
-        $('.table-paging').html("");
-        search();
-    })
-}
-
-function prevPage() {
-    $('#prevPage').on('click', function (event) {
-        $("#selectAll").prop("checked", false);
-        inforSearch.pageNumber--;
-        $('tbody').html("");
-        $('.table-paging').html("");
-        search();
-    })
-}
-
 /*Convert string to form date*/
-function convertDate(str) {
+function convertDate(str, value) {
     str = str.split("-");
-    str = str[2].concat(" - " + str[1] + " - " + str[0]);
+    str = str[2].concat(value + str[1] + value + str[0]);
     return str;
-}
-
-/*Load combobox week in timetable*/
-function loadWeek() {
-    var listweek = {
-        yearIdCurrent: yearId,
-    }
-    /*Call API for weeks List*/
-    $.ajax({
-        url: '/api/timetable/listweek',
-        type: 'POST',
-        data: JSON.stringify(listweek),
-        beforeSend: function () {
-            $('body').addClass("loading")
-        },
-        complete: function () {
-            $('body').removeClass("loading")
-        },
-        success: function (data) {
-            var messageCode = data.messageDTO.messageCode;
-            var message = data.messageDTO.message;
-            if (messageCode == 0) {
-                if (data.listWeek != null) {
-                    $('#week').html("");
-                    $.each(data.listWeek, function (i, list) {
-                        if (list.timeTableWeekId == weekIdCurrent) {
-                            $('#week').append(`<option value="` + list.timeTableWeekId + `" selected>` + convertDate(list.fromDate) + ` đến ` + convertDate(list.toDate) + `</option>`);
-                        } else {
-                            $('#week').append(`<option value="` + list.timeTableWeekId + `">` + convertDate(list.fromDate) + ` đến ` + convertDate(list.toDate) + `</option>`);
-                        }
-                    });
-                }
-                weekIdCurrent = $('#week option:selected').val();
-            } else {
-                $('#week').html(`<option value="0">` + message + `</option>`);
-            }
-        },
-        failure: function (errMsg) {
-            $('#week').html(`<option value="0">` + errMsg + `</option>`);
-        },
-        dataType: 'JSON',
-        contentType: "application/json"
-    });
 }
 
 function toggleClick() {
@@ -272,10 +343,135 @@ function toggleClick() {
 
 /*Set limited date in year*/
 function limitedDate() {
-    var year = $('#fromYear').val();
-    $('#toYear').val(parseInt(year) + 1);
-    $('#fromDate').attr('min', year + '-01-01');
-    $('#fromDate').attr('max', year + '-12-31');
-    $('#toDate').attr('min', $('#fromDate').val());
-    $('#toDate').attr('max', (parseInt(year) + 1) + '-12-31');
+    var fromYear = $('#fromYear').val();
+    $('#toYear').val(parseInt(fromYear) + 1);
+    var toYear = $('#toYear').val();
+    $('#fromDate').attr('min', fromYear + '-01-01');
+    $('#fromDate').attr('max', fromYear + '-12-31');
+    $('#toDate').attr('min', toYear + '-01-01');
+    $('#toDate').attr('max', toYear + '-12-31');
 }
+
+/*Limited text*/
+function limitedText(str) {
+    str = $(str).text();
+    if (str.length > 300) {
+        str = str.substring(0, 300) + '...'
+    }
+    return str;
+}
+
+/*Check is Integer*/
+function isInteger(x) {
+    if (x <= 0) {
+        return false;
+    } else {
+        return x % 1 === 0;
+    }
+}
+
+/*Lazy Load*/
+function lazyLoad() {
+    $("img.lazy").lazyload({
+        effect: "fadeIn"
+    });
+}
+
+/*Dialog message*/
+function messageModal(modalName, img, message) {
+    $('#' + modalName + ' .modal-body').html(`
+        <img class="my-3" src="` + img + `"/>
+        <h5>` + message + `</h5>
+    `)
+    $('#' + modalName).modal('show');
+}
+
+/*Logout*/
+function logout() {
+    $.ajax({
+        type: 'POST',
+        url: "/api/user/logout",
+        // data: JSON.stringify(user),
+        success: function (data) {
+            if (data != null && data.messageCode === 0) {
+                localStorage.clear();
+                // localStorage.removeItem("userInfo")
+                // this.$cookies.remove("access_token")
+                // this.$cookies.remove("token_provider")
+                // window.location.href = "/"
+            }
+        },
+        failure: function (errMsg) {
+            $('.login-err').text(errMsg);
+        },
+        dataType: "json",
+        contentType: "application/json"
+    });
+}
+
+/*Authen*/
+function getAuthen() {
+    $.ajax({
+        type: 'POST',
+        url: "/api/user/get-authentication",
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem("accessToken")
+        },
+
+        // data: JSON.stringify(user),
+        success: function (data) {
+            if (data != null && data.messageCode == 1) {
+                localStorage.clear();
+            }
+        },
+        failure: function (errMsg) {
+            $('.login-err').text(errMsg);
+        },
+        dataType: "json",
+        contentType: "application/json"
+        // Authorization: 'Bearer ' + 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImlhdCI6MTU5NjA5NzYxMSwiZXhwIjoxNTk2NzAyNDExfQ.bCFuTQOk1Kl9ARmrT83HTOQOMOFbFb6aLY_uEXiJTXBMz3tdlh3RMFPz70-sCKzNgTZ8bFJlzGeeHs5PgGAeNQ'
+    });
+}
+
+/*Clear session when leaving page*/
+if (pathname != '/teacherInformation') {
+    sessionStorage.removeItem('teacherId');
+}
+if (pathname != '/editClass') {
+    sessionStorage.removeItem('classId');
+}
+if (pathname != '/editViolationType') {
+    sessionStorage.removeItem('violationTypeID');
+}
+if (pathname != '/editViolation') {
+    sessionStorage.removeItem('violationId');
+}
+if (pathname != '/editSchoolYear') {
+    sessionStorage.removeItem('schoolYearId');
+}
+if (pathname != '/violationListOfClass') {
+    sessionStorage.removeItem('classIdGrading');
+    sessionStorage.removeItem('dateGrading');
+}
+if (pathname != '/rankByWeek') {
+    sessionStorage.removeItem('weekName');
+    sessionStorage.removeItem('weekId');
+}
+if (pathname != '/rankByMonth') {
+    sessionStorage.removeItem('monthName');
+}
+if (pathname != '/rankBySemester') {
+    sessionStorage.removeItem('semesterName');
+}
+if (pathname != '/rankByYear') {
+    sessionStorage.removeItem('yearId');
+}
+if (pathname != '/postDetail') {
+    sessionStorage.removeItem('newsletterId');
+}
+if (pathname != '/editPost') {
+    sessionStorage.removeItem('newsletterIdEdit');
+}
+

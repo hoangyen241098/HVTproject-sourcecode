@@ -1,3 +1,4 @@
+var spaceRegex = /^\S+$/;
 var inforSearch = {
     userName: "",
     roleId: null,
@@ -11,6 +12,12 @@ var list = [];
 $.ajax({
     url: '/api/admin/rolelist',
     type: 'POST',
+    beforeSend: function () {
+        $('body').addClass("loading")
+    },
+    complete: function () {
+        $('body').removeClass("loading")
+    },
     success: function (data) {
         if (data.listRole != 0) {
             $.each(data.listRole, function (i, item) {
@@ -23,6 +30,7 @@ $.ajax({
                 <td colspan="7" class="userlist-result">Danh sách trống.</td>
             </tr>`);
         }
+        search();
     },
     failure: function (errMsg) {
         $('tbody').html('');
@@ -34,7 +42,6 @@ $.ajax({
     dataType: "json",
     contentType: "application/json"
 });
-search();
 
 /*Search button*/
 $("#search").click(function () {
@@ -118,8 +125,8 @@ function search() {
                     }
                     $('tbody').append(
                         `<tr class="` + selected + `">
-                <td>
-                    <span class="custom-checkbox ">
+                <td class="text-center">
+                    <span class="custom-checkbox">
                         <input id="` + item.username + `"type="checkbox" name="options" value="` + item.username + `" ` + checked + `>
                         <label for="` + item.username + `"></label>
                     </span>
@@ -134,22 +141,13 @@ function search() {
                 });
                 selectCheckbox();
                 pagingClick();
+                manageBtn();
             } else {
-                $('tbody').append(
-                    `<tr>
-                        <td colspan="7" class="userlist-result">
-                            ` + data.message.message + `
-                        </td>
-                    </tr>`
-                )
+                $('tbody').append(`<tr><td colspan="7" class="userlist-result">` + data.message.message + `</td></tr>`)
             }
         },
         failure: function (errMsg) {
-            $('tbody').append(
-                `<tr>
-                    <td colspan="7" class="userlist-result">` + errMsg + ` </td>
-                </tr>`
-            )
+            $('tbody').append(`<tr><td colspan="7" class="userlist-result">` + errMsg + ` </td></tr>`)
         },
         dataType: "json",
         contentType: "application/json"
@@ -158,6 +156,7 @@ function search() {
 
 /*Delete account*/
 $("#deleteAccount").click(function (e) {
+    $('#deleteSuccess').modal('show');
     listUser = {
         listUser: list,
     }
@@ -176,17 +175,13 @@ $("#deleteAccount").click(function (e) {
             var messageCode = data.messageCode;
             var message = data.message;
             if (messageCode == 0) {
-                $('.img-success').removeClass('hide');
-                $('.img-fail').addClass('hide');
-                $('#message-delete').text(message);
+                messageModal('deleteSuccess', 'img/img-success.png', message)
             } else {
-                $('.img-success').addClass('hide');
-                $('.img-fail').removeClass('hide');
-                $('#message-delete').text(message);
+                messageModal('deleteSuccess', 'img/img-error.png', message)
             }
         },
         failure: function (errMsg) {
-            $('#message-delete').text(errMsg);
+            messageModal('deleteSuccess', 'img/img-error.png', errMsg)
         },
         dataType: "json",
         contentType: "application/json"
@@ -211,7 +206,13 @@ $("#resetPassword").click(function (e) {
     } else if (newpassword != confirmpassword) {
         $('.resetPass-err').text("Mật khẩu xác nhận không đúng.");
         return false;
-    } else {
+    } else if (newpassword.length < 6) {
+        $('.resetPass-err').text("Mật khẩu phải chứa ít nhất 6 ký tự.");
+        return false;
+    } else if (!newpassword.match(spaceRegex)) {
+        $('.resetPass-err').text("Mật khẩu không được chứa khoảng trắng.");
+        return false;
+    }  else {
         var resetPassword = {
             userNameList: list,
             passWord: newpassword,
@@ -231,17 +232,13 @@ $("#resetPassword").click(function (e) {
                 var messageCode = data.messageCode;
                 var message = data.message;
                 if (messageCode == 0) {
-                    $('.img-success').removeClass('hide');
-                    $('.img-fail').addClass('hide');
-                    $('#message-reset').text(message);
+                    messageModal('resetSuccess', 'img/img-success.png', message);
                 } else {
-                    $('.img-success').addClass('hide');
-                    $('.img-fail').removeClass('hide');
-                    $('#message-reset').text(message);
+                    messageModal('resetSuccess', 'img/img-error.png', message);
                 }
             },
             failure: function (errMsg) {
-                $('#message-reset').text(errMsg);
+                messageModal('resetSuccess', 'img/img-error.png', errMsg);
             },
             dataType: "json",
             contentType: "application/json"
@@ -251,48 +248,32 @@ $("#resetPassword").click(function (e) {
 
 /*Check user before delete account*/
 function checkUser() {
-    $('#deleteAccountModal .modal-body').html("");
     var userErr = localStorage.getItem("username");
     if (jQuery.inArray(userErr, list) != -1) {
-        $("#deleteAccountModal .modal-body").html("");
-        $('#deleteAccountModal .modal-body').append(`
-            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-            <h5>Bạn không thể xoá tài khoản <b class="error">` + userErr + `</b></h5>
-        `);
         $('#deleteAccountModal .modal-footer .btn-danger').addClass('hide');
         $('#deleteAccountModal .modal-footer .btn-primary').attr('value', 'ĐÓNG');
+        messageModal('deleteAccountModal', 'img/img-question.png', `Bạn không thể xoá tài khoản <b class="error">` + userErr + `</b>!`);
     } else if (list.length == 0) {
-        $("#deleteAccountModal .modal-body").html("");
-        $('#deleteAccountModal .modal-body').append(`
-            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-            <h5>Hãy chọn tài khoản mà bạn muốn xóa</h5>`
-        );
         $('#deleteAccountModal .modal-footer .btn-danger').addClass('hide');
         $('#deleteAccountModal .modal-footer .btn-primary').attr('value', 'ĐÓNG');
+        messageModal('deleteAccountModal', 'img/img-error.png', 'Hãy chọn tài khoản mà bạn muốn xóa!');
     } else {
-        $("#deleteAccountModal .modal-body").html("");
-        $('#deleteAccountModal .modal-body').append(`
-            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-            <h5>Bạn có chắc muốn <b>XÓA</b> tài khoản này không?</h5>
-        `);
         $('#deleteAccountModal .modal-footer .btn-danger').removeClass('hide');
-        $('#deleteAccountModal .modal-footer .btn-primary').attr('value', 'KHÔNG');
+        $('#deleteAccountModal .modal-footer .btn-primary').attr('value', 'ĐÓNG');
+        messageModal('deleteAccountModal', 'img/img-question.png', `Bạn có chắc muốn <b>XÓA</b> tài khoản này không?`);
     }
 }
 
 /*Check user before reset password*/
 function checkResetPassword() {
     if (list.length == 0) {
-        $("#resetPasswordModal .modal-body").html("");
-        $('#resetPasswordModal .modal-body .form-group').addClass('hide');
-        $('#resetPasswordModal .modal-body').append(`
-            <img class="mb-3 mt-3" src="https://img.icons8.com/flat_round/100/000000/error--v1.png"/>
-            <h5>Hãy chọn tài khoản mà bạn muốn đặt lại mật khẩu</h5>
-        `);
+        $("#resetPasswordModal .modal-header").addClass('hide');
         $('#resetPasswordModal .modal-footer .btn-danger').addClass('hide');
         $('#resetPasswordModal .modal-footer .btn-primary').attr('value', 'ĐÓNG');
+        messageModal('resetPasswordModal', 'img/img-error.png', 'Hãy chọn tài khoản mà bạn muốn đặt lại mật khẩu!');
     } else {
         $("#resetPasswordModal .modal-body").html("");
+        $("#resetPasswordModal .modal-header").removeClass('hide');
         $('#resetPasswordModal .modal-body').append(`
         <div class="form-group text-left">
             <label for="new-password">Mật khẩu mới <span class="text-red">*</span></label>
@@ -302,9 +283,23 @@ function checkResetPassword() {
             <label for="confirm-password">Xác nhận mật khẩu mới <span class="text-red">*</span></label>
             <input type="password" class="form-control" id="confirm-password" required>
         </div>
-        <div class="error resetPass-err"></div>
+        <div class="error text-left resetPass-err"></div>
         `);
         $('#resetPasswordModal .modal-footer .btn-danger').removeClass('hide');
-        $('#resetPasswordModal .modal-footer .btn-primary').attr('value', 'KHÔNG');
+        $('#resetPasswordModal .modal-footer .btn-primary').attr('value', 'ĐÓNG');
+        $('#resetPasswordModal').modal('show');
+    }
+}
+
+/*Show or hide button manage*/
+function manageBtn() {
+    if (roleID == 1) {
+        $('.manageBtn').removeClass('hide');
+        $('table thead th:first-child').removeClass('hide');
+        $('tbody > tr > td:first-child').removeClass('hide')
+    } else {
+        $('.manageBtn').addClass('hide');
+        $('table thead th:first-child').addClass('hide');
+        $('tbody > tr > td:first-child').addClass('hide')
     }
 }

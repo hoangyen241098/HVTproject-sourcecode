@@ -3,9 +3,6 @@ var infoSearch = {
     classId
 }
 var classId, applyDate;
-$(document).ready(function () {
-    $("#class").select2();
-});
 
 /*Load years and list*/
 $.ajax({
@@ -13,9 +10,6 @@ $.ajax({
     type: 'POST',
     beforeSend: function () {
         $('body').addClass("loading")
-    },
-    complete: function () {
-        $('body').removeClass("loading")
     },
     success: function (data) {
         var messageCode = data.message.messageCode;
@@ -28,9 +22,9 @@ $.ajax({
                 $('#appyDateList').html("");
                 $.each(data.appyDateList, function (i, item) {
                     if (item == data.currentDate) {
-                        $('#appyDateList').append(`<option value="` + item + `" selected>` + convertDate(item) + `</option>`);
+                        $('#appyDateList').append(`<option value="` + item + `" selected>` + convertDate(item, '/') + `</option>`);
                     } else {
-                        $('#appyDateList').append(`<option value="` + item + `">` + convertDate(item) + `</option>`);
+                        $('#appyDateList').append(`<option value="` + item + `">` + convertDate(item, '/') + `</option>`);
                     }
                 });
                 applyDate = $('#appyDateList option:selected').val();
@@ -38,7 +32,8 @@ $.ajax({
             if (data.classList == null) {
                 $('#class').html(`<option value="">Không có lớp nào.</option>`);
             } else {
-                $('#class').html("")
+                $('#class').html("");
+                $("#class").select2();
                 $.each(data.classList, function (i, item) {
                     $('#class').append(`<option value="` + item.classId + `">`
                         + item.grade + ` ` + item.giftedClass.name +
@@ -57,10 +52,16 @@ $.ajax({
             $('.table-err').html(
                 ` <tr><td colspan="8" class="userlist-result">` + message + `</td> </tr> `
             )
+            $('body').removeClass("loading")
         }
     },
     failure: function (errMsg) {
-        console.log(errMsg);
+        $('.timetable').addClass('hide');
+        $('.table-err').removeClass('hide');
+        $('.table-err').html(
+            ` <tr><td colspan="8" class="userlist-result">` + errMsg + `</td> </tr> `
+        )
+        $('body').removeClass("loading")
     },
     dataType: "json",
     contentType: "application/json"
@@ -179,7 +180,6 @@ $('#search').click(function (e) {
         applyDate: applyDate,
         classId: classId,
     }
-    console.log(JSON.stringify(infoSearch));
     $('tbody .data').html('');
     loadTimetable();
 })
@@ -249,8 +249,9 @@ function afternoonTimetable(pos, afternoon) {
 
 function addTimetable(id) {
     $('#timetablePlus').append(`
-    <table class="timetable table-bordered" id="timetable` + id + `">
-                <thead>
+    <div class="scrollable-table">
+        <table class="timetable table-bordered" id="timetable` + id + `">
+            <thead>
                 <tr class="timtable-title">
                     <th colspan="2" style="width: 15%">Buổi</th>
                     <th style="width: 10%">Tiết</th>
@@ -261,8 +262,8 @@ function addTimetable(id) {
                     <th>Thứ 6</th>
                     <th>Thứ 7</th>
                 </tr>
-                </thead>
-                <tbody>
+            </thead>
+            <tbody>
                 <tr class="morning">
                     <td rowspan="5" colspan="2" class="session"><p>SÁNG</p></td>
                     <td class="slot">1</td>
@@ -311,7 +312,7 @@ function addTimetable(id) {
                 </tr>
                 <tr class="afternoon">
                     <td rowspan="4" class="session"><p>CHIỀU</p></td>
-                    <td rowspan="2" class="week">(Tuần chẵn)</td>
+                    <td rowspan="2" class="week"><p></p></td>
                     <td class="slot">1</td>
                     <td class="data"></td>
                     <td class="data"></td>
@@ -330,7 +331,7 @@ function addTimetable(id) {
                     <td class="data"></td>
                 </tr>
                 <tr class="afternoon isOdd">
-                    <td rowspan="2" class="week">(Tuần lẻ)</td>
+                    <td rowspan="2" class="week"><p></p></td>
                     <td class="slot">1</td>
                     <td class="data"></td>
                     <td class="data"></td>
@@ -348,7 +349,7 @@ function addTimetable(id) {
                     <td class="data"></td>
                     <td class="data"></td>
                 </tr>
-                </tbody>
-            </table>
-    `)
+            </tbody>
+        </table>
+    </div>`)
 }

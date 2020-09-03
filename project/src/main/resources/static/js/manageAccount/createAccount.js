@@ -2,12 +2,20 @@ var fullName, userName, passWord, roleId, phone, email, classId, roleName, class
 var current_fs, next_fs, previous_fs;
 var left, opacity, scale;
 var emailRegex = '^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$';
-var phoneRegex = '^[0-9\\-\\+]{9,15}$';
+var phoneRegex = '^[0-9\\-\\+]{10,11}$';
+var spaceRegex = /^\S+$/;
 /*Call API for Role List*/
 $('.createAccount-err').text("");
+
 $.ajax({
     url: '/api/admin/rolelist',
     type: 'POST',
+    beforeSend: function () {
+        $('body').addClass("loading")
+    },
+    complete: function () {
+        $('body').removeClass("loading")
+    },
     success: function (data) {
         $.each(data.listRole, function (i, list) {
             $('#position-role').append(`<option value="` + list.roleId + `" name="` + list.roleName + `">` + list.roleName + `</option>`);
@@ -19,6 +27,7 @@ $.ajax({
     dataType: 'JSON',
     contentType: "application/json"
 });
+
 /*Call API for Class List*/
 $.ajax({
     url: '/api/admin/classlist',
@@ -72,6 +81,9 @@ $("#next").click(function () {
             $('.full-info').removeClass('hide');
             $('#username').prop('disabled', false);
             classId = null;
+            if (roleId == 1) {
+                $('.fullName label').append('<span class="text-red"> *</span>');
+            }
 
         } else if (roleId == 6) {
             $('.fullName').removeClass('hide');
@@ -90,6 +102,12 @@ $("#next").click(function () {
                 url: '/api/admin/genaccname',
                 type: 'POST',
                 data: JSON.stringify(userName),
+                beforeSend: function () {
+                    $('body').addClass("loading")
+                },
+                complete: function () {
+                    $('body').removeClass("loading")
+                },
                 success: function (data) {
                     $('#username').val(data.userName);
                 },
@@ -143,6 +161,15 @@ $("#submit").click(function (e) {
     } else if (passWord != confirmPassword) {
         $('.createAccount-err').text("Mật khẩu xác nhận không đúng.");
         return false;
+    } else if (passWord.length < 6) {
+        $('.createAccount-err').text("Mật khẩu phải chứa ít nhất 6 ký tự.");
+        return false;
+    } else if (!passWord.match(spaceRegex)) {
+        $('.createAccount-err').text("Mật khẩu không được chứa khoảng trắng.");
+        return false;
+    } else if (roleId == 1 && fullName == "") {
+        $('.createAccount-err').text("Hãy điền họ và tên.");
+        return false;
     } else if (phone != "" && !phone.match(phoneRegex)) {
         $('.createAccount-err').text("SĐT không đúng định dạng.");
         return false;
@@ -174,21 +201,21 @@ $("#submit").click(function (e) {
                 var messageCode = data.messageCode;
                 var message = data.message;
                 if (messageCode == 0) {
-                    $('#createSuccess').css('display', 'block');
                     $('.createAccount-err').text("");
+                    messageModal('createSuccess', 'img/img-success.png', 'Tạo tài khoản thành công!');
                 } else {
                     $('.createAccount-err').text(message);
                 }
             },
             failure: function (errMsg) {
-                $('.createAccount-err').text(errMsg);
+                messageModal('createSuccess', 'img/img-error.png', errMsg);
             },
             dataType: "json",
             contentType: "application/json"
         });
 
     }
-});
+})
 
 $(".previous").click(function () {
     var animating;
@@ -216,3 +243,8 @@ $(".previous").click(function () {
     });
 });
 
+/*Check Role has create or not*/
+if (roleID != 1) {
+    $('.createAccount-err').text("Bạn không có quyền tạo tài khoản!");
+    $('#next').prop('disabled', true);
+}

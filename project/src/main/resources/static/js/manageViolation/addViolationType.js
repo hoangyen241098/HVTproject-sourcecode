@@ -31,8 +31,8 @@ $("#submit").click(function (e) {
             var messageCode = data.messageCode;
             var message = data.message;
             if (messageCode == 0) {
-                $('#createSuccess').css('display', 'block');
                 $('.addViolationType-err').text("");
+                messageModal('createSuccess', 'img/img-success.png', 'Đã thêm nội quy thành công!')
             } else {
                 $('.addViolationType-err').text(message);
             }
@@ -44,3 +44,8 @@ $("#submit").click(function (e) {
         contentType: "application/json"
     });
 });
+
+if (roleID != 1) {
+    $('.addViolationType-err').text('Bạn không có quyền thêm nội quy!');
+    $('#submit').prop('disabled', true);
+}

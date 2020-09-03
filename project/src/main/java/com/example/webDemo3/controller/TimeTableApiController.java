@@ -2,12 +2,17 @@ package com.example.webDemo3.controller;
 
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.*;
-import com.example.webDemo3.dto.request.CheckDateRequestDto;
-import com.example.webDemo3.dto.request.ClassTimeTableRequestDto;
-import com.example.webDemo3.dto.request.TeacherTimeTableRequestDto;
-import com.example.webDemo3.service.AddTimeTableService;
-import com.example.webDemo3.service.TimeTableService;
+import com.example.webDemo3.dto.manageTimeTableResponseDto.ListApplyDateAndClassResponseDto;
+import com.example.webDemo3.dto.manageTimeTableResponseDto.ListApplyDateandTeacherResponseDto;
+import com.example.webDemo3.dto.manageTimeTableResponseDto.SearchTimeTableResponseDto;
+import com.example.webDemo3.dto.request.manageTimeTableRequestDto.CheckDateRequestDto;
+import com.example.webDemo3.dto.request.manageTimeTableRequestDto.ClassTimeTableRequestDto;
+import com.example.webDemo3.dto.request.manageTimeTableRequestDto.TeacherTimeTableRequestDto;
+import com.example.webDemo3.service.manageTimeTableService.AddTimeTableService;
+import com.example.webDemo3.service.manageTimeTableService.TimeTableService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,13 +35,16 @@ public class TimeTableApiController {
                                      @RequestParam("date") Date date, Model model)
     {
         MessageDTO message = new MessageDTO();
-        HSSFWorkbook workbook = null;
+        Workbook workbook = null;
         try {
             workbook = new HSSFWorkbook(reapExcelDataFile.getInputStream());
-        }catch (Exception e){
-            message.setMessageCode(1);
-            message.setMessage("không đúng định dạng file");
-            System.out.println(e);
+        }catch (Exception eo){
+            try {
+                workbook = new XSSFWorkbook(reapExcelDataFile.getInputStream());
+            }catch (Exception e) {
+                message = Constant.INCORRECT_FILE_FORMAT;
+                System.out.println(e);
+            }
         }
         if(workbook != null){
             //Date date = Date.valueOf("2020-01-01");
