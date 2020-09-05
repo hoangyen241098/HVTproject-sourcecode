@@ -45,7 +45,7 @@ public class AdditionalFunctionViolationClassServiceImpl implements AdditionalFu
     public ViolationClassResponseDto convertViolationClassFromEntityToDto(ViolationClass violationClass) {
         ViolationClassResponseDto responseDto = new ViolationClassResponseDto();
         Class newClass = classRepository.findById(violationClass.getClassId()).orElse(null);
-        Violation violation = violationRepository.findById(violationClass.getClassId()).orElse(null);
+        Violation violation = violationRepository.findById(violationClass.getViolation().getViolationId()).orElse(null);
 
         responseDto.setViolationClassId(violationClass.getId());
         responseDto.setNote(violationClass.getNote());
