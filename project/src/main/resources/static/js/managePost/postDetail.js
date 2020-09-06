@@ -31,7 +31,6 @@ $.ajax({
                     $(this).addClass('lazy');
                     var src = $(this).attr('src')
                     $(this).prop('src', 'https://placehold.it/600x350&text=Chờ ảnh');
-                    $(this).prop('srcset', '');
                     $(this).attr('data-original', src);
                 })
                 lazyLoad();
