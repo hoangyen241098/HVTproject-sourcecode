@@ -48,10 +48,10 @@ $("#editInfo").click(function (e) {
     var phone = $('#phone').val().trim();
     var email = $('#email').val().trim();
     if (phone == "") {
-        oldPhone = phone;
+        phone = null;
     }
     if (email == "") {
-        oldEmail = email;
+        email = null;
     }
 
     $('.teacherInfo-err').text("");
@@ -65,10 +65,10 @@ $("#editInfo").click(function (e) {
     } else if (identifier == "") {
         $('.teacherInfo-err').text("Hãy điền tên định danh.");
         return false;
-    } else if (phone != "" && !phone.match(phoneRegex)) {
+    } else if (phone != null && !phone.match(phoneRegex)) {
         $('.teacherInfo-err').text("SĐT không đúng định dạng.");
         return false;
-    } else if (email != "" && !email.match(emailRegex)) {
+    } else if (email != null && !email.match(emailRegex)) {
         $('.teacherInfo-err').text("Email không đúng định dạng.");
         return false;
     } else {
