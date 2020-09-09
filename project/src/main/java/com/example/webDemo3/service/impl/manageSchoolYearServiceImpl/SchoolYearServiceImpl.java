@@ -262,9 +262,9 @@ public class SchoolYearServiceImpl implements SchoolYearService {
                 }
             }
 
-            //check oldToDate <= currentDate
-            if(sdf.format(dateCurrent).equalsIgnoreCase(sdf.format(oldToDate))
-                    || oldToDate.before(dateCurrent))
+            //check oldToDate < currentDate
+            if(!sdf.format(dateCurrent).equalsIgnoreCase(sdf.format(oldToDate))
+                    && oldToDate.before(dateCurrent))
             {
                 //if user change to date, error message
                 if(!sdf.format(toDate).equalsIgnoreCase(sdf.format(oldToDate))) {
