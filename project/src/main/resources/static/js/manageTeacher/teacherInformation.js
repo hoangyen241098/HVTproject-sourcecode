@@ -47,9 +47,15 @@ $("#editInfo").click(function (e) {
     var fullName = $('#fullName').val().trim();
     var phone = $('#phone').val().trim();
     var email = $('#email').val().trim();
+    if (phone == "") {
+        phone = oldPhone;
+    }
+    if (email == "") {
+        email = oldEmail;
+    }
 
     $('.teacherInfo-err').text("");
-    if (fullName == oldFullName && identifier == oldIdentifier &&
+    if (fullName == oldFullName.trim() && identifier == oldIdentifier.trim() &&
         phone == oldPhone && email == oldEmail) {
         $('.teacherInfo-err').text("Hãy thay đổi thông tin.");
         return false;
