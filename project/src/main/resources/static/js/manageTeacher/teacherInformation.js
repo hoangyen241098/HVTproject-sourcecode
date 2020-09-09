@@ -48,10 +48,10 @@ $("#editInfo").click(function (e) {
     var phone = $('#phone').val().trim();
     var email = $('#email').val().trim();
     if (phone == "") {
-        phone = oldPhone;
+        oldPhone = phone;
     }
     if (email == "") {
-        email = oldEmail;
+        oldEmail = email;
     }
 
     $('.teacherInfo-err').text("");
