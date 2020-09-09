@@ -42,7 +42,7 @@ $(document).ready(function () {
 
 $("#editInfo").click(function (e) {
     var emailRegex = '^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$';
-    var phoneRegex = '^[0-9\\-\\+]{9,15}$';
+    var phoneRegex = '^[0-9\\-\\+]{10,11}$';
     var identifier = $('#identifier').val().trim();
     var fullName = $('#fullName').val().trim();
     var phone = $('#phone').val().trim();
