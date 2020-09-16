@@ -2,6 +2,10 @@
 $('#fromDate').val(moment().format('YYYY-MM-DD'));
 $('#toDate').val(moment().format('YYYY-MM-DD'));
 $('#toDate').attr('min', $('#fromDate').val());
+$('#fromDate').change(function () {
+    var fromDate = $(this).val();
+    $('#toDate').attr('min', fromDate);
+});
 var inforSearch = {
     classId: $('#classList option:selected').val(),
     fromDate: $('#fromDate').val(),
