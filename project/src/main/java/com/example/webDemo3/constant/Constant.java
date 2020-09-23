@@ -363,6 +363,8 @@ public class Constant {
             new MessageDTO(1,"Không thể thêm phân công có ngày áp dụng nhỏ hơn hoặc bằng ngày hiện tại.");
     public static final MessageDTO NOT_DELETE_ASSIGN_REDSTAR =
             new MessageDTO(1,"Không thể xóa phân công có ngày áp dụng nhỏ hơn hoặc bằng ngày hiện tại.");
+    public static final MessageDTO NUMBER_OF_STUDENT_NULL =
+            new MessageDTO(1,"Không có kết quả.");
     /**
      * Success message
      */
