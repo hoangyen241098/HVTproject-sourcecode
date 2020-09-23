@@ -24,4 +24,13 @@ public class NumberOfStudent {
 
     @Column(name = "NUMBER_OF_UNION")
     private Integer numberOfUnion;
+
+    public NumberOfStudent() {
+    }
+
+    public NumberOfStudent(Integer classID, Integer numberOfStudent, Integer numberOfUnion) {
+        this.classID = classID;
+        this.numberOfStudent = numberOfStudent;
+        this.numberOfUnion = numberOfUnion;
+    }
 }
