@@ -152,18 +152,6 @@ public class ClassServiceImpl implements ClassService {
             return responseDto;
         }
 
-        if(numOfStudent == null){
-            message = Constant.NUMOFSTU_NULL;
-            responseDto.setMessage(message);
-            return responseDto;
-        }
-
-        if(numOfUnion == null){
-            message = Constant.NUMOFUNION_NULL;
-            responseDto.setMessage(message);
-            return responseDto;
-        }
-
         List<Class> classByClassIdentifier = classRepository.findClassListByClassIdentifier(classIdentifier);
         if(classByClassIdentifier.size() != 0){
             for(int i = 0; i < classByClassIdentifier.size(); i++){
@@ -201,8 +189,10 @@ public class ClassServiceImpl implements ClassService {
             Integer classId = saveClass.getClassId();
 
             //add number of student and union
-            NumberOfStudent numberOfStudent = new NumberOfStudent(classId, numOfStudent, numOfUnion);
-            numberOfStudentRepository.save(numberOfStudent);
+            if(numOfStudent != null || numOfUnion != null) {
+                NumberOfStudent numberOfStudent = new NumberOfStudent(classId, numOfStudent, numOfUnion);
+                numberOfStudentRepository.save(numberOfStudent);
+            }
 
             GenerateNameRequestDto requestDto;
             String password = "123@123a";
@@ -324,16 +314,6 @@ public class ClassServiceImpl implements ClassService {
             return message;
         }
 
-        if(numOfStudent == null){
-            message = Constant.NUMOFSTU_NULL;
-            return message;
-        }
-
-        if(numOfUnion == null){
-            message = Constant.NUMOFUNION_NULL;
-            return message;
-        }
-
         Class editClass = classRepository.findByClassId(classId);
         if(editClass == null){
             message = Constant.CLASS_NOT_EXIST;
@@ -375,8 +355,12 @@ public class ClassServiceImpl implements ClassService {
                     }
                 }
             }
-            NumberOfStudent numberOfStudent = new NumberOfStudent(classId, numOfStudent, numOfUnion);
-            numberOfStudentRepository.save(numberOfStudent);
+
+            if(numOfStudent != null || numOfUnion != null){
+                NumberOfStudent numberOfStudent = new NumberOfStudent(classId, numOfStudent, numOfUnion);
+                numberOfStudentRepository.save(numberOfStudent);
+            }
+
             classRepository.save(editClass);
         }catch (Exception e){
             message.setMessageCode(1);
