@@ -367,6 +367,8 @@ public class Constant {
             new MessageDTO(1,"Hãy nhập số học sinh.");
     public static final MessageDTO NUMOFUNION_NULL =
             new MessageDTO(1,"Hãy nhập số đoàn viên.");
+    public static final MessageDTO NUMBER_OF_STUDENT_NULL =
+            new MessageDTO(1,"Không có kết quả.");
     /**
      * Success message
      */
