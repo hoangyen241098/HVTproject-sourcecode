@@ -170,7 +170,7 @@ public class Constant {
     public static final MessageDTO DATE_EMPTY =
             new MessageDTO(1,"Hãy lựa chọn ngày.");
     public static final MessageDTO LIST_REDSTAR_EMPTY =
-            new MessageDTO(1,"Danh sách sao đỏ trống.");
+            new MessageDTO(1,"Danh sách cờ đỏ trống.");
     public static final MessageDTO VIEW_CHANGE_REQUEST_NULL =
             new MessageDTO(1,"Không có kết quả.");
     public static final MessageDTO EMULATE_FAIL =

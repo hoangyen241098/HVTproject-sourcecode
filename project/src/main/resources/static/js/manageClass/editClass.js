@@ -71,7 +71,7 @@ $("#editInfo").click(function (e) {
     } else if (newNumOfUnion != "" && !isInteger(newNumOfUnion)) {
         $('.classInfo-err').text('Số đoàn viên phải là số nguyên dương!');
         return false;
-    } else if (newNumOfUnion != "" && newNumOfStudent != "" && (newNumOfStudent < newNumOfUnion)) {
+    } else if (newNumOfUnion != "" && newNumOfStudent != "" && (parseInt(newNumOfStudent) < parseInt(newNumOfUnion))) {
         $('.classInfo-err').text('Số đoàn viên phải nhỏ hơn Tổng sĩ số!');
         return false;
     } else if (newStatus == oldStatus && newClassIdentifier == oldIdentifierName && newNumOfStudent == oldNumOfStudent && newNumOfUnion == oldNumOfUnion) {
