@@ -2,7 +2,7 @@ var inforSearch = {
     classIdentifier: "",
     grade: "",
     sortBy: "1",
-    orderBy: "0",
+    orderBy: "1",
     status: "",
     pageNumber: 0
 }
