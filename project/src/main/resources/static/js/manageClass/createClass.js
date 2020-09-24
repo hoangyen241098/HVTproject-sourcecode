@@ -57,7 +57,7 @@ $("#submit").click(function (e) {
     } else if (numOfUnion != "" && !isInteger(numOfUnion)) {
         $('.createClass-err').text('Số đoàn viên phải là số nguyên dương!');
         return false;
-    } else if (numOfUnion != "" && numOfStudent != "" && (numOfStudent < numOfUnion)) {
+    } else if (numOfUnion != "" && numOfStudent != "" && (parseInt(numOfStudent) < parseInt(numOfUnion))) {
         $('.createClass-err').text('Số đoàn viên phải nhỏ hơn Tổng sĩ số!');
         return false;
     } else {
@@ -68,8 +68,8 @@ $("#submit").click(function (e) {
             giftedClassId: giftedClassId,
             isRedStar: isRedStar,
             isMonitor: isMonitor,
-            numOfStudent : numOfStudent,
-            numOfUnion : numOfUnion
+            numOfStudent: numOfStudent,
+            numOfUnion: numOfUnion
         }
         e.preventDefault();
         $.ajax({
