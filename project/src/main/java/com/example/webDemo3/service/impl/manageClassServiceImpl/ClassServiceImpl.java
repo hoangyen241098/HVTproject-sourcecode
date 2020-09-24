@@ -394,10 +394,10 @@ public class ClassServiceImpl implements ClassService {
         responseDto.setStatus(classInfor.getStatus());
         responseDto.setGrade(classInfor.getGrade());
 
-        NumberOfStudent numberOfStudent = classInfor.getNumberOfStudents();
-        if(numberOfStudent != null) {
-            responseDto.setNumOfStudent(classInfor.getNumberOfStudents().getNumberOfStudent());
-            responseDto.setNumOfUnion(classInfor.getNumberOfStudents().getNumberOfUnion());
+        NumberOfStudent numberOfStudentEntity = classInfor.getNumberOfStudents();
+        if(numberOfStudentEntity != null) {
+            responseDto.setNumOfStudent(numberOfStudentEntity.getNumberOfStudent());
+            responseDto.setNumOfUnion(numberOfStudentEntity.getNumberOfUnion());
         }
 
         String giftedClassName = classInfor.getGiftedClass().getName();
