@@ -2,30 +2,8 @@
 var roleID = localStorage.getItem("roleID");
 var username = localStorage.getItem("username");
 var editor = CKEDITOR.replace('post-editor-text-content', {
-    cloudServices_uploadUrl: 'https://74535.cke-cs.com/easyimage/upload/',
-    cloudServices_tokenUrl: 'https://74535.cke-cs.com/token/dev/2b51dfdac9d8f0d0f5b4372ef512b945d42e66db760a49bb5cf54933b489',
-    width: '100%',
     height: 500,
-    extraPlugins: 'easyimage',
-});
-// var editor = CKEDITOR.replace('post-editor-text-content', {
-//     height: 500,
-//     width: '100%',
-// });
-var imageCover = CKEDITOR.replace('imageCover', {
-    cloudServices_uploadUrl: 'https://74535.cke-cs.com/easyimage/upload/',
-    cloudServices_tokenUrl: 'https://74535.cke-cs.com/token/dev/2b51dfdac9d8f0d0f5b4372ef512b945d42e66db760a49bb5cf54933b489',
-    width: 250,
-    height: 200,
-    extraPlugins: 'easyimage',
-    removePlugins: 'image',
-    removeDialogTabs: 'link:advanced',
-    toolbar: [
-        {
-            name: 'insert',
-            items: ['EasyImageUpload']
-        }
-    ],
+    width: '100%',
 });
 
 if (roleID == 1) {
@@ -35,8 +13,7 @@ if (roleID == 1) {
 /*Save button*/
 $('#savePost').on('click', function () {
     var titleName = $('#titleName').val().trim();
-    // var image = $('#imagePreview').attr('src');
-    var image = imageCover.getData();
+    var image = $('#imagePreview').attr('src');
     var data = editor.getData();
     var gim;
     if ($('input[type="checkbox"]').prop("checked") == true) {
@@ -50,14 +27,10 @@ $('#savePost').on('click', function () {
     } else if (image.trim() == "") {
         $('.createPost-err').text('Hãy nhập ảnh bìa của bài viết.');
         return false;
-        } else if (!image.includes('src=')) {
-            $('.createPost-err').text('Ảnh bìa của bài viết không đúng định dạng.');
-            return false;
     } else if (data == "") {
         $('.createPost-err').text('Hãy nhập nội dung của bài viết.');
         return false;
     } else {
-        image = image.split('src=')[1].split('"')[1];
         var request = {
             username: username,
             header: titleName,
@@ -117,56 +90,44 @@ function addNewPost(request) {
 
 /*Upload image*/
 var loadFile = function (event) {
-    // var file = event.target.files[0];
-    // var output = $('#imagePreview');
-    // output.attr('src', URL.createObjectURL(file));
-    // output.prop('alt', 'Ảnh bìa bài viết');
-    // output.onload = function () {
-    //     URL.revokeObjectURL(output.src);
-    // }
-    var CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/hnm0yiigx/upload';
-    var CLOUDINARY_UPLOAD_PRESET = 'mrpq6qtl';
-    var file = event.target.files[0]
+    var apiUrl = 'https://api.imgur.com/3/image';
+    var apiKey = 'dcc612a7faddf22';
+
+    var file = event.target.files[0];
     var formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+    formData.append('image', file);
 
     $.ajax({
-        type: "POST",
-        url: 'https://api.cloudinary.com/v1_1/hnm0yiigx/upload',
+        async: false,
+        crossDomain: true,
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        url: apiUrl,
         data: formData,
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Access-Control-Allow-Origin': '*',
-            "Access-Control-Allow-Headers": "Cache-Control, Content-Disposition, Content-MD5, Content-Range, Content-Type, DPR, Viewport-Width, X-CSRF-Token, X-Prototype-Version, X-Requested-With, X-Unique-Upload-Id",
-            "Access-Control-Allow-Methods": "GET,HEAD,OPTIONS,POST,PUT",
-            "Access-Control-Allow-Credentials": "true",
-            "Server": "cloudinary",
-            "X-Request-Id": "721ea13f46d4409d27bbe73f637c4943",
-            "Access-Control-Allow-Origin": "https://api.cloudinary.com/v1_1/hnm0yiigx/upload",
-            // 'Sec-Fetch-Mode': 'no-cors',
-            // 'Sec-Fetch-Site': 'none'
-        }, fetch: {
-            mode: 'no-cors'
+            Authorization: 'Client-ID ' + apiKey,
+            Accept: 'application/json',
         },
-        crossDomain: true,
-        skipAuthorization: true,
+        mimeType: 'multipart/form-data',
         beforeSend: function () {
-            $('body').addClass("loading")
+            $('body').addClass("loading");
         },
         complete: function () {
             $('body').removeClass("loading");
         },
         success: function (data) {
-            $('#imagePreview').prop('src', data.url);
-            $('#imagePreview').prop('alt', 'Ảnh bìa bài viết');
-            console.log(data)
+            var src = data.split('"link":"')[1].split('"')[0];
+            var output = $('#imagePreview');
+            output.attr('src', src);
+            output.prop('alt', 'Ảnh bìa bài viết');
+            output.onload = function () {
+                URL.revokeObjectURL(output.src);
+            }
         },
         failure: function (errMsg) {
             messageModal('overrideSuccess', 'img/img-error.png', errMsg);
         },
-        cache: false,
-        contentType: false,
-        processData: false,
+
     });
 };

@@ -1,30 +1,12 @@
 /*Value default*/
 var newsletterId = sessionStorage.getItem('newsletterIdEdit');
+var oldHeader, oldHeaderImage, oldContent, oldGim, createDate, status;
 var request = {
     newsletterId: newsletterId
 }
 var editor = CKEDITOR.replace('post-editor-text-content', {
-    cloudServices_uploadUrl: 'https://74535.cke-cs.com/easyimage/upload/',
-    cloudServices_tokenUrl: 'https://74535.cke-cs.com/token/dev/2b51dfdac9d8f0d0f5b4372ef512b945d42e66db760a49bb5cf54933b489',
-    width: '100%',
     height: 500,
-    extraPlugins: 'easyimage',
-});
-var oldHeader, oldHeaderImage, oldContent, oldGim, createDate, status;
-var imageCover = CKEDITOR.replace('imageCover', {
-    cloudServices_uploadUrl: 'https://74535.cke-cs.com/easyimage/upload/',
-    cloudServices_tokenUrl: 'https://74535.cke-cs.com/token/dev/2b51dfdac9d8f0d0f5b4372ef512b945d42e66db760a49bb5cf54933b489',
-    width: 250,
-    height: 200,
-    extraPlugins: 'easyimage',
-    removePlugins: 'image',
-    removeDialogTabs: 'link:advanced',
-    toolbar: [
-        {
-            name: 'insert',
-            items: ['EasyImageUpload']
-        }
-    ],
+    width: '100%',
 });
 
 /*View detail post*/
@@ -50,8 +32,7 @@ $.ajax({
                 createDate = data.newsletter.createDate;
                 status = data.newsletter.status;
                 $('#titleName').val(oldHeader);
-                // $('#imagePreview').prop('src', oldHeaderImage);
-                $('#imageCover').text(`<figure class="easyimage" ><img alt="" src="` + oldHeaderImage + `"/></figure>`);
+                $('#imagePreview').prop('src', oldHeaderImage);
                 $('#post-editor-text-content').text(oldContent);
                 if (oldGim == 1) {
                     $('input[value=pin]').prop('checked', true);
@@ -82,14 +63,7 @@ $.ajax({
 /*Edit post*/
 $('#savePost').on('click', function () {
     var newHeader = $('#titleName').val().trim();
-    // var newHeaderImage = $('#imagePreview').attr('src');
-    var newHeaderImage = imageCover.getData();
-    if (!newHeaderImage.includes('src=')) {
-        $('.editPost-err').text('Ảnh bìa của bài viết không đúng định dạng.');
-        return false;
-    } else {
-        newHeaderImage = newHeaderImage.split('src=')[1].split('"')[1];
-    }
+    var newHeaderImage = $('#imagePreview').attr('src');
     var newContent = editor.getData();
     var newGim;
     if ($('input[type="checkbox"]').prop("checked") == true) {
@@ -186,6 +160,50 @@ function editPost(request) {
         contentType: "application/json"
     });
 }
+
+/*Upload image*/
+var loadFile = function (event) {
+    var apiUrl = 'https://api.imgur.com/3/image';
+    var apiKey = 'dcc612a7faddf22';
+
+    var file = event.target.files[0];
+    var formData = new FormData();
+    formData.append('image', file);
+
+    $.ajax({
+        async: false,
+        crossDomain: true,
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        url: apiUrl,
+        data: formData,
+        headers: {
+            Authorization: 'Client-ID ' + apiKey,
+            Accept: 'application/json',
+        },
+        mimeType: 'multipart/form-data',
+        beforeSend: function () {
+            $('body').addClass("loading");
+        },
+        complete: function () {
+            $('body').removeClass("loading");
+        },
+        success: function (data) {
+            var src = data.split('"link":"')[1].split('"')[0];
+            var output = $('#imagePreview');
+            output.attr('src', src);
+            output.prop('alt', 'Ảnh bìa bài viết');
+            output.onload = function () {
+                URL.revokeObjectURL(output.src);
+            }
+        },
+        failure: function (errMsg) {
+            messageModal('overrideSuccess', 'img/img-error.png', errMsg);
+        },
+
+    });
+};
 
 if(roleID != 1) {
     $('.form-check').hide();
