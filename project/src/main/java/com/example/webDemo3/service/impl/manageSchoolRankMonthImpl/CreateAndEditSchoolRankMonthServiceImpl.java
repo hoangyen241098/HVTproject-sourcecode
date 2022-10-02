@@ -553,7 +553,7 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
         Collections.sort(schoolRankMonthList, new Comparator<SchoolRankMonth>() {
             @Override
             public int compare(SchoolRankMonth o1, SchoolRankMonth o2) {
-                return o1.getTotalRankWeek().compareTo(o2.getTotalRankWeek());
+                return o2.getTotalGradeWeek().compareTo(o1.getTotalGradeWeek());
             }
         });
         int rank = 1;
@@ -567,7 +567,7 @@ public class CreateAndEditSchoolRankMonthServiceImpl implements CreateAndEditSch
                 SchoolRankMonth schoolRankMonth = schoolRankMonthList.get(i);
                 schoolRankMonthList.get(i).setRank(rank);
                 SchoolRankMonth schoolRankMonth2 = schoolRankMonthList.get(i + 1);
-                if (schoolRankMonth2.getTotalRankWeek().compareTo(schoolRankMonth.getTotalRankWeek()) == 0) {
+                if (schoolRankMonth2.getTotalGradeWeek().compareTo(schoolRankMonth.getTotalGradeWeek()) == 0) {
                     schoolRankMonthList.get(i + 1).setRank(rank);
                     count++;
                 } else {
