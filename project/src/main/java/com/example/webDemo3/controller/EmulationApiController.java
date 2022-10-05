@@ -112,6 +112,12 @@ public class EmulationApiController {
         return violationOfClassService.getViolationOfAClass(model);
     }
 
+    @PostMapping("/viewviolationOfClasses")
+    public ViewViolationClassListResponseDto getViolationOfClasses(@RequestBody ViewViolationOfClassRequestDto model)
+    {
+        return violationOfClassService.getViolationOfClasses(model);
+    }
+
     /**
      * kimpt142
      * 16/07

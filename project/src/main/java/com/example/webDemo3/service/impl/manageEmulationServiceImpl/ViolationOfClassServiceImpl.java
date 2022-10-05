@@ -14,11 +14,23 @@ import com.example.webDemo3.repository.*;
 import com.example.webDemo3.service.manageEmulationService.AdditionalFunctionViolationClassService;
 import com.example.webDemo3.service.manageEmulationService.ValidateEmulationService;
 import com.example.webDemo3.service.manageEmulationService.ViolationOfClassService;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+
+@Data
+class ViewViolationOfClassRequestDto1 {
+    private String username;
+    private Integer classId;
+    private Date date;
+    private Integer roleId;
+    private Date fromDate;
+    private Date toDate;
+    private String className;
+}
 
 /*
 kimpt142 - 16/07
@@ -37,6 +49,50 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
 
     @Autowired
     private AdditionalFunctionViolationClassService additionalFunctionService;
+
+    public ViewViolationClassListResponseDto getViolationOfClasses(ViewViolationOfClassRequestDto model) {
+        ViewViolationClassListResponseDto responseDto = new ViewViolationClassListResponseDto();
+        List<ViolationClassResponseDto> violationClassListDto = new ArrayList<>();
+        MessageDTO message = new MessageDTO();
+        Integer checkEdit = null;
+
+        String username = model.getUsername();
+        Integer classId = model.getClassId();
+        Integer roleId = model.getRoleId();
+        Date fromDate = model.getFromDate();
+        Date toDate = model.getToDate();
+        Date date = model.getDate();
+
+
+        if(fromDate == null || toDate == null ){
+            message = Constant.DATE_EMPTY;
+            responseDto.setMessage(message);
+            return responseDto;
+        }
+
+        List<ViolationClass> violationClassRankedList = violationClassRepository.findViolationClassList(classId,fromDate,toDate);
+//        List<ViolationClass> violationClassList = violationClassRepository.findVioClassByClassIdAndAndDate(classId, date);
+
+        if(violationClassRankedList != null && violationClassRankedList.size() != 0){
+            for(ViolationClass item : violationClassRankedList){
+                ViolationClassResponseDto violationClassRankedDto = new ViolationClassResponseDto();
+                violationClassRankedDto = additionalFunctionService.convertViolationClassFromEntityToDto(item);
+                violationClassRankedDto.setCheckEdit(1);
+                violationClassListDto.add(violationClassRankedDto);
+            }
+        }
+
+        if(violationClassListDto == null || violationClassListDto.size() == 0){
+            message = Constant.VIOLATIONOFCLASS_EMPTY;
+            responseDto.setMessage(message);
+            return responseDto;
+        }
+
+        message = Constant.SUCCESS;
+        responseDto.setMessage(message);
+        responseDto.setViewViolationClassList(violationClassListDto);
+        return responseDto;
+    }
 
     /**
      * kimpt142

@@ -10,6 +10,7 @@ import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewViolationO
 kimpt142 - 16/07
  */
 public interface ViolationOfClassService {
+    ViewViolationClassListResponseDto getViolationOfClasses(ViewViolationOfClassRequestDto model);
     ViewViolationClassListResponseDto getViolationOfAClass(ViewViolationOfClassRequestDto model);
     MessageDTO editViolationOfClass(EditViolationOfClassRequestDto model);
     MessageDTO deleteRequestChange(DeleteRequestChangeViolationClassRequestDto model);

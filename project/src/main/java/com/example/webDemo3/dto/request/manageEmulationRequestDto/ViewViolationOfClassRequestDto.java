@@ -12,4 +12,7 @@ public class ViewViolationOfClassRequestDto {
     private Integer classId;
     private Date date;
     private Integer roleId;
+    private Date fromDate;
+    private Date toDate;
+    private String className;
 }

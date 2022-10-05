@@ -15,6 +15,14 @@ import java.util.List;
 @Repository
 public interface ViolationClassRepository extends JpaRepository<ViolationClass, Long> {
 
+    @Query(value="select vc from ViolationClass vc " +
+            "where (vc.classId = :classId or :classId is null)" +
+            " and vc.date >= :fromdate " +
+            " and vc.date <= :todate " +
+            " and vc.quantity > 0" +
+            "order by vc.date,vc.violation.typeId, vc.violation.violationId, vc.classId")
+    List<ViolationClass> findViolationClassList(@Param("classId")Integer classId, @Param("fromdate")Date fromdate, @Param("todate")Date todate);
+
 
     @Query(value = "select v from ViolationClass v " +
             "where ((v.classId = :classId10 and v.year.fromYear = :fromYear10) " +
