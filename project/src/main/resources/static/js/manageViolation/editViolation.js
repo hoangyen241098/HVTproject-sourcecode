@@ -60,9 +60,6 @@ $("#editInfo").click(function (e) {
     }else if(newSubstractGrade == ""){
         $('.violation-err').text("Hãy nhập điểm trừ của lỗi vi phạm!");
         return false;
-    }else if(newSubstractGrade <= 0){
-        $('.violation-err').text("Hãy nhập điểm trừ của lỗi vi phạm lớn hơn 0!");
-        return false;
     }else if (newTypeId == oldTypeId && newDescription == oldDescription && newSubstractGrade == oldSubstractGrade) {
         $('.violation-err').text("Hãy thay đổi thông tin !");
         return false;
