@@ -53,9 +53,6 @@ $("#editInfo").click(function (e) {
     }else if (newTotalGrade == oldTotalGrade && newName == oldName) {
         $('.violation-err').text("Hãy thay đổi thông tin!");
         return false;
-    }else if(newTotalGrade <= 0){
-        $('.violation-err').text("Hãy nhập điểm của nội quy lớn hơn 0!");
-        return false;
     } else {
         editViolationType(e);
     }
