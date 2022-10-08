@@ -2,6 +2,7 @@ package com.example.webDemo3.controller;
 
 import com.example.webDemo3.dto.MessageDTO;
 import com.example.webDemo3.dto.manageEmulationResponseDto.*;
+import com.example.webDemo3.dto.request.assignRedStarRequestDto.DownloadAssignRedStarRequestDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.*;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViewGradingEmulationResponseDto;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViewViolationClassListResponseDto;
@@ -12,10 +13,15 @@ import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewViolationO
 import com.example.webDemo3.service.assignRedStarService.AssignRedStarService;
 import com.example.webDemo3.service.manageEmulationService.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.ByteArrayInputStream;
 
 /*
 kimpt142 - 14/07
@@ -112,6 +118,22 @@ public class EmulationApiController {
         return violationOfClassService.getViolationOfAClass(model);
     }
 
+    //vbyen
+    @PostMapping("/downloadViolationOfClasses")
+    public ResponseEntity<InputStreamResource>  download(@RequestBody ViewViolationOfClassRequestDto model)
+    {
+//        return violationOfClassService.download(model);
+        ByteArrayInputStream in = violationOfClassService.download(model);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=tonghopvipham.xls");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .body(new InputStreamResource(in));
+    }
+
+    //vbyen
     @PostMapping("/viewviolationOfClasses")
     public ViewViolationClassListResponseDto getViolationOfClasses(@RequestBody ViewViolationOfClassRequestDto model)
     {

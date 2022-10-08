@@ -2,12 +2,15 @@ package com.example.webDemo3.service.impl.manageEmulationServiceImpl;
 
 import com.example.webDemo3.constant.Constant;
 import com.example.webDemo3.dto.MessageDTO;
+import com.example.webDemo3.dto.manageEmulationResponseDto.ClassRedStarResponseDto;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViewViolationClassListResponseDto;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViolationClassRequestResponseDto;
 import com.example.webDemo3.dto.manageEmulationResponseDto.ViolationClassResponseDto;
+import com.example.webDemo3.dto.request.assignRedStarRequestDto.DownloadAssignRedStarRequestDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.DeleteRequestChangeViolationClassRequestDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.EditViolationOfClassRequestDto;
 import com.example.webDemo3.dto.request.manageEmulationRequestDto.ViewViolationOfClassRequestDto;
+import com.example.webDemo3.entity.ClassRedStar;
 import com.example.webDemo3.entity.ViolationClass;
 import com.example.webDemo3.entity.ViolationClassRequest;
 import com.example.webDemo3.repository.*;
@@ -15,9 +18,15 @@ import com.example.webDemo3.service.manageEmulationService.AdditionalFunctionVio
 import com.example.webDemo3.service.manageEmulationService.ValidateEmulationService;
 import com.example.webDemo3.service.manageEmulationService.ViolationOfClassService;
 import lombok.Data;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +59,73 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
     @Autowired
     private AdditionalFunctionViolationClassService additionalFunctionService;
 
+    //yenvb
+    @Override
+    public ByteArrayInputStream download(ViewViolationOfClassRequestDto model){
+        //if(data.getClassId())
+
+        String[] COLUMNs = {"Ngày", "Thứ", "loại vi phạm", "Lớp", "mô tả lỗi", "người chấm",};
+        try {
+            List<ViolationClassResponseDto> violationClassListDto = new ArrayList<>();
+
+            List<ViolationClass> violationClassRankedList
+                    = violationClassRepository.findViolationClassList(model.getClassId(),model.getFromDate(),model.getToDate());
+
+            if(violationClassRankedList != null && violationClassRankedList.size() != 0){
+                for(ViolationClass item : violationClassRankedList){
+                    ViolationClassResponseDto violationClassRankedDto = new ViolationClassResponseDto();
+                    violationClassRankedDto = additionalFunctionService.convertViolationClassFromEntityToDto(item);
+                    violationClassRankedDto.setCheckEdit(1);
+                    violationClassListDto.add(violationClassRankedDto);
+                }
+            }
+
+
+            Workbook workbook = new HSSFWorkbook();
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+            //CreationHelper createHelper = workbook.getCreationHelper();
+            Sheet sheet = workbook.createSheet("Tổng hợp vi phạm");
+
+            Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+            CellStyle headerCellStyle = workbook.createCellStyle();
+            headerCellStyle.setFont(headerFont);
+
+            // Row for Header
+            Row headerRow = sheet.createRow(0);
+
+            // Header
+            for (int col = 0; col < COLUMNs.length; col++) {
+                Cell cell = headerRow.createCell(col);
+                cell.setCellValue(COLUMNs[col]);
+                cell.setCellStyle(headerCellStyle);
+            }
+            SimpleDateFormat sm = new SimpleDateFormat("dd-MM-yyyy");
+            int rowIdx = 1;
+            for (ViolationClassResponseDto item : violationClassListDto) {
+                Row row = sheet.createRow(rowIdx++);
+                row.createCell(0).setCellValue(sm.format(item.getCreateDate()));
+                row.createCell(1).setCellValue(item.getDayName());
+                row.createCell(2).setCellValue(item.getDescription());
+                row.createCell(3).setCellValue(item.getClassName());
+                row.createCell(4).setCellValue(item.getNote());
+                row.createCell(5).setCellValue(item.getCreateBy());
+//                row.createCell(5).setCellValue(item.getNote());
+            }
+
+            workbook.write(out);
+            return new ByteArrayInputStream(out.toByteArray());
+
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
+    //yenvb
+    @Override
     public ViewViolationClassListResponseDto getViolationOfClasses(ViewViolationOfClassRequestDto model) {
         ViewViolationClassListResponseDto responseDto = new ViewViolationClassListResponseDto();
         List<ViolationClassResponseDto> violationClassListDto = new ArrayList<>();
