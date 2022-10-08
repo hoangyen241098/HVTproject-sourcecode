@@ -172,6 +172,11 @@ public class WebController {
         return "manageEmulation/violationListOfClass";
     }
 
+    @GetMapping("/showViolationList")
+    public String showViolationList(Model model) {
+        return "manageEmulation/showViolationList";
+    }
+
     @GetMapping("/viewRequest")
     public String viewRequest(Model model) {
         return "manageEmulation/viewRequest";
