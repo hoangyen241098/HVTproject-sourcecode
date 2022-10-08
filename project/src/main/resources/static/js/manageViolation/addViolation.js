@@ -35,9 +35,6 @@ $("#submit").click(function (e) {
     } else if (newSubstractGrade == "") {
         $('.addViolation-err').text("Hãy nhập điểm trừ của lỗi vi phạm!");
         return false;
-    } else if (newSubstractGrade <= 0) {
-        $('.addViolation-err').text("Hãy nhập điểm trừ của lỗi vi phạm lớn hơn 0!");
-        return false;
     } else {
         var model = {
             typeId: newTypeId,

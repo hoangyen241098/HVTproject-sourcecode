@@ -454,6 +454,11 @@ if (pathname != '/violationListOfClass') {
     sessionStorage.removeItem('classIdGrading');
     sessionStorage.removeItem('dateGrading');
 }
+if (pathname != '/showViolationList') {
+    sessionStorage.removeItem('classIdShowViolation');
+    sessionStorage.removeItem('fromDateShowViolation');
+    sessionStorage.removeItem('toDateShowViolation');
+}
 if (pathname != '/rankByWeek') {
     sessionStorage.removeItem('weekName');
     sessionStorage.removeItem('weekId');
