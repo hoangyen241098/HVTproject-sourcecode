@@ -8,10 +8,7 @@ $("#submit").click(function (e) {
     } else if (totalGrade == "") {
         $('.addViolationType-err').text("Hãy nhập điểm cho nội quy!");
         return false;
-    } else if (totalGrade <= 0) {
-        $('.addViolationType-err').text("Hãy nhập điểm nội quy lớn hơn 0!");
-        return false;
-    }
+    } 
     var model = {
         name: name,
         totalGrade: totalGrade

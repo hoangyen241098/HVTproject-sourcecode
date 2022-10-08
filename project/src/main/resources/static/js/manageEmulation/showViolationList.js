@@ -76,7 +76,7 @@ function search() {
             if (data.viewViolationClassList != null) {
               dataSrc = data.viewViolationClassList;
               $.each(data.viewViolationClassList, function (i, item) {
-                item.index = i + 1;
+                item.score = (item.substractGrade * item.quantity).toFixed(2);
               });
               $("#download").removeClass("hide");
             } else {
@@ -86,7 +86,7 @@ function search() {
           } else {
             $("#download").addClass("hide");
             $("tbody").append(
-              `<tr><td colspan="4" class="text-center"> ` +
+              `<tr><td colspan="7" class="text-center"> ` +
                 message +
                 ` </td></tr>`
             );
@@ -104,13 +104,13 @@ function search() {
         },
       },
       columns: [
-        { data: "index" },
         { data: "createDate" },
         { data: "dayName" },
         { data: "description" },
         { data: "className" },
         { data: "note" },
         { data: "createBy" },
+        { data: "score" },
       ],
       drawCallback: function (settings) {
         settings.oLanguage.sEmptyTable = "Danh sách lỗi của lớp đang trống.";
