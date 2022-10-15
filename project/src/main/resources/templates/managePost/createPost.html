@@ -41,8 +41,7 @@
             <form method="POST" role="form" enctype="multipart/form-data" id="form-post">
                 <div class="form-group">
                     <label for="imageCover">Ảnh bìa bài viết <span class="text-red">*</span></label>
-                    <textarea id="imageCover" name="imageCover" cols="80" rows="1"></textarea>
-                    <!--                    <input type="file" th:name="file" class="form-control-file" id="imageCover" accept="image/*" onchange="loadFile(event)"/>-->
+                    <input type="file" th:name="file" class="form-control-file" id="imageCover" accept="image/*" onchange="loadFile(event)"/>
                     <img id="imagePreview"/>
                 </div>
             </form>
