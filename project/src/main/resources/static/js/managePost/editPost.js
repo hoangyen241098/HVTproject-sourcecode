@@ -5,13 +5,23 @@ var newsletterId = sessionStorage.getItem("newsletterIdEdit");
 var request = {
   newsletterId: newsletterId,
 };
-var editor = CKEDITOR.replace("post-editor-text-content", {
-  cloudServices_uploadUrl: "https://74535.cke-cs.com/easyimage/upload/",
-  cloudServices_tokenUrl:
-    "https://74535.cke-cs.com/token/dev/2b51dfdac9d8f0d0f5b4372ef512b945d42e66db760a49bb5cf54933b489",
-  width: "100%",
-  height: 500,
-});
+var editor = ClassicEditor.create(
+  document.querySelector("#post-editor-text-content"),
+  {
+    licenseKey: "",
+  }
+)
+  .then((editor) => {
+    window.editor = editor;
+  })
+  .catch((error) => {
+    console.error("Oops, something went wrong!");
+    console.error(
+      "Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:"
+    );
+    console.warn("Build id: k22235w312jz-o54unq4w8qk1");
+    console.error(error);
+  });
 var oldHeader, oldHeaderImage, oldContent, oldGim, createDate, status;
 
 /* View detail post */
