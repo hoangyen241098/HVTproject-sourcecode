@@ -48,7 +48,13 @@ $.ajax({
         status = data.newsletter.status;
         $("#titleName").val(oldHeader);
         $("#imagePreview").prop("src", oldHeaderImage);
-        $("#post-editor-text-content").text(oldContent);
+        const viewFragment =
+        editor.data.processor.toView(oldContent);
+        const modelFragment = editor.data.toModel(viewFragment);
+        editor.model.insertContent(
+          modelFragment,
+          editor.model.document.selection
+        );
         if (oldGim == 1) {
           $("input[value=pin]").prop("checked", true);
         }
