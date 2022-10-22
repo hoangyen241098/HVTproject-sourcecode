@@ -64,7 +64,7 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
     public ByteArrayInputStream download(ViewViolationOfClassRequestDto model){
         //if(data.getClassId())
 
-        String[] COLUMNs = {"Ngày", "Thứ", "loại vi phạm", "Lớp", "mô tả lỗi", "người chấm",};
+        String[] COLUMNs = {"Ngày", "Thứ", "loại vi phạm", "Lớp", "mô tả lỗi", "người chấm","Điểm trừ"};
         try {
             List<ViolationClassResponseDto> violationClassListDto = new ArrayList<>();
 
@@ -111,7 +111,7 @@ public class ViolationOfClassServiceImpl implements ViolationOfClassService {
                 row.createCell(3).setCellValue(item.getClassName());
                 row.createCell(4).setCellValue(item.getNote());
                 row.createCell(5).setCellValue(item.getCreateBy());
-//                row.createCell(5).setCellValue(item.getNote());
+                row.createCell(6).setCellValue(item.getQuantity() * item.getSubstractGrade());
             }
 
             workbook.write(out);

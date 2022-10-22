@@ -534,20 +534,21 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
         List<ViolationClass> violationClassList = new ArrayList<>();
         List<SchoolRankWeek> deleteList = new ArrayList<>();
         Integer newSize = 0;
-        Integer sizeDate = 0;
-        for(int i = 0; i < dateList.size(); i++){
-            if(dateList.get(i).getIsCheck() == 1){
-                sizeDate++;
-            }
-        }
+//        Integer sizeDate = 0;
+//        for(int i = 0; i < dateList.size(); i++){
+//            if(dateList.get(i).getIsCheck() == 1){
+//                sizeDate++;
+//            }
+//        }
         for(Class newClass: classList){
             Double allScore = 0.0;
+            allScore += allTotalGrade;
             for(DateViolationClassDto date: dateList){
                 Integer isCheck = date.getIsCheck();
 
                 //check isCheck = 1 or not
                 if(isCheck == 1){
-                    allScore += allTotalGrade;
+//                    allScore += allTotalGrade;
                     Double totalSubTractGrade = 0.0;
                     violationClassList = violationClassRepository.findByDateClassAndStatus(date.getDate(),newClass.getClassId(),1);
 
@@ -584,11 +585,11 @@ public class CreateAndEditSchoolRankWeekServiceImpl implements CreateAndEditScho
                 }
             }
             //check size = 0 or not
-            if(sizeDate != 0){
+            if(1 != 0){
                 Double learningGrade = Constant.LEARNING_GRADE;
                 Double movementGrade = Constant.MOVEMENT_GRADE;
                 Double laborGrade = Constant.LABOR_GRADE;
-                Double EMULATION_GRADE = round(allScore / sizeDate);
+                Double EMULATION_GRADE = round(allScore); //round(allScore / sizeDate);
                 SchoolRankWeek newSchoolRankWeek = schoolRankWeekRepository.findSchoolRankWeekByWeekIdAndClassId(weekId,newClass.getClassId());
 
                 //check newSchoolRankWeek null or not to save leanringGrade, movementGrade, laborGrade change
