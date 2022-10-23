@@ -217,8 +217,8 @@ if (roleID != 1) {
 /* Upload image */
 var loadFile = function (event) {
   const CLOUDINARY_URL =
-    "https://api.cloudinary.com/v1_1/dl6mxf4ua/image/upload";
-  const UPLOAD_PRESET = "tknrahcw";
+    "https://api.cloudinary.com/v1_1/dyvyvyris/image/upload";
+  const UPLOAD_PRESET = "dnewusot";
   let file = event.target.files[0];
   let formData = new FormData();
   formData.append("file", file);
