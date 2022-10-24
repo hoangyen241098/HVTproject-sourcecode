@@ -22,6 +22,7 @@
     <script th:src="@{/js/public/moment.min.js}"></script>
     <link th:href="@{/css/style.css}" rel="stylesheet"/>
     <script type="text/javascript" th:src="@{/js/functions.js}"></script>
+    <link th:href="@{/js/public/ckeditor/build/content-styles.css}" rel="stylesheet"/>
 
 </head>
 <body>
@@ -33,7 +34,7 @@
             <h5 class="post-date d-inline mr-2"></h5>
         </div>
         <div class="panel panel-default mt-5">
-            <div class="post-content-text">
+            <div class="post-content-text ck-content">
             </div>
             <div class="post-action text-right">
                 <span id="newsletterId" th:text="${newsletterId}" class="hide"></span>
